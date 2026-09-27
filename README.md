@@ -1,13 +1,15 @@
 # Hydroponic Nutrition AI
 
-This project trains a machine learning model to classify hydroponic lettuce conditions from sensor readings such as pH, EC, water temperature, humidity, and air temperature.
+Hydroponic Nutrition AI combines sensor-based lettuce condition classification with observation history and a pluggable image-analysis interface. The existing sensor model is loaded for inference only; this application does not retrain or modify it. CNN inference remains disabled until a trained image model is available.
 
 ## Project structure
 
-- `sensor_model_training.ipynb` — main notebook for data loading, model comparison, tuning, evaluation, and saving the final model.
-- `Hydroponic Lettuce Dataset/` — training, test, and full datasets used for experimentation.
-- `outputs/` — generated artifacts such as confusion matrix and saved model. This folder is ignored by Git.
-- `mlm/` — local virtual environment. This folder is ignored by Git.
+- `sensor_model_training.ipynb` — sensor model training and evaluation notebook. The app does not execute it.
+- `backend/` — FastAPI inference API, SQLite persistence, sensor service, and pending CNN interface.
+- `frontend/` — React + Vite observation and analysis dashboard.
+- `Hydroponic Lettuce Dataset/` — training and evaluation datasets.
+- `outputs/` — locally generated model artifact. This folder is ignored by Git.
+- `mlm/` — local Python environment. This folder is ignored by Git.
 
 ## Dataset
 
@@ -19,19 +21,57 @@ The dataset is stored under `Hydroponic Lettuce Dataset/` and includes:
 
 ## Model
 
-The notebook trains a tuned Random Forest classifier and saves the final pipeline to:
+The existing trained model is expected at:
 
 - `outputs/hydro_sensor_model.joblib`
 
-## Setup
+The backend also checks `backend/ml_models/hydro_sensor_model.joblib` first. Place the existing artifact in either location on a fresh clone. The artifact is intentionally not included in Git because generated outputs are ignored.
 
-Create a virtual environment and install dependencies:
+The API reports sensor confidence and class probabilities. Its image service explicitly returns `pending_cnn_model`; it does not invent a visual class. Fusion does not assume sensor and image classes share a taxonomy, and recommendations do not prescribe nutrient doses.
 
-```bash
+## Run locally
+
+Install the backend dependencies in the project environment:
+
+```powershell
 python -m venv mlm
-source mlm/bin/activate   # Linux/macOS
-mlm\Scripts\activate      # Windows PowerShell
-pip install -r requirements.txt
+\.\mlm\Scripts\python.exe -m pip install -r backend\requirements.txt
+```
+
+Start the API from the repository root:
+
+```powershell
+\.\mlm\Scripts\python.exe -m uvicorn backend.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+In a second terminal, start the dashboard:
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+
+The dashboard defaults to `http://127.0.0.1:8000` for its API. Set `VITE_API_BASE_URL` before starting Vite to use another API URL.
+
+## API
+
+- `GET /api/health` — sensor, CNN, and database status.
+- `POST /api/sensor/predict` — JSON sensor-only prediction without saving an observation.
+- `POST /api/predict/combined` — JSON sensor analysis and persisted result.
+- `POST /api/predict` — multipart sensor analysis with optional image attachment.
+- `POST /api/image/predict` — image upload; returns pending until CNN integration is implemented.
+- `POST /api/esp32/sensor` — store and classify an ESP32 reading, preserving its timestamp.
+- `GET /api/sensor/latest` — latest observation and sensor prediction.
+- `GET /api/history?limit=25` — most recent stored observations and predictions.
+
+## Tests
+
+Install the test client and run the API regression suite:
+
+```powershell
+\.\mlm\Scripts\python.exe -m pip install -r backend\requirements-dev.txt
+\.\mlm\Scripts\python.exe -m unittest discover -s tests -v
 ```
 
 ## Run the notebook
@@ -40,4 +80,4 @@ Open `sensor_model_training.ipynb` in Jupyter Notebook or VS Code and run the ce
 
 ## Notes
 
-The project intentionally uses grouped cross-validation by date to avoid leakage between related sensor readings.
+The training notebook uses grouped cross-validation by date to avoid leakage between related sensor readings. The local SQLite database, image uploads, model artifact, Python environment, frontend dependencies, and frontend build output are excluded from Git.
