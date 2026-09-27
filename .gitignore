@@ -1,0 +1,22 @@
+# Local Python environment
+mlm/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Generated outputs
+outputs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Secrets / local config
+.env
+.env.*
