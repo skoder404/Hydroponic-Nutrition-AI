@@ -12,11 +12,6 @@ __pycache__/
 
 # Generated outputs
 outputs/
-backend/hydroponic.db
-backend/uploads/
-frontend/node_modules/
-frontend/dist/
-frontend/.vite/
 
 # OS / editor
 .DS_Store

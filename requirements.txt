@@ -4,6 +4,3 @@ matplotlib
 seaborn
 joblib
 imbalanced-learn
-fastapi
-uvicorn
-python-multipart
