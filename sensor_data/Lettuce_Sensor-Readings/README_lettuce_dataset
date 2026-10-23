@@ -1,0 +1,143 @@
+# Hydroponic lettuce sensor dataset — built from HydroGrowNet EXP.1/2/3
+
+Source: HydroGrowNet of Batavia Dataset, Mendeley Data,
+DOI [10.17632/g6cm3v3wdp.5](https://doi.org/10.17632/g6cm3v3wdp.5).
+NFT hydroponic system, Batavia lettuce (*Lactuca sativa* L.),
+Arab Academy for Science, Technology and Maritime Transport.
+Three 30-day experiments, 10 March – 19 June 2024.
+
+## Files
+
+| File | Rows | What it is |
+|---|---|---|
+| `hydroponic_lettuce_full.csv` | 726 | Every water-quality reading, joined with air data and labelled |
+| `hydroponic_lettuce_train.csv` | 1680 | Training split, class-balanced by oversampling |
+| `hydroponic_lettuce_test.csv` | 162 | Test split, real distribution, never resampled |
+| `hydroponic_air_hourly.csv` | 2069 | The hourly air logger series on its own |
+| `build_dataset.py` | — | Rebuilds everything from the three workbooks |
+| `train_model.py` | — | Starter Random Forest for both tasks |
+
+## Where the numbers come from
+
+Each workbook has six sheets. Only two carry sensor data:
+
+- **`Water quality measurments Senso`** — despite the name, the pH / EC / TDS /
+  water-temperature columns are **headers with no data in all three workbooks**.
+  What is populated is an hourly air logger: RH %, air temperature, CO2 ppm.
+  641 + 718 + 712 = 2069 usable rows. These are the "600+ records" you saw.
+- **`Water quality parametersPortabl`** — handheld meter readings, twice a day
+  (10:00 and 14:00) for six replicate tanks (R1–R3 × T1/T2): pH, EC, TDS, water
+  temperature, plus Lux / RH / air temperature. 726 valid readings.
+
+The remaining sheets (`Seedlings measurements`, `Head diameter`,
+`Harvest measurements`, `Nutrients Water consumptions`, `Test Taste`) hold plant
+growth and tasting data, not sensor readings, so they are not used here.
+
+**726 is the true ceiling for rows containing pH and EC.** Joining hourly air to
+water readings would give ~12,000 rows, but each pH value would repeat 24 times
+per day. That inflates size without adding information and makes any model look
+better than it is, so it is not done.
+
+## Corrections applied — no sensor value was changed
+
+1. **Dates**: the portable sheet stores day and month swapped (`2024-10-03`
+   where the experiment window proves 10 March 2024). Swapped back.
+2. **Column order**: RH and air temperature sit in different positions in each
+   workbook, and EXP.2's 14:00 block has a header that contradicts its own
+   values. Reassigned by reading the header, then by value where the header is
+   wrong. Without this you get 60 °C "air temperature".
+3. **Sensor faults**: one pH of 2.0 and one EC of 26.7 are physically
+   impossible. Blanked to missing — never replaced with a different number.
+
+Everything else is exactly as recorded.
+
+## Columns
+
+| Column | Meaning |
+|---|---|
+| `experiment`, `date`, `day_index`, `slot`, `timestamp` | When |
+| `replicate`, `treatment` | Which tank (R1–R3 × T1/T2) |
+| `ph`, `ec`, `tds`, `water_temp` | Handheld meter, nutrient solution |
+| `humidity`, `air_temp`, `co2` | Hourly logger at the matching hour (690/726 exact matches; the meter's own reading fills the rest) |
+| `air_temp_day_mean/min/max`, `humidity_day_mean`, `co2_day_mean`, `hours_logged` | That day's hourly aggregates |
+| `ph_prev/_delta/_roll3`, `ec_*`, `water_temp_*` | Per-tank trend features |
+| `lux_meter` | Light at the reading time |
+| `label` | Condition now |
+| `label_next` | Condition at this tank's next reading |
+
+## Labels
+
+Rule-derived from action bands, not from observed plant health:
+
+| Variable | Band |
+|---|---|
+| pH | 5.5 – 7.0 |
+| EC | 1.2 – 2.5 mS/cm |
+| Air temperature | 18 – 30 °C |
+| Humidity | 50 – 80 % |
+| Water temperature | 18 – 26 °C |
+
+Inside every band → `Normal`. One variable out → that variable's class
+(`EC_High`, `pH_Low`, `WaterTemp_High`, …). Two or more → `Multiple_Stress`.
+
+Bands are wider than textbook optima on purpose. With strict lettuce ranges
+(pH 5.5–6.5, water temp 18–22 °C), 78 % of rows came out `Multiple_Stress`
+because the crop was grown in a warm climate. Cite whichever ranges you adopt.
+
+Full-dataset distribution: Normal 327, Multiple_Stress 135, Humidity_Low 87,
+WaterTemp_High 75, EC_High 58, pH_High 25, pH_Low 10, WaterTemp_Low 8,
+EC_Low 1. The last two classes are dropped from the splits — 8 and 1 rows are
+too few to learn or to score.
+
+## Splits
+
+**Every 4th calendar day of each experiment is held out as test.** No day
+appears on both sides, so a tank's own reading cannot sit in train and test at
+once.
+
+Two other splits were tried and rejected:
+- **Random row split** — six tanks share the same day and air readings, so rows
+  leak across the split and accuracy is meaningless.
+- **Whole-experiment holdout** (train EXP.1+2, test EXP.3) — each experiment ran
+  different conditions, so EXP.3 contains classes EXP.1 never produced. The test
+  set ended up with only 3 of 7 classes.
+
+**Balancing is applied to the training split only** (oversampling to 240 rows
+per class). The test set keeps its real distribution. Balancing the whole
+dataset before splitting would put copies of the same row on both sides.
+
+## Measured performance
+
+Final model: Random Forest (200 trees, `max_depth=8`, `min_samples_leaf=1`),
+5 input features (`ph, ec, water_temp, humidity, air_temp`), target `label`.
+
+| Evaluation | Result |
+|---|---|
+| Single held-out split (every 4th day, 162 rows) | accuracy 0.994, macro-F1 0.986 |
+| 5-fold cross-validation grouped by date (all real rows) | macro-F1 **0.837 +/- 0.075** |
+
+Report the grouped cross-validation figure as the expected performance. The
+single-split score is one favourable split and should be labelled as such.
+
+## What to say about these numbers
+
+The label is a deterministic function of the features, so the model relearns the
+thresholds that produced the labels (the printed decision tree splits on
+pH 5.45 / 7.05, EC 2.50 and so on). High single-split accuracy reflects that, not
+independently validated plant health.
+
+Fold scores range from 0.756 to 0.951 because pH_Low (10 rows) and pH_High
+(25 rows) are rare. Tuning, balanced oversampling, SMOTE (failed: too few real
+rows per fold) and merging the two pH classes (no improvement) were all tried.
+
+## Honest limitations for your report
+
+- Labels come from published reference ranges, not from observed plant health.
+  No agronomist confirmed that a row labelled `EC_High` had an unhealthy plant.
+- 726 real readings is small. The balanced training file is 1680 rows, but those
+  are oversampled copies, not new measurements.
+- Only 726 rows have pH and EC. The 2069 hourly rows have no water chemistry.
+- The image dataset (Kaggle Lettuce NPK) is a separate collection with no
+  timestamp link to these sensors. The two models are combined by rules, not by
+  learned fusion, and no such link is claimed.
+- Crop is lettuce; the target deployment is tomato.
