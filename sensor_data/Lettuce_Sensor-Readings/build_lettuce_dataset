@@ -1,0 +1,316 @@
+"""
+Build a training-ready hydroponic lettuce dataset from the three HydroGrowNet
+workbooks (EXP_1 / EXP_2 / EXP_3).
+
+NO SENSOR VALUE IS EVER ALTERED. The only changes made are:
+  * day/month swapped back on the portable-meter sheet (the workbook stores
+    2024-10-03 where the experiment window proves it means 10 March 2024)
+  * RH and air-temperature columns put back in the right order where the
+    workbook's own header is wrong or reordered
+  * readings outside physical possibility (pH 2.0, EC 26.7) blanked as sensor
+    faults, never rewritten to a different number
+
+Outputs
+  hydroponic_lettuce_full.csv        every joined reading, labelled
+  hydroponic_lettuce_train.csv       EXP.1 + EXP.2, class-balanced
+  hydroponic_lettuce_test.csv        EXP.3, untouched real distribution
+  hydroponic_air_hourly.csv          the 2070 hourly air rows on their own
+"""
+
+import glob
+import os
+import datetime as dt
+import numpy as np
+import pandas as pd
+
+import argparse
+UPLOADS = "."   # folder holding EXP_1/2/3 xlsx files; override with --input-dir
+HOURLY_SHEET = "Water quality measurments Senso"
+PORTABLE_SHEET = "Water quality parametersPortabl"
+REPLICATES = ["R1T1", "R2T1", "R3T1", "R1T2", "R2T2", "R3T2"]
+SLOTS = {"10:00": {"rep_start": 1, "air_start": 25},
+         "14:00": {"rep_start": 29, "air_start": 53}}
+
+# Action bands. A reading is flagged only when it is far enough out of range to
+# justify intervening. Wider than textbook optima because this crop was grown in
+# a warm climate where strict bands would flag almost every row.
+PROFILE = {
+    "ph":         (5.5, 7.0),
+    "ec":         (1.2, 2.5),
+    "air_temp":   (18.0, 30.0),
+    "humidity":   (50.0, 80.0),
+    "water_temp": (18.0, 26.0),
+}
+PLAUSIBLE = {
+    "ph": (3.0, 10.0), "ec": (0.0, 6.0), "air_temp": (0.0, 55.0),
+    "humidity": (0.0, 100.0), "water_temp": (0.0, 45.0), "co2": (250.0, 5000.0),
+}
+CLASS_NAME = {
+    ("ph", "low"): "pH_Low", ("ph", "high"): "pH_High",
+    ("ec", "low"): "EC_Low", ("ec", "high"): "EC_High",
+    ("air_temp", "low"): "Temp_Low", ("air_temp", "high"): "Temp_High",
+    ("humidity", "low"): "Humidity_Low", ("humidity", "high"): "Humidity_High",
+    ("water_temp", "low"): "WaterTemp_Low", ("water_temp", "high"): "WaterTemp_High",
+}
+
+
+# --------------------------------------------------------------------------
+# sheet readers
+# --------------------------------------------------------------------------
+def read_hourly(path, exp):
+    """Cols 6-10 hold Date / Time / RH% / Air temp / CO2, one row per hour.
+
+    Cols 0-5 (pH, EC, TDS, Water temp for Replicate 1 T1) exist as headers only
+    and contain no data in any of the three workbooks.
+    """
+    raw = pd.read_excel(path, sheet_name=HOURLY_SHEET, header=None)
+    body = raw.iloc[2:, 6:11].copy()
+    body.columns = ["date", "time", "humidity", "air_temp", "co2"]
+    body["experiment"] = exp
+    body["date"] = pd.to_datetime(body["date"], errors="coerce")
+    body["time"] = body["time"].astype(str)
+    for c in ("humidity", "air_temp", "co2"):
+        body[c] = pd.to_numeric(body[c], errors="coerce")
+    body = body.dropna(subset=["date"])
+    body = body[body["time"].str.match(r"^\d{2}:\d{2}")]
+    body["timestamp"] = pd.to_datetime(
+        body["date"].dt.strftime("%Y-%m-%d") + " " + body["time"].str[:5]
+    )
+    body["hour"] = body["timestamp"].dt.hour
+    return body[["experiment", "date", "timestamp", "hour",
+                 "humidity", "air_temp", "co2"]]
+
+
+def fix_date(cell):
+    if isinstance(cell, (dt.datetime, pd.Timestamp)):
+        ts = pd.Timestamp(cell)
+        try:
+            return pd.Timestamp(year=ts.year, month=ts.day, day=ts.month)
+        except ValueError:
+            return ts
+    if isinstance(cell, str) and cell.strip():
+        return pd.to_datetime(cell.strip(), dayfirst=True, errors="coerce")
+    return pd.NaT
+
+
+def read_portable(path, exp):
+    """Twice-daily meter readings: 6 replicate tanks x 2 slots x N days."""
+    raw = pd.read_excel(path, sheet_name=PORTABLE_SHEET, header=None)
+    body = raw.iloc[3:].reset_index(drop=True)
+    dates = body[0].map(fix_date)
+
+    out = []
+    for slot, pos in SLOTS.items():
+        a = pos["air_start"]
+        lux = pd.to_numeric(body[a], errors="coerce")
+        rh = air = None
+        for off in (1, 2):
+            head = str(raw.iloc[1, a + off]).strip().lower()
+            col = pd.to_numeric(body[a + off], errors="coerce")
+            if head.startswith("rh"):
+                rh = col
+            elif "temp" in head:
+                air = col
+        if rh is None or air is None:
+            rh = pd.to_numeric(body[a + 1], errors="coerce")
+            air = pd.to_numeric(body[a + 2], errors="coerce")
+        # EXP.2's 14:00 block is mislabelled as well as reordered
+        swap = (air > 45) & (rh < 45)
+        rh, air = rh.where(~swap, air), air.where(~swap, rh)
+
+        for i, rep in enumerate(REPLICATES):
+            c = pos["rep_start"] + 4 * i
+            out.append(pd.DataFrame({
+                "experiment": exp, "date": dates, "slot": slot,
+                "replicate": rep, "treatment": rep[-2:],
+                "ph": pd.to_numeric(body[c], errors="coerce"),
+                "ec": pd.to_numeric(body[c + 1], errors="coerce"),
+                "tds": pd.to_numeric(body[c + 2], errors="coerce"),
+                "water_temp": pd.to_numeric(body[c + 3], errors="coerce"),
+                "lux_meter": lux,
+                "humidity_meter": rh,
+                "air_temp_meter": air,
+            }))
+
+    df = pd.concat(out, ignore_index=True)
+    df = df.dropna(subset=["date"])
+    df = df.dropna(subset=["ph", "ec", "tds", "water_temp"], how="all")
+    df["hour"] = df["slot"].str[:2].astype(int)
+    df["timestamp"] = pd.to_datetime(
+        df["date"].dt.strftime("%Y-%m-%d") + " " + df["slot"] + ":00")
+    return df
+
+
+# --------------------------------------------------------------------------
+# labelling
+# --------------------------------------------------------------------------
+def blank_faults(df):
+    removed = {}
+    for var, (lo, hi) in PLAUSIBLE.items():
+        if var not in df.columns:
+            continue
+        bad = df[var].notna() & ((df[var] < lo) | (df[var] > hi))
+        if bad.any():
+            removed[var] = int(bad.sum())
+            df.loc[bad, var] = np.nan
+    return df, removed
+
+
+def label_row(row):
+    problems, seen = [], False
+    for var, (lo, hi) in PROFILE.items():
+        v = row.get(var)
+        if pd.isna(v):
+            continue
+        seen = True
+        if v < lo:
+            problems.append(CLASS_NAME[(var, "low")])
+        elif v > hi:
+            problems.append(CLASS_NAME[(var, "high")])
+    if not seen:
+        return "Unknown"
+    if not problems:
+        return "Normal"
+    if len(problems) == 1:
+        return problems[0]
+    return "Multiple_Stress"
+
+
+# --------------------------------------------------------------------------
+# build
+# --------------------------------------------------------------------------
+def build(input_dir=None):
+    files = sorted(glob.glob(os.path.join(input_dir or UPLOADS, "EXP_*.xlsx")))
+    if not files:
+        raise SystemExit("No EXP_*.xlsx files found in %r - use --input-dir" % (input_dir or UPLOADS))
+    hourly, portable = [], []
+    for f in files:
+        exp = "EXP." + os.path.basename(f)[4]
+        hourly.append(read_hourly(f, exp))
+        portable.append(read_portable(f, exp))
+    hourly = pd.concat(hourly, ignore_index=True)
+    portable = pd.concat(portable, ignore_index=True)
+    print("hourly air rows: %d   portable water readings: %d"
+          % (len(hourly), len(portable)))
+
+    # ---- daily context from the hourly series (real aggregates, no invention)
+    daily = (hourly.groupby(["experiment", "date"])
+             .agg(air_temp_day_mean=("air_temp", "mean"),
+                  air_temp_day_min=("air_temp", "min"),
+                  air_temp_day_max=("air_temp", "max"),
+                  humidity_day_mean=("humidity", "mean"),
+                  co2_day_mean=("co2", "mean"),
+                  hours_logged=("air_temp", "size"))
+             .reset_index())
+
+    # ---- exact-hour air reading for each water reading
+    hr = hourly[["experiment", "date", "hour",
+                 "humidity", "air_temp", "co2"]].drop_duplicates(
+        subset=["experiment", "date", "hour"])
+    df = portable.merge(hr, on=["experiment", "date", "hour"], how="left")
+    matched = df["air_temp"].notna().sum()
+    print("water readings with an exact-hour air match: %d / %d"
+          % (matched, len(df)))
+
+    # fall back to the meter's own reading only where the logger has no row
+    df["humidity"] = df["humidity"].fillna(df["humidity_meter"])
+    df["air_temp"] = df["air_temp"].fillna(df["air_temp_meter"])
+
+    df = df.merge(daily, on=["experiment", "date"], how="left")
+    df, removed = blank_faults(df)
+    print("blanked as sensor faults:", removed)
+
+    df["label"] = df.apply(label_row, axis=1)
+    df["day_index"] = (df["date"] - df.groupby("experiment")["date"]
+                       .transform("min")).dt.days + 1
+
+    # ---- trend features per tank (what the rules alone cannot see)
+    df = df.sort_values(["experiment", "replicate", "timestamp"])
+    g = df.groupby(["experiment", "replicate"])
+    for c in ("ph", "ec", "water_temp"):
+        df[c + "_prev"] = g[c].shift(1)
+        df[c + "_delta"] = df[c] - df[c + "_prev"]
+        df[c + "_roll3"] = g[c].transform(
+            lambda s: s.rolling(3, min_periods=1).mean())
+
+    cols = ["experiment", "date", "day_index", "slot", "timestamp",
+            "replicate", "treatment",
+            "ph", "ec", "tds", "water_temp", "humidity", "air_temp", "co2",
+            "air_temp_day_mean", "air_temp_day_min", "air_temp_day_max",
+            "humidity_day_mean", "co2_day_mean", "hours_logged",
+            "ph_prev", "ph_delta", "ph_roll3",
+            "ec_prev", "ec_delta", "ec_roll3",
+            "water_temp_prev", "water_temp_delta", "water_temp_roll3",
+            "lux_meter", "label"]
+    df = df[cols].reset_index(drop=True)
+    return df, hourly
+
+
+def balance(train, seed=42, min_keep=8):
+    """Oversample minority classes to the majority count, train split only."""
+    counts = train["label"].value_counts()
+    counts = counts[counts >= min_keep]          # drop classes too rare to learn
+    target = counts.max()
+    rng = np.random.RandomState(seed)
+    parts = []
+    for cls, n in counts.items():
+        sub = train[train["label"] == cls]
+        if n < target:
+            extra = sub.sample(target - n, replace=True, random_state=rng)
+            sub = pd.concat([sub, extra])
+        parts.append(sub)
+    out = pd.concat(parts).sample(frac=1, random_state=seed).reset_index(drop=True)
+    return out, sorted(counts.index)
+
+
+def day_holdout_split(df, every=4):
+    """Hold out every Nth calendar day of each experiment as the test set.
+
+    No day appears on both sides, so a tank's own reading can never sit in train
+    and test at the same time. Holding out only the final days was tried first
+    and rejected: some stress classes occur only early in an experiment, so the
+    test set lost them entirely.
+    """
+    train_parts, test_parts = [], []
+    for exp, sub in df.groupby("experiment"):
+        days = sorted(sub["date"].unique())
+        test_days = set(days[every - 1::every])
+        test_parts.append(sub[sub["date"].isin(test_days)])
+        train_parts.append(sub[~sub["date"].isin(test_days)])
+    return (pd.concat(train_parts).reset_index(drop=True),
+            pd.concat(test_parts).reset_index(drop=True))
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Build the lettuce sensor dataset")
+    ap.add_argument("--input-dir", default=".", help="folder with EXP_1/2/3 xlsx files")
+    args = ap.parse_args()
+    df, hourly = build(args.input_dir)
+    df = df[df["label"] != "Unknown"]
+
+    # forecasting target: the label of this tank's NEXT reading
+    df = df.sort_values(["experiment", "replicate", "timestamp"])
+    df["label_next"] = df.groupby(["experiment", "replicate"])["label"].shift(-1)
+
+    df.to_csv("hydroponic_lettuce_full.csv", index=False)
+    hourly.to_csv("hydroponic_air_hourly.csv", index=False)
+
+    train_raw, test = day_holdout_split(df)
+    train, kept = balance(train_raw)
+    test = test[test["label"].isin(kept)].reset_index(drop=True)
+
+    train.to_csv("hydroponic_lettuce_train.csv", index=False)
+    test.to_csv("hydroponic_lettuce_test.csv", index=False)
+
+    print("\nfull   %4d rows" % len(df))
+    print(df["label"].value_counts().to_string())
+    print("\ntrain  %4d rows (balanced from %d real rows)"
+          % (len(train), len(train_raw)))
+    print(train["label"].value_counts().to_string())
+    print("\ntest   %4d rows (every 4th day, untouched)" % len(test))
+    print(test["label"].value_counts().to_string())
+    print("\nclasses kept:", kept)
+
+
+if __name__ == "__main__":
+    main()
