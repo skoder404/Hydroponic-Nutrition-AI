@@ -54,9 +54,9 @@
 **Dependencies:** None  
 **Acceptance Criteria:**
 
-- [ ] Every data folder has counts, formats and sizes recorded
-- [ ] Every file in `sensor_data/` is listed with columns and row count and mapped to the script that produced it
-- [ ] Nothing was modified, moved, or renamed
+- [x] Every data folder has counts, formats and sizes recorded
+- [x] Every file in `sensor_data/` is listed with columns and row count and mapped to the script that produced it
+- [x] Nothing was modified, moved, or renamed
 
 **Estimated Effort:** 45 min  
 **Assigned To:** Full-stack  
