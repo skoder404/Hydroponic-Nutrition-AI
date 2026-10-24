@@ -4,7 +4,7 @@ A crop-condition **decision-support** web application for **lettuce, spinach, an
 
 > **Project status:** 🚧 Planning complete · implementation in progress. Nothing in this README claims a feature works until the matching task in [`todo.md`](./todo.md) is checked off **and** backed by tests/artifacts.
 >
-> **Team:** Yashwant · Sushil Kumar M A — a two-person project where **both members are expected to learn every ML concept equally** (see [How we work](#-how-we-work-equal-learning)).
+> **Team:** Yashwant Vadhan M · Sushil Kumar M A — a two-person project where **both members are expected to learn every ML concept equally** (see [How we work](#-how-we-work-equal-learning)).
 
 ---
 
