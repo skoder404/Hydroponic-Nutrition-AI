@@ -81,7 +81,7 @@ Details: [`TECH_RULES.md`](./TECH_RULES.md).
 | Tomato | Image | Mendeley Data `zfv4jj7855` (v1); Kaggle *Tomato Disease (Multiple Sources)* (11 class folders on disk, incl. `Tomato_Powdery_Mildew`) |
 | Tomato | Sensor | Kaggle — *Autonomous Tomato Cultivation Dataset in Kolar* (transformed; see limitations) |
 
-> Raw data lives in `image_data/` and `sensor_data/` (git-ignored, read-only); generated splits/features go to `processed_data/`. Datasets are **not** redistributed in this repository. Licences and exact versions must be recorded in `docs/datasets/` before any redistribution. Raw data is kept read-only; see [`TECH_RULES.md`](./TECH_RULES.md#folder-structure).
+> Raw data lives in `image_data/` and `sensor_data/`; generated splits/features go to `processed_data/`. Licences and exact versions must be recorded in `docs/datasets/` before any redistribution. Raw data is kept read-only; see [`TECH_RULES.md`](./TECH_RULES.md#folder-structure).
 
 ---
 
@@ -91,7 +91,7 @@ Details: [`TECH_RULES.md`](./TECH_RULES.md).
 
 ```bash
 # 1. Clone
-git clone <REPO_URL> hydroponic-nutrition-ai && cd hydroponic-nutrition-ai
+git clone https://github.com/skoder404/Hydroponic-Nutrition-AI hydroponic-nutrition-ai && cd hydroponic-nutrition-ai
 
 # 2. Configure environment (placeholders only in .env.example)
 cp .env.example .env        # then fill in values locally — never commit .env
@@ -140,9 +140,6 @@ No login in v1 · secrets only via `.env` · uploads validated (type, size, deco
 
 ---
 
-## 📄 Licence
-
-`⚠️ UNCLEAR` — not yet decided. Choose a licence only after confirming dataset/model-weight terms and any course/institution requirements.
 
 ## 🙏 Acknowledgements
 
