@@ -271,9 +271,9 @@
 **Dependencies:** T1-002  
 **Acceptance Criteria:**
 
-- [ ] All §9.1 fields present
-- [ ] Licence/redistribution field present
-- [ ] Column-type table present
+- [x] All §9.1 fields present
+- [x] Licence/redistribution field present
+- [x] Column-type table present
 
 **Estimated Effort:** 15 min  
 **Assigned To:** Full-stack  
