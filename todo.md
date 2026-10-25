@@ -186,9 +186,9 @@
 **Dependencies:** T1-004  
 **Acceptance Criteria:**
 
-- [ ] `docker compose up db` reports healthy
-- [ ] Data persists across restart
-- [ ] No password is committed
+- [x] `docker compose up db` reports healthy
+- [x] Data persists across restart
+- [x] No password is committed
 
 **Estimated Effort:** 30 min  
 **Assigned To:** DevOps  
