@@ -160,9 +160,9 @@
 **Dependencies:** T1-004, T1-005  
 **Acceptance Criteria:**
 
-- [ ] `GET /api/v1/health` returns 200 with documented fields
-- [ ] Every log line is JSON containing `request_id`
-- [ ] No secret appears in logs
+- [x] `GET /api/v1/health` returns 200 with documented fields
+- [x] Every log line is JSON containing `request_id`
+- [x] No secret appears in logs
 
 **Estimated Effort:** 45 min  
 **Assigned To:** Backend  
