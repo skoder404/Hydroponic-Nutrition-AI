@@ -120,9 +120,9 @@
 **Dependencies:** T1-005  
 **Acceptance Criteria:**
 
-- [ ] Output states the device actually used and never claims GPU when the tensor ran on CPU
-- [ ] `FORCE_CPU=1` forces the CPU path
-- [ ] Both teammates' outputs are saved in the ADR
+- [x] Output states the device actually used and never claims GPU when the tensor ran on CPU
+- [x] `FORCE_CPU=1` forces the CPU path
+- [x] Both teammates' outputs are saved in the ADR
 
 **Estimated Effort:** 30 min  
 **Assigned To:** ML  

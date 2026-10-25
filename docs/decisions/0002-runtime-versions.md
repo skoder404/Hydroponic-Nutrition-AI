@@ -94,3 +94,74 @@ Dependencies are partitioned into distinct, modular files located under `require
 - For CPU-only testing or campus machines: `pip install -r requirements/ml-cpu.txt`.
 - To install full development and backend environment: `pip install -r requirements/dev.txt`.
 - Never install unpinned dependencies directly into the repository environments; always update `.in` files and recompile via `pip-compile`.
+
+---
+
+## 8. Appendices: Teammate Environment Diagnostic Reports (T1-006)
+
+Diagnostic outputs captured using `python scripts/check_env.py` and `FORCE_CPU=1 python scripts/check_env.py`:
+
+### Appendix A: Sushil's Environment Diagnostic Report
+
+- **Teammate:** Sushil Kumar M A (HP Victus 16)
+- **Operating System:** Windows 11 64-bit (AMD64)
+- **Selected Acceleration Device:** `cuda:0` (CUDA GPU detected and active)
+- **GPU Hardware Name:** NVIDIA GeForce RTX 3050 6GB Laptop GPU
+- **VRAM Status:** 5154.0 MiB free / 6143.5 MiB total (6.00 GiB)
+
+| Component / Library | Version / Status | Notes |
+|---|---|---|
+| **PyTorch (`torch`)** | `2.7.1+cu118` | Core tensor & neural network runtime |
+| **torchvision** | `0.22.1+cu118` | Vision models & augmentations |
+| **scikit-learn** | `1.9.1` | Classical classifiers, scalers, and metrics |
+| **scikit-image** | `0.25.0` | GLCM texture feature extraction |
+| **OpenCV (`cv2`)** | `4.13.0` | Color conversions & leaf contour filters |
+| **CUDA Available (`torch.cuda.is_available()`)** | `True` | Dedicated RTX 3050 mobile GPU active |
+| **Tensor-on-Device Test** | `PASSED` | `[1, 2, 3] + [4, 5, 6] -> sum=21.0 on cuda:0` |
+| **FORCE_CPU Override Test** | `PASSED` | With `FORCE_CPU=1`: `Selected Device: cpu`, `sum=21.0 on cpu` |
+
+```text
+=== Environment and Hardware Report (Sushil) ===
+OS                    : Windows 11 (10.0.26300)
+Architecture          : AMD64
+Python Version        : 3.13.5
+Library Versions      : torch 2.7.1+cu118, torchvision 0.22.1+cu118, scikit-learn 1.9.1, scikit-image 0.25.0, cv2 4.13.0
+CUDA Available        : True
+Device Name           : NVIDIA GeForce RTX 3050 6GB Laptop GPU
+VRAM                  : 5154.0 MiB free / 6143.5 MiB total (6.00 GiB)
+Tensor Test           : [1, 2, 3] + [4, 5, 6] -> sum=21.0 on cuda:0 (PASSED)
+FORCE_CPU Test        : Tensor executed on cpu: sum=21.0 on cpu (PASSED)
+```
+
+### Appendix B: Yashwant's Environment Diagnostic Report
+
+- **Teammate:** Yashwant Vadhan M (HP Victus 16)
+- **Operating System:** Windows 11 64-bit (AMD64)
+- **Selected Acceleration Device:** `cuda:0` (CUDA GPU detected and active)
+- **GPU Hardware Name:** NVIDIA GeForce RTX 3050 6GB Laptop GPU
+- **VRAM Status:** 5210.0 MiB free / 6144.0 MiB total (6.00 GiB)
+
+| Component / Library | Version / Status | Notes |
+|---|---|---|
+| **PyTorch (`torch`)** | `2.5.1+cu124` | Pinned PyTorch LTS wheel |
+| **torchvision** | `0.20.1+cu124` | Pinned torchvision wheel |
+| **scikit-learn** | `1.6.1` | Pinned scikit-learn release |
+| **scikit-image** | `0.25.2` | Pinned scikit-image release |
+| **OpenCV (`cv2`)** | `4.11.0.86` | Headless OpenCV build |
+| **CUDA Available (`torch.cuda.is_available()`)** | `True` | Dedicated RTX 3050 mobile GPU active |
+| **Tensor-on-Device Test** | `PASSED` | `[1, 2, 3] + [4, 5, 6] -> sum=21.0 on cuda:0` |
+| **FORCE_CPU Override Test** | `PASSED` | With `FORCE_CPU=1`: `Selected Device: cpu`, `sum=21.0 on cpu` |
+
+```text
+=== Environment and Hardware Report (Yashwant) ===
+OS                    : Windows 11 (10.0.26100)
+Architecture          : AMD64
+Python Version        : 3.11.9
+Library Versions      : torch 2.5.1+cu124, torchvision 0.20.1+cu124, scikit-learn 1.6.1, scikit-image 0.25.2, cv2 4.11.0.86
+CUDA Available        : True
+Device Name           : NVIDIA GeForce RTX 3050 6GB Laptop GPU
+VRAM                  : 5210.0 MiB free / 6144.0 MiB total (6.00 GiB)
+Tensor Test           : [1, 2, 3] + [4, 5, 6] -> sum=21.0 on cuda:0 (PASSED)
+FORCE_CPU Test        : Tensor executed on cpu: sum=21.0 on cpu (PASSED)
+```
+
