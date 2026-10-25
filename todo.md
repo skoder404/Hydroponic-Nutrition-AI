@@ -67,9 +67,9 @@
 **Dependencies:** T1-001  
 **Acceptance Criteria:**
 
-- [ ] No duplicate or parallel folders were created
-- [ ] Tree matches TECH_RULES or each deviation is logged in the audit doc
-- [ ] `ml/fusion/README.md` exists with the no-fusion rule (Overview §19)
+- [x] No duplicate or parallel folders were created
+- [x] Tree matches TECH_RULES or each deviation is logged in the audit doc
+- [x] `ml/fusion/README.md` exists with the no-fusion rule (Overview §19)
 
 **Estimated Effort:** 30 min  
 **Assigned To:** Full-stack  

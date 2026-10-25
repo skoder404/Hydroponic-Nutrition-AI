@@ -147,3 +147,25 @@ To respect the task requirement ("Nothing was modified, moved, or renamed") and 
 - `image_data/Lettuce_Images/manifest.csv` (943 rows, 10 columns: `new_filename`, `class`, `original_filename`, `original_folder`, `was_augmented`, `width`, `height`, `mode_before_conversion`, `sha256`, `status`).
 - `image_data/Lettuce_Images/class_counts.csv` (4 rows, 3 columns: `class`, `final_count`, `from_kept_orphans`).
 - These CSV files document original filenames, image dimensions, SHA-256 hashes, and augmentation tracking for the 580 physical lettuce images present in the subdirectories.
+
+---
+
+## 4. Monorepo Layout & Deviations Log (T1-002)
+
+The monorepo directory hierarchy was adapted from the proposed layout in `docs/TECH_RULES.md`:
+- `frontend/`
+- `backend/app/{api,schemas,services,database,core}`
+- `ml/{image_models,sensor_models,segmentation,features,fusion,recommendations,evaluation,registry}`
+- `processed_data/{splits,features,sensor,manifests}`
+- `models/{image,sensor,manifests}`
+- `reports/`
+- `notebooks/`
+- `scripts/`
+- `tests/{unit,integration,contracts,data}`
+- `docs/{learning,datasets,decisions}`
+
+### Deviations Logged
+1. **Documentation Placement:** `docs/TECH_RULES.md` depicts `PRD.md`, `DESIGN.md`, and `TECH_RULES.md` at root. In this repository, they were already established under `docs/` (`docs/PRD.md`, `docs/DESIGN.md`, `docs/TECH_RULES.md`, `docs/ROADMAP.md`). In accordance with the rule "Never move or duplicate an existing equivalent folder", they are retained in `docs/` without creating duplicate root copies.
+2. **Immutable Raw Data:** `image_data/` and `sensor_data/` remain at the root as audited; no duplicate or parallel data directories were introduced.
+3. **Fusion Policy:** `ml/fusion/README.md` is committed as a permanent rule file forbidding model training on unpaired image and sensor observations per Overview §19 and TECH_RULES §15.
+
