@@ -579,9 +579,9 @@
 **Dependencies:** T1-002  
 **Acceptance Criteria:**
 
-- [ ] ADR lists withheld capabilities
-- [ ] ADR states the trigger for adding auth
-- [ ] README security note links to it
+- [x] ADR lists withheld capabilities
+- [x] ADR states the trigger for adding auth
+- [x] README security note links to it
 
 **Estimated Effort:** 15 min  
 **Assigned To:** Backend  

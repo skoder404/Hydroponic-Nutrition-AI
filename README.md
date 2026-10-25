@@ -136,7 +136,7 @@ Rule-generated labels · oversampled/artificial class balance · mixed real/synt
 
 ## 🔐 Security notes
 
-No login in v1 · secrets only via `.env` · uploads validated (type, size, decodability) · Gemini output treated as untrusted · model loading limited to configured paths. See [`TECH_RULES.md`](./TECH_RULES.md#security-rules).
+No login in v1 (see [ADR 0005: No Auth](./docs/decisions/0005-no-auth.md)) · secrets only via `.env` · uploads validated (type, size, decodability) · Gemini output treated as untrusted · model loading limited to configured paths. See [`TECH_RULES.md`](./docs/TECH_RULES.md#security-rules).
 
 ---
 
