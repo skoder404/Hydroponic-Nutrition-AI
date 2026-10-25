@@ -323,9 +323,9 @@
 **Dependencies:** T1-001, T2-002  
 **Acceptance Criteria:**
 
-- [ ] Every count above is confirmed or listed as a discrepancy
-- [ ] The test rows' (experiment, date) pairs follow the every-4th-day rule and never appear in train
-- [ ] The number of duplicated rows created by oversampling is quantified
+- [x] Every count above is confirmed or listed as a discrepancy
+- [x] The test rows' (experiment, date) pairs follow the every-4th-day rule and never appear in train
+- [x] The number of duplicated rows created by oversampling is quantified
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

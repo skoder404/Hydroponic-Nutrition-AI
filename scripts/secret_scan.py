@@ -46,7 +46,9 @@ SKIP_PATHS = {
 
 def is_skipped(path: Path) -> bool:
     name = path.name
-    if name in {".env", ".env.local"} or name.endswith((".log", ".pt")):
+    if name in {".env", ".env.local"} or name.endswith((
+        ".log", ".pt", ".pth", ".bin", ".npy", ".npz", ".jpg", ".jpeg", ".png", ".webp", ".zip", ".tar", ".gz", ".pdf"
+    )):
         return True
     parts = path.parts
     return any(p in {".git", ".next", "node_modules", ".venv", "venv", "__pycache__"} for p in parts)
