@@ -429,10 +429,10 @@
 **Dependencies:** T1-001, T2-002, T2-003, T2-004  
 **Acceptance Criteria:**
 
-- [ ] A JSON report exists for each crop
-- [ ] Corrupt files are listed, not deleted
-- [ ] Single-leaf vs whole-plant status per crop is recorded from the sample
-- [ ] Class labels are the exact folder names and every difference from Overview §6 is listed (e.g. `Tomato_Powdery_Mildew`)
+- [x] A JSON report exists for each crop
+- [x] Corrupt files are listed, not deleted
+- [x] Single-leaf vs whole-plant status per crop is recorded from the sample
+- [x] Class labels are the exact folder names and every difference from Overview §6 is listed (e.g. `Tomato_Powdery_Mildew`)
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

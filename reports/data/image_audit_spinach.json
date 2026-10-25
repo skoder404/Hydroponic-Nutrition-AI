@@ -1,0 +1,228 @@
+{
+  "crop": "spinach",
+  "source_folder": "image_data/Spinach_Images",
+  "total_images": 18302,
+  "class_counts": {
+    "Spinach_Healthy": 7218,
+    "Spinach_Non fresh": 616,
+    "Spinach_anthracnose": 783,
+    "Spinach_bacterial spot": 4565,
+    "Spinach_downy mildew": 1767,
+    "Spinach_pest damage": 3353
+  },
+  "corrupt_files": [],
+  "corrupt_count": 0,
+  "dimensions_distribution": {
+    "900x1200": 10824,
+    "675x1200": 3485,
+    "256x256": 1011,
+    "300x400": 579,
+    "433x577": 551,
+    "1200x900": 410,
+    "3000x4000": 256,
+    "2296x4080": 224,
+    "3060x4080": 205,
+    "577x433": 46,
+    "325x433": 37,
+    "5712x4284": 21,
+    "8064x6048": 16,
+    "420x595": 16,
+    "442x564": 16,
+    "445x560": 13,
+    "456x548": 13,
+    "3213x5712": 12,
+    "445x561": 12,
+    "413x604": 11,
+    "417x599": 11,
+    "429x582": 9,
+    "1533x2044": 9,
+    "375x666": 9,
+    "451x553": 8,
+    "411x607": 8,
+    "432x577": 8,
+    "269x324": 8,
+    "446x559": 8,
+    "450x554": 8,
+    "456x547": 8,
+    "415x601": 8,
+    "406x614": 8,
+    "425x586": 8,
+    "455x548": 8,
+    "393x635": 8,
+    "437x570": 8,
+    "430x581": 8,
+    "394x633": 8,
+    "448x557": 8,
+    "314x446": 8,
+    "453x550": 8,
+    "447x559": 8,
+    "351x711": 8,
+    "384x650": 8,
+    "400x488": 8,
+    "449x556": 8,
+    "411x606": 8,
+    "934x1200": 8,
+    "675x900": 8,
+    "428x583": 7,
+    "425x587": 7,
+    "1069x1200": 7,
+    "487x512": 7,
+    "414x603": 7,
+    "346x433": 7,
+    "1200x993": 7,
+    "1029x1200": 7,
+    "444x562": 7,
+    "1160x1200": 7,
+    "946x1200": 7,
+    "403x619": 7,
+    "776x1200": 7,
+    "422x591": 7,
+    "429x581": 7,
+    "460x542": 6,
+    "436x572": 6,
+    "405x615": 6,
+    "438x570": 6,
+    "488x512": 6,
+    "2268x4032": 6,
+    "886x1200": 6,
+    "439x568": 6,
+    "568x439": 6,
+    "430x580": 6,
+    "1161x1200": 6,
+    "1200x977": 6,
+    "931x1200": 6,
+    "468x533": 6,
+    "1094x1200": 6,
+    "390x640": 6,
+    "400x624": 5,
+    "415x602": 5,
+    "1087x1200": 5,
+    "246x328": 5,
+    "988x1200": 5,
+    "446x560": 5,
+    "398x626": 5,
+    "434x574": 5,
+    "454x550": 5,
+    "888x1184": 4,
+    "423x589": 4,
+    "437x572": 4,
+    "326x435": 4,
+    "281x374": 4,
+    "424x588": 4,
+    "388x523": 4,
+    "383x652": 3,
+    "410x608": 3,
+    "855x1200": 3,
+    "369x530": 3,
+    "409x611": 3,
+    "438x569": 3,
+    "408x612": 2,
+    "417x598": 2,
+    "482x518": 2
+  },
+  "formats_distribution": {
+    "JPEG": 17291,
+    "PNG": 1011
+  },
+  "sample_check": {
+    "target_sample_per_class": 30,
+    "overall_presentation_status": "single-leaf",
+    "status_breakdown": {
+      "single-leaf": 180
+    },
+    "per_class_sample": {
+      "Spinach_Healthy": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Healthy/_0_3098710.png",
+          "image_data/Spinach_Images/Spinach_Healthy/_4_1004625.png",
+          "image_data/Spinach_Images/Spinach_Healthy/Healthy-Leaf(Malabar_Spinach)_1076.jpeg",
+          "image_data/Spinach_Images/Spinach_Healthy/Healthy-Leaf(Malabar_Spinach)_1292.jpeg",
+          "image_data/Spinach_Images/Spinach_Healthy/Healthy-Leaf(Malabar_Spinach)_1509.jpeg"
+        ]
+      },
+      "Spinach_Non fresh": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_Non fresh/_0_1114138.png",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_Non fresh/_109_4576672.png",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_Non fresh/_118_8480683.png",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_Non fresh/_127_6635394.png",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_Non fresh/_137_4233581.png"
+        ]
+      },
+      "Spinach_anthracnose": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_anthracnose/Anthracnose(Malabar_Spinach)_1.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_anthracnose/Anthracnose(Malabar_Spinach)_122.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_anthracnose/Anthracnose(Malabar_Spinach)_146.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_anthracnose/Anthracnose(Malabar_Spinach)_17.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_anthracnose/Anthracnose(Malabar_Spinach)_193.jpeg"
+        ]
+      },
+      "Spinach_bacterial spot": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_bacterial spot/Bacterial-Spot(Malabar_Spinach)_1.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_bacterial spot/Bacterial-Spot(Malabar_Spinach)_1135.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_bacterial spot/Bacterial-Spot(Malabar_Spinach)_1272.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_bacterial spot/Bacterial-Spot(Malabar_Spinach)_1409.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_bacterial spot/Bacterial-Spot(Malabar_Spinach)_1546.jpeg"
+        ]
+      },
+      "Spinach_downy mildew": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_downy mildew/Downy-Mildew(Malabar_Spinach)_1.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_downy mildew/Downy-Mildew(Malabar_Spinach)_1050.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_downy mildew/Downy-Mildew(Malabar_Spinach)_1103.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_downy mildew/Downy-Mildew(Malabar_Spinach)_1157.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_downy mildew/Downy-Mildew(Malabar_Spinach)_121.jpeg"
+        ]
+      },
+      "Spinach_pest damage": {
+        "sampled_count": 30,
+        "presentation_status": "single-leaf",
+        "sample_files": [
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_pest damage/Pest-Damage(Malabar_Spinach)_1.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_pest damage/Pest-Damage(Malabar_Spinach)_1099.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_pest damage/Pest-Damage(Malabar_Spinach)_12.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_pest damage/Pest-Damage(Malabar_Spinach)_130.jpeg",
+          "image_data/Spinach_Images/Spinach_Unhealthy/Spinach_pest damage/Pest-Damage(Malabar_Spinach)_1400.jpeg"
+        ]
+      }
+    }
+  },
+  "overview_sec6_comparison": {
+    "overview_sec6_classes": [
+      "Spinach_Healthy",
+      "Spinach_anthracnose",
+      "Spinach_bacterial spot",
+      "Spinach_downy mildew",
+      "Spinach_Non fresh",
+      "Spinach_pest damage"
+    ],
+    "exact_folder_classes": [
+      "Spinach_Healthy",
+      "Spinach_Non fresh",
+      "Spinach_anthracnose",
+      "Spinach_bacterial spot",
+      "Spinach_downy mildew",
+      "Spinach_pest damage"
+    ],
+    "differences": [
+      {
+        "type": "layout_nesting",
+        "folder_name": "Spinach_Unhealthy/<class>",
+        "overview_sec6": "Flat class list",
+        "detail": "Unhealthy disease classes are nested within the 'Spinach_Unhealthy/' parent folder, while 'Spinach_Healthy' resides at top level."
+      }
+    ]
+  }
+}
