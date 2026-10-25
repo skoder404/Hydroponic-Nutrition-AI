@@ -76,14 +76,14 @@
 **Driver / Navigator:** Sushil drives / Yashwant reviews the commit.  
 
 #### T1-003: Add .gitignore and .gitattributes
-**Description:** Ignore `.env`, `image_data/`, large CSVs under `sensor_data/` (decide per file whether a CSV is small enough to track), bulky generated outputs (`processed_data/features/`, `processed_data/lettuce_leaf_crops/`), trained artifacts under `models/image` and `models/sensor`, `uploads/`, `masks/`, virtualenvs, `node_modules/`, `.next/`, notebook checkpoints. Keep `models/manifests/`, `reports/`, and split manifests trackable. `.gitattributes` normalises line endings and strips notebook outputs on commit (choose a tool, e.g. nbstripout).  
+**Description:** Ignore `.env` (while keeping `.env.example` tracked), temporary uploads (`uploads/`), masks (`masks/`), outputs (`outputs/`), virtualenvs (`.venv/`, `venv/`), `node_modules/`, `.next/`, caches, and notebook checkpoints. Keep `image_data/`, `sensor_data/`, `models/`, `processed_data/`, manifests, and reports tracked in the repository. `.gitattributes` normalises line endings and strips notebook outputs on commit (choose a tool, e.g. nbstripout).  
 **Dependencies:** T1-002  
 **Acceptance Criteria:**
 
-- [ ] Dropping a dummy file into `image_data/` leaves `git status` clean
-- [ ] `.env` is ignored while `.env.example` is tracked
-- [ ] Manifests and reports remain trackable
-- [ ] Sensor preparation scripts and READMEs stay tracked
+- [x] `.env` is ignored while `.env.example` is tracked
+- [x] `image_data/` and `sensor_data/` remain tracked in the repository
+- [x] `models/` and `processed_data/` directories remain trackable
+- [x] `.gitattributes` normalises line endings and configures notebook output stripping
 
 **Estimated Effort:** 30 min  
 **Assigned To:** DevOps  

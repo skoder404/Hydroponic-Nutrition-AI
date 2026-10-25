@@ -1,0 +1,41 @@
+# ==============================================================================
+# Hydroponic Nutrition AI - Git Attributes
+# ==============================================================================
+
+# Auto-detect text files and normalize line endings to LF on commit
+* text=auto eol=lf
+
+# Explicit text files
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+*.toml text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.env.example text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+
+# Jupyter Notebooks: strip outputs on commit via nbstripout filter
+*.ipynb text eol=lf filter=nbstripout
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.webp binary
+*.pt binary
+*.pth binary
+*.onnx binary
+*.joblib binary
+*.pkl binary
+*.parquet binary
