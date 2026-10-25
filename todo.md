@@ -284,9 +284,9 @@
 **Dependencies:** T2-001, T1-001  
 **Acceptance Criteria:**
 
-- [ ] Both sheets saved under `docs/datasets/`
-- [ ] Counts come from files on disk, not from the overview
-- [ ] Unknown licence/version fields say 'unverified' rather than being guessed
+- [x] Both sheets saved under `docs/datasets/`
+- [x] Counts come from files on disk, not from the overview
+- [x] Unknown licence/version fields say 'unverified' rather than being guessed
 
 **Estimated Effort:** 60 min  
 **Assigned To:** Full-stack  
