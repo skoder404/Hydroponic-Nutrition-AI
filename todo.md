@@ -297,9 +297,9 @@
 **Dependencies:** T2-001, T1-001  
 **Acceptance Criteria:**
 
-- [ ] Canonical source URL recorded or marked 'not found'
-- [ ] Column-type table matches Overview §13.4
-- [ ] `tds_ppm` is marked derived/excluded
+- [x] Canonical source URL recorded or marked 'not found'
+- [x] Column-type table matches Overview §13.4
+- [x] `tds_ppm` is marked derived/excluded
 
 **Estimated Effort:** 60 min  
 **Assigned To:** Full-stack  
