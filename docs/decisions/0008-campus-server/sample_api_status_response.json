@@ -1,0 +1,14 @@
+{
+  "_note": "REDACTED — structure of GET /api/status response, inferred from server.py line 302. Actual latest payload is unknown until live capture.",
+  "status": "ok",
+  "latest": {
+    "device_id": "<REDACTED>",
+    "customer_id": "<REDACTED>",
+    "timestamp": "2026-01-15T10:30:00+05:30",
+    "relay_status": [
+      { "name": "FAN1", "state": true, "control_mode": "auto" }
+    ],
+    "_sensor_data": "⚠️ UNKNOWN — actual sensor fields not yet captured"
+  },
+  "current_commands": []
+}

@@ -1,0 +1,12 @@
+{
+  "_note": "REDACTED — POST /api/relay/control request body, from server.py _relay_control(). Two forms accepted: by name, or by slave_id + address.",
+  "_form_1_by_name": {
+    "name": "PUMP1",
+    "state": true
+  },
+  "_form_2_by_address": {
+    "slave_id": 2,
+    "address": 0,
+    "state": true
+  }
+}

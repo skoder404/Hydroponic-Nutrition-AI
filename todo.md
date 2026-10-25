@@ -251,9 +251,9 @@
 **Dependencies:** T1-004  
 **Acceptance Criteria:**
 
-- [ ] ADR lists protocol, endpoints, auth, fields with units, update rate, and camera format, with every unknown marked explicitly
-- [ ] No IP address or credential appears in any committed file
-- [ ] Sample payloads are redacted
+- [x] ADR lists protocol, endpoints, auth, fields with units, update rate, and camera format, with every unknown marked explicitly
+- [x] No IP address or credential appears in any committed file
+- [x] Sample payloads are redacted
 
 **Estimated Effort:** 90 min  
 **Assigned To:** Backend  

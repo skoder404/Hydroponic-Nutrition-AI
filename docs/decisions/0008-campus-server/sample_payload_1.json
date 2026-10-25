@@ -1,0 +1,21 @@
+{
+  "_note": "REDACTED sample — structure inferred from cloud_server/server.py _save_data(). Actual field values and sensor readings are placeholders; real payloads have not yet been captured from the live campus server.",
+  "device_id": "<REDACTED>",
+  "customer_id": "<REDACTED>",
+  "timestamp": "2026-01-15T10:30:00+05:30",
+  "relay_status": [
+    { "name": "FAN1",      "state": true,  "control_mode": "auto" },
+    { "name": "FAN2",      "state": false, "control_mode": "manual" },
+    { "name": "FOGGER",    "state": true,  "control_mode": "auto" },
+    { "name": "HONEYCOMB", "state": false, "control_mode": "auto" },
+    { "name": "OUT5",      "state": false, "control_mode": "auto" },
+    { "name": "OUT6",      "state": false, "control_mode": "auto" },
+    { "name": "OUT7",      "state": false, "control_mode": "auto" },
+    { "name": "OUT8",      "state": false, "control_mode": "auto" },
+    { "name": "PUMP1",     "state": true,  "control_mode": "auto" },
+    { "name": "PUMP2",     "state": false, "control_mode": "auto" },
+    { "name": "PUMP3",     "state": false, "control_mode": "auto" },
+    { "name": "PUMP4",     "state": false, "control_mode": "auto" }
+  ],
+  "_sensor_fields_unknown": "⚠️ The exact sensor fields (temperature, humidity, pH, EC, etc.) in the device payload are NOT YET KNOWN. This must be determined by capturing a live payload from GET /api/status on the campus network."
+}
