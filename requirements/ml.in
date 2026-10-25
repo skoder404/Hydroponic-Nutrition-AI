@@ -1,0 +1,16 @@
+# ML & Computer Vision dependencies for Hydroponic Nutrition AI
+# Compiled via pip-tools into requirements/ml.txt and requirements/ml-cpu.txt
+
+--extra-index-url https://download.pytorch.org/whl/cu124
+
+torch==2.5.1
+torchvision==0.20.1
+scikit-learn==1.6.1
+scikit-image==0.25.2
+opencv-python-headless==4.11.0.86
+pandas==2.2.3
+numpy==2.1.3
+scipy==1.15.2
+pillow==11.1.0
+matplotlib==3.10.1
+joblib==1.4.2

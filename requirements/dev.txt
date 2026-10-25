@@ -1,0 +1,20 @@
+# Pinned development, linting, and test dependencies
+# Python: 3.11
+# Generated and validated for ADR 0002
+
+-r backend.txt
+-r ml.txt
+
+coverage==7.6.12
+iniconfig==2.0.0
+mypy==1.15.0
+mypy-extensions==1.0.0
+pip-tools==7.4.1
+pluggy==1.5.0
+pyproject-hooks==1.2.0
+pytest==8.3.5
+pytest-asyncio==0.25.3
+pytest-cov==6.0.0
+ruff==0.9.10
+build==1.2.2.post1
+wheel==0.45.1

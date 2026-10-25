@@ -1,0 +1,3 @@
+# Default local developer installation
+# Installs backend, ML, and dev dependencies
+-r requirements/dev.txt

@@ -107,9 +107,9 @@
 **Dependencies:** T1-002  
 **Acceptance Criteria:**
 
-- [ ] A fresh virtualenv installs from the pinned files on both teammates' machines
-- [ ] CPU-only install imports torch successfully
-- [ ] ADR lists each pinned version with a one-line reason
+- [x] A fresh virtualenv installs from the pinned files on both teammates' machines
+- [x] CPU-only install imports torch successfully
+- [x] ADR lists each pinned version with a one-line reason
 
 **Estimated Effort:** 60 min  
 **Assigned To:** DevOps  
