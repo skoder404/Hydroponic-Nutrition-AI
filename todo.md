@@ -225,9 +225,9 @@
 **Dependencies:** T1-013  
 **Acceptance Criteria:**
 
-- [ ] Commit template works with `git config commit.template`
-- [ ] CONTRIBUTING states that the navigator reviews each task's commit(s) after they are pushed
-- [ ] Definition of done matches Overview §27.4
+- [x] Commit template works with `git config commit.template`
+- [x] CONTRIBUTING states that the navigator reviews each task's commit(s) after they are pushed
+- [x] Definition of done matches Overview §27.4
 
 **Estimated Effort:** 45 min  
 **Assigned To:** DevOps  

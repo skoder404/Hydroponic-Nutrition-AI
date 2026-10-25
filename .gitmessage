@@ -1,0 +1,34 @@
+# <type>(<scope>): <subject> [T<phase>-<number>]
+# ----------------------------------------------------------------------
+# Header: Imperative, present tense, <= 72 characters.
+# Types: feat, fix, docs, style, refactor, perf, test, build, ci, chore
+# Scope: sensor, image, seg, fusion, rec, api, frontend, data, devops, etc.
+# Example: feat(sensor): audit lettuce sensor dataset splits [T2-005]
+#
+# --- WHAT & WHY ---
+# What changed and why was this change necessary?
+# - 
+
+# --- TESTS RUN ---
+# Which tests/checks were executed? (Never claim passing without running!)
+# - Commands run: 
+# - Result: 
+
+# --- SPLITS & DATA TOUCHED ---
+# Were any dataset splits, source CSVs, or manifests touched? (Yes / No)
+# - Splits touched: No (splits are frozen)
+# - Details: 
+
+# --- METRICS ---
+# If applicable, state exact split name, metric name, and measured value.
+# (e.g. test set macro-F1: 0.942, val accuracy: 0.958)
+# - Split: 
+# - Metric: 
+
+# --- LIMITATIONS & CAVEATS ---
+# Known edge cases, caveats, or deferred requirements.
+# - None
+
+# --- LEARNING FOCUS NOTE ---
+# Link to relevant learning note if this task had a Learning Focus.
+# - Concept note: docs/learning/...
