@@ -457,9 +457,9 @@
 **Dependencies:** T2-014  
 **Acceptance Criteria:**
 
-- [ ] No source-image identity appears in more than one split
-- [ ] Split is stratified per class with a recorded seed
-- [ ] Manifests contain row and class counts
+- [x] No source-image identity appears in more than one split
+- [x] Split is stratified per class with a recorded seed
+- [x] Manifests contain row and class counts
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

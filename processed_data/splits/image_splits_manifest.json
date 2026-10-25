@@ -1,0 +1,147 @@
+{
+  "title": "Hydroponic Nutrition AI \u2014 Image Split Manifests (T2-015)",
+  "generated_at_utc": "2026-10-25T18:31:00.189846+00:00",
+  "seed": 42,
+  "target_ratios": {
+    "train": 0.7,
+    "val": 0.15,
+    "test": 0.15
+  },
+  "crops": {
+    "lettuce": {
+      "total_images": 580,
+      "distinct_duplicate_groups": 458,
+      "split_counts": {
+        "train": 406,
+        "val": 87,
+        "test": 87
+      },
+      "split_fractions": {
+        "train": 0.7,
+        "val": 0.15,
+        "test": 0.15
+      },
+      "class_counts": {
+        "train": {
+          "Healthier": 272,
+          "NitrogenDeficiency": 40,
+          "PhosphorusDeficiency": 46,
+          "PotassiumDeficiency": 48
+        },
+        "val": {
+          "Healthier": 58,
+          "NitrogenDeficiency": 9,
+          "PhosphorusDeficiency": 10,
+          "PotassiumDeficiency": 10
+        },
+        "test": {
+          "Healthier": 59,
+          "NitrogenDeficiency": 8,
+          "PhosphorusDeficiency": 10,
+          "PotassiumDeficiency": 10
+        }
+      },
+      "manifest_file": "image_splits_lettuce.json",
+      "csv_file": "image_splits_lettuce.csv"
+    },
+    "spinach": {
+      "total_images": 18302,
+      "distinct_duplicate_groups": 14561,
+      "split_counts": {
+        "train": 12812,
+        "val": 2745,
+        "test": 2745
+      },
+      "split_fractions": {
+        "train": 0.7,
+        "val": 0.15,
+        "test": 0.15
+      },
+      "class_counts": {
+        "train": {
+          "Spinach_Healthy": 5053,
+          "Spinach_Non fresh": 431,
+          "Spinach_anthracnose": 548,
+          "Spinach_bacterial spot": 3196,
+          "Spinach_downy mildew": 1237,
+          "Spinach_pest damage": 2347
+        },
+        "val": {
+          "Spinach_Healthy": 1083,
+          "Spinach_Non fresh": 92,
+          "Spinach_anthracnose": 117,
+          "Spinach_bacterial spot": 685,
+          "Spinach_downy mildew": 265,
+          "Spinach_pest damage": 503
+        },
+        "test": {
+          "Spinach_Healthy": 1082,
+          "Spinach_Non fresh": 93,
+          "Spinach_anthracnose": 118,
+          "Spinach_bacterial spot": 684,
+          "Spinach_downy mildew": 265,
+          "Spinach_pest damage": 503
+        }
+      },
+      "manifest_file": "image_splits_spinach.json",
+      "csv_file": "image_splits_spinach.csv"
+    },
+    "tomato": {
+      "total_images": 33564,
+      "distinct_duplicate_groups": 28585,
+      "split_counts": {
+        "train": 23496,
+        "val": 5034,
+        "test": 5034
+      },
+      "split_fractions": {
+        "train": 0.7,
+        "val": 0.15,
+        "test": 0.15
+      },
+      "class_counts": {
+        "train": {
+          "Tomato_Bacterial_spot": 2513,
+          "Tomato_Early_blight": 2375,
+          "Tomato_Healthy": 2810,
+          "Tomato_Late_blight": 2762,
+          "Tomato_Leaf_Mold": 2725,
+          "Tomato_Powdery_Mildew": 879,
+          "Tomato_Septoria_leaf_spot": 2540,
+          "Tomato_Spider_mites Two-spotted_spider_mite": 1531,
+          "Tomato_Target_Spot": 1601,
+          "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 1844,
+          "Tomato_Tomato_mosaic_virus": 1916
+        },
+        "val": {
+          "Tomato_Bacterial_spot": 538,
+          "Tomato_Early_blight": 509,
+          "Tomato_Healthy": 602,
+          "Tomato_Late_blight": 592,
+          "Tomato_Leaf_Mold": 584,
+          "Tomato_Powdery_Mildew": 188,
+          "Tomato_Septoria_leaf_spot": 544,
+          "Tomato_Spider_mites Two-spotted_spider_mite": 328,
+          "Tomato_Target_Spot": 343,
+          "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 395,
+          "Tomato_Tomato_mosaic_virus": 411
+        },
+        "test": {
+          "Tomato_Bacterial_spot": 539,
+          "Tomato_Early_blight": 509,
+          "Tomato_Healthy": 602,
+          "Tomato_Late_blight": 591,
+          "Tomato_Leaf_Mold": 584,
+          "Tomato_Powdery_Mildew": 189,
+          "Tomato_Septoria_leaf_spot": 544,
+          "Tomato_Spider_mites Two-spotted_spider_mite": 328,
+          "Tomato_Target_Spot": 343,
+          "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 395,
+          "Tomato_Tomato_mosaic_virus": 410
+        }
+      },
+      "manifest_file": "image_splits_tomato.json",
+      "csv_file": "image_splits_tomato.csv"
+    }
+  }
+}
