@@ -337,9 +337,9 @@
 **Dependencies:** T1-001, T2-003, T2-005  
 **Acceptance Criteria:**
 
-- [ ] Counts per class per split match the README or discrepancies are listed
-- [ ] No six-hour block appears in both train and test
-- [ ] Real vs adjusted vs synthetic columns are recorded and `tds_ppm` is marked derived
+- [x] Counts per class per split match the README or discrepancies are listed
+- [x] No six-hour block appears in both train and test
+- [x] Real vs adjusted vs synthetic columns are recorded and `tds_ppm` is marked derived
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

@@ -20,6 +20,7 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np  # type: ignore[import-untyped]
 import pandas as pd  # type: ignore[import-untyped]
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -63,6 +64,35 @@ LETTUCE_ACTION_BANDS = {
 
 LETTUCE_DROPPED_CLASSES = {"WaterTemp_Low", "EC_Low"}
 LETTUCE_MODEL_FEATURES = {"ph", "ec", "water_temp", "humidity", "air_temp"}
+
+# ===========================================================================
+# Spinach Specifications (T2-006)
+# ===========================================================================
+SPINACH_DATA = ROOT / "sensor_data" / "Spinach_Sensor-Readings"
+SPINACH_FULL = SPINACH_DATA / "spinach_7class_full.csv"
+SPINACH_TRAIN = SPINACH_DATA / "spinach_7class_train.csv"
+SPINACH_TEST = SPINACH_DATA / "spinach_7class_test.csv"
+
+EXPECTED_SPINACH_FULL_ROWS = 1400
+EXPECTED_SPINACH_TRAIN_ROWS = 1120
+EXPECTED_SPINACH_TEST_ROWS = 280
+EXPECTED_SPINACH_CLASSES = 7
+EXPECTED_SPINACH_PER_CLASS_FULL = 200
+EXPECTED_SPINACH_PER_CLASS_TRAIN = 160
+EXPECTED_SPINACH_PER_CLASS_TEST = 40
+
+SPINACH_LABELS = [
+    "Normal",
+    "Water_Temp_High",
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "pH_Imbalance",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+]
+SPINACH_MODEL_FEATURES = {"air_temperature_C", "relative_humidity_percent", "water_temperature_C", "ph", "ec_mS_cm"}
+SPINACH_DERIVED_COLUMNS = {"tds_ppm"}
+SPINACH_METADATA_COLUMNS = {"sample_id", "label", "label_id", "humidity_source", "source_timestamp_EDT", "bench"}
 
 
 def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
@@ -298,10 +328,194 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     return fails, markdown_content
 
 
-def audit_spinach() -> tuple[int, str]:
-    """Extensible audit stub for spinach sensor dataset."""
-    print("Spinach sensor audit stub — to be implemented in subsequent crop task.")
-    return 0, "Spinach audit stub"
+def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
+    """Perform audit for spinach sensor dataset (T2-006)."""
+    fails = 0
+    report: list[str] = []
+
+    # 1. Check file existence
+    for f in (SPINACH_FULL, SPINACH_TRAIN, SPINACH_TEST):
+        if not f.exists():
+            return 1, f"Missing required file: {f}"
+
+    full = pd.read_csv(SPINACH_FULL)
+    train = pd.read_csv(SPINACH_TRAIN)
+    test = pd.read_csv(SPINACH_TEST)
+
+    # 2. Row Counts
+    report.append("## 1. Row Counts\n")
+    row_checks = [
+        ("full", len(full), EXPECTED_SPINACH_FULL_ROWS),
+        ("train", len(train), EXPECTED_SPINACH_TRAIN_ROWS),
+        ("test", len(test), EXPECTED_SPINACH_TEST_ROWS),
+    ]
+    for name, actual, expected in row_checks:
+        status = "✅" if actual == expected else "❌"
+        if actual != expected:
+            fails += 1
+        report.append(f"- {status} `{name}`: {actual} rows (expected {expected})")
+    report.append("")
+
+    # 3. Class Distribution
+    report.append("## 2. Class Distribution\n")
+    report.append("### Full dataset\n")
+    report.append("| Class | Expected | Actual | Match |")
+    report.append("|-------|----------|--------|-------|")
+    full_counts = full["label"].value_counts()
+    for cls in SPINACH_LABELS:
+        actual = full_counts.get(cls, 0)
+        status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_FULL else "❌"
+        if actual != EXPECTED_SPINACH_PER_CLASS_FULL:
+            fails += 1
+        report.append(f"| {cls} | {EXPECTED_SPINACH_PER_CLASS_FULL} | {actual} | {status} |")
+    report.append("")
+
+    report.append("### Train dataset (80% stratified)\n")
+    report.append("| Class | Count | Expected (160) | Match |")
+    report.append("|-------|-------|----------------|-------|")
+    train_counts = train["label"].value_counts()
+    for cls in SPINACH_LABELS:
+        actual = train_counts.get(cls, 0)
+        status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_TRAIN else "❌"
+        if actual != EXPECTED_SPINACH_PER_CLASS_TRAIN:
+            fails += 1
+        report.append(f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TRAIN} | {status} |")
+    report.append("")
+
+    report.append("### Test dataset (20% stratified)\n")
+    report.append("| Class | Count | Expected (40) | Match |")
+    report.append("|-------|-------|---------------|-------|")
+    test_counts = test["label"].value_counts()
+    for cls in SPINACH_LABELS:
+        actual = test_counts.get(cls, 0)
+        status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_TEST else "❌"
+        if actual != EXPECTED_SPINACH_PER_CLASS_TEST:
+            fails += 1
+        report.append(f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TEST} | {status} |")
+    report.append("")
+
+    # 4. Split Integrity: 6-hour Temporal Block Holdout
+    report.append("## 3. Split Integrity: 6-Hour Temporal Block Holdout\n")
+    for df, name in [(full, "full"), (train, "train"), (test, "test")]:
+        ts = pd.to_datetime(df["source_timestamp_EDT"])
+        df["block"] = df["bench"] + "|" + ts.dt.strftime("%Y-%m-%d") + "|" + (ts.dt.hour // 6).astype(str)
+
+    train_blocks = set(train["block"])
+    test_blocks = set(test["block"])
+    overlapping_blocks = train_blocks.intersection(test_blocks)
+    block_status = "✅" if len(overlapping_blocks) == 0 else "❌"
+    if overlapping_blocks:
+        fails += 1
+
+    report.append(f"- {block_status} **6-hour temporal block overlap between train and test**: {len(overlapping_blocks)} blocks")
+    report.append(f"  - Train unique blocks: {len(train_blocks)}")
+    report.append(f"  - Test unique blocks: {len(test_blocks)}")
+    if overlapping_blocks:
+        report.append(f"  - ❌ Overlapping blocks detected: {sorted(overlapping_blocks)}")
+    else:
+        report.append("  - ✅ Zero temporal blocks are shared between train and test splits; no 10-minute neighbouring readings leak across splits.")
+    report.append("")
+
+    # Sample ID overlap check
+    train_ids = set(train["sample_id"])
+    test_ids = set(test["sample_id"])
+    overlapping_ids = train_ids.intersection(test_ids)
+    id_status = "✅" if len(overlapping_ids) == 0 else "❌"
+    if overlapping_ids:
+        fails += 1
+    report.append(f"- {id_status} **Sample ID overlap**: {len(overlapping_ids)} samples")
+    report.append("")
+
+    # 5. Provenance, Real vs Adjusted vs Synthetic, and Derived TDS
+    report.append("## 4. Column Provenance & Feature Classification\n")
+    report.append("| Column | Provenance Type | Model Feature? | Details |")
+    report.append("|--------|-----------------|----------------|---------|")
+    report.append("| `air_temperature_C` | Real (100%) | ✅ Feature | Greenhouse loggers from Meng et al. (2025), Ag Data Commons |")
+    report.append("| `relative_humidity_percent` | Real (85.7%) / Adjusted (14.3%) | ✅ Feature | Real for 1,200 rows; 200 `Humidity_High_Mildew_Risk` rows shifted to 75.9-84.4% |")
+    report.append("| `water_temperature_C` | Synthetic | ✅ Feature | Simulated: 0.55 * air_temp + 8.5 + noise (elevated for Water_Temp_High) |")
+    report.append("| `ph` | Synthetic | ✅ Feature | Simulated: optimal 6.05-6.95, altered for pH_Imbalance |")
+    report.append("| `ec_mS_cm` | Synthetic | ✅ Feature | Simulated: optimal 1.82-2.28, altered for EC_High / EC_Low |")
+    report.append("| `tds_ppm` | **Derived (Excluded)** | ❌ Excluded | EC x 700 + 2% noise (redundant with EC, leakage risk) |")
+    report.append("| `humidity_source` | Metadata | ❌ Excluded | Indicator `real` vs `adjusted` |")
+    report.append("| `source_timestamp_EDT` | Metadata / Provenance | ❌ Excluded | Timestamp of real greenhouse logger reading |")
+    report.append("| `bench` | Metadata / Provenance | ❌ Excluded | Logger bench identifier |")
+    report.append("| `sample_id` | Metadata | ❌ Excluded | Shuffled sample identifier S0001-S1400 |")
+    report.append("| `label_id` | Target | ❌ Excluded | Numeric label ID (0-6) |")
+    report.append("")
+
+    # Check humidity_source distribution
+    hum_full = full["humidity_source"].value_counts().to_dict()
+    real_count = hum_full.get("real", 0)
+    adj_count = hum_full.get("adjusted", 0)
+    hum_status = "✅" if real_count == 1200 and adj_count == 200 else "❌"
+    if real_count != 1200 or adj_count != 200:
+        fails += 1
+    report.append(f"- {hum_status} `humidity_source` counts: `real`={real_count} (85.71%), `adjusted`={adj_count} (14.29%)")
+    report.append("")
+
+    # Check derived TDS relation: TDS ~= EC * 700
+    tds_ratio = full["tds_ppm"] / (full["ec_mS_cm"] * 700)
+    mean_ratio = float(tds_ratio.mean())
+    tds_status = "✅" if 0.98 <= mean_ratio <= 1.02 else "❌"
+    if not (0.98 <= mean_ratio <= 1.02):
+        fails += 1
+    report.append(f"- {tds_status} `tds_ppm` derivation check: mean ratio TDS / (EC * 700) = {mean_ratio:.4f} (within expected ±2% noise band)")
+    report.append("")
+
+    # 6. Rule Consistency Check
+    report.append("## 5. Labelling Rules & Single-Violation Verification\n")
+    # Evaluate rule violations
+    v = pd.DataFrame({
+        "Water_Temp_High": full["water_temperature_C"] > 21,
+        "EC_High_Toxicity": full["ec_mS_cm"] > 2.3,
+        "EC_Low_Deficiency": full["ec_mS_cm"] < 1.8,
+        "pH_Imbalance": (full["ph"] < 6.0) | (full["ph"] > 7.0),
+        "Humidity_High_Mildew_Risk": full["relative_humidity_percent"] > 75,
+        "Humidity_Low_Stress": full["relative_humidity_percent"] < 45,
+    })
+    n_violations = v.sum(axis=1)
+    rederived = pd.Series(
+        np.where(n_violations == 0, "Normal", np.where(n_violations == 1, v.idxmax(axis=1), "Multiple")),
+        index=full.index,
+    )
+    disagreements = int((rederived != full["label"]).sum())
+    multiple_broken = int((n_violations > 1).sum())
+
+    rule_status = "✅" if disagreements == 0 and multiple_broken == 0 else "❌"
+    if disagreements > 0 or multiple_broken > 0:
+        fails += 1
+
+    report.append(f"- {rule_status} **Rule agreement**: {disagreements} disagreements between re-derived rules and assigned labels")
+    report.append(f"- {rule_status} **Single-rule violation constraint**: {multiple_broken} rows broke more than one rule (expected 0)")
+    report.append("")
+
+    # 7. Limitations & Re-runability Note
+    report.append("## 6. Dataset Limitations & Source Availability\n")
+    report.append("- **Rule-based synthetic targets**: Because labels are hard threshold rules without overlap, classifiers trivially achieve near 100% test accuracy. This should not be reported as real-world sensor diagnostic performance.")
+    report.append("- **Simulated chemistry**: pH, EC, and water temperature are synthetic; real nutrient solution logs were not included in the source deposit.")
+    report.append("- **Class balance artifact**: Equal balance (200 per class) was intentionally drawn; real-world greenhouse operations would be heavily skewed towards Normal.")
+    report.append("- **Source file availability**: The raw file `Meng_Biradar_Park_Kelley_2025_greenhouse_temperature_humidity.csv` is not tracked in the repository, so `generate_7class_dataset.py` cannot be re-executed directly without obtaining the raw CSV from USDA Ag Data Commons.")
+    report.append("")
+
+    # Compile final report
+    overall_status = "✅ ALL CHECKS PASSED" if fails == 0 else f"❌ {fails} CHECKS FAILED"
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    header = [
+        "# Spinach Sensor Dataset Audit Report\n",
+        f"**Generated**: {now_iso}",
+        "**Script**: `scripts/audit_sensor_split.py --crop spinach`",
+        "**Data**: `sensor_data/Spinach_Sensor-Readings/`",
+        f"\n**Result**: {overall_status}\n",
+        "---\n",
+    ]
+    markdown_content = "\n".join(header + report)
+
+    out_file = output_path or (REPORT_DIR / "spinach_sensor_audit.md")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(markdown_content, encoding="utf-8")
+    print(f"Report written to: {out_file}")
+
+    return fails, markdown_content
 
 
 def audit_tomato() -> tuple[int, str]:
@@ -332,7 +546,8 @@ def main() -> int:
         fails, _ = audit_lettuce(args.output)
         total_fails += fails
     if args.crop in ("spinach", "all"):
-        fails, _ = audit_spinach()
+        print("=== Auditing Spinach Sensor Dataset ===")
+        fails, _ = audit_spinach(args.output)
         total_fails += fails
     if args.crop in ("tomato", "all"):
         fails, _ = audit_tomato()
