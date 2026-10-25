@@ -657,9 +657,9 @@
 **Dependencies:** T1-004  
 **Acceptance Criteria:**
 
-- [ ] Path outside the registry is rejected
-- [ ] Symlink escape is rejected
-- [ ] Loader uses the guard
+- [x] Path outside the registry is rejected
+- [x] Symlink escape is rejected
+- [x] Loader uses the guard
 
 **Estimated Effort:** 30 min  
 **Assigned To:** Backend  
