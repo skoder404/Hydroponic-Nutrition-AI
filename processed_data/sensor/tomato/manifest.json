@@ -46,6 +46,36 @@
     "phosphorus_mg_L": "Phosphorus_Level * 3.0",
     "potassium_mg_L": "Potassium_Level * 6.0"
   },
+  "raw_archive": {
+    "filename": "kolar_tomato_precision_agri_dataset.csv",
+    "sha256": "c4032fdc026cc4cb971119fdc27d709bbb4d9b6e24d55df87eebd20464a9d515",
+    "file_size_bytes": 109402834,
+    "rows": 200000,
+    "columns": 29,
+    "download_date": "2026-10-25",
+    "source_version": "Kaggle Version 1",
+    "source_url": "https://www.kaggle.com/datasets/eshwaranece91/autonomous-tomato-cultivation-dataset-in-kolar",
+    "license": "CC0: Public Domain",
+    "reproduction_matches": 44150,
+    "reproduction_mismatches": 0
+  },
+  "severity_scales": {
+    "Water_Temp_High": 6.58,
+    "EC_High_Toxicity": 0.20,
+    "EC_Low_Deficiency": 1.30,
+    "pH_Imbalance": 1.00,
+    "Humidity_High_Mildew_Risk": 5.00,
+    "Humidity_Low_Stress": 5.00,
+    "N_Deficiency": 50.00,
+    "P_Deficiency": 20.00,
+    "K_Deficiency": 54.00
+  },
+  "severity_scales_metadata": {
+    "computation_script": "sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py",
+    "script_version": "1.0",
+    "mode": "primary",
+    "seed": 42
+  },
   "thresholds": {
     "water_high": 25.0,
     "ec_low": 2.0,

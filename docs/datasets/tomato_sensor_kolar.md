@@ -14,21 +14,51 @@
 - **Source Name:** Autonomous Tomato Cultivation Dataset in Kolar (Kaggle)
 - **Source URL:** https://www.kaggle.com/datasets/eshwaranece91/autonomous-tomato-cultivation-dataset-in-kolar
 - **Authors / Contributor:** Eshwaran (Kaggle dataset author)
-- **Source Version / Date Downloaded:** Published on Kaggle / Ingested October 2026
-- **Original Filename(s):** `kolar_tomato_precision_agri_dataset.csv` (200,000 rows, 29 columns; excluded from git commits per repository governance rules)
+- **Source Version / Date Downloaded:** Version 1 / Downloaded 2026-10-25 via Kaggle API / kagglehub
+- **Raw File Checksum (SHA-256):** `c4032fdc026cc4cb971119fdc27d709bbb4d9b6e24d55df87eebd20464a9d515`
+- **Raw File Dimensions:** 200,000 rows, 29 columns (file size: 109,402,834 bytes)
+- **Local Storage Location:** Outside git (read-only archive in `~/.cache/kagglehub/datasets/...`)
 - **Current Repository Location:** `sensor_data/Tomato_Sensor-Readings/`
   - Preparation script: `sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py`
   - Dataset documentation: `sensor_data/Tomato_Sensor-Readings/README_tomato_dataset.md`
   - Output files: `tomato_hydroponic_full.csv`, `tomato_hydroponic_train.csv`, `tomato_hydroponic_test.csv`
+- **Exact Build Command:**
+  ```bash
+  python sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py kolar_tomato_precision_agri_dataset.csv --mode primary --per-class 5000 --test-frac 0.2 --seed 42 --out-prefix tomato_hydroponic
+  ```
+- **Reproduction Verification:** Executed build script against the re-downloaded raw CSV. 44,150 rows reproduced with 0 label mismatches against `tomato_hydroponic_full.csv`.
 
 ---
 
 ## 2. License, Terms & Redistribution Status
 
-- **License Type:** `unverified` (standard Kaggle community upload; explicit license terms unrecorded in project overview)
-- **Original Terms / Rights Holder:** `unverified`
-- **Redistribution Status:** Publicly available on Kaggle; raw 200,000-row source CSV remains local, while prepared subsets and the reproducible transformation script are committed in the repository.
-- **Commercial / Non-Commercial Constraints:** `unverified` (restricted to academic research and educational decision support).
+- **License Type:** CC0: Public Domain (Open Access on Kaggle)
+- **Original Terms / Rights Holder:** Eshwaran (Kaggle dataset author)
+- **Redistribution Status:** Publicly available on Kaggle; raw 200,000-row source CSV remains outside git, while prepared subsets and the reproducible transformation script are committed in the repository.
+- **Commercial / Non-Commercial Constraints:** Open educational and research dataset; non-commercial decision support.
+
+---
+
+## 2.1 Nine Per-Rule Severity Scales (Maximum Deviations)
+
+Under `primary` fault mode, multi-rule violations are labeled by the highest normalized deviation:
+$$\text{severity} = \frac{\text{deviation past threshold}}{\text{scale}}$$
+
+Computed once over the entire 200,000 mapped rows using `build_tomato_dataset.py` (v1.0):
+
+| Rule / Fault Class | Threshold ($T$) | Max Observed Deviation (Scale) | Physical Unit |
+|---|---|---|---|
+| `Water_Temp_High` | water > 25.0 °C | **6.58** | °C |
+| `EC_High_Toxicity` | ec > 4.0 mS/cm | **0.20** | mS/cm |
+| `EC_Low_Deficiency` | ec < 2.0 mS/cm | **1.30** | mS/cm |
+| `pH_Imbalance` | ph < 6.0 or ph > 6.5 | **1.00** | pH |
+| `Humidity_High_Mildew_Risk` | humidity > 85.0 % | **5.00** | % |
+| `Humidity_Low_Stress` | humidity < 50.0 % | **5.00** | % |
+| `N_Deficiency` | nitrogen < 90.0 mg/L | **50.00** | mg/L |
+| `P_Deficiency` | phosphorus < 35.0 mg/L | **20.00** | mg/L |
+| `K_Deficiency` | potassium < 144.0 mg/L | **54.00** | mg/L |
+
+These constants are frozen so that label assignment and inference oracles never need the raw 200,000-row file again.
 
 ---
 

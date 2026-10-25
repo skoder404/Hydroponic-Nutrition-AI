@@ -363,9 +363,9 @@
 **Dependencies:** T2-007  
 **Acceptance Criteria:**
 
-- [ ] Download date, source version, SHA-256 and counts are recorded
-- [ ] The nine severity scales are stored as constants with the script version that produced them
-- [ ] The raw file is not committed to git
+- [x] Download date, source version, SHA-256 and counts are recorded
+- [x] The nine severity scales are stored as constants with the script version that produced them
+- [x] The raw file is not committed to git
 
 **Estimated Effort:** 45 min  
 **Assigned To:** ML  

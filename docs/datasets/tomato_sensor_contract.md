@@ -58,8 +58,25 @@ Hydroponic tomato reference bands are derived from Ohio State CFAES, UA-CEA, and
 ### Labeling Mode: `primary` Confirmed
 The checked-in dataset contains **10 classes**, confirming that the generator ran with default `--mode primary`.
 - Under `primary` mode, a row violating multiple rules is assigned the single class of its **most severe fault**, defined as:
-  $$\text{severity} = \frac{\text{deviation past threshold}}{\text{max deviation in dataset for that rule}}$$
+  $$\text{severity} = \frac{\text{deviation past threshold}}{\text{scale}}$$
 - In contrast, `--mode single` would have added an 11th class (`Multiple_Faults`), which is **absent** in all checked-in CSVs.
+
+### Nine Severity Scale Constants (Frozen for Label Oracle)
+Computed over the entire 200,000 raw Kolar rows by `build_tomato_dataset.py` (v1.0) and frozen as constants:
+
+| Fault Rule | Scale (Max Deviation) | Unit | Script Version |
+|---|---|---|---|
+| `Water_Temp_High` | `6.58` | °C | `build_tomato_dataset.py` v1.0 |
+| `EC_High_Toxicity` | `0.20` | mS/cm | `build_tomato_dataset.py` v1.0 |
+| `EC_Low_Deficiency` | `1.30` | mS/cm | `build_tomato_dataset.py` v1.0 |
+| `pH_Imbalance` | `1.00` | pH | `build_tomato_dataset.py` v1.0 |
+| `Humidity_High_Mildew_Risk` | `5.00` | % | `build_tomato_dataset.py` v1.0 |
+| `Humidity_Low_Stress` | `5.00` | % | `build_tomato_dataset.py` v1.0 |
+| `N_Deficiency` | `50.00` | mg/L | `build_tomato_dataset.py` v1.0 |
+| `P_Deficiency` | `20.00` | mg/L | `build_tomato_dataset.py` v1.0 |
+| `K_Deficiency` | `54.00` | mg/L | `build_tomato_dataset.py` v1.0 |
+
+With these constants recorded, the label oracle and API diagnostic engine can evaluate fault severity deterministically without access to the raw 200,000-row file.
 
 ---
 
