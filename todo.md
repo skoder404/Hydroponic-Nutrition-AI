@@ -94,9 +94,9 @@
 **Dependencies:** T1-002, T1-003  
 **Acceptance Criteria:**
 
-- [ ] `.env.example` contains placeholders only
-- [ ] App settings load with no `GEMINI_API_KEY` set
-- [ ] Printing the settings object never reveals a secret value
+- [x] `.env.example` contains placeholders only
+- [x] App settings load with no `GEMINI_API_KEY` set
+- [x] Printing the settings object never reveals a secret value
 
 **Estimated Effort:** 30 min  
 **Assigned To:** Backend  
