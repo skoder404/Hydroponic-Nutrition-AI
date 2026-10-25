@@ -173,9 +173,9 @@
 **Dependencies:** T1-002, T1-003  
 **Acceptance Criteria:**
 
-- [ ] `npm run build` succeeds
-- [ ] All six routes render placeholders
-- [ ] ESLint passes
+- [x] `npm run build` succeeds
+- [x] All six routes render placeholders
+- [x] ESLint passes
 
 **Estimated Effort:** 45 min  
 **Assigned To:** Frontend  
