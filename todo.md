@@ -470,9 +470,9 @@
 **Dependencies:** T1-002, T2-013  
 **Acceptance Criteria:**
 
-- [ ] Label lists equal the folder names on disk (21 image classes in total)
-- [ ] Unknown label raises a clear error
-- [ ] Display mapping is deterministic
+- [x] Label lists equal the folder names on disk (21 image classes in total)
+- [x] Unknown label raises a clear error
+- [x] Display mapping is deterministic
 
 **Estimated Effort:** 45 min  
 **Assigned To:** Backend  
