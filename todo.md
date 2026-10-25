@@ -310,9 +310,9 @@
 **Dependencies:** T2-001, T1-001  
 **Acceptance Criteria:**
 
-- [ ] Sheets saved
-- [ ] Wording about simulation is stated as an observation, not a fact
-- [ ] Units marked 'unverified' where applicable
+- [x] Sheets saved
+- [x] Wording about simulation is stated as an observation, not a fact
+- [x] Units marked 'unverified' where applicable
 
 **Estimated Effort:** 60 min  
 **Assigned To:** Full-stack  
