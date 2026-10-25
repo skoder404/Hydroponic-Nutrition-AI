@@ -238,9 +238,9 @@
 **Dependencies:** T1-002  
 **Acceptance Criteria:**
 
-- [ ] Every PRD concept is listed in PROGRESS.md
-- [ ] Templates render correctly on GitHub
-- [ ] PROGRESS.md has a column set for each teammate
+- [x] Every PRD concept is listed in PROGRESS.md
+- [x] Templates render correctly on GitHub
+- [x] PROGRESS.md has a column set for each teammate
 
 **Estimated Effort:** 45 min  
 **Assigned To:** Full-stack  
