@@ -12,6 +12,12 @@ import re
 import sys
 from pathlib import Path
 
+if hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:  # noqa: BLE001, S110
+        pass
+
 FILE = Path("todo.md")
 HEAD = re.compile(r"^#### (T\d+-\d+): (.*)$", re.MULTILINE)
 

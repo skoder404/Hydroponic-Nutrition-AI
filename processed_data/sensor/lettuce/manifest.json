@@ -1,0 +1,111 @@
+{
+  "dataset_version": "v2",
+  "crop": "lettuce",
+  "modality": "sensor",
+  "generated_at": "2026-10-25T17:04:07Z",
+  "script": "scripts/make_sensor_validation.py lettuce",
+  "partition_strategy": {
+    "strategy": "day_grouped_holdout",
+    "group_keys": [
+      "experiment",
+      "date"
+    ],
+    "test_selection": "every 4th calendar day of each experiment (16 experiment-days, 162 rows)",
+    "validation_selection": "every 4th remaining calendar day of each experiment (12 experiment-days, 125 rows)",
+    "train_selection": "remaining calendar days (41 experiment-days, 430 real rows, oversampled to 1,295 rows)",
+    "validation_fraction_of_pool": 0.2252,
+    "no_leakage_verified": true
+  },
+  "classes_kept": [
+    "EC_High",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "pH_High",
+    "pH_Low"
+  ],
+  "classes_dropped": [
+    "EC_Low",
+    "WaterTemp_Low"
+  ],
+  "row_counts": {
+    "train_balanced": 1295,
+    "train_real": 430,
+    "val_real": 125,
+    "test_real": 162,
+    "full_v1": 726
+  },
+  "experiment_date_counts": {
+    "train_days": 41,
+    "val_days": 12,
+    "test_days": 16,
+    "keys_overlap": 0
+  },
+  "class_coverage": {
+    "EC_High": {
+      "real_train_rows": 39,
+      "balanced_train_rows": 185,
+      "real_val_rows": 10,
+      "real_test_rows": 9,
+      "total_real_rows": 58,
+      "flagged_under_5_real_train_rows": false
+    },
+    "Humidity_Low": {
+      "real_train_rows": 60,
+      "balanced_train_rows": 185,
+      "real_val_rows": 11,
+      "real_test_rows": 16,
+      "total_real_rows": 87,
+      "flagged_under_5_real_train_rows": false
+    },
+    "Multiple_Stress": {
+      "real_train_rows": 81,
+      "balanced_train_rows": 185,
+      "real_val_rows": 31,
+      "real_test_rows": 23,
+      "total_real_rows": 135,
+      "flagged_under_5_real_train_rows": false
+    },
+    "Normal": {
+      "real_train_rows": 185,
+      "balanced_train_rows": 185,
+      "real_val_rows": 55,
+      "real_test_rows": 87,
+      "total_real_rows": 327,
+      "flagged_under_5_real_train_rows": false
+    },
+    "WaterTemp_High": {
+      "real_train_rows": 40,
+      "balanced_train_rows": 185,
+      "real_val_rows": 16,
+      "real_test_rows": 19,
+      "total_real_rows": 75,
+      "flagged_under_5_real_train_rows": false
+    },
+    "pH_High": {
+      "real_train_rows": 18,
+      "balanced_train_rows": 185,
+      "real_val_rows": 1,
+      "real_test_rows": 6,
+      "total_real_rows": 25,
+      "flagged_under_5_real_train_rows": false
+    },
+    "pH_Low": {
+      "real_train_rows": 7,
+      "balanced_train_rows": 185,
+      "real_val_rows": 1,
+      "real_test_rows": 2,
+      "total_real_rows": 10,
+      "flagged_under_5_real_train_rows": false
+    }
+  },
+  "flagged_classes_under_5_real_train_rows": [],
+  "special_class_notes": {
+    "pH_Low": "pH_Low has 10 total real rows in v1 (7 in train, 1 in val, 2 in test). As confirmed by team decision, it is retained as a distinct class with 7 real training rows oversampled to 185."
+  },
+  "limitations": [
+    "Neighbouring days of the same tank are correlated; day-grouped validation is more realistic than random row splits, but remains somewhat optimistic compared with contiguous whole-replicate or multi-week block holdout.",
+    "pH_Low has only 7 real rows in the training pool (oversampled to 185). Models evaluating pH_Low must be interpreted with caution regarding sample diversity."
+  ]
+}

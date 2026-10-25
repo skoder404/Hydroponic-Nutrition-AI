@@ -389,9 +389,9 @@
 **Dependencies:** T2-005  
 **Acceptance Criteria:**
 
-- [ ] Test rows are identical to the original test file
-- [ ] No (experiment, date) pair appears in more than one of train/val/test
-- [ ] Per-class real-row counts per partition are in the manifest and any class under 5 real training rows is flagged
+- [x] Test rows are identical to the original test file
+- [x] No (experiment, date) pair appears in more than one of train/val/test
+- [x] Per-class real-row counts per partition are in the manifest and any class under 5 real training rows is flagged
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  
