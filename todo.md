@@ -133,9 +133,9 @@
 **Dependencies:** T1-005, T1-006  
 **Acceptance Criteria:**
 
-- [ ] ADR states the exact checkpoint/config used plus measured (not estimated) numbers
-- [ ] ADR states whether CPU fallback is viable
-- [ ] If SAM 2.1 cannot run, the options are listed and the team decides before Phase 5 (no silent substitution)
+- [x] ADR states the exact checkpoint/config used plus measured (not estimated) numbers
+- [x] ADR states whether CPU fallback is viable
+- [x] If SAM 2.1 cannot run, the options are listed and the team decides before Phase 5 (no silent substitution)
 
 **Estimated Effort:** 90 min  
 **Assigned To:** ML  

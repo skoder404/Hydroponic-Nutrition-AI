@@ -1,0 +1,159 @@
+{
+  "checkpoint": "models/image/sam2.1_hiera_tiny.pt",
+  "config": "configs/sam2.1/sam2.1_hiera_t.yaml",
+  "checkpoint_size_mb": 148.78,
+  "cuda_available": true,
+  "gpu_device_name": "NVIDIA GeForce RTX 3050 6GB Laptop GPU",
+  "sample_images": {
+    "lettuce": [
+      "image_data/Lettuce_Images\\Healthier\\Healthier_0001.jpg",
+      "image_data/Lettuce_Images\\Healthier\\Healthier_0002.jpg",
+      "image_data/Lettuce_Images\\Healthier\\Healthier_0003.jpg"
+    ],
+    "spinach": [
+      "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_1.jpeg",
+      "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_10.jpeg",
+      "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_100.jpeg"
+    ],
+    "tomato": [
+      "image_data/Tomato_Images\\Tomato_Healthy\\000146ff-92a4-4db6-90ad-8fce2ae4fddd___GH_HL Leaf 259.1.JPG",
+      "image_data/Tomato_Images\\Tomato_Healthy\\000bf685-b305-408b-91f4-37030f8e62db___GH_HL Leaf 308.1.JPG",
+      "image_data/Tomato_Images\\Tomato_Healthy\\000bf685-b305-408b-91f4-37030f8e62db___GH_HL Leaf 308.1_180deg.JPG"
+    ]
+  },
+  "gpu_load_time_s": 0.732,
+  "gpu_vram_after_load_mb": 288.7,
+  "gpu_peak_vram_load_mb": 288.7,
+  "cpu_load_time_s": 0.409,
+  "predictor_latencies": {
+    "lettuce": [
+      {
+        "path": "image_data/Lettuce_Images\\Healthier\\Healthier_0001.jpg",
+        "resolution": "270x316",
+        "gpu_latency_ms": 970.5,
+        "cpu_latency_ms": 1380.6
+      },
+      {
+        "path": "image_data/Lettuce_Images\\Healthier\\Healthier_0002.jpg",
+        "resolution": "288x293",
+        "gpu_latency_ms": 156.9,
+        "cpu_latency_ms": 1254.4
+      },
+      {
+        "path": "image_data/Lettuce_Images\\Healthier\\Healthier_0003.jpg",
+        "resolution": "257x276",
+        "gpu_latency_ms": 154.4,
+        "cpu_latency_ms": 1234.4
+      }
+    ],
+    "spinach": [
+      {
+        "path": "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_1.jpeg",
+        "resolution": "900x1200",
+        "gpu_latency_ms": 169.8,
+        "cpu_latency_ms": 1184.8
+      },
+      {
+        "path": "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_10.jpeg",
+        "resolution": "900x1200",
+        "gpu_latency_ms": 160.6,
+        "cpu_latency_ms": 1195.9
+      },
+      {
+        "path": "image_data/Spinach_Images\\Spinach_Healthy\\Healthy-Leaf(Malabar_Spinach)_100.jpeg",
+        "resolution": "900x1200",
+        "gpu_latency_ms": 162.7,
+        "cpu_latency_ms": 1215.3
+      }
+    ],
+    "tomato": [
+      {
+        "path": "image_data/Tomato_Images\\Tomato_Healthy\\000146ff-92a4-4db6-90ad-8fce2ae4fddd___GH_HL Leaf 259.1.JPG",
+        "resolution": "256x256",
+        "gpu_latency_ms": 233.2,
+        "cpu_latency_ms": 1181.5
+      },
+      {
+        "path": "image_data/Tomato_Images\\Tomato_Healthy\\000bf685-b305-408b-91f4-37030f8e62db___GH_HL Leaf 308.1.JPG",
+        "resolution": "256x256",
+        "gpu_latency_ms": 156.1,
+        "cpu_latency_ms": 1207.1
+      },
+      {
+        "path": "image_data/Tomato_Images\\Tomato_Healthy\\000bf685-b305-408b-91f4-37030f8e62db___GH_HL Leaf 308.1_180deg.JPG",
+        "resolution": "256x256",
+        "gpu_latency_ms": 155.4,
+        "cpu_latency_ms": 1202.1
+      }
+    ]
+  },
+  "lettuce_leaf_separation": [
+    {
+      "image": "image_data/Lettuce_Images\\Healthier\\Healthier_0001.jpg",
+      "resolution": "270x316",
+      "auto_masks": {
+        "count": 3,
+        "latency_ms": 5645.3,
+        "avg_area_px": 7181.0,
+        "area_range_px": [
+          4458,
+          9375
+        ]
+      },
+      "prompt_masks": {
+        "count": 3,
+        "latency_ms": 161.5,
+        "scores": [
+          0.883,
+          0.165,
+          0.524
+        ]
+      }
+    },
+    {
+      "image": "image_data/Lettuce_Images\\Healthier\\Healthier_0002.jpg",
+      "resolution": "288x293",
+      "auto_masks": {
+        "count": 4,
+        "latency_ms": 5083.8,
+        "avg_area_px": 4132.5,
+        "area_range_px": [
+          310,
+          5982
+        ]
+      },
+      "prompt_masks": {
+        "count": 3,
+        "latency_ms": 193.8,
+        "scores": [
+          0.807,
+          0.23,
+          0.527
+        ]
+      }
+    },
+    {
+      "image": "image_data/Lettuce_Images\\Healthier\\Healthier_0003.jpg",
+      "resolution": "257x276",
+      "auto_masks": {
+        "count": 2,
+        "latency_ms": 4993.6,
+        "avg_area_px": 2156.5,
+        "area_range_px": [
+          1492,
+          2821
+        ]
+      },
+      "prompt_masks": {
+        "count": 3,
+        "latency_ms": 158.3,
+        "scores": [
+          0.877,
+          0.205,
+          0.745
+        ]
+      }
+    }
+  ],
+  "gpu_peak_vram_total_mb": 2316.0
+}
