@@ -1,0 +1,38 @@
+repos:
+  # Python linting & formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.12
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+
+  # General file fixers
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: check-merge-conflict
+
+  # Local hooks (use system-installed tools — no slow virtualenv download)
+  - repo: local
+    hooks:
+      # Python type checking (uses system mypy)
+      - id: mypy
+        name: mypy
+        entry: python -m mypy backend --ignore-missing-imports
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      # Secret scanning (custom cross-platform scanner)
+      - id: secret-scan
+        name: Secret Scanner
+        entry: python scripts/secret_scan.py
+        language: system
+        pass_filenames: true
+        types: [text]

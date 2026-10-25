@@ -199,9 +199,9 @@
 **Dependencies:** T1-009, T1-010  
 **Acceptance Criteria:**
 
-- [ ] Pre-commit blocks a commit containing a fake API key
-- [ ] All linters pass on the scaffold
-- [ ] Commands are listed in the Makefile/scripts
+- [x] Pre-commit blocks a commit containing a fake API key
+- [x] All linters pass on the scaffold
+- [x] Commands are listed in the Makefile/scripts
 
 **Estimated Effort:** 45 min  
 **Assigned To:** DevOps  
