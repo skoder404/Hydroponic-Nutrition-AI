@@ -66,8 +66,15 @@ class Settings(BaseSettings):
     @classmethod
     def parse_allowed_origins(cls, value: str | list[str]) -> list[str]:
         if isinstance(value, str):
-            return [origin.strip() for origin in value.split(",") if origin.strip()]
-        return value
+            origins = [origin.strip() for origin in value.split(",") if origin.strip()]
+        elif isinstance(value, (list, tuple)):
+            origins = [str(origin).strip() for origin in value if str(origin).strip()]
+        else:
+            origins = []
+
+        if "*" in origins:
+            raise ValueError("Wildcard '*' is strictly forbidden in ALLOWED_ORIGINS (T3-005).")
+        return origins
 
     def __repr__(self) -> str:
         """String representation with guaranteed redaction of all secrets."""

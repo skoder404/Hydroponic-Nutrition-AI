@@ -4,6 +4,8 @@ Features:
 - create_app() factory
 - Structured JSON logging setup
 - Request-ID tracking middleware (header X-Request-ID + contextvar + log injection)
+- CORS allow-list configuration (no wildcard)
+- Defensive security headers middleware (X-Content-Type-Options, Referrer-Policy, Content-Security-Policy, etc.)
 - /api/v1 router mounting
 """
 from __future__ import annotations
@@ -22,6 +24,30 @@ from backend.app.core.config import get_settings
 from backend.app.core.logging import JSONFormatter, request_id_ctx_var, setup_logging
 
 logger = logging.getLogger(__name__)
+
+# Security Header Configuration
+CSP_DIRECTIVES = (
+    "default-src 'self'; "
+    "img-src 'self' data: blob:; "
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
+    "style-src 'self' 'unsafe-inline'; "
+    "font-src 'self' data:; "
+    "connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 http://localhost:3000 http://127.0.0.1:3000; "
+    "frame-ancestors 'none';"
+)
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Middleware to inject standard defense-in-depth security headers (T3-005)."""
+
+    async def dispatch(self, request: Request, call_next: Callable) -> Response:
+        response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Content-Security-Policy"] = CSP_DIRECTIVES
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "0"
+        return response
 
 
 class RequestIdMiddleware(BaseHTTPMiddleware):
@@ -95,14 +121,16 @@ def create_app(configure_logging: bool = True) -> FastAPI:
         redoc_url="/redoc",
     )
 
-    # Middleware registration
+    # Middleware registration: executed in reverse registration order
+    # RequestIdMiddleware -> SecurityHeadersMiddleware -> CORSMiddleware -> Router
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.allowed_origins,
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
         allow_headers=["*"],
     )
+    app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(RequestIdMiddleware)
 
     # Route mounting

@@ -631,9 +631,9 @@
 **Dependencies:** T1-009, T1-004  
 **Acceptance Criteria:**
 
-- [ ] Disallowed origin is blocked
-- [ ] Headers present on responses
-- [ ] Allowed origin works from the dev frontend
+- [x] Disallowed origin is blocked
+- [x] Headers present on responses
+- [x] Allowed origin works from the dev frontend
 
 **Estimated Effort:** 30 min  
 **Assigned To:** Backend  
