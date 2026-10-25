@@ -350,9 +350,9 @@
 **Dependencies:** T1-001, T2-004  
 **Acceptance Criteria:**
 
-- [ ] Every item above is confirmed from the CSVs or listed as a discrepancy
-- [ ] Manifest contains the ordered feature list, row counts per class and per month
-- [ ] Mode used (primary or single) and the test months are recorded
+- [x] Every item above is confirmed from the CSVs or listed as a discrepancy
+- [x] Manifest contains the ordered feature list, row counts per class and per month
+- [x] Mode used (primary or single) and the test months are recorded
 
 **Estimated Effort:** 90 min  
 **Assigned To:** ML  
