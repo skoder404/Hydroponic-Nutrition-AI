@@ -1,0 +1,868 @@
+{
+  "crop": "lettuce",
+  "source_folder": "image_data/Lettuce_Images",
+  "timestamp_utc": "2026-10-25T15:38:16.059935+00:00",
+  "total_images_scanned": 580,
+  "methodology": {
+    "library": "Pillow (PIL)",
+    "exact_hash_algorithm": "SHA-256",
+    "perceptual_hash_algorithm": "dHash (64-bit difference hash)",
+    "hamming_distance_threshold": 4,
+    "threshold_rationale": "Hamming distance <= 4 out of 64 bits identifies visually identical images, burst shots, or minor re-compression artifacts while preventing false positives across distinct leaves.",
+    "safety_policy": "Non-destructive audit only. No files were modified or deleted."
+  },
+  "exact_duplicates": {
+    "total_groups": 0,
+    "total_files_in_groups": 0,
+    "cross_class_groups_count": 0,
+    "groups": []
+  },
+  "near_duplicates": {
+    "total_pairs": 211,
+    "total_clusters": 31,
+    "cross_class_pairs_count": 1,
+    "clusters": [
+      {
+        "cluster_id": 1,
+        "file_count": 18,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0011.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0026.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0031.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0036.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0041.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0051.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0053.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0058.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0063.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0068.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0073.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0078.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0083.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0089.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0095.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0101.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0106.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0111.jpg"
+        ]
+      },
+      {
+        "cluster_id": 2,
+        "file_count": 13,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0009.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0013.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0015.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0017.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0024.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0029.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0039.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0044.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0049.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0056.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0061.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0066.jpg",
+          "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0013.jpg"
+        ]
+      },
+      {
+        "cluster_id": 3,
+        "file_count": 13,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0020.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0023.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0028.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0033.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0038.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0043.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0048.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0055.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0060.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0065.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0103.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0108.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0113.jpg"
+        ]
+      },
+      {
+        "cluster_id": 4,
+        "file_count": 13,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0153.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0158.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0162.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0166.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0170.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0174.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0178.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0182.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0186.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0190.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0194.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0197.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0200.jpg"
+        ]
+      },
+      {
+        "cluster_id": 5,
+        "file_count": 12,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0139.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0145.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0151.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0173.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0177.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0181.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0185.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0189.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0193.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0196.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0199.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0202.jpg"
+        ]
+      },
+      {
+        "cluster_id": 6,
+        "file_count": 10,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0163.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0167.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0171.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0175.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0183.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0187.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0191.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0195.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0198.jpg"
+        ]
+      },
+      {
+        "cluster_id": 7,
+        "file_count": 8,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0057.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0062.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0067.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0072.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0077.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0105.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0110.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0115.jpg"
+        ]
+      },
+      {
+        "cluster_id": 8,
+        "file_count": 5,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0052.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0069.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0079.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0107.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0112.jpg"
+        ]
+      },
+      {
+        "cluster_id": 9,
+        "file_count": 5,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0118.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0124.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0142.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0148.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0154.jpg"
+        ]
+      },
+      {
+        "cluster_id": 10,
+        "file_count": 5,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0120.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0132.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0138.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0144.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0150.jpg"
+        ]
+      },
+      {
+        "cluster_id": 11,
+        "file_count": 4,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0071.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0076.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0081.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0087.jpg"
+        ]
+      },
+      {
+        "cluster_id": 12,
+        "file_count": 4,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0075.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0086.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0092.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0098.jpg"
+        ]
+      },
+      {
+        "cluster_id": 13,
+        "file_count": 3,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0128.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0140.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0146.jpg"
+        ]
+      },
+      {
+        "cluster_id": 14,
+        "file_count": 3,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0156.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0160.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0164.jpg"
+        ]
+      },
+      {
+        "cluster_id": 15,
+        "file_count": 3,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0172.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0176.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0180.jpg"
+        ]
+      },
+      {
+        "cluster_id": 16,
+        "file_count": 3,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0184.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0188.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0192.jpg"
+        ]
+      },
+      {
+        "cluster_id": 17,
+        "file_count": 3,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0201.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0204.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0207.jpg"
+        ]
+      },
+      {
+        "cluster_id": 18,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0027.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0032.jpg"
+        ]
+      },
+      {
+        "cluster_id": 19,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0059.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0064.jpg"
+        ]
+      },
+      {
+        "cluster_id": 20,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0090.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0096.jpg"
+        ]
+      },
+      {
+        "cluster_id": 21,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0091.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0097.jpg"
+        ]
+      },
+      {
+        "cluster_id": 22,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0093.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0099.jpg"
+        ]
+      },
+      {
+        "cluster_id": 23,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0104.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0114.jpg"
+        ]
+      },
+      {
+        "cluster_id": 24,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0117.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0135.jpg"
+        ]
+      },
+      {
+        "cluster_id": 25,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0121.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0127.jpg"
+        ]
+      },
+      {
+        "cluster_id": 26,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0137.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0143.jpg"
+        ]
+      },
+      {
+        "cluster_id": 27,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0157.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0169.jpg"
+        ]
+      },
+      {
+        "cluster_id": 28,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0219.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0225.jpg"
+        ]
+      },
+      {
+        "cluster_id": 29,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0232.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0275.jpg"
+        ]
+      },
+      {
+        "cluster_id": 30,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0240.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0246.jpg"
+        ]
+      },
+      {
+        "cluster_id": 31,
+        "file_count": 2,
+        "files": [
+          "image_data/Lettuce_Images/Healthier/Healthier_0261.jpg",
+          "image_data/Lettuce_Images/Healthier/Healthier_0304.jpg"
+        ]
+      }
+    ],
+    "pairs_sample": [
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0063.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0111.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 0,
+        "dhash1": "b07070f8f0e4f0f0",
+        "dhash2": "b07070f8f0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0171.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0175.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 0,
+        "dhash1": "c3c3e0ecf2e29cf8",
+        "dhash2": "c3c3e0ecf2e29cf8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0173.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0185.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 0,
+        "dhash1": "0dbcf8f6e3f1e3e3",
+        "dhash2": "0dbcf8f6e3f1e3e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0017.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0024.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "a0e0e0e460f0e0c0",
+        "dhash2": "a0e0e0e4e0f0e0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0043.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0048.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "e0e1e0e0e0e0e0e8",
+        "dhash2": "e0e1e0e0e0e0e0f8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0057.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0110.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "d8f8fcf0f1f9f1b1",
+        "dhash2": "d8f8f8f0f1f9f1b1",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0063.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0101.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "b07070f8f0e4f0f0",
+        "dhash2": "b07070f8e0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0071.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0081.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "e0e8ecece4f4e0c0",
+        "dhash2": "60e8ecece4f4e0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0090.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0096.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "247cf8f8f8d0e0c0",
+        "dhash2": "247cf8f8fcd0e0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0101.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0111.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "b07070f8e0e4f0f0",
+        "dhash2": "b07070f8f0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0153.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0162.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "f0f0e2e8fcdcf0d0",
+        "dhash2": "f070e2e8fcdcf0d0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0183.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "c3c3e0ecf2e69cfc",
+        "dhash2": "c3c3e0ecf2e6bcfc",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0163.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0167.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "c1c3e0e4f2e69cdc",
+        "dhash2": "c3c3e0e4f2e69cdc",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0172.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0180.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "3c78e2c1e1e9e0e2",
+        "dhash2": "3c78e2e1e1e9e0e2",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0173.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0177.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "0dbcf8f6e3f1e3e3",
+        "dhash2": "0d9cf8f6e3f1e3e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0177.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0185.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "0d9cf8f6e3f1e3e3",
+        "dhash2": "0dbcf8f6e3f1e3e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0184.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0192.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "dcd8d2c1e1f9e0e3",
+        "dhash2": "ccd8d2c1e1f9e0e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0232.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0275.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 1,
+        "dhash1": "cf8b33b313536363",
+        "dhash2": "cf8b33b313136363",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0009.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0013.jpg",
+        "class2": "NitrogenDeficiency",
+        "hamming_distance": 2,
+        "dhash1": "b0e0e0e0e0f0e0e0",
+        "dhash2": "b0e0e0e8e0e0e0e0",
+        "same_class": false
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0020.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0043.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "60e1e0e0e0f0e0e8",
+        "dhash2": "e0e1e0e0e0e0e0e8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0052.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0112.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "615cd0f0f8d8c8c0",
+        "dhash2": "215cd8f0f8d8c8c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0055.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0060.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "e0c2c0e0e0e4f8d8",
+        "dhash2": "e0e0c0e0e0e4f8d8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0055.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0065.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "e0c2c0e0e0e4f8d8",
+        "dhash2": "e0e2c0e0e0e0f8d8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0060.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0065.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "e0e0c0e0e0e4f8d8",
+        "dhash2": "e0e2c0e0e0e0f8d8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0060.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0113.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "e0e0c0e0e0e4f8d8",
+        "dhash2": "e0e0c0e0e0e4e8f8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0061.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0066.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0e0e4e4f4d0c0c0",
+        "dhash2": "b0e4e4e4f4d0c0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0068.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0073.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0f0f0e0e4f0f0",
+        "dhash2": "f2f0f0f0f0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0068.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0078.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0f0f0e0e4f0f0",
+        "dhash2": "f070f0f8e0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0071.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0076.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "e0e8ecece4f4e0c0",
+        "dhash2": "e0e8ececece4e0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0072.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0115.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "98d8f8f0f0f0f1b1",
+        "dhash2": "98d8f8f0f0f0f121",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0078.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0101.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f070f0f8e0e4f0f0",
+        "dhash2": "b07070f8e0e4f0f0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0091.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0097.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f830f8f0f0f0f071",
+        "dhash2": "f830f8d0f0f0f0f1",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0093.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0099.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "30e4c6e4f6b4a0c0",
+        "dhash2": "70e4c6e4f6b0a0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0104.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0114.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "70e4c4e4d4d4c0c0",
+        "dhash2": "70e4c6e4c4d4c0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0105.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0110.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "98f8f8f0f1f8f1b1",
+        "dhash2": "d8f8f8f0f1f9f1b1",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0128.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0140.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0b0b8d0d6f8f8",
+        "dhash2": "f0f0b0b8d0f2f8f8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0128.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0146.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0b0b8d0d6f8f8",
+        "dhash2": "f0f0b0b0d0f6f8f8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0138.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0144.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "38f4c6d4b4b4a0c0",
+        "dhash2": "18f4c6d6b4b4a0c0",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0139.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0145.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "0dbcfaf6e1f1f3e3",
+        "dhash2": "0dbcfaf2e1f1f363",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0139.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0151.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "0dbcfaf6e1f1f3e3",
+        "dhash2": "0dbcfaf2e1f0f3e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0140.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0146.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0b0b8d0f2f8f8",
+        "dhash2": "f0f0b0b0d0f6f8f8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0145.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0151.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "0dbcfaf2e1f1f363",
+        "dhash2": "0dbcfaf2e1f0f3e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0153.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0166.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "f0f0e2e8fcdcf0d0",
+        "dhash2": "f0f0e0e8fcdcf0d1",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0167.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "c3c3e0ecf2e69cfc",
+        "dhash2": "c3c3e0e4f2e69cdc",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0171.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "c3c3e0ecf2e69cfc",
+        "dhash2": "c3c3e0ecf2e29cf8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0175.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "c3c3e0ecf2e69cfc",
+        "dhash2": "c3c3e0ecf2e29cf8",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0155.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0187.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "c3c3e0ecf2e69cfc",
+        "dhash2": "c1c3e0ecf2e29cfc",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0157.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0169.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "18b8faf0e1f1f3e3",
+        "dhash2": "18b8faf0e1f0f1e3",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0171.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0187.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "c3c3e0ecf2e29cf8",
+        "dhash2": "c1c3e0ecf2e29cfc",
+        "same_class": true
+      },
+      {
+        "file1": "image_data/Lettuce_Images/Healthier/Healthier_0173.jpg",
+        "class1": "Healthier",
+        "file2": "image_data/Lettuce_Images/Healthier/Healthier_0181.jpg",
+        "class2": "Healthier",
+        "hamming_distance": 2,
+        "dhash1": "0dbcf8f6e3f1e3e3",
+        "dhash2": "0d3cf8f6e3e1e3e3",
+        "same_class": true
+      }
+    ]
+  }
+}

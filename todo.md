@@ -443,9 +443,9 @@
 **Dependencies:** T2-013  
 **Acceptance Criteria:**
 
-- [ ] Duplicate groups are reported per crop
-- [ ] Threshold and library are documented
-- [ ] No file is modified or deleted
+- [x] Duplicate groups are reported per crop
+- [x] Threshold and library are documented
+- [x] No file is modified or deleted
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  
