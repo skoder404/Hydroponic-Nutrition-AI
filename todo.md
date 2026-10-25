@@ -1140,9 +1140,9 @@
 **Dependencies:** T1-007  
 **Acceptance Criteria:**
 
-- [ ] Segmenter returns mask plus config/version string
-- [ ] Simulated OOM triggers the documented fallback or a typed error
-- [ ] Model is not loaded until first use
+- [x] Segmenter returns mask plus config/version string
+- [x] Simulated OOM triggers the documented fallback or a typed error
+- [x] Model is not loaded until first use
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  
