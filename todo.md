@@ -147,9 +147,9 @@
 **Dependencies:** T1-004, T1-005  
 **Acceptance Criteria:**
 
-- [ ] Script never prints or logs the key
-- [ ] Missing key gives a clean 'not configured' message and exit code 0
-- [ ] ADR records the model name from a real call, or states it could not be verified
+- [x] Script never prints or logs the key
+- [x] Missing key gives a clean 'not configured' message and exit code 0
+- [x] ADR records the model name from a real call, or states it could not be verified
 
 **Estimated Effort:** 30 min  
 **Assigned To:** Backend  
