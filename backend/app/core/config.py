@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import re
 from functools import lru_cache
+from typing import Any
 
 from pydantic import Field, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -78,7 +79,7 @@ class Settings(BaseSettings):
 
     def __repr__(self) -> str:
         """String representation with guaranteed redaction of all secrets."""
-        redacted_fields = {}
+        redacted_fields: dict[str, Any] = {}
         for key, val in self.__dict__.items():
             if key.startswith("_"):
                 continue

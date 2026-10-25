@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 FILE = Path("todo.md")
-HEAD = re.compile(r"^#### (T\d+-\d+): (.*)$", re.M)
+HEAD = re.compile(r"^#### (T\d+-\d+): (.*)$", re.MULTILINE)
 
 
 def load():
@@ -24,13 +24,19 @@ def load():
         end = ms[i + 1].start() if i + 1 < len(ms) else len(text)
         block = text[m.start():end]
         block = re.split(r"\n---\n", block)[0].rstrip()
-        deps = re.search(r"\*\*Dependencies:\*\*\s*(.*?)\s*$", block, re.M)
+        deps = re.search(r"\*\*Dependencies:\*\*\s*(.*?)\s*$", block, re.MULTILINE)
         dep_ids = re.findall(r"T\d+-\d+", deps.group(1)) if deps else []
         drv = re.search(r"\*\*Driver / Navigator:\*\*\s*(\w+)", block)
-        boxes = re.findall(r"^- \[( |x)\]", block, re.M)
-        tasks.append(dict(id=m.group(1), title=m.group(2), block=block, deps=dep_ids,
-                          driver=drv.group(1) if drv else "", boxes=boxes,
-                          done=bool(boxes) and all(b == "x" for b in boxes)))
+        boxes = re.findall(r"^- \[( |x)\]", block, re.MULTILINE)
+        tasks.append({
+            "id": m.group(1),
+            "title": m.group(2),
+            "block": block,
+            "deps": dep_ids,
+            "driver": drv.group(1) if drv else "",
+            "boxes": boxes,
+            "done": bool(boxes) and all(b == "x" for b in boxes),
+        })
     return text, tasks
 
 

@@ -30,7 +30,7 @@ from urllib.parse import urlparse
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    except Exception:
+    except Exception:  # noqa: BLE001, S110
         pass
 
 # ---------------------------------------------------------------------------
@@ -87,14 +87,14 @@ def _save_json(data: object, filename: str) -> Path:
 
 def _make_request(url: str, timeout: float, user: str = "", password: str = "") -> tuple[int | None, bytes | None, dict]:
     """Execute a GET request with optional Basic Auth. Returns (status, body, headers)."""
-    import urllib.request
     import urllib.error
+    import urllib.request
 
     req = urllib.request.Request(url)
     req.add_header("User-Agent", "Hydroponic-Nutrition-AI/Probe")
 
     if user and password:
-        creds = f"{user}:{password}".encode("utf-8")
+        creds = f"{user}:{password}".encode()
         b64_creds = base64.b64encode(creds).decode("ascii")
         req.add_header("Authorization", f"Basic {b64_creds}")
 
@@ -109,7 +109,7 @@ def _make_request(url: str, timeout: float, user: str = "", password: str = "") 
         return exc.code, body, dict(exc.headers or {})
     except urllib.error.URLError as exc:
         return None, None, {"error": str(exc.reason)}
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         return None, None, {"error": str(exc)}
 
 
@@ -124,14 +124,14 @@ def _probe_status(base_url: str, timeout: float, user: str = "", password: str =
             data = json.loads(body.decode("utf-8"))
             print(f"  [OK] Status 200, parsed {len(body)} bytes JSON")
             return data
-        except Exception:
+        except Exception:  # noqa: BLE001
             print(f"  [WARN] Status 200 but not JSON: {body[:100]!r}")
             return None
     elif code is not None:
         print(f"  [WARN] HTTP {code}: {headers.get('error', '')}")
         # Also try root /
         root_url = base_url.rstrip("/") + "/"
-        c2, b2, h2 = _make_request(root_url, timeout, user, password)
+        c2, b2, _h2 = _make_request(root_url, timeout, user, password)
         if c2 == 200 and b2:
             print(f"  [OK] Root endpoint '/' returned HTTP 200 ({len(b2)} bytes)")
         return None
@@ -146,7 +146,7 @@ def _probe_camera(camera_url: str, timeout: float, user: str = "", password: str
         print("  - Camera URL not configured, skipping")
         return False
 
-    print(f"  -> Probing camera URL ...")
+    print("  -> Probing camera URL ...")
     code, body, headers = _make_request(camera_url, timeout, user, password)
     if code == 200 and body:
         ctype = headers.get("Content-Type", "")
@@ -193,7 +193,7 @@ def _analyze_payload(payload: dict) -> None:
 
     # Check for N/P/K
     npk_keys = {"nitrogen", "phosphorus", "potassium", "n", "p", "k", "n_ppm", "p_ppm", "k_ppm"}
-    found_npk = [k for k in payload.keys() if k.lower() in npk_keys]
+    found_npk = [k for k in payload if k.lower() in npk_keys]
     if found_npk:
         print(f"  [OK] N/P/K fields detected: {found_npk}")
     else:
@@ -236,7 +236,7 @@ def main() -> int:
     port = parsed.port
     if port != 50503 and parsed.hostname:
         alt_url = f"{parsed.scheme}://{parsed.hostname}:50503"
-        print(f"\n[Probe 1b] Testing cloud_server port 50503...")
+        print("\n[Probe 1b] Testing cloud_server port 50503...")
         alt_status = _probe_status(alt_url, timeout, user, password)
         if alt_status and not status_data:
             status_data = alt_status

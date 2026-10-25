@@ -212,9 +212,9 @@
 **Dependencies:** T1-012  
 **Acceptance Criteria:**
 
-- [ ] Workflow passes on a clean push to `main`
-- [ ] Workflow fails on an intentional lint error
-- [ ] No secrets are needed to run it
+- [x] Workflow passes on a clean push to `main`
+- [x] Workflow fails on an intentional lint error
+- [x] No secrets are needed to run it
 
 **Estimated Effort:** 45 min  
 **Assigned To:** DevOps  
