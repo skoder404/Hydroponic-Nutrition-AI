@@ -496,9 +496,9 @@
 **Dependencies:** T2-007, T2-016  
 **Acceptance Criteria:**
 
-- [ ] Feature order matches the audited order
-- [ ] Blacklists are enforced by a function that raises on any blacklisted column in a feature matrix
-- [ ] Hard bounds are separate from the normal-band hints
+- [x] Feature order matches the audited order
+- [x] Blacklists are enforced by a function that raises on any blacklisted column in a feature matrix
+- [x] Hard bounds are separate from the normal-band hints
 
 **Estimated Effort:** 45 min  
 **Assigned To:** ML  
