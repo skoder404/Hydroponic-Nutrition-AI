@@ -605,9 +605,9 @@
 **Dependencies:** T2-018  
 **Acceptance Criteria:**
 
-- [ ] Unknown field is rejected
-- [ ] `null` and 0 are treated differently
-- [ ] Error message names field, unit, and allowed range
+- [x] Unknown field is rejected
+- [x] `null` and 0 are treated differently
+- [x] Error message names field, unit, and allowed range
 
 **Estimated Effort:** 60 min  
 **Assigned To:** Backend  
