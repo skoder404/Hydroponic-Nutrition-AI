@@ -894,9 +894,9 @@
 **Dependencies:** T2-006, T2-007, T2-005, T2-008  
 **Acceptance Criteria:**
 
-- [ ] Oracle reproduces the labels in the prepared CSVs (mismatch count reported)
-- [ ] Boundary values (exactly on a threshold) behave as in the scripts
-- [ ] Tomato scales are sourced or the restriction is documented
+- [x] Oracle reproduces the labels in the prepared CSVs (mismatch count reported)
+- [x] Boundary values (exactly on a threshold) behave as in the scripts
+- [x] Tomato scales are sourced or the restriction is documented
 
 **Estimated Effort:** 45 min  
 **Assigned To:** ML  
