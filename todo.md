@@ -690,9 +690,9 @@
 **Dependencies:** T2-005  
 **Acceptance Criteria:**
 
-- [ ] Notebook runs top to bottom with a fixed seed
-- [ ] Both scores and the explanation are shown
-- [ ] A grep of the notebook shows no reference to the test file
+- [x] Notebook runs top to bottom with a fixed seed
+- [x] Both scores and the explanation are shown
+- [x] A grep of the notebook shows no reference to the test file
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

@@ -17,7 +17,7 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 | 2 | T2-005 | Train/test splits, oversampling, and day-based (grouped) separation | `docs/learning/traintest-splits-oversampling-and-daybased-grouped.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 3 | T2-010 | Hold-out validation design for time-correlated data | `docs/learning/holdout-validation-design-for-timecorrelated-data.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 4 | T2-014 | Near-duplicate detection and why duplicates across splits inflate image accuracy | `docs/learning/nearduplicate-detection-and-why-duplicates-across.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 5 | T4-001 | Data leakage and grouped / time-based splits | `docs/learning/data-leakage-and-grouped-timebased-splits.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 5 | T4-001 | Data leakage and grouped / time-based splits | `docs/learning/data-leakage-and-grouped-timebased-splits.md` | [x] | [ ] | [ ] | 2026-10-26 | [ ] | [ ] | [ ] | - |
 | 6 | T4-003 | Decision trees: Gini impurity and greedy splits | `docs/learning/decision-trees-gini-impurity-and-greedy.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 7 | T4-004 | Confusion matrix, precision/recall, macro-F1 | `docs/learning/confusion-matrix-precisionrecall-macrof1.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 8 | T4-007 | Cross-validation and class imbalance (oversampling inside folds) | `docs/learning/crossvalidation-and-class-imbalance-oversampling-inside.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
