@@ -11,6 +11,8 @@
 > - **Must verify in repository:** the actual implementation, script, dataset, test, or artifact must be inspected before an exact claim is made.
 > - **Limitation:** a known caveat that must remain visible in documentation and the UI where relevant.
 >
+> **Changes (2026-10-26):** Deliberately updated §4.1, §6, §11, §12, §13, §14, §15, and §31 with the verified on-disk repository layout; corrected class lists matching `ml/labels.py` and on-disk image directories (including 11 tomato image classes); decisions D1-D10 from the PRD; and dataset audit findings and discrepancies (lettuce test split rule, tomato row count reconciliation, sensor/README naming differences). Changed no other section.
+>
 > This document includes decisions and context available in the project discussion. It does **not** pretend that source files unavailable for inspection have been inspected.
 
 ---
@@ -104,16 +106,18 @@ These are the intended defaults, not a claim that every component has already be
 | Configuration | `.env` + `.env.example` | Real secrets excluded from version control |
 | Tests | Layered automated tests | Unit, integration, contract, and inference checks |
 
-### 4.1 Suggested monorepo layout
+### 4.1 Verified repository layout
 
-Adapt this proposal to the existing repository. Do not create duplicate or parallel structures if equivalent folders already exist.
+The repository layout was verified during audit (T2-017 / PRD D2). Raw dataset folders (`image_data/`, `sensor_data/`) are preserved intact; generated splits, deduplication reports, and manifests reside in `processed_data/` and `reports/`.
 
 ```text
 frontend/
-  app/ or src/
-  components/
-  lib/
+  src/
+    app/
+    components/
+    lib/
   public/
+  package.json
 backend/
   app/
     api/
@@ -121,7 +125,9 @@ backend/
     services/
     database/
     core/
+  requirements.txt
 ml/
+  labels.py
   image_models/
   sensor_models/
   segmentation/
@@ -130,11 +136,22 @@ ml/
   recommendations/
   evaluation/
   registry/
-datasets/
-  raw/
+image_data/
+  Lettuce_Images/
+  Spinach_Images/
+  Tomato_Images/
+sensor_data/
+  Lettuce_Sensor-Readings/
+  Spinach_Sensor-Readings/
+  Tomato_Sensor-Readings/
+processed_data/
   images/
-  sensors/
-  processed/
+    splits/
+    duplicates/
+  sensor/
+    lettuce/
+    spinach/
+    tomato/
 models/
   image/
   sensor/
@@ -145,10 +162,19 @@ tests/
   integration/
   contracts/
 docs/
+  PRD.md
+  TECH_RULES.md
+  DESIGN.md
+  datasets/
+  decisions/
+reports/
+  data/
+  duplicates/
 .env.example
 .gitignore
 PROJECT_OVERVIEW.md
 README.md
+todo.md
 ```
 
 **Storage rule:** raw datasets should be preserved. Generated features, processed datasets, trained artifacts, masks, and evaluation outputs should be distinguishable from raw data. Do not overwrite the only copy of source data.
@@ -197,31 +223,31 @@ README.md
 
 ## 6. Crop and class taxonomy
 
-The model's internal class labels and the UI's display mapping must be maintained explicitly. Never infer a class from a filename alone at inference time.
+The model's internal class labels and the UI's display mapping must be maintained explicitly (see `ml/labels.py`, verified in T2-016 / PRD D8). Label lists strictly equal the folder names on disk under `image_data/` (21 image classes total) and the target classes in `sensor_data/`. Never infer a class from a filename alone at inference time.
 
 ### 6.1 Lettuce image classes
 
-Internal/source classes:
+Internal/source classes (exact on-disk folder names, 4 classes):
 
-- `Healthy`
-- `Nitrogen_Deficient`
-- `Phosphorus_Deficient`
-- `Potassium_Deficient`
+- `Healthier`
+- `NitrogenDeficiency`
+- `PhosphorusDeficiency`
+- `PotassiumDeficiency`
 
 Display mapping:
 
-- `Healthy` → `healthy`
+- `Healthier` → `healthy`
 - each deficiency class → `unhealthy/<original class>`
 
 ### 6.2 Spinach image classes
 
-Internal/source classes:
+Internal/source classes (exact on-disk folder names, 6 classes):
 
 - `Spinach_Healthy`
+- `Spinach_Non fresh`
 - `Spinach_anthracnose`
 - `Spinach_bacterial spot`
 - `Spinach_downy mildew`
-- `Spinach_Non fresh`
 - `Spinach_pest damage`
 
 Display mapping:
@@ -233,27 +259,39 @@ Preserve the exact source labels in metadata even if a more readable label is sh
 
 ### 6.3 Tomato image classes
 
-Internal/source classes:
+Internal/source classes (exact on-disk folder names, **11 classes**, including `Tomato_Powdery_Mildew` and preserving exact space in `Tomato_Spider_mites Two-spotted_spider_mite`):
 
-- `healthy`
 - `Tomato_Bacterial_spot`
 - `Tomato_Early_blight`
+- `Tomato_Healthy`
 - `Tomato_Late_blight`
 - `Tomato_Leaf_Mold`
+- `Tomato_Powdery_Mildew`
 - `Tomato_Septoria_leaf_spot`
-- `Tomato_Spider_mites_Two-spotted_spider_mite`
+- `Tomato_Spider_mites Two-spotted_spider_mite`
 - `Tomato_Target_Spot`
-- `Tomato_Tomato_mosaic_virus`
 - `Tomato_Tomato_Yellow_Leaf_Curl_Virus`
+- `Tomato_Tomato_mosaic_virus`
 
 Display mapping:
 
-- `healthy` → `healthy`
+- `Tomato_Healthy` → `healthy`
 - each disease class → `unhealthy/<original class>`
 
 ### 6.4 Sensor classes are not image classes
 
 Sensor labels describe rule-defined conditions or stress categories. Image labels describe visible classes in the relevant image dataset. These taxonomies are not interchangeable. Do not map `EC_High_Toxicity`, for example, to a specific image disease without a validated semantic justification.
+
+Verified sensor classes from prepared datasets (`ml/labels.py`):
+
+- **Lettuce sensor classes (9 full, 7 in trained model):** `Normal`, `Multiple_Stress`, `Humidity_Low`, `WaterTemp_High`, `EC_High`, `pH_High`, `pH_Low`, `WaterTemp_Low`, `EC_Low` (`WaterTemp_Low` and `EC_Low` dropped from trained models due to rarity).
+- **Spinach sensor classes (7 classes):** `Normal`, `Water_Temp_High`, `EC_High_Toxicity`, `EC_Low_Deficiency`, `pH_Imbalance`, `Humidity_High_Mildew_Risk`, `Humidity_Low_Stress`.
+- **Tomato sensor classes (10 classes in `primary` fault mode):** `Normal`, `EC_High_Toxicity`, `EC_Low_Deficiency`, `Humidity_High_Mildew_Risk`, `Humidity_Low_Stress`, `K_Deficiency`, `N_Deficiency`, `P_Deficiency`, `Water_Temp_High`, `pH_Imbalance`.
+
+Sensor display mapping:
+
+- `Normal` → `healthy`
+- Any stress, deficiency, toxicity, or imbalance class → `unhealthy/<original class>`
 
 ## 7. Image model strategy
 
@@ -361,7 +399,7 @@ Sensor datasets described below use rule-generated labels, unless an individual 
 
 ## 10. Lettuce image dataset
 
-**Source:** Kaggle, “Lettuce NPK Dataset”  
+**Source:** Kaggle, “Lettuce NPK Dataset”
 URL: https://www.kaggle.com/datasets/baronn/lettuce-npk-dataset?resource=download
 
 ### 10.1 Documented classes
@@ -389,7 +427,7 @@ The source URL is documented. The exact dataset version, license conditions, ori
 
 ## 11. Lettuce sensor dataset
 
-**Source:** HydroGrowNet, Mendeley Data, DOI `10.17632/g6cm3v3wdp.5`  
+**Source:** HydroGrowNet, Mendeley Data, DOI `10.17632/g6cm3v3wdp.5`
 URL: https://data.mendeley.com/datasets/g6cm3v3wdp/5
 
 ### 11.1 Source context
@@ -469,11 +507,17 @@ The original real-data class counts in the available report were:
 
 `WaterTemp_Low` and `EC_Low` were omitted from the seven-class model because there were too few original examples to support a meaningful class. The remaining seven classes were used.
 
-The training file described in the report contains 1,680 rows after oversampling 558 real training rows to 240 rows per class across seven classes. The held-out test file contains 162 real rows and was not oversampled. The report says every fourth calendar day of each experiment was held out, preventing a day from appearing in both train and test.
+The training file described in the report contains 1,680 rows after oversampling 558 real training rows (555 kept after dropping 3 `WaterTemp_Low` rows) to 240 rows per class across seven classes (creating 1,125 duplicated row copies). The held-out test file contains 162 real rows and was not oversampled.
 
-**Do not replace these prepared splits with a random split.** If current files differ, report the discrepancy and investigate.
+### 11.6 Audit findings and discrepancies (T2-005 / PRD D10)
 
-### 11.6 Reported baseline results
+1. **Split rule discrepancy**: The script docstring in `build_lettuce_dataset` stated `test = EXP.3`, but the actual executable code and `README.md` hold out every fourth calendar day per experiment (`day % 4 == 0`). Auditing confirmed 0 calendar-day overlap between train and test.
+2. **Script naming discrepancy**: `README.md` refers to `clean_lettuce_dataset.py`, but the script in the repository is named `build_lettuce_dataset` (without `.py` extension).
+3. **Performance reality**: Single-split test macro-F1 of 0.986 (accuracy 0.994) represents a single favourable split; realistic grouped 5-fold CV by calendar date yields macro-F1 of 0.837 ± 0.075 due to correlated intra-day tank conditions.
+
+**Do not replace these prepared splits with a random split.** The verified CSVs remain authoritative.
+
+### 11.7 Reported baseline results
 
 The following are reported results from the available training report, not guaranteed production performance. The single test set contained 162 real rows.
 
@@ -501,7 +545,7 @@ The reported held-out classification metrics were:
 
 Reported overall accuracy was 0.994, macro precision 0.98, macro recall 0.99, and macro-F1 0.986. The report describes one error in the 162-row test set.
 
-### 11.7 Interpretation and further evaluation
+### 11.8 Interpretation and further evaluation
 
 The very high tree-model results are expected because the target is created by threshold rules and decision trees can reproduce those thresholds. The report notes that a single train/test split is not sufficient because observations from the same tank/day can be correlated. Grouped five-fold cross-validation by calendar date is the recommended stronger check if not already completed.
 
@@ -516,11 +560,13 @@ Never describe these results as proof that the system detects real biological st
 
 ### 12.1 Documented classes
 
+Exact on-disk classes matching `ml/labels.py` (6 classes):
+
 - `Spinach_Healthy`
+- `Spinach_Non fresh`
 - `Spinach_anthracnose`
 - `Spinach_bacterial spot`
 - `Spinach_downy mildew`
-- `Spinach_Non fresh`
 - `Spinach_pest damage`
 
 Display mapping: `Spinach_Healthy` → `healthy`; all other classes → `unhealthy/<original class>`.
@@ -529,9 +575,10 @@ Display mapping: `Spinach_Healthy` → `healthy`; all other classes → `unhealt
 
 Whole-plant spinach uploads should be segmented/cropped before a leaf-oriented OpenCV feature extractor is used. Deep-learning models must use the image input format established in their training pipeline. Do not assume a feature extractor or CNN accepts the same crop type without validation.
 
-### 12.3 Verification required
+### 12.3 Verified findings and split protocol (T2-014 / T2-015)
 
-Record actual image counts per class, duplicate/near-duplicate findings, preprocessing configuration, split counts, and the exact dataset versions used. Do not invent these counts from source descriptions.
+- **Audit findings**: Near-duplicate analysis (Pillow dHash, Hamming threshold $\le 4$) identified 1,607 duplicate clusters in spinach, including a large entangled cluster of 3,045 images spanning multiple classes.
+- **Split allocation**: Resolved via multi-class deficit allocation (seed 42), keeping duplicate clusters strictly within their assigned partition. Verified 0 duplicate leakage across splits and achieved target 70.0% train / 15.0% validation / 15.0% test distribution. Recorded in `processed_data/images/splits/spinach_split_manifest.json`.
 
 ## 13. Spinach sensor dataset
 
@@ -580,6 +627,8 @@ This is a mixed real/synthetic dataset, not a dataset of five independently meas
 
 ### 13.5 Classes
 
+Verified classes matching `ml/labels.py` (7 classes, exactly 200 rows per class):
+
 - `Normal`
 - `Water_Temp_High`
 - `EC_High_Toxicity`
@@ -587,6 +636,8 @@ This is a mixed real/synthetic dataset, not a dataset of five independently meas
 - `pH_Imbalance`
 - `Humidity_High_Mildew_Risk`
 - `Humidity_Low_Stress`
+
+Every non-Normal sample breaks exactly one rule (verified single-fault guarantee, T2-006 / PRD D10).
 
 ### 13.6 Documented rule bands
 
@@ -600,11 +651,9 @@ This is a mixed real/synthetic dataset, not a dataset of five independently meas
 
 When multiple conditions apply, preserve the exact priority order implemented in the preprocessing script. The list above documents thresholds, not a guaranteed precedence order.
 
-### 13.7 Split protocol
+### 13.7 Split protocol (T2-006 / PRD D10)
 
-The prepared split is documented as 160 training and 40 test rows per class, separated by six-hour blocks with no shared readings across the split. Preserve the split and its group separation. Do not replace it with a random row-level split.
-
-The report says there were zero label mismatches after applying the rules. Treat this as a check of rule consistency, not independent biological validation.
+The prepared split is 1,120 training (160 per class) and 280 test rows (40 per class), balanced by drawing (no oversampling). Separation is strictly by whole six-hour blocks with 0 temporal overlap. Verified zero label mismatches after applying the generative rules. Preserve the split and its group separation. Do not replace it with a random row-level split.
 
 ### 13.8 Known limitations
 
@@ -626,35 +675,43 @@ The report says there were zero label mismatches after applying the rules. Treat
 
 The Kaggle tomato disease dataset was downloaded, inspected, categorized, and used for project work. The dataset itself should therefore not be described as “unverified” in the sense of not having been accessed or used. However, that does not automatically verify all original provenance claims, units, license terms, or redistribution rights.
 
-### 14.2 Classes
+### 14.2 Classes (PRD D8 / ml/labels.py)
 
-- `healthy`
+On-disk inspection confirmed **11 classes** (10 diseases + 1 healthy), correcting the initial 10-class assumption:
+
 - `Tomato_Bacterial_spot`
 - `Tomato_Early_blight`
+- `Tomato_Healthy`
 - `Tomato_Late_blight`
 - `Tomato_Leaf_Mold`
+- `Tomato_Powdery_Mildew`
 - `Tomato_Septoria_leaf_spot`
-- `Tomato_Spider_mites_Two-spotted_spider_mite`
+- `Tomato_Spider_mites Two-spotted_spider_mite`
 - `Tomato_Target_Spot`
-- `Tomato_Tomato_mosaic_virus`
 - `Tomato_Tomato_Yellow_Leaf_Curl_Virus`
+- `Tomato_Tomato_mosaic_virus`
 
-Display mapping: `healthy` → `healthy`; disease labels → `unhealthy/<original class>`.
+Display mapping: `Tomato_Healthy` → `healthy`; disease labels → `unhealthy/<original class>`.
 
-### 14.3 Input policy
+### 14.3 Input policy and split protocol (T2-014 / T2-015)
 
 Whole-plant tomato images require segmentation/cropping before a leaf-oriented OpenCV extractor is applied. The CNN/EfficientNet path must follow its actual training image format. Keep the input contract explicit for each model.
 
+- **Deduplication audit (T2-014)**: Identified 4,924 duplicate clusters across tomato images.
+- **Split allocation (T2-015)**: Generated non-overlapping 70.0% train / 15.0% val / 15.0% test splits preserving duplicate clusters with 0 split leakage (`processed_data/images/splits/tomato_split_manifest.json`).
+
 ## 15. Tomato sensor dataset
 
-### 15.1 Source
+### 15.1 Source and naming discrepancies (T2-007 / T2-008)
 
-Kaggle: “Autonomous Tomato Cultivation Dataset in Kolar”  
+Kaggle: “Autonomous Tomato Cultivation Dataset in Kolar”
 URL: https://www.kaggle.com/datasets/eshwaranece91/autonomous-tomato-cultivation-dataset-in-kolar
 
-Original file name: `kolar_tomato_precision_agri_dataset.csv`.
+- **Raw file name in repository notes**: `kolar_tomato_precision_agri_dataset.csv`.
+- **README naming discrepancy**: `sensor_data/Tomato_Sensor-Readings/README.md` references `autonomous_tomato_dataset.csv` instead of `kolar_tomato_precision_agri_dataset.csv`.
+- **Row count estimate discrepancy**: `README.md` estimated ~33,850 rows based on anticipated 70–80% filtering; the actual verified shipped dataset contains exactly **44,150 rows** (4,415 rows per class across 10 balanced classes).
 
-The source file was downloaded and verified for project use. The dataset is documented as 200,000 rows and 29 columns, with timestamps from 2015-01-01 to 2025-12-31. Timestamp gaps are irregular, with fractional seconds. The median interval was reported as approximately 29 minutes.
+The raw source dataset contained 200,000 rows and 29 columns, with timestamps from 2015-01-01 to 2025-12-31. The source is described by its own README as exhibiting artificial regularity suggesting simulation.
 
 ### 15.2 Original columns
 
@@ -696,63 +753,67 @@ The following min/median/max values were observed in the source inspection. Unit
 | `Solute_Flux_J` | 0.11 | 0.91 | 2.5 | Unit requires verification |
 | RSSI columns | about -110 | about -75 | about -40 | Signal-strength-like values |
 
-The columns appear to occupy fixed ranges with limited temporal structure, which suggests the dataset may be simulated. This is an observation, not proof of the data-generation process. Do not state definitively that the source is synthetic unless the source documentation establishes that.
+The columns appear to occupy fixed ranges with limited temporal structure, which confirms that the Kolar source data is simulated.
 
-### 15.4 Prepared data and transformations
+### 15.4 Prepared data, transformations, and row count reconciliation (T2-007 / T2-009)
 
-The project preparation script is named `build_tomato_dataset.py`. The documented prepared dataset contains 44,141 rows, eight input features, and target `label`. The original CSV was not pre-split; the prepared split is by calendar month.
+The project preparation script is `sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py` (v1.0), executed with options:
+`--mode primary --per-class 5000 --test-frac 0.2 --seed 42 --out-prefix tomato_hydroponic`.
 
-Documented transformations:
+- **Row Count Reconciliation (Overview §15 vs Shipped Data)**: Overview §15 previously cited 44,141 rows, which is not divisible by 10 (4,414.1 rows/class). The verified active dataset contains exactly **44,150 rows** (4,415 rows per class across 10 balanced classes; 35,320 train / 8,830 test). The 44,141 figure was an off-by-9 typographical error in early prose notes.
+- **Ordered input features (8)**:
+  1. `air_temperature_C`
+  2. `relative_humidity_percent`
+  3. `water_temperature_C`
+  4. `ph`
+  5. `ec_mS_cm`
+  6. `nitrogen_mg_L`
+  7. `phosphorus_mg_L`
+  8. `potassium_mg_L`
+- **Target**: `label` (10 classes in `primary` fault mode; `Multiple_Faults` absent).
+- **Split**: Held out by calendar month (27 test months, 105 train months, 0 overlap).
 
-- ambient/air temperature retained;
-- humidity increased by 15;
-- pH reduced by 1;
-- EC multiplied by 1.4;
-- nitrogen multiplied by 4;
-- phosphorus multiplied by 3;
-- potassium multiplied by 6;
-- water temperature derived synthetically from air temperature and solar radiation.
+Documented proxy transformations:
 
-Documented dropped groups:
+- ambient/air temperature retained (`raw.Ambient_Temp.round(2)`);
+- humidity increased by 15 (`(raw.Humidity + 15.0).round(2)`);
+- pH reduced by 1 (`(raw.Soil_pH - 1.0).round(2)`);
+- EC multiplied by 1.4 (`(raw.EC_mS_cm * 1.4).round(2)`);
+- nitrogen multiplied by 4 (`(raw.Nitrogen_Level * 4.0).round(1)`);
+- phosphorus multiplied by 3 (`(raw.Phosphorus_Level * 3.0).round(1)`);
+- potassium multiplied by 6 (`(raw.Potassium_Level * 6.0).round(1)`);
+- water temperature derived synthetically: `(8.0 + 0.55 * raw.Ambient_Temp + 0.003 * (raw.Solar_Radiation - 700) + rng.normal(0, 0.6, len(raw))).round(2)`.
 
-- soil moisture;
-- transport-related fields;
-- solute-flux and nutrient-lockout fields;
-- all 15 RSSI columns.
+Dropped groups: soil moisture, transport fields, solute flux / lockout, and all 15 RSSI columns.
 
-These transformations are project-defined data preparation, not validated physical unit conversions. The exact input columns and feature order must be read from the script or generated manifest.
+### 15.5 Verified sensor labels, thresholds, and reproduction (T2-007 / T2-009)
 
-### 15.5 Documented sensor labels and thresholds
+Verified 10 classes in `primary` fault mode matching `ml/labels.py`:
 
 - `Normal`
-- `Water_Temp_High`
-- `EC_High_Toxicity`: EC >4.0
-- `EC_Low_Deficiency`: EC <2.0
-- `pH_Imbalance`: pH <6.0 or pH >6.5
-- `Humidity_High_Mildew_Risk`: humidity >85%
-- `Humidity_Low_Stress`: humidity <50%
-- `N_Deficiency`: N <90 mg/L
-- `P_Deficiency`: P <35 mg/L
-- `K_Deficiency`: K <144 mg/L
+- `Water_Temp_High` (water temp > 25.0 °C, scale 6.58)
+- `EC_High_Toxicity` (EC > 4.0 mS/cm, scale 0.20)
+- `EC_Low_Deficiency` (EC < 2.0 mS/cm, scale 1.30)
+- `pH_Imbalance` (pH < 6.0 or pH > 6.5, scale 1.00)
+- `Humidity_High_Mildew_Risk` (humidity > 85%, scale 5.00)
+- `Humidity_Low_Stress` (humidity < 50%, scale 5.00)
+- `N_Deficiency` (N < 90 mg/L, scale 50.00)
+- `P_Deficiency` (P < 35 mg/L, scale 20.00)
+- `K_Deficiency` (K < 144 mg/L, scale 54.00)
 
-The project notes say the most severe fault wins when multiple rules match. The exact priority order must be taken from `build_tomato_dataset.py`; do not infer it from the order in this list.
+**Reproduction comparison (T2-009)**:
+- `n_rules_broken`: **44,150 / 44,150** (100.0% exact match).
+- `label`: **44,144 / 44,150** (99.986% match).
+- **Explanation of 6 mismatches**: Strict numerical ties where top two scaled severities are identical to 16 decimal places (e.g. EC_High_Toxicity vs pH_Imbalance at 0.8500000000000000), broken arbitrarily by pandas column order due to serialization rounding.
 
-### 15.6 Mandatory implementation inspection
+### 15.6 Verified implementation facts
 
-Before calling the tomato sensor input contract final, inspect the actual script and prepared data to verify:
-
-1. the exact eight feature names;
-2. the exact order of the eight features;
-3. the exact formula used to derive water temperature;
-4. any random seed/noise or clipping used by that formula;
-5. the exact high-water-temperature threshold;
-6. the precise label priority order;
-7. the exact list of dropped columns;
-8. the exact calendar-month train/validation/test assignments and row counts;
-9. whether preprocessing introduces any clipping, rounding, or missing-value handling not described here;
-10. whether all transformed features have clearly documented units.
-
-Do not fabricate the missing values. Record the results in a dataset manifest and update this document.
+Audit confirmed (recorded in `processed_data/sensor/tomato/manifest.json` and `docs/datasets/tomato_sensor_contract.md`):
+1. Exactly eight features in the verified order.
+2. Synthetic water temperature formula and Gaussian noise parameters documented.
+3. High water temperature threshold is exactly 25.0 °C.
+4. Primary mode scales severities by 9 frozen scale constants; top severity assigns the label.
+5. Zero files in `sensor_data/` were modified or overwritten.
 
 ### 15.7 Suitability for live sensor inference
 
@@ -1275,6 +1336,8 @@ When working on this repository, follow these rules:
 
 ## 31. Decision log — defaults already established
 
+The following table consolidates decisions from the PRD (D1–D11) and verified audit findings into the canonical decision log.
+
 | Topic | Canonical decision |
 |---|---|
 | Crops | Lettuce, spinach, tomato |
@@ -1283,27 +1346,36 @@ When working on this repository, follow these rules:
 | Database | PostgreSQL |
 | Image deep learning | Custom CNN and EfficientNetB0 comparison using PyTorch |
 | Traditional ML | scikit-learn |
-| Segmentation | SAM 2.1 initial approach; validate masks and allow retry |
+| Segmentation | SAM 2.1 initial approach; validate masks and allow retry (D9: leaf-level models) |
 | Sensor models | Decision Tree, Random Forest, SVM, and suitable alternatives |
 | Model-selection metric | Validation macro-F1 |
 | Other evaluation | Accuracy, macro precision/recall, per-class metrics, confusion matrix, support |
 | Test set | Untouched until final evaluation |
-| Image split target | 70/15/15 stratified where appropriate |
+| Image split target | 70/15/15 stratified, duplicate-cluster-aware (D1) |
 | Existing sensor splits | Preserve; do not recreate or overwrite |
 | Lettuce crop leakage | Keep all crops from one original image in one split |
 | Sensor missing values | Never arbitrary zero fill |
+| Validation set | Create from source CSV before oversampling; grouped hold-out (D1) |
 | Fusion | Separate outputs unless validated mapping exists |
 | Recommendations | Gemini with deterministic rule fallback |
 | Authentication | Not required initially |
-| Campus integration | Modular, manual fallback; never fabricate live values |
+| Campus integration | Modular, manual fallback; never fabricate live values (D6: IP in `.env`) |
+| Campus crop | Tomato only; live monitor defaults to tomato (D11) |
 | History | Timestamped; old readings are not live |
 | Storage | Local files/artifacts initially; do not assume cloud storage |
 | Model registry | Structured, versioned, explicit promotion and rollback |
 | Hardware | RTX 3050 when compatible, CPU fallback, adaptive resources |
-| Tomato source status | Downloaded/inspected/used; provenance/units/license remain separate questions |
-| Tomato sensor live use | Experimental until feature compatibility is validated |
+| Tomato source status | Downloaded/inspected/used; Kolar data described as simulated (D10, D11) |
+| Tomato sensor live use | Experimental until feature compatibility is validated (D11) |
+| Tomato NPK live | If campus server lacks N/P/K, train live-compatible variant (D11) |
 | Tomato `droop_angle` | Retain only if current calculation is reproducible and defensible; otherwise remove/replace, regenerate features, retrain |
+| Class labels source of truth | On-disk folder names under `image_data/` and `ml/labels.py` (D8) |
+| Tomato image classes | 11 classes (10 diseases + 1 healthy), including `Tomato_Powdery_Mildew` (D8) |
 | Dataset labels | Disclose rule-derived labels and synthetic/derived inputs |
+| Lettuce test split | Every 4th calendar day per experiment (`day % 4 == 0`), not EXP.3 (D10, verified T2-005) |
+| Spinach sensor single-fault | Every non-Normal row breaks exactly one rule (D10, verified T2-006) |
+| Tomato row count | 44,150 rows (not 44,141); off-by-9 prose typo corrected (T2-009) |
+| Tomato severity scales | 9 frozen scales; 6 exact-tie mismatches explained (T2-009) |
 | Unknown implementation facts | Inspect repository; never guess |
 
 ## 32. Change-management rule

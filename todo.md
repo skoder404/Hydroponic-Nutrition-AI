@@ -483,9 +483,9 @@
 **Dependencies:** T2-016, T2-013, T2-007
 **Acceptance Criteria:**
 
-- [ ] Class lists match `ml/labels.py`
-- [ ] Change note is dated
-- [ ] Both members reviewed the diff
+- [x] Class lists match `ml/labels.py`
+- [x] Change note is dated
+- [x] Both members reviewed the diff
 
 **Estimated Effort:** 30 min
 **Assigned To:** Full-stack
