@@ -535,9 +535,9 @@
 **Dependencies:** T1-011, T1-009
 **Acceptance Criteria:**
 
-- [ ] `alembic upgrade head` creates all tables
-- [ ] Downgrade works
-- [ ] `source` rejects values outside the allowed set
+- [x] `alembic upgrade head` creates all tables
+- [x] Downgrade works
+- [x] `source` rejects values outside the allowed set
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend

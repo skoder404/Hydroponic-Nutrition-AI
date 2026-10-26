@@ -3,8 +3,8 @@
   "dataset_key": "spinach_sensor",
   "crop": "spinach",
   "modality": "sensor",
-  "generated_at": "2026-10-26T23:15:15+05:30",
-  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "generated_at": "2026-10-26T23:39:21+05:30",
+  "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
   "provenance": {
     "source_name": "USDA Ag Data Commons & Journal of Agriculture and Food Research (Meng et al., 2025)",
     "source_url": "https://doi.org/10.15482/USDA.ADC/33383695",
@@ -107,7 +107,7 @@
   },
   "preprocessing": {
     "script": "sensor_data/Spinach_Sensor-Readings/generate_7class_dataset.py and scripts/make_sensor_validation.py spinach",
-    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
     "cleaning_steps": [
       "Subsampled 1,400 rows structured into balanced 7 classes (200 rows per class)",
       "Each non-normal sample breaks exactly one rule and keeps every other parameter in healthy band",

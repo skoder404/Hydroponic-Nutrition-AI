@@ -3,8 +3,8 @@
   "dataset_key": "spinach_image",
   "crop": "spinach",
   "modality": "image",
-  "generated_at": "2026-10-26T23:15:15+05:30",
-  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "generated_at": "2026-10-26T23:39:21+05:30",
+  "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
   "provenance": {
     "source_name": "Local Spinach Leaf Dataset (Mendeley Data skf6w2s2h2.3) & ymtzd8cf6x.1",
     "source_url": "https://data.mendeley.com/datasets/skf6w2s2h2/3",
@@ -100,7 +100,7 @@
   },
   "preprocessing": {
     "script": "scripts/audit_images.py and scripts/make_image_splits.py",
-    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
     "cleaning_steps": [
       "Audited and verified all 18,302 images decode cleanly as RGB",
       "Extracted perceptual dHash fingerprints",

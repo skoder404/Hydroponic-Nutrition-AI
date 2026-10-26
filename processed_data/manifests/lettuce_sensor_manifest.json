@@ -3,8 +3,8 @@
   "dataset_key": "lettuce_sensor",
   "crop": "lettuce",
   "modality": "sensor",
-  "generated_at": "2026-10-26T23:15:15+05:30",
-  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "generated_at": "2026-10-26T23:39:21+05:30",
+  "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
   "provenance": {
     "source_name": "HydroGrowNet Batavia Lettuce Sensor Dataset (Mendeley Data)",
     "source_url": "https://doi.org/10.17632/g6cm3v3wdp.5",
@@ -119,7 +119,7 @@
   },
   "preprocessing": {
     "script": "sensor_data/Lettuce_Sensor-Readings/build_lettuce_dataset and scripts/make_sensor_validation.py lettuce",
-    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
     "cleaning_steps": [
       "Fixed day-month transposed dates (e.g. 2024-10-03 for 10 March 2024)",
       "Corrected inconsistent column ordering in EXP.2 14:00 reading blocks",

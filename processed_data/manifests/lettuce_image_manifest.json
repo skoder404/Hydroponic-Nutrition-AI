@@ -3,8 +3,8 @@
   "dataset_key": "lettuce_image",
   "crop": "lettuce",
   "modality": "image",
-  "generated_at": "2026-10-26T23:15:15+05:30",
-  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "generated_at": "2026-10-26T23:39:21+05:30",
+  "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
   "provenance": {
     "source_name": "Kaggle Lettuce NPK Dataset",
     "source_url": "https://www.kaggle.com/datasets/",
@@ -92,7 +92,7 @@
   },
   "preprocessing": {
     "script": "scripts/audit_images.py and scripts/make_image_splits.py",
-    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
     "cleaning_steps": [
       "Identified and purged 266 pre-augmented duplicate files from raw archive",
       "Identified and purged 7 exact SHA-256 duplicate files",

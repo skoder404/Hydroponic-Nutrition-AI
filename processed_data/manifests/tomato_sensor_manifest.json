@@ -3,8 +3,8 @@
   "dataset_key": "tomato_sensor",
   "crop": "tomato",
   "modality": "sensor",
-  "generated_at": "2026-10-26T23:15:15+05:30",
-  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "generated_at": "2026-10-26T23:39:21+05:30",
+  "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
   "provenance": {
     "source_name": "Autonomous Tomato Cultivation Dataset in Kolar (Kaggle)",
     "source_url": "https://www.kaggle.com/datasets/eshwaranece91/autonomous-tomato-cultivation-dataset-in-kolar",
@@ -122,7 +122,7 @@
   },
   "preprocessing": {
     "script": "sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py and scripts/make_sensor_validation.py tomato",
-    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "git_commit": "4d3b6569c7437baf6d49e2d308e0e11e97e52fdd",
     "cleaning_steps": [
       "Dropped 15 precision-agriculture land features (soil moisture, RSSI wireless mesh columns)",
       "Applied calibrated physical proxy transforms to map soil metrics into hydroponic solution ranges",
