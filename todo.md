@@ -509,9 +509,9 @@
 **Dependencies:** T2-010, T2-011, T2-012, T2-015
 **Acceptance Criteria:**
 
-- [ ] Altering a split file makes verification fail
-- [ ] Guard is invoked by the training entry points
-- [ ] Hash file is committed
+- [x] Altering a split file makes verification fail
+- [x] Guard is invoked by the training entry points
+- [x] Hash file is committed
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

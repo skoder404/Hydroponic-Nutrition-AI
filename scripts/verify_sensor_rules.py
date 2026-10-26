@@ -32,6 +32,7 @@ if str(ROOT) not in sys.path:
 
 import pandas as pd
 
+from ml.evaluation.split_guard import assert_splits_intact
 from ml.sensor_models.rules import (
     TOMATO_SEVERITY_SCALES,
     evaluate_crop_rules_df,
@@ -200,7 +201,13 @@ def main() -> int:
     print("SENSOR RULES REFERENCE ORACLE VERIFICATION (T4-016)")
     print("=" * 70)
 
+    # 0. Split Integrity Hash Guard (T2-019)
+    print("\n--- 0. Split Integrity Hash Guard (T2-019) ---")
+    assert_splits_intact(modality="sensor")
+    print("✅ Split hash guard verified: sensor splits and manifests are unmodified.")
+
     # 1. Sourced tomato scales check
+
     print("\n--- 1. Tomato Severity Scales Verification ---")
     scale_errs = verify_tomato_scales()
     if scale_errs:

@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "description": "Cryptographic SHA-256 checksums of all immutable dataset splits (Overview \u00a79.2).",
+  "total_files": 19,
+  "files": {
+    "processed_data/sensor/lettuce/manifest.json": "321654c096226bfac2cc7810b182b9d3f968cc01b967bd23a314d160b3cd8584",
+    "processed_data/sensor/lettuce/test.csv": "9352e248bb16845d3df367b127916957a50fe86a9f824c456483b740a8188484",
+    "processed_data/sensor/lettuce/train.csv": "df1dfa9ed322782fbdc44447ef704313317041efb97bf1fb90cf8e136fef661c",
+    "processed_data/sensor/lettuce/val.csv": "5057e6c497d8cf5f82b2fa1507655916800e6eaa90b13eb86f57ed3cc4f60bd4",
+    "processed_data/sensor/spinach/manifest.json": "547e54f9b92841aac5a88caa245c8a5e3a76cba6b17239c46d1ae808baaf4fd7",
+    "processed_data/sensor/spinach/test.csv": "77ddd5f826bc87b84703e5c707a4633007a19b4d8677e6a2ec8f44521ee39e33",
+    "processed_data/sensor/spinach/train.csv": "f23349c832280c2f3d82b9a098fa6806641b54290c10793002d5911a69d50505",
+    "processed_data/sensor/spinach/val.csv": "0bd73dfbc7728d8ebf4ce3b0f8cdcc727406e3da4fabc1a7c9dffef530a277a8",
+    "processed_data/sensor/tomato/manifest.json": "d2a72bc8582df2859a73f27b01338af63338af92b9adda54934d00c042a24668",
+    "processed_data/sensor/tomato/test.csv": "98ddcac3c52c190adc87058d440830087ae4279785b49107e9e61c1c0a853c1a",
+    "processed_data/sensor/tomato/train.csv": "8419f41490d1c20eae6f8d729551885d38282aff24f34b1c990fdea50dc1096e",
+    "processed_data/sensor/tomato/val.csv": "99bbe320dc082afe9e5cb31810a36974327e74d6a62c8d310e8123fbf75b42ad",
+    "processed_data/splits/image_splits_lettuce.csv": "73f230cc7a6b879df4cd75b093b1195a9b2dd505bf544a71fe354e4fde381362",
+    "processed_data/splits/image_splits_lettuce.json": "9078af7c8c8adcd9d79ea1560d5b3c60f912f3133f3bc71ba0bbd92cc6ef5037",
+    "processed_data/splits/image_splits_manifest.json": "ed0151c54ee3a772ed353b5f76027eea9de45be4c731b2260b478aa61a77589e",
+    "processed_data/splits/image_splits_spinach.csv": "b43b89d408ea7e4a33580d215d1ff2e3440b6d7765f989715798f520bedc7700",
+    "processed_data/splits/image_splits_spinach.json": "219d8e0db59c5157c850e5b4469d9462973df6e4194436796ef24d8870def6e6",
+    "processed_data/splits/image_splits_tomato.csv": "6acdc217900fcaae53da0b37b734bb2093bf509be12cca251e29667f9ee05351",
+    "processed_data/splits/image_splits_tomato.json": "5a2abcb40de807d8def6ae9c74cc4a6fb520892bb6d7a81192f32fe80a0eee1d"
+  }
+}
