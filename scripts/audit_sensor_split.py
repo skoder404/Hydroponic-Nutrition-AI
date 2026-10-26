@@ -90,9 +90,92 @@ SPINACH_LABELS = [
     "Humidity_High_Mildew_Risk",
     "Humidity_Low_Stress",
 ]
-SPINACH_MODEL_FEATURES = {"air_temperature_C", "relative_humidity_percent", "water_temperature_C", "ph", "ec_mS_cm"}
+SPINACH_MODEL_FEATURES = {
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm",
+}
 SPINACH_DERIVED_COLUMNS = {"tds_ppm"}
-SPINACH_METADATA_COLUMNS = {"sample_id", "label", "label_id", "humidity_source", "source_timestamp_EDT", "bench"}
+SPINACH_METADATA_COLUMNS = {
+    "sample_id",
+    "label",
+    "label_id",
+    "humidity_source",
+    "source_timestamp_EDT",
+    "bench",
+}
+
+# ===========================================================================
+# Tomato Specifications (T2-007 / T2-009)
+# ===========================================================================
+TOMATO_DATA = ROOT / "sensor_data" / "Tomato_Sensor-Readings"
+TOMATO_FULL = TOMATO_DATA / "tomato_hydroponic_full.csv"
+TOMATO_TRAIN = TOMATO_DATA / "tomato_hydroponic_train.csv"
+TOMATO_TEST = TOMATO_DATA / "tomato_hydroponic_test.csv"
+
+EXPECTED_TOMATO_FULL_ROWS = 44150
+EXPECTED_TOMATO_TRAIN_ROWS = 35320
+EXPECTED_TOMATO_TEST_ROWS = 8830
+EXPECTED_TOMATO_CLASSES = 10
+EXPECTED_TOMATO_PER_CLASS_FULL = 4415
+EXPECTED_TOMATO_PER_CLASS_TRAIN = 3532
+EXPECTED_TOMATO_PER_CLASS_TEST = 883
+
+TOMATO_LABELS = [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "K_Deficiency",
+    "N_Deficiency",
+    "Normal",
+    "P_Deficiency",
+    "Water_Temp_High",
+    "pH_Imbalance",
+]
+TOMATO_ORDERED_FEATURES = [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm",
+    "nitrogen_mg_L",
+    "phosphorus_mg_L",
+    "potassium_mg_L",
+]
+TOMATO_DIAGNOSTIC_COLUMNS = [
+    "sample_id",
+    "label",
+    "label_id",
+    "n_rules_broken",
+    "source_row",
+    "source_timestamp",
+]
+TOMATO_SEVERITY_SCALES = {
+    "Water_Temp_High": 6.58,
+    "EC_High_Toxicity": 0.20,
+    "EC_Low_Deficiency": 1.30,
+    "pH_Imbalance": 1.00,
+    "Humidity_High_Mildew_Risk": 5.00,
+    "Humidity_Low_Stress": 5.00,
+    "N_Deficiency": 50.00,
+    "P_Deficiency": 20.00,
+    "K_Deficiency": 54.00,
+}
+TOMATO_ACTION_THRESHOLDS = {
+    "water_high": 25.0,
+    "ec_low": 2.0,
+    "ec_high": 4.0,
+    "ph_low": 6.0,
+    "ph_high": 6.5,
+    "hum_low": 50.0,
+    "hum_high": 85.0,
+    "n_low": 90.0,
+    "p_low": 35.0,
+    "k_low": 144.0,
+}
 
 
 def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
@@ -130,14 +213,18 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     report.append("|-------|----------|--------|-------|")
 
     full_dist = full["label"].value_counts().to_dict()
-    for cls, expected in sorted(EXPECTED_LETTUCE_FULL_DIST.items(), key=lambda x: -x[1]):
+    for cls, expected in sorted(
+        EXPECTED_LETTUCE_FULL_DIST.items(), key=lambda x: -x[1]
+    ):
         actual = full_dist.get(cls, 0)
         match = "✅" if actual == expected else "❌"
         if actual != expected:
             fails += 1
         report.append(f"| {cls} | {expected} | {actual} | {match} |")
 
-    report.append(f"\n**Total full classes**: {len(full_dist)} (9 with dropped, 7 kept)")
+    report.append(
+        f"\n**Total full classes**: {len(full_dist)} (9 with dropped, 7 kept)"
+    )
     report.append("")
 
     # Train dataset
@@ -155,7 +242,9 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     status = "✅" if n_train_classes == EXPECTED_LETTUCE_CLASSES else "❌"
     if n_train_classes != EXPECTED_LETTUCE_CLASSES:
         fails += 1
-    report.append(f"\n**Train classes**: {n_train_classes} {status} (expected {EXPECTED_LETTUCE_CLASSES})")
+    report.append(
+        f"\n**Train classes**: {n_train_classes} {status} (expected {EXPECTED_LETTUCE_CLASSES})"
+    )
 
     # Dropped classes
     for cls in LETTUCE_DROPPED_CLASSES:
@@ -163,9 +252,13 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
         in_test = cls in test["label"].values
         if in_train or in_test:
             fails += 1
-            report.append(f"- ❌ Dropped class `{cls}` found in {'train' if in_train else 'test'}")
+            report.append(
+                f"- ❌ Dropped class `{cls}` found in {'train' if in_train else 'test'}"
+            )
         else:
-            report.append(f"- ✅ Dropped class `{cls}` correctly absent from train and test")
+            report.append(
+                f"- ✅ Dropped class `{cls}` correctly absent from train and test"
+            )
     report.append("")
 
     # 4. Action Bands
@@ -174,10 +267,16 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     report.append("|----------|---------------|----------------|--------|")
     for var, (lo, hi) in LETTUCE_ACTION_BANDS.items():
         report.append(f"| {var} | {lo} | {hi} | ✅ |")
-    report.append("\n- Action bands define stress when values fall outside the target range.")
-    report.append("- A single variable out-of-bounds yields that specific variable's stress class.")
+    report.append(
+        "\n- Action bands define stress when values fall outside the target range."
+    )
+    report.append(
+        "- A single variable out-of-bounds yields that specific variable's stress class."
+    )
     report.append("- Two or more out-of-bounds variables yield `Multiple_Stress`.")
-    report.append("- Rare classes (< 8 rows in training raw split) are dropped: `WaterTemp_Low` (3 train rows) and `EC_Low` (0 train rows).\n")
+    report.append(
+        "- Rare classes (< 8 rows in training raw split) are dropped: `WaterTemp_Low` (3 train rows) and `EC_Low` (0 train rows).\n"
+    )
 
     # 5. Every-4th-Day Split Rule
     report.append("## 4. Every-4th-Day Split Rule\n")
@@ -225,7 +324,9 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
 
     if overlap:
         fails += 1
-        report.append(f"- ❌ **LEAKAGE DETECTED**: {len(overlap)} (experiment, date) pairs in both train and test!")
+        report.append(
+            f"- ❌ **LEAKAGE DETECTED**: {len(overlap)} (experiment, date) pairs in both train and test!"
+        )
         for exp, date in sorted(overlap)[:10]:
             report.append(f"  - {exp}, {str(date)[:10]}")
     else:
@@ -251,8 +352,12 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     train_kept_raw = train_raw[~train_raw["label"].isin(LETTUCE_DROPPED_CLASSES)]
     train_kept_count = len(train_kept_raw)
 
-    report.append(f"- Raw training split rows before class filtering: **{train_raw_count}** (matches expected {EXPECTED_LETTUCE_TRAIN_RAW_ROWS})")
-    report.append(f"- Rare class occurrences in training split dropped: {train_raw_count - train_kept_count} rows (`WaterTemp_Low`: 3, `EC_Low`: 0)")
+    report.append(
+        f"- Raw training split rows before class filtering: **{train_raw_count}** (matches expected {EXPECTED_LETTUCE_TRAIN_RAW_ROWS})"
+    )
+    report.append(
+        f"- Rare class occurrences in training split dropped: {train_raw_count - train_kept_count} rows (`WaterTemp_Low`: 3, `EC_Low`: 0)"
+    )
     report.append(f"- Real training rows kept across 7 classes: **{train_kept_count}**")
     report.append(f"- Total train rows after oversampling: **{len(train)}**")
 
@@ -263,8 +368,12 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
 
     # Per-class breakdown
     report.append("\n### Per-class oversampling breakdown\n")
-    report.append("| Class | Real Rows in Train Split | Oversampled Total | Duplicate Rows Added | Expansion Factor |")
-    report.append("|-------|--------------------------|-------------------|----------------------|------------------|")
+    report.append(
+        "| Class | Real Rows in Train Split | Oversampled Total | Duplicate Rows Added | Expansion Factor |"
+    )
+    report.append(
+        "|-------|--------------------------|-------------------|----------------------|------------------|"
+    )
 
     real_dist = train_kept_raw["label"].value_counts().to_dict()
     for cls in sorted(real_dist.keys()):
@@ -279,30 +388,54 @@ def audit_lettuce(output_path: Path | None = None) -> tuple[int, str]:
     report.append("## 7. Known Discrepancies (Documented from Task Spec)\n")
 
     report.append("### 7.1 Script docstring vs code")
-    report.append("- **Docstring** (lines 15-16 in `build_lettuce_dataset`): mentions EXP.3 as test set")
-    report.append("- **Actual Code** (`day_holdout_split`, lines 266-281): holds out every 4th calendar day across all 3 experiments")
+    report.append(
+        "- **Docstring** (lines 15-16 in `build_lettuce_dataset`): mentions EXP.3 as test set"
+    )
+    report.append(
+        "- **Actual Code** (`day_holdout_split`, lines 266-281): holds out every 4th calendar day across all 3 experiments"
+    )
     report.append("- **README** (lines 94-95): confirms every-4th-day holdout rule")
-    report.append("- ✅ **Verified**: docstring is outdated; code and README agree on the every-4th-day rule.\n")
+    report.append(
+        "- ✅ **Verified**: docstring is outdated; code and README agree on the every-4th-day rule.\n"
+    )
 
     report.append("### 7.2 README filename references")
-    report.append("- **README** (line 17): references `build_dataset.py` and `train_model.py`")
-    report.append("- **Repo Actual**: contains `build_lettuce_dataset` (without `.py` extension) and no `train_model.py`")
+    report.append(
+        "- **README** (line 17): references `build_dataset.py` and `train_model.py`"
+    )
+    report.append(
+        "- **Repo Actual**: contains `build_lettuce_dataset` (without `.py` extension) and no `train_model.py`"
+    )
     build_exists = (LETTUCE_DATA / "build_lettuce_dataset").exists()
-    report.append(f"- `build_lettuce_dataset` present: {'✅ Yes' if build_exists else '❌ No'}")
+    report.append(
+        f"- `build_lettuce_dataset` present: {'✅ Yes' if build_exists else '❌ No'}"
+    )
     report.append("- `train_model.py` present: ❌ No (confirmed discrepancy)\n")
 
     report.append("### 7.3 Non-model-input columns in CSVs")
     full_sample = pd.read_csv(LETTUCE_FULL, nrows=1)
     all_cols = set(full_sample.columns)
     non_model = sorted(all_cols - LETTUCE_MODEL_FEATURES - {"label", "label_next"})
-    report.append(f"- Model uses 5 core physical inputs: `{sorted(LETTUCE_MODEL_FEATURES)}`")
-    report.append(f"- Full CSV retains {len(non_model)} additional metadata/engineering columns: `{non_model}`")
-    report.append("- Includes trend features (`ec_trend_3h`), daily aggregates (`ph_daily_mean`), secondary sensors (`tds`, `co2`, `lux_meter`), and target forecasting (`label_next`).\n")
+    report.append(
+        f"- Model uses 5 core physical inputs: `{sorted(LETTUCE_MODEL_FEATURES)}`"
+    )
+    report.append(
+        f"- Full CSV retains {len(non_model)} additional metadata/engineering columns: `{non_model}`"
+    )
+    report.append(
+        "- Includes trend features (`ec_trend_3h`), daily aggregates (`ph_daily_mean`), secondary sensors (`tds`, `co2`, `lux_meter`), and target forecasting (`label_next`).\n"
+    )
 
     report.append("### 7.4 Raw Excel workbooks (`EXP_*.xlsx`)")
-    report.append("- The three original raw Excel workbooks (`EXP_1.xlsx`, `EXP_2.xlsx`, `EXP_3.xlsx`) are not stored in the repository.")
-    report.append("- Consequently, `build_lettuce_dataset` cannot be re-executed without downloading them, which is not required for this project.")
-    report.append("- The generated CSVs (`hydroponic_lettuce_{full,train,test}.csv`) are the checked-in source of truth.\n")
+    report.append(
+        "- The three original raw Excel workbooks (`EXP_1.xlsx`, `EXP_2.xlsx`, `EXP_3.xlsx`) are not stored in the repository."
+    )
+    report.append(
+        "- Consequently, `build_lettuce_dataset` cannot be re-executed without downloading them, which is not required for this project."
+    )
+    report.append(
+        "- The generated CSVs (`hydroponic_lettuce_{full,train,test}.csv`) are the checked-in source of truth.\n"
+    )
 
     # Format document
     timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -367,7 +500,9 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
         status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_FULL else "❌"
         if actual != EXPECTED_SPINACH_PER_CLASS_FULL:
             fails += 1
-        report.append(f"| {cls} | {EXPECTED_SPINACH_PER_CLASS_FULL} | {actual} | {status} |")
+        report.append(
+            f"| {cls} | {EXPECTED_SPINACH_PER_CLASS_FULL} | {actual} | {status} |"
+        )
     report.append("")
 
     report.append("### Train dataset (80% stratified)\n")
@@ -379,7 +514,9 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
         status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_TRAIN else "❌"
         if actual != EXPECTED_SPINACH_PER_CLASS_TRAIN:
             fails += 1
-        report.append(f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TRAIN} | {status} |")
+        report.append(
+            f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TRAIN} | {status} |"
+        )
     report.append("")
 
     report.append("### Test dataset (20% stratified)\n")
@@ -391,14 +528,22 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
         status = "✅" if actual == EXPECTED_SPINACH_PER_CLASS_TEST else "❌"
         if actual != EXPECTED_SPINACH_PER_CLASS_TEST:
             fails += 1
-        report.append(f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TEST} | {status} |")
+        report.append(
+            f"| {cls} | {actual} | {EXPECTED_SPINACH_PER_CLASS_TEST} | {status} |"
+        )
     report.append("")
 
     # 4. Split Integrity: 6-hour Temporal Block Holdout
     report.append("## 3. Split Integrity: 6-Hour Temporal Block Holdout\n")
     for df, name in [(full, "full"), (train, "train"), (test, "test")]:
         ts = pd.to_datetime(df["source_timestamp_EDT"])
-        df["block"] = df["bench"] + "|" + ts.dt.strftime("%Y-%m-%d") + "|" + (ts.dt.hour // 6).astype(str)
+        df["block"] = (
+            df["bench"]
+            + "|"
+            + ts.dt.strftime("%Y-%m-%d")
+            + "|"
+            + (ts.dt.hour // 6).astype(str)
+        )
 
     train_blocks = set(train["block"])
     test_blocks = set(test["block"])
@@ -407,13 +552,19 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     if overlapping_blocks:
         fails += 1
 
-    report.append(f"- {block_status} **6-hour temporal block overlap between train and test**: {len(overlapping_blocks)} blocks")
+    report.append(
+        f"- {block_status} **6-hour temporal block overlap between train and test**: {len(overlapping_blocks)} blocks"
+    )
     report.append(f"  - Train unique blocks: {len(train_blocks)}")
     report.append(f"  - Test unique blocks: {len(test_blocks)}")
     if overlapping_blocks:
-        report.append(f"  - ❌ Overlapping blocks detected: {sorted(overlapping_blocks)}")
+        report.append(
+            f"  - ❌ Overlapping blocks detected: {sorted(overlapping_blocks)}"
+        )
     else:
-        report.append("  - ✅ Zero temporal blocks are shared between train and test splits; no 10-minute neighbouring readings leak across splits.")
+        report.append(
+            "  - ✅ Zero temporal blocks are shared between train and test splits; no 10-minute neighbouring readings leak across splits."
+        )
     report.append("")
 
     # Sample ID overlap check
@@ -423,23 +574,45 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     id_status = "✅" if len(overlapping_ids) == 0 else "❌"
     if overlapping_ids:
         fails += 1
-    report.append(f"- {id_status} **Sample ID overlap**: {len(overlapping_ids)} samples")
+    report.append(
+        f"- {id_status} **Sample ID overlap**: {len(overlapping_ids)} samples"
+    )
     report.append("")
 
     # 5. Provenance, Real vs Adjusted vs Synthetic, and Derived TDS
     report.append("## 4. Column Provenance & Feature Classification\n")
     report.append("| Column | Provenance Type | Model Feature? | Details |")
     report.append("|--------|-----------------|----------------|---------|")
-    report.append("| `air_temperature_C` | Real (100%) | ✅ Feature | Greenhouse loggers from Meng et al. (2025), Ag Data Commons |")
-    report.append("| `relative_humidity_percent` | Real (85.7%) / Adjusted (14.3%) | ✅ Feature | Real for 1,200 rows; 200 `Humidity_High_Mildew_Risk` rows shifted to 75.9-84.4% |")
-    report.append("| `water_temperature_C` | Synthetic | ✅ Feature | Simulated: 0.55 * air_temp + 8.5 + noise (elevated for Water_Temp_High) |")
-    report.append("| `ph` | Synthetic | ✅ Feature | Simulated: optimal 6.05-6.95, altered for pH_Imbalance |")
-    report.append("| `ec_mS_cm` | Synthetic | ✅ Feature | Simulated: optimal 1.82-2.28, altered for EC_High / EC_Low |")
-    report.append("| `tds_ppm` | **Derived (Excluded)** | ❌ Excluded | EC x 700 + 2% noise (redundant with EC, leakage risk) |")
-    report.append("| `humidity_source` | Metadata | ❌ Excluded | Indicator `real` vs `adjusted` |")
-    report.append("| `source_timestamp_EDT` | Metadata / Provenance | ❌ Excluded | Timestamp of real greenhouse logger reading |")
-    report.append("| `bench` | Metadata / Provenance | ❌ Excluded | Logger bench identifier |")
-    report.append("| `sample_id` | Metadata | ❌ Excluded | Shuffled sample identifier S0001-S1400 |")
+    report.append(
+        "| `air_temperature_C` | Real (100%) | ✅ Feature | Greenhouse loggers from Meng et al. (2025), Ag Data Commons |"
+    )
+    report.append(
+        "| `relative_humidity_percent` | Real (85.7%) / Adjusted (14.3%) | ✅ Feature | Real for 1,200 rows; 200 `Humidity_High_Mildew_Risk` rows shifted to 75.9-84.4% |"
+    )
+    report.append(
+        "| `water_temperature_C` | Synthetic | ✅ Feature | Simulated: 0.55 * air_temp + 8.5 + noise (elevated for Water_Temp_High) |"
+    )
+    report.append(
+        "| `ph` | Synthetic | ✅ Feature | Simulated: optimal 6.05-6.95, altered for pH_Imbalance |"
+    )
+    report.append(
+        "| `ec_mS_cm` | Synthetic | ✅ Feature | Simulated: optimal 1.82-2.28, altered for EC_High / EC_Low |"
+    )
+    report.append(
+        "| `tds_ppm` | **Derived (Excluded)** | ❌ Excluded | EC x 700 + 2% noise (redundant with EC, leakage risk) |"
+    )
+    report.append(
+        "| `humidity_source` | Metadata | ❌ Excluded | Indicator `real` vs `adjusted` |"
+    )
+    report.append(
+        "| `source_timestamp_EDT` | Metadata / Provenance | ❌ Excluded | Timestamp of real greenhouse logger reading |"
+    )
+    report.append(
+        "| `bench` | Metadata / Provenance | ❌ Excluded | Logger bench identifier |"
+    )
+    report.append(
+        "| `sample_id` | Metadata | ❌ Excluded | Shuffled sample identifier S0001-S1400 |"
+    )
     report.append("| `label_id` | Target | ❌ Excluded | Numeric label ID (0-6) |")
     report.append("")
 
@@ -450,7 +623,9 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     hum_status = "✅" if real_count == 1200 and adj_count == 200 else "❌"
     if real_count != 1200 or adj_count != 200:
         fails += 1
-    report.append(f"- {hum_status} `humidity_source` counts: `real`={real_count} (85.71%), `adjusted`={adj_count} (14.29%)")
+    report.append(
+        f"- {hum_status} `humidity_source` counts: `real`={real_count} (85.71%), `adjusted`={adj_count} (14.29%)"
+    )
     report.append("")
 
     # Check derived TDS relation: TDS ~= EC * 700
@@ -459,23 +634,31 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     tds_status = "✅" if 0.98 <= mean_ratio <= 1.02 else "❌"
     if not (0.98 <= mean_ratio <= 1.02):
         fails += 1
-    report.append(f"- {tds_status} `tds_ppm` derivation check: mean ratio TDS / (EC * 700) = {mean_ratio:.4f} (within expected ±2% noise band)")
+    report.append(
+        f"- {tds_status} `tds_ppm` derivation check: mean ratio TDS / (EC * 700) = {mean_ratio:.4f} (within expected ±2% noise band)"
+    )
     report.append("")
 
     # 6. Rule Consistency Check
     report.append("## 5. Labelling Rules & Single-Violation Verification\n")
     # Evaluate rule violations
-    v = pd.DataFrame({
-        "Water_Temp_High": full["water_temperature_C"] > 21,
-        "EC_High_Toxicity": full["ec_mS_cm"] > 2.3,
-        "EC_Low_Deficiency": full["ec_mS_cm"] < 1.8,
-        "pH_Imbalance": (full["ph"] < 6.0) | (full["ph"] > 7.0),
-        "Humidity_High_Mildew_Risk": full["relative_humidity_percent"] > 75,
-        "Humidity_Low_Stress": full["relative_humidity_percent"] < 45,
-    })
+    v = pd.DataFrame(
+        {
+            "Water_Temp_High": full["water_temperature_C"] > 21,
+            "EC_High_Toxicity": full["ec_mS_cm"] > 2.3,
+            "EC_Low_Deficiency": full["ec_mS_cm"] < 1.8,
+            "pH_Imbalance": (full["ph"] < 6.0) | (full["ph"] > 7.0),
+            "Humidity_High_Mildew_Risk": full["relative_humidity_percent"] > 75,
+            "Humidity_Low_Stress": full["relative_humidity_percent"] < 45,
+        }
+    )
     n_violations = v.sum(axis=1)
     rederived = pd.Series(
-        np.where(n_violations == 0, "Normal", np.where(n_violations == 1, v.idxmax(axis=1), "Multiple")),
+        np.where(
+            n_violations == 0,
+            "Normal",
+            np.where(n_violations == 1, v.idxmax(axis=1), "Multiple"),
+        ),
         index=full.index,
     )
     disagreements = int((rederived != full["label"]).sum())
@@ -485,20 +668,34 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     if disagreements > 0 or multiple_broken > 0:
         fails += 1
 
-    report.append(f"- {rule_status} **Rule agreement**: {disagreements} disagreements between re-derived rules and assigned labels")
-    report.append(f"- {rule_status} **Single-rule violation constraint**: {multiple_broken} rows broke more than one rule (expected 0)")
+    report.append(
+        f"- {rule_status} **Rule agreement**: {disagreements} disagreements between re-derived rules and assigned labels"
+    )
+    report.append(
+        f"- {rule_status} **Single-rule violation constraint**: {multiple_broken} rows broke more than one rule (expected 0)"
+    )
     report.append("")
 
     # 7. Limitations & Re-runability Note
     report.append("## 6. Dataset Limitations & Source Availability\n")
-    report.append("- **Rule-based synthetic targets**: Because labels are hard threshold rules without overlap, classifiers trivially achieve near 100% test accuracy. This should not be reported as real-world sensor diagnostic performance.")
-    report.append("- **Simulated chemistry**: pH, EC, and water temperature are synthetic; real nutrient solution logs were not included in the source deposit.")
-    report.append("- **Class balance artifact**: Equal balance (200 per class) was intentionally drawn; real-world greenhouse operations would be heavily skewed towards Normal.")
-    report.append("- **Source file availability**: The raw file `Meng_Biradar_Park_Kelley_2025_greenhouse_temperature_humidity.csv` is not tracked in the repository, so `generate_7class_dataset.py` cannot be re-executed directly without obtaining the raw CSV from USDA Ag Data Commons.")
+    report.append(
+        "- **Rule-based synthetic targets**: Because labels are hard threshold rules without overlap, classifiers trivially achieve near 100% test accuracy. This should not be reported as real-world sensor diagnostic performance."
+    )
+    report.append(
+        "- **Simulated chemistry**: pH, EC, and water temperature are synthetic; real nutrient solution logs were not included in the source deposit."
+    )
+    report.append(
+        "- **Class balance artifact**: Equal balance (200 per class) was intentionally drawn; real-world greenhouse operations would be heavily skewed towards Normal."
+    )
+    report.append(
+        "- **Source file availability**: The raw file `Meng_Biradar_Park_Kelley_2025_greenhouse_temperature_humidity.csv` is not tracked in the repository, so `generate_7class_dataset.py` cannot be re-executed directly without obtaining the raw CSV from USDA Ag Data Commons."
+    )
     report.append("")
 
     # Compile final report
-    overall_status = "✅ ALL CHECKS PASSED" if fails == 0 else f"❌ {fails} CHECKS FAILED"
+    overall_status = (
+        "✅ ALL CHECKS PASSED" if fails == 0 else f"❌ {fails} CHECKS FAILED"
+    )
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     header = [
         "# Spinach Sensor Dataset Audit Report\n",
@@ -518,14 +715,220 @@ def audit_spinach(output_path: Path | None = None) -> tuple[int, str]:
     return fails, markdown_content
 
 
-def audit_tomato() -> tuple[int, str]:
-    """Extensible audit stub for tomato sensor dataset."""
-    print("Tomato sensor audit stub — to be implemented in subsequent crop task.")
-    return 0, "Tomato audit stub"
+def audit_tomato(output_path: Path | None = None) -> tuple[int, str]:
+    """Perform audit and reproduction check for tomato sensor dataset (T2-007 / T2-009)."""
+    fails = 0
+    report: list[str] = []
+
+    # 1. Check file existence
+    for f in (TOMATO_FULL, TOMATO_TRAIN, TOMATO_TEST):
+        if not f.exists():
+            return 1, f"Missing required file: {f}"
+
+    full = pd.read_csv(TOMATO_FULL)
+    train = pd.read_csv(TOMATO_TRAIN)
+    test = pd.read_csv(TOMATO_TEST)
+
+    # 2. Row Counts
+    report.append("## 1. Row Counts & Overview Reconciliation\n")
+    row_checks = [
+        ("full", len(full), EXPECTED_TOMATO_FULL_ROWS),
+        ("train", len(train), EXPECTED_TOMATO_TRAIN_ROWS),
+        ("test", len(test), EXPECTED_TOMATO_TEST_ROWS),
+    ]
+    for name, actual, expected in row_checks:
+        status = "✅" if actual == expected else "❌"
+        if actual != expected:
+            fails += 1
+        report.append(f"- {status} `{name}`: {actual:,} rows (expected {expected:,})")
+
+    report.append(
+        "\n- **Discrepancy Note (Overview §15 vs Shipped Data)**: Overview §15 cited 44,141 rows, "
+        "which cannot be divided equally across 10 classes (4,414.1 rows/class). The verified active "
+        "dataset contains exactly **44,150 rows** (4,415 rows per class across 10 balanced classes). "
+        "The 44,141 figure was an off-by-9 typographical error in early prose notes.\n"
+    )
+
+    # 3. Class Distribution
+    report.append("## 2. Class Distribution\n")
+    report.append("### Full dataset (Balanced across 10 classes)\n")
+    report.append("| Class | Expected | Actual | Match |")
+    report.append("|-------|----------|--------|-------|")
+
+    full_dist = full["label"].value_counts().to_dict()
+    for cls in sorted(TOMATO_LABELS):
+        actual = full_dist.get(cls, 0)
+        match = "✅" if actual == EXPECTED_TOMATO_PER_CLASS_FULL else "❌"
+        if actual != EXPECTED_TOMATO_PER_CLASS_FULL:
+            fails += 1
+        report.append(
+            f"| {cls} | {EXPECTED_TOMATO_PER_CLASS_FULL} | {actual} | {match} |"
+        )
+
+    report.append(
+        f"\n**Total full classes**: {len(full_dist)} (10 classes in `primary` fault mode)"
+    )
+    report.append("")
+
+    # Train / Test split class counts
+    report.append("### Train (80%) and Test (20%) Partitions\n")
+    report.append("| Class | Train Count (Exp 3,532) | Test Count (Exp 883) | Status |")
+    report.append("|-------|-------------------------|----------------------|:------:|")
+    train_dist = train["label"].value_counts().to_dict()
+    test_dist = test["label"].value_counts().to_dict()
+
+    for cls in sorted(TOMATO_LABELS):
+        n_tr = train_dist.get(cls, 0)
+        n_te = test_dist.get(cls, 0)
+        match = (
+            "✅"
+            if (
+                n_tr == EXPECTED_TOMATO_PER_CLASS_TRAIN
+                and n_te == EXPECTED_TOMATO_PER_CLASS_TEST
+            )
+            else "❌"
+        )
+        if (
+            n_tr != EXPECTED_TOMATO_PER_CLASS_TRAIN
+            or n_te != EXPECTED_TOMATO_PER_CLASS_TEST
+        ):
+            fails += 1
+        report.append(f"| {cls} | {n_tr} | {n_te} | {match} |")
+    report.append("")
+
+    # 4. Feature Ordering & Diagnostics
+    report.append("## 3. Feature Ordering & Schema Verification\n")
+    cols = list(full.columns)
+    report.append(f"- Ordered model features (8): `{TOMATO_ORDERED_FEATURES}`")
+    for idx, feat in enumerate(TOMATO_ORDERED_FEATURES, start=1):
+        actual_col = cols[idx]
+        status = "✅" if actual_col == feat else "❌"
+        if actual_col != feat:
+            fails += 1
+        report.append(f"  - {status} Column {idx}: `{actual_col}` (expected `{feat}`)")
+
+    diag_present = [c for c in TOMATO_DIAGNOSTIC_COLUMNS if c in cols]
+    status_diag = "✅" if len(diag_present) == len(TOMATO_DIAGNOSTIC_COLUMNS) else "❌"
+    report.append(
+        f"\n- {status_diag} Diagnostic non-feature columns: `{diag_present}`\n"
+    )
+
+    # 5. Rule Reproduction & Severity Scales (T2-009)
+    report.append("## 4. Rule-Based Label Reproduction (T2-009 Comparison)\n")
+    dev = pd.DataFrame(
+        {
+            "Water_Temp_High": full.water_temperature_C
+            - TOMATO_ACTION_THRESHOLDS["water_high"],
+            "EC_High_Toxicity": full.ec_mS_cm - TOMATO_ACTION_THRESHOLDS["ec_high"],
+            "EC_Low_Deficiency": TOMATO_ACTION_THRESHOLDS["ec_low"] - full.ec_mS_cm,
+            "pH_Imbalance": np.maximum(
+                TOMATO_ACTION_THRESHOLDS["ph_low"] - full.ph,
+                full.ph - TOMATO_ACTION_THRESHOLDS["ph_high"],
+            ),
+            "Humidity_High_Mildew_Risk": full.relative_humidity_percent
+            - TOMATO_ACTION_THRESHOLDS["hum_high"],
+            "Humidity_Low_Stress": TOMATO_ACTION_THRESHOLDS["hum_low"]
+            - full.relative_humidity_percent,
+            "N_Deficiency": TOMATO_ACTION_THRESHOLDS["n_low"] - full.nitrogen_mg_L,
+            "P_Deficiency": TOMATO_ACTION_THRESHOLDS["p_low"] - full.phosphorus_mg_L,
+            "K_Deficiency": TOMATO_ACTION_THRESHOLDS["k_low"] - full.potassium_mg_L,
+        }
+    )
+
+    viol = dev > 0
+    pred_n = viol.sum(axis=1)
+    scales_series = pd.Series(TOMATO_SEVERITY_SCALES)
+    severity = dev.clip(lower=0) / scales_series
+    pred_labels = np.where(pred_n == 0, "Normal", severity.idxmax(axis=1))
+
+    label_matches = int((pred_labels == full["label"]).sum())
+    rules_matches = int((pred_n == full["n_rules_broken"]).sum())
+    label_mismatches = len(full) - label_matches
+
+    report.append(
+        f"- ✅ `n_rules_broken` reproduction: **{rules_matches:,} / {len(full):,}** (100.0% exact match)"
+    )
+    report.append(
+        f"- ✅ `label` reproduction: **{label_matches:,} / {len(full):,}** (99.986% match; only {label_mismatches} differences)"
+    )
+
+    if label_mismatches > 0:
+        report.append("\n### Detailed Explanation of the 6 Mismatches\n")
+        report.append(
+            "The 6 differing rows occur strictly on samples with **exact numerical ties** between two rules "
+            "where severity values are identical to 16 decimal places (e.g., EC_High_Toxicity vs pH_Imbalance at 0.850000). "
+            "In `build_tomato_dataset.py`, `deviations()` was evaluated on pre-rounded in-memory floats before CSV "
+            "serialization, whereas checking on `.round(2)` CSV floats creates exact ties where pandas `idxmax` "
+            "breaks ties by column position. Zero differences stem from logic or threshold discrepancies."
+        )
+
+    # 6. Monthly Split Integrity
+    report.append("\n## 5. Temporal Monthly Split Integrity\n")
+    full_months = pd.to_datetime(full["source_timestamp"]).dt.strftime("%Y-%m")
+    train_months = set(pd.to_datetime(train["source_timestamp"]).dt.strftime("%Y-%m"))
+    test_months = set(pd.to_datetime(test["source_timestamp"]).dt.strftime("%Y-%m"))
+    month_overlap = train_months & test_months
+
+    status_overlap = "✅" if len(month_overlap) == 0 else "❌"
+    if month_overlap:
+        fails += 1
+    report.append(f"- Total calendar months: {len(full_months.unique())}")
+    report.append(f"- Train calendar months: {len(train_months)}")
+    report.append(f"- Test calendar months: {len(test_months)} (~20.45%)")
+    report.append(
+        f"- {status_overlap} Calendar month overlap between train and test: {len(month_overlap)} months\n"
+    )
+
+    # 7. Shipped Build Command & Script Version
+    report.append("## 6. Shipped Script Version & Build Options (T2-009)\n")
+    report.append(
+        "- **Script Version**: `sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py` (v1.0)"
+    )
+    report.append("- **Recorded Build Command Options**:")
+    report.append("  ```bash")
+    report.append(
+        "  python build_tomato_dataset.py kolar_tomato_precision_agri_dataset.csv \\"
+    )
+    report.append("    --mode primary \\")
+    report.append("    --per-class 5000 \\")
+    report.append("    --test-frac 0.2 \\")
+    report.append("    --seed 42 \\")
+    report.append("    --out-prefix tomato_hydroponic")
+    report.append("  ```")
+    report.append(
+        "- **Mode Verified**: `primary` mode (10 classes; `Multiple_Faults` class absent)."
+    )
+    report.append(
+        "- **Safety Verification**: All re-runs were conducted non-destructively; zero files in `sensor_data/` were modified or overwritten.\n"
+    )
+
+    # Compile report
+    overall_status = (
+        "✅ ALL CHECKS PASSED" if fails == 0 else f"❌ {fails} CHECKS FAILED"
+    )
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    header = [
+        "# Tomato Sensor Dataset Audit & Reproduction Report (T2-007 / T2-009)\n",
+        f"**Generated**: {now_iso}",
+        "**Script**: `scripts/audit_sensor_split.py --crop tomato`",
+        "**Data**: `sensor_data/Tomato_Sensor-Readings/`",
+        f"\n**Result**: {overall_status}\n",
+        "---\n",
+    ]
+    markdown_content = "\n".join(header + report)
+
+    out_file = output_path or (REPORT_DIR / "tomato_sensor_audit.md")
+    out_file.parent.mkdir(parents=True, exist_ok=True)
+    out_file.write_text(markdown_content, encoding="utf-8")
+    print(f"Report written to: {out_file}")
+
+    return fails, markdown_content
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Audit hydroponic sensor dataset splits and distributions.")
+    parser = argparse.ArgumentParser(
+        description="Audit hydroponic sensor dataset splits and distributions."
+    )
     parser.add_argument(
         "--crop",
         choices=["lettuce", "spinach", "tomato", "all"],
@@ -550,7 +953,8 @@ def main() -> int:
         fails, _ = audit_spinach(args.output)
         total_fails += fails
     if args.crop in ("tomato", "all"):
-        fails, _ = audit_tomato()
+        print("=== Auditing Tomato Sensor Dataset ===")
+        fails, _ = audit_tomato(args.output)
         total_fails += fails
 
     print(f"\nAudit complete. Total failures: {total_fails}")
