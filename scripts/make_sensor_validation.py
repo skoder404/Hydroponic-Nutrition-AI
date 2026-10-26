@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -125,7 +126,6 @@ def make_lettuce_validation(output_dir: Path | None = None) -> tuple[int, dict]:
 
     train_balanced.to_csv(train_path, index=False)
     val.to_csv(val_path, index=False)
-    import shutil
     shutil.copyfile(orig_test_csv, test_path)
 
     print(f"Wrote {train_path} ({len(train_balanced)} rows, balanced)")
@@ -205,6 +205,186 @@ def make_lettuce_validation(output_dir: Path | None = None) -> tuple[int, dict]:
     return 0, manifest
 
 
+# ---------------------------------------------------------------------------
+# Spinach Setup (T2-011)
+# ---------------------------------------------------------------------------
+SPINACH_DATA_DIR = ROOT / "sensor_data" / "Spinach_Sensor-Readings"
+SPINACH_OUTPUT_DIR = ROOT / "processed_data" / "sensor" / "spinach"
+
+SPINACH_CLASSES = [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance",
+]
+
+
+def compute_spinach_blocks(df: pd.DataFrame) -> pd.Series:
+    """Build 6-hour temporal block key from bench, date, and hour//6 of source_timestamp_EDT."""
+    ts = pd.to_datetime(df["source_timestamp_EDT"])
+    return df["bench"] + "|" + ts.dt.strftime("%Y-%m-%d") + "|" + (ts.dt.hour // 6).astype(str)
+
+
+def make_spinach_validation(
+    output_dir: Path | None = None,
+    val_fraction: float = 0.15,
+    seed: int = 42,
+) -> tuple[int, dict]:
+    """Create grouped 6-hour block holdout train, val, and test partitions for spinach (v2)."""
+    out_dir = output_dir or SPINACH_OUTPUT_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    orig_train_csv = SPINACH_DATA_DIR / "spinach_7class_train.csv"
+    orig_test_csv = SPINACH_DATA_DIR / "spinach_7class_test.csv"
+    orig_full_csv = SPINACH_DATA_DIR / "spinach_7class_full.csv"
+
+    if not orig_train_csv.exists() or not orig_test_csv.exists():
+        print(f"Error: Missing input files in {SPINACH_DATA_DIR}")
+        return 1, {}
+
+    train_raw = pd.read_csv(orig_train_csv)
+    test_raw = pd.read_csv(orig_test_csv)
+    full_len = len(pd.read_csv(orig_full_csv)) if orig_full_csv.exists() else 1400
+
+    # Derive block keys
+    train_raw["block"] = compute_spinach_blocks(train_raw)
+    test_raw["block"] = compute_spinach_blocks(test_raw)
+
+    test_blocks = set(test_raw["block"])
+    all_train_blocks = sorted(train_raw["block"].unique())
+
+    # Verify no block overlap between original train and test
+    orig_overlap = set(all_train_blocks).intersection(test_blocks)
+    if orig_overlap:
+        print(f"Error: Original train and test share blocks: {orig_overlap}")
+        return 1, {}
+
+    # Hold out whole blocks (~15% of training rows) as validation
+    target_rows = round(val_fraction * len(train_raw))
+    block_sizes = train_raw["block"].value_counts().to_dict()
+
+    rng = np.random.RandomState(seed)
+    shuffled_blocks = list(all_train_blocks)
+    rng.shuffle(shuffled_blocks)
+
+    val_blocks: list[str] = []
+    acc = 0
+    best_diff = float("inf")
+    best_blocks: list[str] = []
+
+    for b in shuffled_blocks:
+        val_blocks.append(b)
+        acc += block_sizes[b]
+        diff = abs(acc - target_rows)
+        if diff < best_diff:
+            best_diff = diff
+            best_blocks = list(val_blocks)
+        if acc >= target_rows and diff > best_diff:
+            break
+
+    selected_val_blocks = set(best_blocks)
+    val = train_raw[train_raw["block"].isin(selected_val_blocks)].drop(columns=["block"]).reset_index(drop=True)
+    new_train = train_raw[~train_raw["block"].isin(selected_val_blocks)].drop(columns=["block"]).reset_index(drop=True)
+    test = test_raw.drop(columns=["block"]).reset_index(drop=True)
+
+    # Re-verify disjoint block keys
+    new_train_blocks = set(train_raw[~train_raw["block"].isin(selected_val_blocks)]["block"])
+    assert len(new_train_blocks & selected_val_blocks) == 0, "Train and Val share block keys!"
+    assert len(new_train_blocks & test_blocks) == 0, "Train and Test share block keys!"
+    assert len(selected_val_blocks & test_blocks) == 0, "Val and Test share block keys!"
+
+    # Re-verify sample ID disjointness
+    train_ids = set(new_train["sample_id"])
+    val_ids = set(val["sample_id"])
+    test_ids = set(test["sample_id"])
+    assert len(train_ids & val_ids) == 0, "Train and Val share sample IDs!"
+    assert len(train_ids & test_ids) == 0, "Train and Test share sample IDs!"
+    assert len(val_ids & test_ids) == 0, "Val and Test share sample IDs!"
+
+    # Write CSV files (v2)
+    train_path = out_dir / "train.csv"
+    val_path = out_dir / "val.csv"
+    test_path = out_dir / "test.csv"
+
+    new_train.to_csv(train_path, index=False)
+    val.to_csv(val_path, index=False)
+    shutil.copyfile(orig_test_csv, test_path)
+
+    print(f"Wrote {train_path} ({len(new_train)} rows, {len(new_train_blocks)} blocks, unresampled)")
+    print(f"Wrote {val_path} ({len(val)} rows, {len(selected_val_blocks)} blocks, {len(val)/len(train_raw):.2%})")
+    print(f"Wrote {test_path} ({len(test)} rows, {len(test_blocks)} blocks, identical to v1 test)")
+
+    # Build manifest
+    train_counts = new_train["label"].value_counts().to_dict()
+    val_counts = val["label"].value_counts().to_dict()
+    test_counts = test["label"].value_counts().to_dict()
+
+    class_coverage: dict[str, dict] = {}
+    for cls in SPINACH_CLASSES:
+        n_train = int(train_counts.get(cls, 0))
+        n_val = int(val_counts.get(cls, 0))
+        n_test = int(test_counts.get(cls, 0))
+        class_coverage[cls] = {
+            "train_rows": n_train,
+            "val_rows": n_val,
+            "test_rows": n_test,
+            "total_rows": n_train + n_val + n_test,
+            "train_fraction": round(n_train / len(new_train), 4),
+            "val_fraction": round(n_val / len(val), 4),
+            "test_fraction": round(n_test / len(test), 4),
+        }
+
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    manifest = {
+        "dataset_version": "v2",
+        "crop": "spinach",
+        "modality": "sensor",
+        "generated_at": now_iso,
+        "script": "scripts/make_sensor_validation.py spinach",
+        "partition_strategy": {
+            "strategy": "six_hour_block_grouped_holdout",
+            "block_definition": "bench + '|' + source_timestamp_EDT (YYYY-MM-DD) + '|' + (hour // 6)",
+            "test_selection": f"22 whole 6-hour blocks from original 80/20 split ({len(test)} rows, untouched)",
+            "validation_selection": f"{len(selected_val_blocks)} whole 6-hour blocks held out from original train split ({len(val)} rows, {len(val)/len(train_raw):.2%} of training pool)",
+            "train_selection": f"{len(new_train_blocks)} remaining whole 6-hour blocks ({len(new_train)} rows)",
+            "seed": seed,
+            "target_validation_fraction": val_fraction,
+            "actual_validation_fraction": round(len(val) / len(train_raw), 4),
+            "no_leakage_verified": True,
+            "resampling_applied": False,
+        },
+        "classes": SPINACH_CLASSES,
+        "row_counts": {
+            "train": len(new_train),
+            "val": len(val),
+            "test": len(test),
+            "total_v2": len(new_train) + len(val) + len(test),
+            "total_v1_full": full_len,
+        },
+        "block_counts": {
+            "train_blocks": len(new_train_blocks),
+            "val_blocks": len(selected_val_blocks),
+            "test_blocks": len(test_blocks),
+            "keys_overlap": 0,
+        },
+        "class_coverage": class_coverage,
+        "limitations": [
+            "Chemistry values (pH, EC, water temperature) are simulated based on real greenhouse air temperature and relative humidity logs.",
+            "Labels are derived from deterministic threshold rules; model performance on this dataset may be artificially high compared to real-world nutrient solution dynamics.",
+            "Data was originally balanced by physical drawing, not oversampling; training row counts per class drop below 160 (ranging between 127 and 146) because blocks contain heterogeneous classes and are held out whole without resampling.",
+        ],
+    }
+
+    manifest_path = out_dir / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    print(f"Wrote manifest to {manifest_path}")
+
+    return 0, manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Create sensor validation split.")
     parser.add_argument("crop", choices=["lettuce", "spinach", "tomato"], help="Target crop")
@@ -213,6 +393,9 @@ def main() -> int:
 
     if args.crop == "lettuce":
         code, _ = make_lettuce_validation(args.output_dir)
+        return code
+    elif args.crop == "spinach":
+        code, _ = make_spinach_validation(args.output_dir)
         return code
     else:
         print(f"Crop '{args.crop}' validation generator not yet implemented.")

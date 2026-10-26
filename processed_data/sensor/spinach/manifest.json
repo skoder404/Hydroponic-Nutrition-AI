@@ -1,0 +1,111 @@
+{
+  "dataset_version": "v2",
+  "crop": "spinach",
+  "modality": "sensor",
+  "generated_at": "2026-10-26T02:24:49Z",
+  "script": "scripts/make_sensor_validation.py spinach",
+  "partition_strategy": {
+    "strategy": "six_hour_block_grouped_holdout",
+    "block_definition": "bench + '|' + source_timestamp_EDT (YYYY-MM-DD) + '|' + (hour // 6)",
+    "test_selection": "22 whole 6-hour blocks from original 80/20 split (280 rows, untouched)",
+    "validation_selection": "11 whole 6-hour blocks held out from original train split (162 rows, 14.46% of training pool)",
+    "train_selection": "77 remaining whole 6-hour blocks (958 rows)",
+    "seed": 42,
+    "target_validation_fraction": 0.15,
+    "actual_validation_fraction": 0.1446,
+    "no_leakage_verified": true,
+    "resampling_applied": false
+  },
+  "classes": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "row_counts": {
+    "train": 958,
+    "val": 162,
+    "test": 280,
+    "total_v2": 1400,
+    "total_v1_full": 1400
+  },
+  "block_counts": {
+    "train_blocks": 77,
+    "val_blocks": 11,
+    "test_blocks": 22,
+    "keys_overlap": 0
+  },
+  "class_coverage": {
+    "EC_High_Toxicity": {
+      "train_rows": 139,
+      "val_rows": 21,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.1451,
+      "val_fraction": 0.1296,
+      "test_fraction": 0.1429
+    },
+    "EC_Low_Deficiency": {
+      "train_rows": 136,
+      "val_rows": 24,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.142,
+      "val_fraction": 0.1481,
+      "test_fraction": 0.1429
+    },
+    "Humidity_High_Mildew_Risk": {
+      "train_rows": 135,
+      "val_rows": 25,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.1409,
+      "val_fraction": 0.1543,
+      "test_fraction": 0.1429
+    },
+    "Humidity_Low_Stress": {
+      "train_rows": 146,
+      "val_rows": 14,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.1524,
+      "val_fraction": 0.0864,
+      "test_fraction": 0.1429
+    },
+    "Normal": {
+      "train_rows": 139,
+      "val_rows": 21,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.1451,
+      "val_fraction": 0.1296,
+      "test_fraction": 0.1429
+    },
+    "Water_Temp_High": {
+      "train_rows": 136,
+      "val_rows": 24,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.142,
+      "val_fraction": 0.1481,
+      "test_fraction": 0.1429
+    },
+    "pH_Imbalance": {
+      "train_rows": 127,
+      "val_rows": 33,
+      "test_rows": 40,
+      "total_rows": 200,
+      "train_fraction": 0.1326,
+      "val_fraction": 0.2037,
+      "test_fraction": 0.1429
+    }
+  },
+  "limitations": [
+    "Chemistry values (pH, EC, water temperature) are simulated based on real greenhouse air temperature and relative humidity logs.",
+    "Labels are derived from deterministic threshold rules; model performance on this dataset may be artificially high compared to real-world nutrient solution dynamics.",
+    "Data was originally balanced by physical drawing, not oversampling; training row counts per class drop below 160 (ranging between 127 and 146) because blocks contain heterogeneous classes and are held out whole without resampling."
+  ]
+}

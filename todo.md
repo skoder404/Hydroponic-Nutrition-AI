@@ -403,9 +403,9 @@
 **Dependencies:** T2-006, T2-010  
 **Acceptance Criteria:**
 
-- [ ] Test rows unchanged
-- [ ] No block key appears in more than one partition
-- [ ] Per-class counts per partition are in the manifest
+- [x] Test rows unchanged
+- [x] No block key appears in more than one partition
+- [x] Per-class counts per partition are in the manifest
 
 **Estimated Effort:** 45 min  
 **Assigned To:** ML  
