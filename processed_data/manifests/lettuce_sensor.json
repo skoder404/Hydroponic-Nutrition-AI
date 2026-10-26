@@ -1,0 +1,181 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "lettuce_sensor",
+  "crop": "lettuce",
+  "modality": "sensor",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "HydroGrowNet Batavia Lettuce Sensor Dataset (Mendeley Data)",
+    "source_url": "https://doi.org/10.17632/g6cm3v3wdp.5",
+    "doi": "10.17632/g6cm3v3wdp.5",
+    "authors": "Arab Academy for Science, Technology and Maritime Transport (AASTMT)",
+    "source_version": "Version 5 (2024)",
+    "download_date": "2026-10-24",
+    "original_filenames": [
+      "EXP_1.xlsx",
+      "EXP_2.xlsx",
+      "EXP_3.xlsx"
+    ],
+    "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+    "redistribution_status": "Publicly accessible with mandatory citation; upstream multi-sheet workbooks kept outside git",
+    "commercial_constraints": "Educational / academic research decision support"
+  },
+  "counts": {
+    "original_raw_count": 726,
+    "filter_reasons": {
+      "WaterTemp_Low_rare_class_dropped": 8,
+      "EC_Low_rare_class_dropped": 1
+    },
+    "total_filtered_count": 9,
+    "unexplained_count_change": 0,
+    "prepared_count": 717,
+    "splits": {
+      "train": 1295,
+      "val": 125,
+      "test": 162
+    },
+    "oversampling_details": {
+      "real_train_rows": 430,
+      "balanced_train_rows": 1295,
+      "oversampled_synthetic_rows": 865,
+      "balance_target_per_class": 185
+    }
+  },
+  "classes": {
+    "retained_classes": [
+      "EC_High",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "pH_High",
+      "pH_Low"
+    ],
+    "dropped_classes": [
+      "EC_Low",
+      "WaterTemp_Low"
+    ],
+    "total_classes_count": 7,
+    "aggregated_split_class_counts": {
+      "EC_High": 204,
+      "Humidity_Low": 212,
+      "Multiple_Stress": 239,
+      "Normal": 327,
+      "WaterTemp_High": 220,
+      "pH_High": 192,
+      "pH_Low": 188
+    },
+    "class_counts_per_split": {
+      "train": {
+        "EC_High": 185,
+        "Humidity_Low": 185,
+        "Multiple_Stress": 185,
+        "Normal": 185,
+        "WaterTemp_High": 185,
+        "pH_High": 185,
+        "pH_Low": 185
+      },
+      "val": {
+        "EC_High": 10,
+        "Humidity_Low": 11,
+        "Multiple_Stress": 31,
+        "Normal": 55,
+        "WaterTemp_High": 16,
+        "pH_High": 1,
+        "pH_Low": 1
+      },
+      "test": {
+        "EC_High": 9,
+        "Humidity_Low": 16,
+        "Multiple_Stress": 23,
+        "Normal": 87,
+        "WaterTemp_High": 19,
+        "pH_High": 6,
+        "pH_Low": 2
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "day_grouped_holdout",
+    "group_keys": [
+      "experiment",
+      "date"
+    ],
+    "target_fractions": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "leakage_prevention": "Tanks in the same NFT greenhouse share ambient climate and daily schedules. Holding out whole calendar days across replicate tanks prevents temporal and ambient micro-climate leakage.",
+    "test_selection": "Every 4th calendar day of each experiment (16 experiment-days, 162 rows)",
+    "validation_selection": "Every 4th remaining calendar day of each experiment (12 experiment-days, 125 rows)",
+    "train_selection": "Remaining calendar days (41 experiment-days, 430 real rows oversampled to 1,295 rows)",
+    "split_file_paths": {
+      "train": "processed_data/sensor/lettuce/train.csv",
+      "val": "processed_data/sensor/lettuce/val.csv",
+      "test": "processed_data/sensor/lettuce/test.csv"
+    }
+  },
+  "preprocessing": {
+    "script": "sensor_data/Lettuce_Sensor-Readings/build_lettuce_dataset and scripts/make_sensor_validation.py lettuce",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Fixed day-month transposed dates (e.g. 2024-10-03 for 10 March 2024)",
+      "Corrected inconsistent column ordering in EXP.2 14:00 reading blocks",
+      "Blanked impossible sensor outliers to NaN (pH 2.0 and EC 26.7)",
+      "Merged twice-daily portable water readings with hourly ambient air logger readings",
+      "Engineered lagged trend features (prev, delta, roll3) per tank"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "experiment": "measured",
+      "replicate": "measured",
+      "tank": "measured",
+      "date": "measured",
+      "time": "measured",
+      "datetime": "measured",
+      "ph": "measured",
+      "ec": "measured",
+      "water_temp": "measured",
+      "air_temp": "measured",
+      "humidity": "measured",
+      "co2": "measured",
+      "par": "measured",
+      "light_intensity": "measured",
+      "solution_volume": "measured",
+      "ph_prev": "derived",
+      "ph_delta": "derived",
+      "ph_roll3": "derived",
+      "ec_prev": "derived",
+      "ec_delta": "derived",
+      "ec_roll3": "derived",
+      "water_temp_prev": "derived",
+      "water_temp_delta": "derived",
+      "water_temp_roll3": "derived",
+      "ph_status": "rule-generated",
+      "ec_status": "rule-generated",
+      "air_temp_status": "rule-generated",
+      "humidity_status": "rule-generated",
+      "water_temp_status": "rule-generated",
+      "n_faults": "derived",
+      "label": "rule-generated",
+      "sample_id": "derived"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": true,
+    "synthetic_rationale": "Training split contains 865 oversampled rows to balance 7 classes at 185 rows each; validation and test splits contain 100% real measured rows."
+  },
+  "known_limitations": [
+    "Unpaired modality: No spatial, temporal, or plant-level pairing with lettuce photographs (Overview \u00a719: cross-modal pairing models forbidden)",
+    "Rule-derived labels reflect threshold violations rather than laboratory tissue pathology",
+    "pH_Low has only 7 real rows in the training pool (oversampled to 185); evaluate with caution"
+  ]
+}

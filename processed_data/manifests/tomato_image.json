@@ -1,0 +1,156 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "tomato_image",
+  "crop": "tomato",
+  "modality": "image",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "Mendeley Data (zfv4jj7855.1) & Kaggle PlantVillage Tomato",
+    "source_url": "https://data.mendeley.com/datasets/zfv4jj7855/1",
+    "doi": "10.17632/zfv4jj7855.1",
+    "source_version": "Version 1",
+    "download_date": "2026-10-24",
+    "original_filenames": [
+      "PlantVillage_Tomato.zip"
+    ],
+    "license": "CC BY 4.0 (Creative Commons Attribution 4.0 International)",
+    "redistribution_status": "Publicly accessible with citation; raw images remain local under image_data/ and are excluded from git commits",
+    "commercial_constraints": "Educational / research usage with proper attribution"
+  },
+  "counts": {
+    "original_raw_count": 33564,
+    "filter_reasons": {},
+    "total_filtered_count": 0,
+    "unexplained_count_change": 0,
+    "prepared_count": 33564,
+    "splits": {
+      "train": 23496,
+      "val": 5034,
+      "test": 5034
+    },
+    "oversampling_details": null
+  },
+  "classes": {
+    "retained_classes": [
+      "Tomato_Bacterial_spot",
+      "Tomato_Early_blight",
+      "Tomato_Healthy",
+      "Tomato_Late_blight",
+      "Tomato_Leaf_Mold",
+      "Tomato_Powdery_Mildew",
+      "Tomato_Septoria_leaf_spot",
+      "Tomato_Spider_mites Two-spotted_spider_mite",
+      "Tomato_Target_Spot",
+      "Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+      "Tomato_Tomato_mosaic_virus"
+    ],
+    "dropped_classes": [],
+    "total_classes_count": 11,
+    "aggregated_split_class_counts": {
+      "Tomato_Bacterial_spot": 3590,
+      "Tomato_Early_blight": 3393,
+      "Tomato_Healthy": 4014,
+      "Tomato_Late_blight": 3945,
+      "Tomato_Leaf_Mold": 3893,
+      "Tomato_Powdery_Mildew": 1256,
+      "Tomato_Septoria_leaf_spot": 3628,
+      "Tomato_Spider_mites Two-spotted_spider_mite": 2187,
+      "Tomato_Target_Spot": 2287,
+      "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 2634,
+      "Tomato_Tomato_mosaic_virus": 2737
+    },
+    "class_counts_per_split": {
+      "train": {
+        "Tomato_Bacterial_spot": 2513,
+        "Tomato_Early_blight": 2375,
+        "Tomato_Healthy": 2810,
+        "Tomato_Late_blight": 2762,
+        "Tomato_Leaf_Mold": 2725,
+        "Tomato_Powdery_Mildew": 879,
+        "Tomato_Septoria_leaf_spot": 2540,
+        "Tomato_Spider_mites Two-spotted_spider_mite": 1531,
+        "Tomato_Target_Spot": 1601,
+        "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 1844,
+        "Tomato_Tomato_mosaic_virus": 1916
+      },
+      "val": {
+        "Tomato_Bacterial_spot": 538,
+        "Tomato_Early_blight": 509,
+        "Tomato_Healthy": 602,
+        "Tomato_Late_blight": 592,
+        "Tomato_Leaf_Mold": 584,
+        "Tomato_Powdery_Mildew": 188,
+        "Tomato_Septoria_leaf_spot": 544,
+        "Tomato_Spider_mites Two-spotted_spider_mite": 328,
+        "Tomato_Target_Spot": 343,
+        "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 395,
+        "Tomato_Tomato_mosaic_virus": 411
+      },
+      "test": {
+        "Tomato_Bacterial_spot": 539,
+        "Tomato_Early_blight": 509,
+        "Tomato_Healthy": 602,
+        "Tomato_Late_blight": 591,
+        "Tomato_Leaf_Mold": 584,
+        "Tomato_Powdery_Mildew": 189,
+        "Tomato_Septoria_leaf_spot": 544,
+        "Tomato_Spider_mites Two-spotted_spider_mite": 328,
+        "Tomato_Target_Spot": 343,
+        "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 395,
+        "Tomato_Tomato_mosaic_virus": 410
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "stratified_duplicate_isolated_holdout",
+    "group_keys": [
+      "exact_sha256",
+      "dhash_cluster_distance_le_4"
+    ],
+    "target_fractions": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "leakage_prevention": "33,564 images clustered into 28,585 atomic duplicate groups via Union-Find. Exact and near-duplicate images are kept strictly in the same split partition.",
+    "test_selection": "5,034 images (15.0%)",
+    "validation_selection": "5,034 images (15.0%)",
+    "train_selection": "23,496 images (70.0%)",
+    "split_file_paths": {
+      "csv": "processed_data/splits/image_splits_tomato.csv",
+      "json": "processed_data/splits/image_splits_tomato.json"
+    }
+  },
+  "preprocessing": {
+    "script": "scripts/audit_images.py and scripts/make_image_splits.py",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Audited and verified all 33,564 images decode cleanly as RGB",
+      "Extracted perceptual dHash fingerprints",
+      "Partitioned into stratified 70/15/15 partitions with duplicate isolation"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "image_path": "measured",
+      "crop": "measured",
+      "class": "measured",
+      "split": "derived",
+      "duplicate_group": "derived"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": false,
+    "synthetic_rationale": "Zero synthetic images; all images are real photographic captures."
+  },
+  "known_limitations": [
+    "Unpaired modality: No pairing with tomato sensor experiments",
+    "Laboratory leaf captures on plain backgrounds differ from real greenhouse lighting"
+  ]
+}

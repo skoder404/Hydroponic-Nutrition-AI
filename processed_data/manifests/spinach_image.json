@@ -1,0 +1,132 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "spinach_image",
+  "crop": "spinach",
+  "modality": "image",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "Local Spinach Leaf Dataset (Mendeley Data skf6w2s2h2.3) & ymtzd8cf6x.1",
+    "source_url": "https://data.mendeley.com/datasets/skf6w2s2h2/3",
+    "doi": "10.17632/skf6w2s2h2.3",
+    "authors": "Md Nahid Hasan, Sonjoy Prosad Shaha, Amatul Bushra Akhi",
+    "source_version": "Version 3 (November 2024)",
+    "download_date": "2026-10-24",
+    "original_filenames": [
+      "Local Spinach Leaf Dataset.zip"
+    ],
+    "license": "CC BY 4.0 (Creative Commons Attribution 4.0 International)",
+    "redistribution_status": "Publicly accessible with citation; raw images remain local under image_data/ and are excluded from git commits",
+    "commercial_constraints": "Educational / research usage with proper attribution"
+  },
+  "counts": {
+    "original_raw_count": 18302,
+    "filter_reasons": {},
+    "total_filtered_count": 0,
+    "unexplained_count_change": 0,
+    "prepared_count": 18302,
+    "splits": {
+      "train": 12812,
+      "val": 2745,
+      "test": 2745
+    },
+    "oversampling_details": null
+  },
+  "classes": {
+    "retained_classes": [
+      "Spinach_Healthy",
+      "Spinach_Non fresh",
+      "Spinach_anthracnose",
+      "Spinach_bacterial spot",
+      "Spinach_downy mildew",
+      "Spinach_pest damage"
+    ],
+    "dropped_classes": [],
+    "total_classes_count": 6,
+    "aggregated_split_class_counts": {
+      "Spinach_Healthy": 7218,
+      "Spinach_Non fresh": 616,
+      "Spinach_anthracnose": 783,
+      "Spinach_bacterial spot": 4565,
+      "Spinach_downy mildew": 1767,
+      "Spinach_pest damage": 3353
+    },
+    "class_counts_per_split": {
+      "train": {
+        "Spinach_Healthy": 5053,
+        "Spinach_Non fresh": 431,
+        "Spinach_anthracnose": 548,
+        "Spinach_bacterial spot": 3196,
+        "Spinach_downy mildew": 1237,
+        "Spinach_pest damage": 2347
+      },
+      "val": {
+        "Spinach_Healthy": 1083,
+        "Spinach_Non fresh": 92,
+        "Spinach_anthracnose": 117,
+        "Spinach_bacterial spot": 685,
+        "Spinach_downy mildew": 265,
+        "Spinach_pest damage": 503
+      },
+      "test": {
+        "Spinach_Healthy": 1082,
+        "Spinach_Non fresh": 93,
+        "Spinach_anthracnose": 118,
+        "Spinach_bacterial spot": 684,
+        "Spinach_downy mildew": 265,
+        "Spinach_pest damage": 503
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "stratified_duplicate_isolated_holdout",
+    "group_keys": [
+      "exact_sha256",
+      "dhash_cluster_distance_le_4"
+    ],
+    "target_fractions": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "leakage_prevention": "18,302 images clustered into 14,561 atomic duplicate groups via Union-Find. Exact and near-duplicate images are kept together in the same split partition.",
+    "test_selection": "2,745 images (15.0%)",
+    "validation_selection": "2,745 images (15.0%)",
+    "train_selection": "12,812 images (70.0%)",
+    "split_file_paths": {
+      "csv": "processed_data/splits/image_splits_spinach.csv",
+      "json": "processed_data/splits/image_splits_spinach.json"
+    }
+  },
+  "preprocessing": {
+    "script": "scripts/audit_images.py and scripts/make_image_splits.py",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Audited and verified all 18,302 images decode cleanly as RGB",
+      "Extracted perceptual dHash fingerprints",
+      "Partitioned into stratified 70/15/15 partitions with duplicate isolation"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "image_path": "measured",
+      "crop": "measured",
+      "class": "measured",
+      "split": "derived",
+      "duplicate_group": "derived"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": false,
+    "synthetic_rationale": "Zero synthetic images; all images are real photographic captures."
+  },
+  "known_limitations": [
+    "Unpaired modality: No temporal or spatial pairing with spinach sensor loggers",
+    "Combines multiple spinach varieties (including water spinach and Malabar spinach)"
+  ]
+}

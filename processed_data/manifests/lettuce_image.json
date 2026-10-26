@@ -1,0 +1,126 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "lettuce_image",
+  "crop": "lettuce",
+  "modality": "image",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "Kaggle Lettuce NPK Dataset",
+    "source_url": "https://www.kaggle.com/datasets/",
+    "source_version": "Kaggle Initial Ingest",
+    "download_date": "2026-10-24",
+    "original_filenames": [
+      "archive.zip with subfolders -K, -N, -P, FN"
+    ],
+    "license": "Unverified Community Upload / Non-commercial academic research",
+    "redistribution_status": "Local repository only; raw images kept under image_data/ and excluded from git commits per repository governance",
+    "commercial_constraints": "Non-commercial educational decision support"
+  },
+  "counts": {
+    "original_raw_count": 943,
+    "filter_reasons": {
+      "skipped_augmented_duplicates": 266,
+      "skipped_orphans_not_selected": 90,
+      "skipped_exact_duplicates": 7
+    },
+    "total_filtered_count": 363,
+    "unexplained_count_change": 0,
+    "prepared_count": 580,
+    "splits": {
+      "train": 406,
+      "val": 87,
+      "test": 87
+    },
+    "oversampling_details": null
+  },
+  "classes": {
+    "retained_classes": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "dropped_classes": [],
+    "total_classes_count": 4,
+    "aggregated_split_class_counts": {
+      "Healthier": 389,
+      "NitrogenDeficiency": 57,
+      "PhosphorusDeficiency": 66,
+      "PotassiumDeficiency": 68
+    },
+    "class_counts_per_split": {
+      "train": {
+        "Healthier": 272,
+        "NitrogenDeficiency": 40,
+        "PhosphorusDeficiency": 46,
+        "PotassiumDeficiency": 48
+      },
+      "val": {
+        "Healthier": 58,
+        "NitrogenDeficiency": 9,
+        "PhosphorusDeficiency": 10,
+        "PotassiumDeficiency": 10
+      },
+      "test": {
+        "Healthier": 59,
+        "NitrogenDeficiency": 8,
+        "PhosphorusDeficiency": 10,
+        "PotassiumDeficiency": 10
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "stratified_duplicate_isolated_holdout",
+    "group_keys": [
+      "exact_sha256",
+      "dhash_cluster_distance_le_4"
+    ],
+    "target_fractions": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "leakage_prevention": "Connected duplicate clusters (exact SHA-256 and dHash <= 4) are grouped into 458 atomic units using Union-Find to prevent identical or near-identical images from crossing train/test boundaries.",
+    "test_selection": "87 images (15.0%)",
+    "validation_selection": "87 images (15.0%)",
+    "train_selection": "406 images (70.0%)",
+    "split_file_paths": {
+      "csv": "processed_data/splits/image_splits_lettuce.csv",
+      "json": "processed_data/splits/image_splits_lettuce.json"
+    }
+  },
+  "preprocessing": {
+    "script": "scripts/audit_images.py and scripts/make_image_splits.py",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Identified and purged 266 pre-augmented duplicate files from raw archive",
+      "Identified and purged 7 exact SHA-256 duplicate files",
+      "Standardized image decoding and verified RGB color space",
+      "Extracted perceptual dHash fingerprints and built duplicate clusters"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "image_path": "measured",
+      "crop": "measured",
+      "class": "measured",
+      "split": "derived",
+      "duplicate_group": "derived"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": false,
+    "synthetic_rationale": "Zero synthetic augmentations retained in prepared dataset (all 266 upstream augmentations were discarded)."
+  },
+  "known_limitations": [
+    "Unpaired modality: No pairing with HydroGrowNet sensor experiments",
+    "Class imbalance: Healthier class (389 images, 67.1%) outnumbers deficiencies (~57-68 images) by ~6:1",
+    "Visual deficiency symptoms for N, P, K overlap in early growth stages; decision-support only"
+  ]
+}

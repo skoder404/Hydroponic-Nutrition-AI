@@ -522,9 +522,9 @@
 **Dependencies:** T2-019, T2-002, T2-003, T2-004
 **Acceptance Criteria:**
 
-- [ ] Manifest exists for each sensor and image dataset
-- [ ] Count changes between stages are explained or the script fails
-- [ ] Output is deterministic
+- [x] Manifest exists for each sensor and image dataset
+- [x] Count changes between stages are explained or the script fails
+- [x] Output is deterministic
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

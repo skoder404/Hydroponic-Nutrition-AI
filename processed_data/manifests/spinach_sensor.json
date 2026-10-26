@@ -1,0 +1,145 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "spinach_sensor",
+  "crop": "spinach",
+  "modality": "sensor",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "USDA Ag Data Commons & Journal of Agriculture and Food Research (Meng et al., 2025)",
+    "source_url": "https://doi.org/10.15482/USDA.ADC/33383695",
+    "doi": "10.1016/j.jafr.2025.102530",
+    "authors": "Qingwu Meng, Kishan Biradar, Yujin Park, Patrick N. Kelley (University of Delaware)",
+    "source_version": "Published 2025 / Ingested October 2026",
+    "download_date": "2026-10-24",
+    "original_filenames": [
+      "Meng_Biradar_Park_Kelley_2025_greenhouse_temperature_humidity.csv"
+    ],
+    "license": "CC0 1.0 Universal (Public Domain Dedication) / Open Data Commons",
+    "redistribution_status": "Publicly accessible unrestricted open research data; raw multi-gigabyte greenhouse logs remain in external USDA repository",
+    "commercial_constraints": "Unrestricted public research data"
+  },
+  "counts": {
+    "original_raw_count": 1400,
+    "filter_reasons": {},
+    "total_filtered_count": 0,
+    "unexplained_count_change": 0,
+    "prepared_count": 1400,
+    "splits": {
+      "train": 958,
+      "val": 162,
+      "test": 280
+    },
+    "oversampling_details": null
+  },
+  "classes": {
+    "retained_classes": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "dropped_classes": [],
+    "total_classes_count": 7,
+    "aggregated_split_class_counts": {
+      "EC_High_Toxicity": 200,
+      "EC_Low_Deficiency": 200,
+      "Humidity_High_Mildew_Risk": 200,
+      "Humidity_Low_Stress": 200,
+      "Normal": 200,
+      "Water_Temp_High": 200,
+      "pH_Imbalance": 200
+    },
+    "class_counts_per_split": {
+      "train": {
+        "EC_High_Toxicity": 139,
+        "EC_Low_Deficiency": 136,
+        "Humidity_High_Mildew_Risk": 135,
+        "Humidity_Low_Stress": 146,
+        "Normal": 139,
+        "Water_Temp_High": 136,
+        "pH_Imbalance": 127
+      },
+      "val": {
+        "EC_High_Toxicity": 21,
+        "EC_Low_Deficiency": 24,
+        "Humidity_High_Mildew_Risk": 25,
+        "Humidity_Low_Stress": 14,
+        "Normal": 21,
+        "Water_Temp_High": 24,
+        "pH_Imbalance": 33
+      },
+      "test": {
+        "EC_High_Toxicity": 40,
+        "EC_Low_Deficiency": 40,
+        "Humidity_High_Mildew_Risk": 40,
+        "Humidity_Low_Stress": 40,
+        "Normal": 40,
+        "Water_Temp_High": 40,
+        "pH_Imbalance": 40
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "six_hour_block_grouped_holdout",
+    "group_keys": [
+      "bench",
+      "date",
+      "six_hour_block"
+    ],
+    "target_fractions": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "leakage_prevention": "Consecutive 10-minute greenhouse readings exhibit intense temporal auto-correlation. Contiguous 6-hour time-blocks (110 total) are partitioned atomically to prevent neighbouring readings from crossing split boundaries.",
+    "test_selection": "22 whole 6-hour blocks from original holdout (280 rows, 20.0%)",
+    "validation_selection": "11 whole 6-hour blocks held out from train split (162 rows, 14.46% of pool)",
+    "train_selection": "77 remaining whole 6-hour blocks (958 rows)",
+    "split_file_paths": {
+      "train": "processed_data/sensor/spinach/train.csv",
+      "val": "processed_data/sensor/spinach/val.csv",
+      "test": "processed_data/sensor/spinach/test.csv"
+    }
+  },
+  "preprocessing": {
+    "script": "sensor_data/Spinach_Sensor-Readings/generate_7class_dataset.py and scripts/make_sensor_validation.py spinach",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Subsampled 1,400 rows structured into balanced 7 classes (200 rows per class)",
+      "Each non-normal sample breaks exactly one rule and keeps every other parameter in healthy band",
+      "Computed contiguous 6-hour time blocks (bench | date | hour // 6)"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "sample_id": "derived",
+      "source_timestamp_EDT": "measured",
+      "bench": "measured",
+      "air_temperature_C": "measured",
+      "relative_humidity_percent": "adjusted",
+      "water_temperature_C": "synthetic",
+      "ph": "synthetic",
+      "ec_mS_cm": "synthetic",
+      "tds_ppm": "derived",
+      "label": "rule-generated"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": true,
+    "synthetic_rationale": "Water temperature, pH, and EC are simulated; relative humidity is adjusted for high mildew class; air temperature is 100% real measured greenhouse logger data."
+  },
+  "known_limitations": [
+    "Hybrid dataset: Solution chemistry is mathematically synthesized; models reflect synthetic thresholds rather than biological plant responses",
+    "Unpaired modality: No spatial or temporal pairing with spinach leaf photographs",
+    "tds_ppm is derived from EC with noise and must be excluded from model inputs"
+  ]
+}

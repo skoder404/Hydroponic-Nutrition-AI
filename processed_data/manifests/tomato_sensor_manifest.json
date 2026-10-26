@@ -1,0 +1,165 @@
+{
+  "manifest_version": "1.0.0",
+  "dataset_key": "tomato_sensor",
+  "crop": "tomato",
+  "modality": "sensor",
+  "generated_at": "2026-10-26T23:15:15+05:30",
+  "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+  "provenance": {
+    "source_name": "Autonomous Tomato Cultivation Dataset in Kolar (Kaggle)",
+    "source_url": "https://www.kaggle.com/datasets/eshwaranece91/autonomous-tomato-cultivation-dataset-in-kolar",
+    "authors": "Eshwaran (Kaggle dataset author)",
+    "source_version": "Kaggle Version 1",
+    "download_date": "2026-10-25",
+    "original_filenames": [
+      "kolar_tomato_precision_agri_dataset.csv"
+    ],
+    "raw_sha256": "c4032fdc026cc4cb971119fdc27d709bbb4d9b6e24d55df87eebd20464a9d515",
+    "license": "CC0: Public Domain",
+    "redistribution_status": "Publicly accessible on Kaggle; raw 200,000-row source CSV kept outside git, reproducible subset committed",
+    "commercial_constraints": "Open educational and research dataset"
+  },
+  "counts": {
+    "original_raw_count": 200000,
+    "filter_reasons": {
+      "excess_rows_filtered_to_balance_classes": 155850
+    },
+    "total_filtered_count": 155850,
+    "unexplained_count_change": 0,
+    "prepared_count": 44150,
+    "splits": {
+      "train": 29943,
+      "val": 5377,
+      "test": 8830
+    },
+    "oversampling_details": null
+  },
+  "classes": {
+    "retained_classes": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "dropped_classes": [],
+    "total_classes_count": 10,
+    "aggregated_split_class_counts": {
+      "EC_High_Toxicity": 4415,
+      "EC_Low_Deficiency": 4415,
+      "Humidity_High_Mildew_Risk": 4415,
+      "Humidity_Low_Stress": 4415,
+      "K_Deficiency": 4415,
+      "N_Deficiency": 4415,
+      "Normal": 4415,
+      "P_Deficiency": 4415,
+      "Water_Temp_High": 4415,
+      "pH_Imbalance": 4415
+    },
+    "class_counts_per_split": {
+      "train": {
+        "EC_High_Toxicity": 2998,
+        "EC_Low_Deficiency": 3012,
+        "Humidity_High_Mildew_Risk": 2999,
+        "Humidity_Low_Stress": 2992,
+        "K_Deficiency": 2990,
+        "N_Deficiency": 2986,
+        "Normal": 2983,
+        "P_Deficiency": 3004,
+        "Water_Temp_High": 2961,
+        "pH_Imbalance": 3018
+      },
+      "val": {
+        "EC_High_Toxicity": 534,
+        "EC_Low_Deficiency": 520,
+        "Humidity_High_Mildew_Risk": 533,
+        "Humidity_Low_Stress": 540,
+        "K_Deficiency": 542,
+        "N_Deficiency": 546,
+        "Normal": 549,
+        "P_Deficiency": 528,
+        "Water_Temp_High": 571,
+        "pH_Imbalance": 514
+      },
+      "test": {
+        "EC_High_Toxicity": 883,
+        "EC_Low_Deficiency": 883,
+        "Humidity_High_Mildew_Risk": 883,
+        "Humidity_Low_Stress": 883,
+        "K_Deficiency": 883,
+        "N_Deficiency": 883,
+        "Normal": 883,
+        "P_Deficiency": 883,
+        "Water_Temp_High": 883,
+        "pH_Imbalance": 883
+      }
+    }
+  },
+  "split_protocol": {
+    "protocol_name": "grouped_calendar_month",
+    "group_keys": [
+      "calendar_month (YYYY-MM)"
+    ],
+    "target_fractions": {
+      "train": 0.68,
+      "val": 0.12,
+      "test": 0.2
+    },
+    "leakage_prevention": "Grouped by calendar month across 132 recorded months. 27 test months (8,830 rows, 20.0%), 16 validation months (5,377 rows, 12.18%), 89 train months (29,943 rows, 67.82%) prevent seasonal and proximal temporal leakage.",
+    "test_selection": "27 calendar months (8,830 rows, strictly held out)",
+    "validation_selection": "16 calendar months (5,377 rows held out from training pool)",
+    "train_selection": "89 remaining calendar months (29,943 rows)",
+    "split_file_paths": {
+      "train": "processed_data/sensor/tomato/train.csv",
+      "val": "processed_data/sensor/tomato/val.csv",
+      "test": "processed_data/sensor/tomato/test.csv"
+    }
+  },
+  "preprocessing": {
+    "script": "sensor_data/Tomato_Sensor-Readings/build_tomato_dataset.py and scripts/make_sensor_validation.py tomato",
+    "git_commit": "84104ab9276c537ba22fd354baf2ec01fc1e7d0c",
+    "cleaning_steps": [
+      "Dropped 15 precision-agriculture land features (soil moisture, RSSI wireless mesh columns)",
+      "Applied calibrated physical proxy transforms to map soil metrics into hydroponic solution ranges",
+      "Assigned fault labels under 'primary' fault mode by maximum normalized deviation past frozen severity scales",
+      "Sampled 4,415 rows per class across 10 balanced classes"
+    ]
+  },
+  "derived_synthetic_flags": {
+    "columns": {
+      "sample_id": "derived",
+      "source_row": "measured",
+      "source_timestamp": "measured",
+      "air_temperature_C": "measured",
+      "relative_humidity_percent": "adjusted",
+      "water_temperature_C": "synthetic",
+      "ph": "adjusted",
+      "ec_mS_cm": "adjusted",
+      "nitrogen_mg_L": "adjusted",
+      "phosphorus_mg_L": "adjusted",
+      "potassium_mg_L": "adjusted",
+      "n_rules_broken": "derived",
+      "label": "rule-generated",
+      "label_id": "derived"
+    },
+    "approved_provenance_tags": [
+      "adjusted",
+      "derived",
+      "measured",
+      "rule-generated",
+      "synthetic"
+    ],
+    "has_synthetic_data": true,
+    "synthetic_rationale": "Solution parameters are proxy-transformed from soil precision agriculture readings; water temperature is synthetic; labels are rule-generated."
+  },
+  "known_limitations": [
+    "Source dataset was recorded in land-based precision agriculture in Kolar, India; hydroponic values are proxy-transformed",
+    "Rule-derived labels indicate threshold triggers, not real crop pathology",
+    "Unpaired modality: No pairing with tomato foliage images"
+  ]
+}
