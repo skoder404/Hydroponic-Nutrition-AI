@@ -416,9 +416,9 @@
 **Dependencies:** T2-007, T2-010  
 **Acceptance Criteria:**
 
-- [ ] Test months unchanged
-- [ ] Month lists per partition are recorded and disjoint
-- [ ] Per-class counts per partition are in the manifest
+- [x] Test months unchanged
+- [x] Month lists per partition are recorded and disjoint
+- [x] Per-class counts per partition are in the manifest
 
 **Estimated Effort:** 45 min  
 **Assigned To:** ML  

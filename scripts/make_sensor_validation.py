@@ -385,6 +385,261 @@ def make_spinach_validation(
     return 0, manifest
 
 
+# ---------------------------------------------------------------------------
+# Tomato Setup (T2-012)
+# ---------------------------------------------------------------------------
+TOMATO_DATA_DIR = ROOT / "sensor_data" / "Tomato_Sensor-Readings"
+TOMATO_OUTPUT_DIR = ROOT / "processed_data" / "sensor" / "tomato"
+
+TOMATO_CLASSES = [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "K_Deficiency",
+    "N_Deficiency",
+    "Normal",
+    "P_Deficiency",
+    "Water_Temp_High",
+    "pH_Imbalance",
+]
+
+
+def make_tomato_validation(
+    output_dir: Path | None = None,
+    val_fraction: float = 0.15,
+    seed: int = 42,
+) -> tuple[int, dict]:
+    """Create grouped calendar-month holdout train, val, and test partitions for tomato (T2-012)."""
+    out_dir = output_dir or TOMATO_OUTPUT_DIR
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    orig_train_csv = TOMATO_DATA_DIR / "tomato_hydroponic_train.csv"
+    orig_test_csv = TOMATO_DATA_DIR / "tomato_hydroponic_test.csv"
+    orig_full_csv = TOMATO_DATA_DIR / "tomato_hydroponic_full.csv"
+    existing_manifest_path = out_dir / "manifest.json"
+
+    if not orig_train_csv.exists() or not orig_test_csv.exists():
+        print(f"Error: Missing input files in {TOMATO_DATA_DIR}")
+        return 1, {}
+
+    train_raw = pd.read_csv(orig_train_csv)
+    test_raw = pd.read_csv(orig_test_csv)
+    full_len = len(pd.read_csv(orig_full_csv)) if orig_full_csv.exists() else 44150
+
+    # Derive calendar month from source_timestamp (format YYYY-MM-DD HH:MM:SS)
+    train_raw["month"] = pd.to_datetime(train_raw["source_timestamp"]).dt.strftime("%Y-%m")
+    test_raw["month"] = pd.to_datetime(test_raw["source_timestamp"]).dt.strftime("%Y-%m")
+
+    test_months = sorted(test_raw["month"].unique())
+    all_train_months = sorted(train_raw["month"].unique())
+
+    # Verify existing manifest matches test and train months if present
+    if existing_manifest_path.exists():
+        with existing_manifest_path.open(encoding="utf-8") as f:
+            existing_manifest = json.load(f)
+        manifest_test_months = set(existing_manifest.get("splits", {}).get("test_months", []))
+        if manifest_test_months and manifest_test_months != set(test_months):
+            print(f"Error: Test months mismatch between {orig_test_csv} and manifest.json")
+            return 1, {}
+
+    # Verify no month overlap between original train and test
+    orig_overlap = set(all_train_months).intersection(set(test_months))
+    if orig_overlap:
+        print(f"Error: Original train and test share calendar months: {orig_overlap}")
+        return 1, {}
+
+    # Hold out whole calendar months (~15-20% of training rows) as validation
+    target_rows = round(val_fraction * len(train_raw))
+    month_sizes = train_raw["month"].value_counts().to_dict()
+
+    rng = np.random.RandomState(seed)
+    shuffled_months = list(all_train_months)
+    rng.shuffle(shuffled_months)
+
+    val_months_acc: list[str] = []
+    acc = 0
+    best_diff = float("inf")
+    best_months: list[str] = []
+
+    for m in shuffled_months:
+        val_months_acc.append(m)
+        acc += month_sizes[m]
+        diff = abs(acc - target_rows)
+        if diff < best_diff:
+            best_diff = diff
+            best_months = list(val_months_acc)
+        if acc >= target_rows and diff > best_diff:
+            break
+
+    selected_val_months = sorted(best_months)
+    remaining_train_months = sorted(
+        [m for m in all_train_months if m not in set(selected_val_months)]
+    )
+
+    val = (
+        train_raw[train_raw["month"].isin(selected_val_months)]
+        .drop(columns=["month"])
+        .reset_index(drop=True)
+    )
+    new_train = (
+        train_raw[train_raw["month"].isin(remaining_train_months)]
+        .drop(columns=["month"])
+        .reset_index(drop=True)
+    )
+    test = test_raw.drop(columns=["month"]).reset_index(drop=True)
+
+    # Re-verify disjoint month keys
+    val_months_set = set(selected_val_months)
+    train_months_set = set(remaining_train_months)
+    test_months_set = set(test_months)
+
+    assert len(train_months_set & val_months_set) == 0, "Train and Val share months!"
+    assert len(train_months_set & test_months_set) == 0, "Train and Test share months!"
+    assert len(val_months_set & test_months_set) == 0, "Val and Test share months!"
+
+    # Re-verify sample ID disjointness
+    train_ids = set(new_train["sample_id"])
+    val_ids = set(val["sample_id"])
+    test_ids = set(test["sample_id"])
+    assert len(train_ids & val_ids) == 0, "Train and Val share sample IDs!"
+    assert len(train_ids & test_ids) == 0, "Train and Test share sample IDs!"
+    assert len(val_ids & test_ids) == 0, "Val and Test share sample IDs!"
+
+    # Write CSV files (v2)
+    train_path = out_dir / "train.csv"
+    val_path = out_dir / "val.csv"
+    test_path = out_dir / "test.csv"
+
+    new_train.to_csv(train_path, index=False)
+    val.to_csv(val_path, index=False)
+    shutil.copyfile(orig_test_csv, test_path)
+
+    print(
+        f"Wrote {train_path} ({len(new_train)} rows, {len(remaining_train_months)} months, unresampled)"
+    )
+    print(
+        f"Wrote {val_path} ({len(val)} rows, {len(selected_val_months)} months, {len(val)/len(train_raw):.2%})"
+    )
+    print(f"Wrote {test_path} ({len(test)} rows, {len(test_months)} months, identical to v1 test)")
+
+    # Build per-class coverage
+    train_counts = new_train["label"].value_counts().to_dict()
+    val_counts = val["label"].value_counts().to_dict()
+    test_counts = test["label"].value_counts().to_dict()
+
+    class_coverage: dict[str, dict] = {}
+    for cls in TOMATO_CLASSES:
+        n_train = int(train_counts.get(cls, 0))
+        n_val = int(val_counts.get(cls, 0))
+        n_test = int(test_counts.get(cls, 0))
+        class_coverage[cls] = {
+            "train_rows": n_train,
+            "val_rows": n_val,
+            "test_rows": n_test,
+            "total_rows": n_train + n_val + n_test,
+            "train_fraction": round(n_train / len(new_train), 4),
+            "val_fraction": round(n_val / len(val), 4),
+            "test_fraction": round(n_test / len(test), 4),
+        }
+
+    # Month row counts
+    train_raw_months = (
+        train_raw[train_raw["month"].isin(remaining_train_months)]["month"]
+        .value_counts()
+        .to_dict()
+    )
+    val_raw_months = (
+        train_raw[train_raw["month"].isin(selected_val_months)]["month"]
+        .value_counts()
+        .to_dict()
+    )
+    test_raw_months = test_raw["month"].value_counts().to_dict()
+
+    # Load existing manifest to preserve source info and severity scales
+    if existing_manifest_path.exists():
+        with existing_manifest_path.open(encoding="utf-8") as f:
+            manifest = json.load(f)
+    else:
+        manifest = {}
+
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    manifest["dataset_version"] = "v2"
+    manifest["generated_at"] = now_iso
+    manifest["script"] = "scripts/make_sensor_validation.py tomato"
+
+    manifest["splits"] = {
+        "split_type": "grouped_calendar_month",
+        "test_fraction_target": 0.2,
+        "validation_fraction_target": val_fraction,
+        "test_months_count": len(test_months),
+        "validation_months_count": len(selected_val_months),
+        "train_months_count": len(remaining_train_months),
+        "total_months_count": (
+            len(test_months) + len(selected_val_months) + len(remaining_train_months)
+        ),
+        "test_months": test_months,
+        "validation_months": selected_val_months,
+        "train_months": remaining_train_months,
+        "validation_partition": {
+            "strategy": "calendar_month_grouped_holdout",
+            "source_column": "source_timestamp",
+            "format": "YYYY-MM",
+            "seed": seed,
+            "target_validation_fraction": val_fraction,
+            "actual_validation_fraction": round(len(val) / len(train_raw), 4),
+            "no_leakage_verified": True,
+            "resampling_applied": False,
+        },
+    }
+
+    manifest["row_counts"] = {
+        "train": len(new_train),
+        "val": len(val),
+        "test": len(test),
+        "full": full_len,
+    }
+
+    manifest["row_counts_per_class"] = {
+        "full": manifest.get("row_counts_per_class", {}).get(
+            "full", {cls: 4415 for cls in TOMATO_CLASSES}
+        ),
+        "train": {cls: int(train_counts.get(cls, 0)) for cls in TOMATO_CLASSES},
+        "val": {cls: int(val_counts.get(cls, 0)) for cls in TOMATO_CLASSES},
+        "test": {cls: int(test_counts.get(cls, 0)) for cls in TOMATO_CLASSES},
+    }
+
+    manifest["row_counts_per_month"] = {
+        "full": manifest.get("row_counts_per_month", {}).get("full", {}),
+        "train": {m: int(train_raw_months.get(m, 0)) for m in remaining_train_months},
+        "val": {m: int(val_raw_months.get(m, 0)) for m in selected_val_months},
+        "test": {m: int(test_raw_months.get(m, 0)) for m in test_months},
+    }
+
+    manifest["class_coverage"] = class_coverage
+
+    manifest_path = out_dir / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    print(f"Wrote manifest to {manifest_path}")
+
+    # Summary table output
+    print("\n--- Tomato Validation Split Class Distribution ---")
+    print(f"{'Class':<28} {'Train':<8} {'Val':<8} {'Test':<8} {'Total':<8}")
+    print("-" * 65)
+    for cls in TOMATO_CLASSES:
+        tr = train_counts.get(cls, 0)
+        va = val_counts.get(cls, 0)
+        te = test_counts.get(cls, 0)
+        print(f"{cls:<28} {tr:<8} {va:<8} {te:<8} {tr + va + te:<8}")
+    print("-" * 65)
+    print(
+        f"{'Total':<28} {len(new_train):<8} {len(val):<8} {len(test):<8} {len(new_train) + len(val) + len(test):<8}"
+    )
+
+    return 0, manifest
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Create sensor validation split.")
     parser.add_argument("crop", choices=["lettuce", "spinach", "tomato"], help="Target crop")
@@ -397,6 +652,9 @@ def main() -> int:
     elif args.crop == "spinach":
         code, _ = make_spinach_validation(args.output_dir)
         return code
+    elif args.crop == "tomato":
+        code, _ = make_tomato_validation(args.output_dir)
+        return code
     else:
         print(f"Crop '{args.crop}' validation generator not yet implemented.")
         return 0
@@ -404,3 +662,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
+

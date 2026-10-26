@@ -264,7 +264,18 @@ def main() -> int:
             ROOT / "sensor_data/Tomato_Sensor-Readings/tomato_hydroponic_train.csv",
             5,
         ),
+        (
+            "tomato",
+            ROOT / "processed_data/sensor/tomato/train.csv",
+            5,
+        ),
+        (
+            "tomato",
+            ROOT / "processed_data/sensor/tomato/val.csv",
+            2,
+        ),
     ]
+
 
     all_passed = True
     print(f"{'Crop':<8} {'Dataset':<50} {'Rows':<8} {'Mismatches':<12} {'Accuracy'}")
