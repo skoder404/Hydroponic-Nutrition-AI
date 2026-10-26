@@ -704,9 +704,9 @@
 **Dependencies:** T2-010, T2-011, T2-012, T4-001  
 **Acceptance Criteria:**
 
-- [ ] Protocol is written per crop with the group key named
-- [ ] Oversampling-inside-fold rule is stated
-- [ ] Both members signed off in the commit review
+- [x] Protocol is written per crop with the group key named
+- [x] Oversampling-inside-fold rule is stated
+- [x] Both members signed off in the commit review
 
 **Estimated Effort:** 30 min  
 **Assigned To:** ML  
