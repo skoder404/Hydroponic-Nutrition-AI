@@ -731,9 +731,9 @@
 **Dependencies:** T4-002  
 **Acceptance Criteria:**
 
-- [ ] Results match scikit-learn to numerical tolerance
-- [ ] Zero-support/zero-prediction behaviour is explained
-- [ ] Concept note written by the navigator
+- [x] Results match scikit-learn to numerical tolerance
+- [x] Zero-support/zero-prediction behaviour is explained
+- [x] Concept note written by the navigator
 
 **Estimated Effort:** 60 min  
 **Assigned To:** ML  

@@ -19,7 +19,8 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 | 4 | T2-014 | Near-duplicate detection and why duplicates across splits inflate image accuracy | `docs/learning/nearduplicate-detection-and-why-duplicates-across.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 5 | T4-001 | Data leakage and grouped / time-based splits | `docs/learning/data-leakage-and-grouped-timebased-splits.md` | [x] | [ ] | [ ] | 2026-10-26 | [ ] | [ ] | [ ] | - |
 | 6 | T4-003 | Decision trees: Gini impurity and greedy splits | `docs/learning/decision-trees-gini-impurity-and-greedy.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 7 | T4-004 | Confusion matrix, precision/recall, macro-F1 | `docs/learning/confusion-matrix-precisionrecall-macrof1.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 7 | T4-004 | Confusion matrix, precision/recall, macro-F1 | `docs/learning/confusion-matrix-precisionrecall-macrof1.md` | [x] | [ ] | [ ] | 2026-10-26 | [ ] | [ ] | [ ] | - |
+
 | 8 | T4-007 | Cross-validation and class imbalance (oversampling inside folds) | `docs/learning/crossvalidation-and-class-imbalance-oversampling-inside.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 9 | T4-011 | Decision tree hyperparameters, depth, and overfitting | `docs/learning/decision-tree-hyperparameters-depth-and-overfitting.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 10 | T4-012 | Random Forest: bagging, feature subsampling, variance reduction | `docs/learning/random-forest-bagging-feature-subsampling-variance.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
