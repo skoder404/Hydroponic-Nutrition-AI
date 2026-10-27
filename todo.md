@@ -745,9 +745,9 @@
 **Dependencies:** T4-004
 **Acceptance Criteria:**
 
-- [ ] All Overview §18.2 metric fields present
-- [ ] Class order is fixed and explicit
-- [ ] Unknown label raises an error
+- [x] All Overview §18.2 metric fields present
+- [x] Class order is fixed and explicit
+- [x] Unknown label raises an error
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML
