@@ -798,9 +798,9 @@
 **Dependencies:** T4-008, T3-007
 **Acceptance Criteria:**
 
-- [ ] Promote then rollback restores the previous version
-- [ ] Loading an artifact with a mismatched feature list fails with `SCHEMA_MISMATCH`
-- [ ] Promotion is CLI-only
+- [x] Promote then rollback restores the previous version
+- [x] Loading an artifact with a mismatched feature list fails with `SCHEMA_MISMATCH`
+- [x] Promotion is CLI-only
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

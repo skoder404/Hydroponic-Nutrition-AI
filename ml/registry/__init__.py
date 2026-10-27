@@ -7,11 +7,19 @@ from ml.registry.metadata_schema import (
     ModelStatus,
     TaskType,
 )
+from ml.registry.registry import (
+    ModelRegistry,
+    PromotionPermissionError,
+    SchemaMismatchError,
+)
 
 __all__ = [
     "CropType",
     "ModalityType",
     "ModelMetadata",
+    "ModelRegistry",
     "ModelStatus",
+    "PromotionPermissionError",
+    "SchemaMismatchError",
     "TaskType",
 ]
