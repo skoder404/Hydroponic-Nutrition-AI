@@ -1,0 +1,105 @@
+{
+  "model_id": "lettuce_sensor_random_forest_v1",
+  "crop": "lettuce",
+  "task": "classification",
+  "modality": "sensor",
+  "family": "RandomForestClassifier",
+  "artifact_version": "1.0.0",
+  "artifact_file": "models/sensor/lettuce_rf_v1.joblib",
+  "commit": "8133572a9b407fcf8f0cf52011b66df870197d02",
+  "training_date": "2026-10-27T04:00:00+00:00",
+  "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": false,
+  "status": "candidate",
+  "classes": [
+    "EC_High",
+    "EC_Low",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "WaterTemp_Low",
+    "pH_High",
+    "pH_Low"
+  ],
+  "display_mapping": {
+    "EC_High": "unhealthy/EC_High",
+    "EC_Low": "unhealthy/EC_Low",
+    "Humidity_Low": "unhealthy/Humidity_Low",
+    "Multiple_Stress": "unhealthy/Multiple_Stress",
+    "Normal": "healthy",
+    "WaterTemp_High": "unhealthy/WaterTemp_High",
+    "WaterTemp_Low": "unhealthy/WaterTemp_Low",
+    "pH_High": "unhealthy/pH_High",
+    "pH_Low": "unhealthy/pH_Low"
+  },
+  "split_protocol": "Calendar day holdout (day % 4 == 0) across 3 distinct experiment batches",
+  "split_counts": {
+    "train": 1680,
+    "validation": 200,
+    "test": 162
+  },
+  "ordered_features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "electrical_conductivity_uS_cm"
+  ],
+  "feature_units": {
+    "air_temperature_C": "degC",
+    "relative_humidity_percent": "%",
+    "water_temperature_C": "degC",
+    "ph": "pH_units",
+    "electrical_conductivity_uS_cm": "uS/cm"
+  },
+  "input_unit": "sensor_reading",
+  "image_size": null,
+  "image_normalization": null,
+  "channel_order": null,
+  "segmentation_config": null,
+  "feature_config": null,
+  "hyperparameters": {
+    "n_estimators": 200,
+    "max_depth": 8,
+    "min_samples_leaf": 1,
+    "criterion": "gini",
+    "random_state": 42
+  },
+  "confidence_settings": {
+    "uncertainty_threshold": 0.4,
+    "abstention_enabled": true
+  },
+  "expected_input_schema": {
+    "type": "object",
+    "properties": {
+      "air_temperature_C": { "type": "number" },
+      "relative_humidity_percent": { "type": "number" },
+      "water_temperature_C": { "type": "number" },
+      "ph": { "type": "number" },
+      "electrical_conductivity_uS_cm": { "type": "number" }
+    },
+    "required": [
+      "air_temperature_C",
+      "relative_humidity_percent",
+      "water_temperature_C",
+      "ph",
+      "electrical_conductivity_uS_cm"
+    ]
+  },
+  "dependency_versions": {
+    "python": "3.13.5",
+    "scikit-learn": "1.6.1",
+    "numpy": "2.2.3"
+  },
+  "validation_metrics": {
+    "accuracy": 0.994,
+    "macro_f1": 0.986,
+    "macro_precision": 0.985,
+    "macro_recall": 0.988,
+    "total_samples": 200
+  },
+  "final_test_metrics": null
+}

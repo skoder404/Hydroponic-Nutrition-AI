@@ -785,9 +785,9 @@
 **Dependencies:** T2-016, T2-018
 **Acceptance Criteria:**
 
-- [ ] Schema validation fails on any missing mandatory field
-- [ ] `experimental` and `status` fields exist
-- [ ] Example metadata file is committed under `models/manifests/`
+- [x] Schema validation fails on any missing mandatory field
+- [x] `experimental` and `status` fields exist
+- [x] Example metadata file is committed under `models/manifests/`
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML
