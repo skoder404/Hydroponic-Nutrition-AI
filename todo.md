@@ -548,9 +548,9 @@
 **Dependencies:** T2-021
 **Acceptance Criteria:**
 
-- [ ] Round-trip preserves the original timestamp and timezone
-- [ ] List is paginated
-- [ ] DB failure surfaces as a typed error
+- [x] Round-trip preserves the original timestamp and timezone
+- [x] List is paginated
+- [x] DB failure surfaces as a typed error
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

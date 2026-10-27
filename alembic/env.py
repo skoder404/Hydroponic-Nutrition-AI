@@ -25,8 +25,8 @@ config = context.config
 if config.config_file_name is not None and config.attributes.get("configure_logger", True):
     try:
         fileConfig(config.config_file_name, disable_existing_loggers=False)
-    except Exception:
-        pass
+    except (OSError, ValueError):
+        sys.stderr.write("Notice: could not load alembic logging config\n")
 
 target_metadata = Base.metadata
 

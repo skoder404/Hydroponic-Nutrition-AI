@@ -34,6 +34,7 @@ from sqlalchemy import (
     Index,
     String,
     Text,
+    TypeDecorator,
     Uuid,
 )
 from sqlalchemy.dialects.postgresql import JSONB
@@ -43,6 +44,27 @@ from backend.app.database.session import Base
 
 # Universal JSON type using PostgreSQL JSONB when available, falling back to JSON
 JSONType = JSON().with_variant(JSONB, "postgresql")
+
+
+class UTCDateTime(TypeDecorator):
+    """DateTime type that guarantees timezone-aware UTC datetime across all database engines."""
+
+    impl = DateTime(timezone=True)
+    cache_ok = True
+
+    def process_bind_param(self, value: Any, dialect: Any) -> datetime | None:
+        if value is not None and isinstance(value, datetime):
+            if value.tzinfo is None:
+                return value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+        return value
+
+    def process_result_value(self, value: Any, dialect: Any) -> datetime | None:
+        if value is not None and isinstance(value, datetime):
+            if value.tzinfo is None:
+                return value.replace(tzinfo=timezone.utc)
+            return value.astimezone(timezone.utc)
+        return value
 
 
 def utc_now() -> datetime:
@@ -63,12 +85,12 @@ class AnalysisRecord(Base):
     crop: Mapped[str] = mapped_column(String(50), nullable=False)
     mode: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        UTCDateTime,
         nullable=False,
         default=utc_now,
     )
     observed_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        UTCDateTime,
         nullable=False,
     )
     observed_tz: Mapped[str] = mapped_column(String(50), nullable=False)
@@ -91,6 +113,12 @@ class AnalysisRecord(Base):
         back_populates="record",
         cascade="all, delete-orphan",
     )
+
+    @property
+    def observed_at_original(self) -> datetime:
+        """Return the observed_at datetime converted to its original observed_tz."""
+        from backend.app.database.repositories import reconstruct_observed_datetime
+        return reconstruct_observed_datetime(self)
 
     __table_args__ = (
         CheckConstraint(
@@ -138,7 +166,7 @@ class Prediction(Base):
         default=list,
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        UTCDateTime,
         nullable=False,
         default=utc_now,
     )
@@ -178,7 +206,7 @@ class Input(Base):
     file_ref: Mapped[str | None] = mapped_column(String(500), nullable=True)
     units: Mapped[dict[str, Any] | None] = mapped_column(JSONType, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        UTCDateTime,
         nullable=False,
         default=utc_now,
     )
@@ -218,7 +246,7 @@ class Recommendation(Base):
     content: Mapped[dict[str, Any]] = mapped_column(JSONType, nullable=False)
     evidence: Mapped[dict[str, Any]] = mapped_column(JSONType, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
+        UTCDateTime,
         nullable=False,
         default=utc_now,
     )
