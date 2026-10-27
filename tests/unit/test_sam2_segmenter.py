@@ -1,7 +1,11 @@
 """Unit tests for SAM 2.1 Segmenter wrapper (T5-008)."""
+
 from __future__ import annotations
 
 import pytest
+
+pytest.importorskip("cv2")
+pytest.importorskip("torch")
 
 from ml.segmentation.sam2_segmenter import (
     SAM2Segmenter,

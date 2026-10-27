@@ -7,6 +7,7 @@ Adheres to TECH_RULES & ADR 0003:
 - OOM resilience: Catches CUDA OOM, frees memory, and triggers documented CPU fallback or raises CudaOOMError.
 - Returns binary boolean mask and explicit config/version descriptor string.
 """
+
 from __future__ import annotations
 
 import gc
@@ -15,9 +16,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-import cv2
+try:
+    import cv2
+except ImportError:
+    cv2 = None  # type: ignore
+
 import numpy as np
-import torch
+
+try:
+    import torch
+except ImportError:
+    torch = None  # type: ignore
 
 from backend.app.core.device import DeviceManager, get_device_manager
 
@@ -73,13 +82,9 @@ class SAM2Segmenter:
         fallback_on_oom: bool = True,
     ) -> None:
         self.checkpoint_path = Path(
-            checkpoint_path
-            or os.getenv("SAM2_CHECKPOINT", DEFAULT_CHECKPOINT)
+            checkpoint_path or os.getenv("SAM2_CHECKPOINT", DEFAULT_CHECKPOINT)
         )
-        self.config_path = str(
-            config_path
-            or os.getenv("SAM2_CONFIG", DEFAULT_CONFIG)
-        )
+        self.config_path = str(config_path or os.getenv("SAM2_CONFIG", DEFAULT_CONFIG))
         self.device_manager = (
             DeviceManager(force_cpu=force_cpu)
             if force_cpu is not None
@@ -142,7 +147,9 @@ class SAM2Segmenter:
             resolved_checkpoint = PROJECT_ROOT / resolved_checkpoint
 
         if not resolved_checkpoint.exists():
-            raise FileNotFoundError(f"SAM 2.1 checkpoint file missing: {resolved_checkpoint}")
+            raise FileNotFoundError(
+                f"SAM 2.1 checkpoint file missing: {resolved_checkpoint}"
+            )
 
         # Simulate OOM condition if requested
         if simulate_oom:
@@ -155,12 +162,16 @@ class SAM2Segmenter:
             raise CudaOOMError("Simulated CUDA out-of-memory during SAM 2.1 load.")
 
         try:
-            sam_model = build_sam2(self.config_path, str(resolved_checkpoint), device=device)
+            sam_model = build_sam2(
+                self.config_path, str(resolved_checkpoint), device=device
+            )
             self._model = sam_model
             self._predictor = SAM2ImagePredictor(sam_model)
             self._loaded_device = device
         except (torch.cuda.OutOfMemoryError, RuntimeError) as exc:
-            is_oom = "out of memory" in str(exc).lower() or isinstance(exc, torch.cuda.OutOfMemoryError)
+            is_oom = "out of memory" in str(exc).lower() or isinstance(
+                exc, torch.cuda.OutOfMemoryError
+            )
             self.free_memory()
 
             if is_oom and self.fallback_on_oom and device.startswith("cuda"):
@@ -170,7 +181,9 @@ class SAM2Segmenter:
                 return
 
             if is_oom:
-                raise CudaOOMError(f"CUDA OOM loading SAM 2.1 on {device}: {exc}") from exc
+                raise CudaOOMError(
+                    f"CUDA OOM loading SAM 2.1 on {device}: {exc}"
+                ) from exc
             raise
 
     def segment(
@@ -212,7 +225,9 @@ class SAM2Segmenter:
             raise SegmentationError(f"Unsupported image type: {type(image)}")
 
         if img_rgb.ndim != 3 or img_rgb.shape[2] != 3:
-            raise SegmentationError(f"Image must have shape (H, W, 3), got {img_rgb.shape}")
+            raise SegmentationError(
+                f"Image must have shape (H, W, 3), got {img_rgb.shape}"
+            )
 
         h, w, _ = img_rgb.shape
 
@@ -227,7 +242,11 @@ class SAM2Segmenter:
         input_box = np.array(box) if box is not None else None
 
         # Check for simulated OOM during inference
-        if simulate_oom and self._loaded_device and self._loaded_device.startswith("cuda"):
+        if (
+            simulate_oom
+            and self._loaded_device
+            and self._loaded_device.startswith("cuda")
+        ):
             self.free_memory()
             if self.fallback_on_oom:
                 # Fallback to CPU and retry
@@ -251,7 +270,9 @@ class SAM2Segmenter:
                 multimask_output=True,
             )
         except (torch.cuda.OutOfMemoryError, RuntimeError) as exc:
-            is_oom = "out of memory" in str(exc).lower() or isinstance(exc, torch.cuda.OutOfMemoryError)
+            is_oom = "out of memory" in str(exc).lower() or isinstance(
+                exc, torch.cuda.OutOfMemoryError
+            )
             self.free_memory()
 
             if is_oom and self.fallback_on_oom and self._loaded_device != "cpu":
@@ -267,7 +288,9 @@ class SAM2Segmenter:
                 )
 
             if is_oom:
-                raise CudaOOMError(f"CUDA OOM during SAM 2.1 inference on {self._loaded_device}: {exc}") from exc
+                raise CudaOOMError(
+                    f"CUDA OOM during SAM 2.1 inference on {self._loaded_device}: {exc}"
+                ) from exc
             raise
 
         # Select highest scoring mask

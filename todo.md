@@ -771,9 +771,9 @@
 **Dependencies:** T4-002, T4-005
 **Acceptance Criteria:**
 
-- [ ] Group overlap raises an error
-- [ ] Oversampling never touches the validation fold
-- [ ] Unit test cases are listed for T8 tasks
+- [x] Group overlap raises an error
+- [x] Oversampling never touches the validation fold
+- [x] Unit test cases are listed for T8 tasks
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

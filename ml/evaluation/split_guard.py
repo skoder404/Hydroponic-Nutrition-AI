@@ -150,6 +150,15 @@ def verify_split_hashes(
 
         actual_hash = compute_file_sha256(file_path)
         if actual_hash != expected_hash:
+            # Check for line-ending normalization (CRLF vs LF) on text files
+            if file_path.suffix in {".csv", ".json", ".txt"}:
+                raw = file_path.read_bytes()
+                crlf_hash = hashlib.sha256(
+                    raw.replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+                ).hexdigest()
+                lf_hash = hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest()
+                if expected_hash in (crlf_hash, lf_hash):
+                    continue
             errors[rel_path] = (
                 f"TAMPERED: SHA-256 mismatch!\n"
                 f"  Expected: {expected_hash}\n"
@@ -211,21 +220,33 @@ def assert_splits_intact(
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Split Manifest Hash Guard (T2-019)")
-    parser.add_argument("--generate", action="store_true", help="Generate/update split_hashes.json")
-    parser.add_argument("--verify", action="store_true", help="Verify all tracked split files")
-    parser.add_argument("--output", type=Path, default=None, help="Custom hash file location")
+    parser.add_argument(
+        "--generate", action="store_true", help="Generate/update split_hashes.json"
+    )
+    parser.add_argument(
+        "--verify", action="store_true", help="Verify all tracked split files"
+    )
+    parser.add_argument(
+        "--output", type=Path, default=None, help="Custom hash file location"
+    )
     args = parser.parse_args(argv)
 
     if args.generate:
         hashes = generate_split_hashes(output_file=args.output)
-        print(f"✅ Generated SHA-256 checksums for {len(hashes)} split files in {args.output or DEFAULT_HASH_FILE}")
+        print(
+            f"✅ Generated SHA-256 checksums for {len(hashes)} split files in {args.output or DEFAULT_HASH_FILE}"
+        )
         return 0
 
     # Default to verify
     try:
-        is_valid, errors = verify_split_hashes(hash_file=args.output, raise_on_failure=False)
+        is_valid, errors = verify_split_hashes(
+            hash_file=args.output, raise_on_failure=False
+        )
         if is_valid:
-            print("✅ All prepared split files and manifests match recorded cryptographic checksums.")
+            print(
+                "✅ All prepared split files and manifests match recorded cryptographic checksums."
+            )
             return 0
         print(f"❌ Split integrity check FAILED! {len(errors)} error(s) found:")
         for rel_path, err in errors.items():
