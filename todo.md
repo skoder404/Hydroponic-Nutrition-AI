@@ -866,9 +866,9 @@
 **Dependencies:** T4-013
 **Acceptance Criteria:**
 
-- [ ] Both models train end to end
-- [ ] Baselines appear in the comparison table
-- [ ] Concept note explains why a distance-based model is sensitive to feature scale
+- [x] Both models train end to end
+- [x] Baselines appear in the comparison table
+- [x] Concept note explains why a distance-based model is sensitive to feature scale
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

@@ -24,6 +24,8 @@ import pandas as pd
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
@@ -84,6 +86,9 @@ def get_classifier(
     gamma: str | float = "scale",
     kernel: str = "rbf",
     probability: bool = True,
+    n_neighbors: int = 5,
+    weights: str = "uniform",
+    max_iter: int = 1000,
     **kwargs: Any,
 ) -> tuple[ClassifierMixin, bool, str, dict[str, Any]]:
     """Factory creating classifier, scaler requirement flag, family name, and hyperparameters."""
@@ -123,9 +128,36 @@ def get_classifier(
         }
         svm_params.update(kwargs)
         return SVC(**svm_params), True, "SVC", svm_params
+    elif norm_type in ("knn", "kneighbors", "k_neighbors"):
+        knn_params: dict[str, Any] = {
+            "n_neighbors": n_neighbors,
+            "weights": weights,
+        }
+        knn_params.update(kwargs)
+        return (
+            KNeighborsClassifier(**knn_params),
+            True,
+            "KNeighborsClassifier",
+            knn_params,
+        )
+    elif norm_type in ("logistic_regression", "lr", "logreg"):
+        lr_params: dict[str, Any] = {
+            "C": C,
+            "max_iter": max_iter,
+            "random_state": seed,
+        }
+        if class_weight is not None:
+            lr_params["class_weight"] = class_weight
+        lr_params.update(kwargs)
+        return (
+            LogisticRegression(**lr_params),
+            True,
+            "LogisticRegression",
+            lr_params,
+        )
     else:
         raise ValueError(
-            f"Unsupported model_type '{model_type}'. Choose from 'decision_tree', 'random_forest', 'svm'."
+            f"Unsupported model_type '{model_type}'. Choose from 'decision_tree', 'random_forest', 'svm', 'knn', 'logistic_regression'."
         )
 
 
@@ -169,6 +201,9 @@ def train_sensor_model(
     gamma: str | float = "scale",
     kernel: str = "rbf",
     probability: bool = True,
+    n_neighbors: int = 5,
+    weights: str = "uniform",
+    max_iter: int = 1000,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -284,6 +319,9 @@ def train_sensor_model(
         gamma=gamma,
         kernel=kernel,
         probability=probability,
+        n_neighbors=n_neighbors,
+        weights=weights,
+        max_iter=max_iter,
     )
     use_scaler = force_scale if force_scale is not None else needs_scaling
     pipeline = build_sensor_pipeline(clf, use_scaler=use_scaler)
@@ -442,7 +480,19 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument(
         "--model",
         default="random_forest",
-        choices=["decision_tree", "random_forest", "svm", "dt", "rf", "svc"],
+        choices=[
+            "decision_tree",
+            "random_forest",
+            "svm",
+            "knn",
+            "logistic_regression",
+            "dt",
+            "rf",
+            "svc",
+            "lr",
+            "logreg",
+            "kneighbors",
+        ],
         help="Model type",
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
@@ -501,6 +551,24 @@ def main(argv: Sequence[str] | None = None) -> int:
         action="store_true",
         help="Disable SVM probability calibration",
     )
+    parser.add_argument(
+        "--n-neighbors",
+        type=int,
+        default=5,
+        help="Number of neighbors for KNN",
+    )
+    parser.add_argument(
+        "--weights",
+        default="uniform",
+        choices=["uniform", "distance"],
+        help="Weight function for KNN",
+    )
+    parser.add_argument(
+        "--max-iter",
+        type=int,
+        default=1000,
+        help="Maximum iterations for Logistic Regression",
+    )
 
     args = parser.parse_args(argv)
 
@@ -524,6 +592,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             gamma=args.gamma,
             kernel=args.kernel,
             probability=not args.no_probability,
+            n_neighbors=args.n_neighbors,
+            weights=args.weights,
+            max_iter=args.max_iter,
         )
         print(f"[SUCCESS] Trained {args.crop} {args.model} v{args.version}")
         print(
