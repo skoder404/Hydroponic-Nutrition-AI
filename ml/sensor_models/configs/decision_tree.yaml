@@ -1,0 +1,16 @@
+version: "1.0.0"
+model_family: "decision_tree"
+description: "Hyperparameter search space for DecisionTreeClassifier on sensor diagnostics"
+search_space:
+  max_depth:
+    - 3
+    - 5
+    - 8
+    - null
+  min_samples_leaf:
+    - 1
+    - 2
+    - 4
+  criterion:
+    - "gini"
+    - "entropy"

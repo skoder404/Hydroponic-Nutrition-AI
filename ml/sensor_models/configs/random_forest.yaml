@@ -1,0 +1,18 @@
+version: "1.0.0"
+model_family: "random_forest"
+description: "Hyperparameter search space for RandomForestClassifier on sensor diagnostics"
+search_space:
+  n_estimators:
+    - 25
+    - 50
+    - 100
+  max_depth:
+    - 4
+    - 6
+    - null
+  min_samples_leaf:
+    - 1
+    - 2
+  class_weight:
+    - null
+    - "balanced"

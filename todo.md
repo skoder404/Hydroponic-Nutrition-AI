@@ -880,9 +880,9 @@
 **Dependencies:** T4-011, T4-012, T4-013, T4-014, T4-007
 **Acceptance Criteria:**
 
-- [ ] Search uses group-aware folds only
-- [ ] Best parameters and CV scores are saved
-- [ ] Runtime and seed recorded
+- [x] Search uses group-aware folds only
+- [x] Best parameters and CV scores are saved
+- [x] Runtime and seed recorded
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

@@ -1,0 +1,12 @@
+version: "1.0.0"
+model_family: "knn"
+description: "Hyperparameter search space for KNeighborsClassifier on standardized sensor diagnostics"
+search_space:
+  n_neighbors:
+    - 3
+    - 5
+    - 7
+    - 9
+  weights:
+    - "uniform"
+    - "distance"

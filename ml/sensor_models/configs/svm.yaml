@@ -1,0 +1,15 @@
+version: "1.0.0"
+model_family: "svm"
+description: "Hyperparameter search space for SVC on standardized sensor diagnostics"
+search_space:
+  C:
+    - 0.5
+    - 1.0
+    - 2.5
+  gamma:
+    - "scale"
+    - 0.05
+    - 0.1
+  kernel:
+    - "rbf"
+    - "linear"
