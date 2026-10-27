@@ -644,9 +644,9 @@
 **Dependencies:** T3-004
 **Acceptance Criteria:**
 
-- [ ] Burst test returns 429 in the standard envelope
-- [ ] Limits are configurable via env
-- [ ] Health endpoint is exempt
+- [x] Burst test returns 429 in the standard envelope
+- [x] Limits are configurable via env
+- [x] Health endpoint is exempt
 
 **Estimated Effort:** 30 min
 **Assigned To:** Backend

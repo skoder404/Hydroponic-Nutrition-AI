@@ -212,6 +212,23 @@ class PersistenceFailedError(AppException):
         )
 
 
+class RateLimitExceededError(AppException):
+    """Raised when client exceeds configured per-IP rate limits (HTTP 429)."""
+
+    def __init__(
+        self,
+        message: str = "Rate limit exceeded. Please slow down your requests.",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="RATE_LIMIT_EXCEEDED",
+            message=message,
+            status_code=429,
+            details=details,
+            retryable=False,
+        )
+
+
 # ------------------------------------------------------------------------------
 # FastAPI Exception Handlers
 # ------------------------------------------------------------------------------
@@ -244,6 +261,7 @@ async def starlette_http_exception_handler(_request: Request, exc: Any) -> JSONR
         413: "PAYLOAD_TOO_LARGE",
         415: "UNSUPPORTED_MEDIA",
         422: "INVALID_INPUT",
+        429: "RATE_LIMIT_EXCEEDED",
         500: "INTERNAL_ERROR",
         503: "SERVICE_UNAVAILABLE",
     }

@@ -97,6 +97,19 @@ class Settings(BaseSettings):
         default="sam2_hiera_s.yaml", description="Path to SAM 2.1 model config"
     )
 
+    # Rate Limiting (T3-006)
+    rate_limit_enabled: bool = Field(
+        default=True, description="Enable or disable per-IP rate limiting"
+    )
+    rate_limit_default: str = Field(
+        default="60/minute",
+        description="Default per-IP rate limit string (e.g. 60/minute)",
+    )
+    rate_limit_strict: str = Field(
+        default="10/minute",
+        description="Strict per-IP rate limit for ML inference endpoints (e.g. 10/minute)",
+    )
+
     @field_validator("allowed_origins", mode="before")
     @classmethod
     def parse_allowed_origins(cls, value: str | list[str]) -> list[str]:

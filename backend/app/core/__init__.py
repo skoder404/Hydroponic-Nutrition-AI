@@ -20,6 +20,12 @@ from backend.app.core.paths import (
     safe_load_model_artifact,
     validate_model_path,
 )
+from backend.app.core.rate_limit import (
+    RateLimitMiddleware,
+    RateLimiter,
+    get_rate_limiter,
+    parse_rate_limit,
+)
 from backend.app.core.uploads import (
     ValidatedUpload,
     detect_image_format,
@@ -33,14 +39,18 @@ __all__ = [
     "InvalidInputError",
     "JSONFormatter",
     "PayloadTooLargeError",
+    "RateLimitMiddleware",
+    "RateLimiter",
     "Settings",
     "UnsupportedMediaError",
     "UntrustedModelPathError",
     "ValidatedUpload",
     "detect_image_format",
     "get_device_manager",
+    "get_rate_limiter",
     "get_settings",
     "get_trusted_model_root",
+    "parse_rate_limit",
     "redact_secrets",
     "request_id_ctx_var",
     "safe_load_model_artifact",

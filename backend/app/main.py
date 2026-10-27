@@ -24,6 +24,7 @@ from backend.app.api.v1 import api_v1_router
 from backend.app.core.config import get_settings
 from backend.app.core.errors import register_error_handlers
 from backend.app.core.logging import JSONFormatter, request_id_ctx_var, setup_logging
+from backend.app.core.rate_limit import RateLimitMiddleware
 
 logger = logging.getLogger(__name__)
 
@@ -132,7 +133,7 @@ def create_app(configure_logging: bool = True) -> FastAPI:
     )
 
     # Middleware registration: executed in reverse registration order
-    # RequestIdMiddleware -> SecurityHeadersMiddleware -> CORSMiddleware -> Router
+    # RequestIdMiddleware -> SecurityHeadersMiddleware -> RateLimitMiddleware -> CORSMiddleware -> Router
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.allowed_origins,
@@ -140,6 +141,7 @@ def create_app(configure_logging: bool = True) -> FastAPI:
         allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"],
         allow_headers=["*"],
     )
+    app.add_middleware(RateLimitMiddleware)
     app.add_middleware(SecurityHeadersMiddleware)
     app.add_middleware(RequestIdMiddleware)
 
