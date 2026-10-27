@@ -1529,9 +1529,9 @@
 **Dependencies:** T1-009, T1-006
 **Acceptance Criteria:**
 
-- [ ] FORCE_CPU=1 yields CPU
-- [ ] Simulated OOM retries as documented
-- [ ] `/health` shows device actually used
+- [x] FORCE_CPU=1 yields CPU
+- [x] Simulated OOM retries as documented
+- [x] `/health` shows device actually used
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

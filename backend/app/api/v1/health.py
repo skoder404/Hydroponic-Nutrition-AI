@@ -1,4 +1,5 @@
 """Health check endpoint router."""
+
 import logging
 
 from fastapi import APIRouter
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 async def get_health() -> HealthResponse:
     """Return application health, active device, and subsystem status."""
     device_mgr = get_device_manager()
-    active_device = device_mgr.get_device_str()
+    active_device = device_mgr.get_device_actually_used()
 
     logger.info("Health check requested", extra={"device": active_device})
 
