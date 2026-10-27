@@ -1503,9 +1503,9 @@
 **Dependencies:** T3-004, T2-016, T3-003, T2-022
 **Acceptance Criteria:**
 
-- [ ] Schemas validate the example JSON in TECH_RULES
-- [ ] `confidence_semantics` is mandatory whenever `confidence` is present
-- [ ] OpenAPI renders without errors
+- [x] Schemas validate the example JSON in TECH_RULES
+- [x] `confidence_semantics` is mandatory whenever `confidence` is present
+- [x] OpenAPI renders without errors
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend

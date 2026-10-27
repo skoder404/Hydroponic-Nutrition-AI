@@ -1,0 +1,234 @@
+"""Prediction request and response schemas conforming to TECH_RULES (T6-001).
+
+Key invariants:
+- `confidence_semantics` is strictly mandatory whenever `confidence` is present.
+- Per-leaf predictions in image models are never averaged into a single confidence score.
+- Input requests strictly forbid unknown fields (`extra="forbid"`).
+"""
+
+from __future__ import annotations
+
+from datetime import datetime
+from typing import Literal
+
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+
+class LeafPrediction(BaseModel):
+    """Prediction for an isolated single leaf instance in an image."""
+
+    leaf_id: str = Field(
+        ...,
+        description="Unique identifier for the leaf instance within the image (e.g. leaf_001)",
+        examples=["leaf_001"],
+    )
+    bbox: list[int] = Field(
+        ...,
+        description="Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel format",
+        examples=[[42, 58, 280, 310]],
+    )
+    mask_ref: str | None = Field(
+        None,
+        description="Optional local artifact or storage URI reference to the binary mask",
+        examples=["artifacts/masks/leaf_001.png"],
+    )
+    predicted_class: str = Field(
+        ...,
+        description="Target biological deficiency class or healthy status",
+        examples=["NitrogenDeficiency"],
+    )
+    display_label: str = Field(
+        ...,
+        description="Human-friendly label for UI presentation",
+        examples=["Nitrogen Deficiency"],
+    )
+    confidence: float | None = Field(
+        None,
+        ge=0.0,
+        le=1.0,
+        description="Model confidence score in [0.0, 1.0]",
+        examples=[0.892],
+    )
+    confidence_semantics: str | None = Field(
+        None,
+        description="Mandatory semantic interpretation of the confidence score whenever confidence is present",
+        examples=["multinomial_probability"],
+    )
+    uncertain: bool = Field(
+        ...,
+        description="True if model confidence is below the empirical crop threshold or out-of-distribution",
+        examples=[False],
+    )
+
+    @model_validator(mode="after")
+    def validate_confidence_semantics(self) -> LeafPrediction:
+        """Enforce: confidence_semantics is mandatory if and only if confidence is present."""
+        if self.confidence is not None:
+            if not self.confidence_semantics or not self.confidence_semantics.strip():
+                raise ValueError(
+                    "`confidence_semantics` is mandatory whenever `confidence` is present."
+                )
+        elif self.confidence_semantics is not None:
+            raise ValueError(
+                "`confidence_semantics` cannot be specified when `confidence` is null."
+            )
+        return self
+
+
+class RejectedLeaf(BaseModel):
+    """Metadata for a candidate leaf mask rejected by per-leaf validation quality gates."""
+
+    leaf_id: str = Field(
+        ..., description="Candidate leaf identifier", examples=["leaf_002"]
+    )
+    reason: str = Field(
+        ...,
+        description="Reason why the mask was rejected (e.g. empty, tiny dust speck, border contact)",
+        examples=[
+            "Mask is too small (0.0004 < min_area_ratio 0.0100); likely dust or noise"
+        ],
+    )
+    verdict: Literal["reject", "retry"] = Field(
+        "reject",
+        description="Validator verdict category",
+        examples=["reject"],
+    )
+
+
+class PredictionSummary(BaseModel):
+    """Discrete counts summary across extracted leaf instances.
+
+    NOTE: In accordance with TECH_RULES Rule 16 and PRD, per-leaf predictions
+    are NEVER averaged into a single confidence score.
+    """
+
+    model_config = ConfigDict(extra="forbid")
+
+    leaf_count: int = Field(
+        ...,
+        ge=0,
+        description="Total count of successfully segmented and assessed leaves",
+        examples=[4],
+    )
+    class_counts: dict[str, int] = Field(
+        ...,
+        description="Histogram of counts per predicted biological class",
+        examples=[{"NitrogenDeficiency": 3, "Healthy": 1}],
+    )
+
+
+class PredictionResponse(BaseModel):
+    """Comprehensive prediction response payload for sensor and image modalities.
+
+    Directly implements TECH_RULES API Standards (v1):
+    `crop, modality, predicted_class, display_label, confidence, confidence_semantics,
+    uncertain, experimental, model_id, model_version, timestamp, provenance, warnings[], limitations[]`
+    """
+
+    crop: str = Field(
+        ...,
+        description="Crop cultivar ('lettuce', 'spinach', 'tomato')",
+        examples=["lettuce"],
+    )
+    modality: Literal["sensor", "image", "image_features"] = Field(
+        ...,
+        description="Inference modality",
+        examples=["sensor"],
+    )
+    predicted_class: str = Field(
+        ...,
+        description="Model output class",
+        examples=["NitrogenDeficiency"],
+    )
+    display_label: str = Field(
+        ...,
+        description="Formatted label for UI display",
+        examples=["Nitrogen Deficiency"],
+    )
+    confidence: float | None = Field(
+        None,
+        ge=0.0,
+        le=1.0,
+        description="Model output score or confidence",
+        examples=[0.875],
+    )
+    confidence_semantics: str | None = Field(
+        None,
+        description="Mandatory semantic description of confidence score when confidence is present",
+        examples=["multinomial_probability"],
+    )
+    uncertain: bool = Field(
+        ...,
+        description="True if confidence is below calibrated threshold",
+        examples=[False],
+    )
+    experimental: bool = Field(
+        False,
+        description="True if model is unpromoted or running in experimental trial",
+        examples=[False],
+    )
+    model_id: str = Field(
+        ...,
+        description="Unique identifier of the executing model",
+        examples=["lettuce_sensor_rf"],
+    )
+    model_version: str = Field(
+        ...,
+        description="Semantic version of the model artifact",
+        examples=["v1.0.0"],
+    )
+    timestamp: datetime = Field(
+        ...,
+        description="UTC timestamp when prediction was generated",
+        examples=["2026-10-27T18:00:00Z"],
+    )
+    provenance: Literal["live", "manual", "imported"] = Field(
+        ...,
+        description="Source provenance of the underlying inputs",
+        examples=["live"],
+    )
+    warnings: list[str] = Field(
+        default_factory=list,
+        description="Operational warnings (e.g. out-of-range sensor drift, uncalibrated lighting)",
+        examples=[[]],
+    )
+    limitations: list[str] = Field(
+        default_factory=list,
+        description="Known scientific and hardware limitations applicable to this prediction",
+        examples=[
+            "Model trained exclusively on greenhouse hydro-channels; field crops unvalidated."
+        ],
+    )
+
+    # Image-specific extension fields
+    input_mode: Literal["single_leaf", "plant"] | None = Field(
+        None,
+        description="Image capture mode",
+        examples=["plant"],
+    )
+    leaves: list[LeafPrediction] = Field(
+        default_factory=list,
+        description="Per-leaf instance predictions",
+    )
+    rejected_leaves: list[RejectedLeaf] = Field(
+        default_factory=list,
+        description="Candidate masks rejected during quality validation",
+    )
+    summary: PredictionSummary | None = Field(
+        None,
+        description="Summary counts across leaves (never averaged confidence)",
+    )
+
+    @model_validator(mode="after")
+    def validate_confidence_semantics(self) -> PredictionResponse:
+        """Enforce: confidence_semantics is mandatory if and only if confidence is present."""
+        if self.confidence is not None:
+            if not self.confidence_semantics or not self.confidence_semantics.strip():
+                raise ValueError(
+                    "`confidence_semantics` is mandatory whenever `confidence` is present."
+                )
+        elif self.confidence_semantics is not None:
+            raise ValueError(
+                "`confidence_semantics` cannot be specified when `confidence` is null."
+            )
+        return self
