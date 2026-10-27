@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { MotionProvider } from "@/components/motion";
 
 export const metadata: Metadata = {
   title: "Hydroponic Nutrition AI",
@@ -68,7 +69,7 @@ export default function RootLayout({
         </header>
 
         <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          {children}
+          <MotionProvider>{children}</MotionProvider>
         </main>
 
         <footer className="border-t border-stone-200 bg-stone-100/70 text-xs text-stone-500 py-6 mt-auto">

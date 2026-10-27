@@ -295,6 +295,98 @@ export default function DesignSystemDemoPage() {
             ))}
           </div>
         </section>
+
+        {/* Section 7: Motion System & Shared Variants (T7-003) */}
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-serif text-[var(--forest)]">
+              7. Motion System & Shared Variants (T7-003)
+            </h2>
+            <span className="text-xs text-[var(--stone)]">
+              Only transform, opacity &amp; SVG stroke animated
+            </span>
+          </div>
+
+          <Card className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div className="bg-[var(--sand)]/40 p-3 rounded-[var(--radius-md)] border border-[var(--border)]">
+                <span className="text-[var(--stone)] font-mono block">prefers-reduced-motion</span>
+                <span className="text-sm font-semibold text-[var(--bark)]">
+                  {reducedMotion ? "Active (Movement Disabled)" : "Inactive (Full Motion)"}
+                </span>
+              </div>
+              <div className="bg-[var(--sand)]/40 p-3 rounded-[var(--radius-md)] border border-[var(--border)]">
+                <span className="text-[var(--stone)] font-mono block">Loop Budget &amp; Guardrails</span>
+                <span className="text-sm font-semibold text-[var(--bark)]">
+                  Pauses when tab hidden (document.visibilityState)
+                </span>
+              </div>
+              <div className="bg-[var(--sand)]/40 p-3 rounded-[var(--radius-md)] border border-[var(--border)]">
+                <span className="text-[var(--stone)] font-mono block">Allowed Properties</span>
+                <span className="text-sm font-semibold text-[var(--forest)]">
+                  transform, opacity, stroke-dashoffset
+                </span>
+              </div>
+            </div>
+
+            {/* Live variant cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-center">
+                <h4 className="text-xs font-semibold uppercase text-[var(--stone)] mb-2">
+                  Variant: fadeUp (300ms, 8px)
+                </h4>
+                <div
+                  className="p-4 bg-[var(--sand)]/30 rounded-[var(--radius-md)] text-xs font-medium text-[var(--bark)]"
+                  style={{
+                    animation: reducedMotion ? "none" : "pulse 2s infinite ease-in-out",
+                  }}
+                >
+                  {reducedMotion ? "Degrades to fade only (no translateY)" : "Translates 8px + fades in"}
+                </div>
+              </div>
+
+              <div className="p-4 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-center">
+                <h4 className="text-xs font-semibold uppercase text-[var(--stone)] mb-2">
+                  Variant: grow (~1200ms)
+                </h4>
+                <div className="h-16 flex items-center justify-center">
+                  <svg viewBox="0 0 100 40" className="w-24 h-12">
+                    <path
+                      d="M 10 35 C 30 10, 70 10, 90 35"
+                      fill="none"
+                      stroke="var(--forest)"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      style={{
+                        strokeDasharray: "100",
+                        strokeDashoffset: reducedMotion ? "0" : "0",
+                      }}
+                    />
+                  </svg>
+                </div>
+                <span className="text-[10px] text-[var(--stone)]">SVG line-art stroke draw</span>
+              </div>
+
+              <div className="p-4 rounded-[var(--radius-md)] border border-[var(--border)] bg-[var(--surface)] text-center">
+                <h4 className="text-xs font-semibold uppercase text-[var(--stone)] mb-2">
+                  Variant: stagger (60ms)
+                </h4>
+                <div className="flex justify-center gap-1.5 py-2">
+                  {[0, 1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="w-5 h-8 bg-[var(--moss)]/80 rounded-[var(--radius-sm)]"
+                      style={{
+                        transitionDelay: `${i * 60}ms`,
+                      }}
+                    />
+                  ))}
+                </div>
+                <span className="text-[10px] text-[var(--stone)]">60ms card offset / 50ms leaf</span>
+              </div>
+            </div>
+          </Card>
+        </section>
       </div>
     </div>
   );

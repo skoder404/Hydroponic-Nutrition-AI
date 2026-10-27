@@ -1742,9 +1742,9 @@
 **Dependencies:** T7-001
 **Acceptance Criteria:**
 
-- [ ] Reduced-motion setting turns movement into a fade or nothing
-- [ ] Only `transform`, `opacity`, and SVG stroke are animated
-- [ ] Variants match the DESIGN.md durations
+- [x] Reduced-motion setting turns movement into a fade or nothing
+- [x] Only `transform`, `opacity`, and SVG stroke are animated
+- [x] Variants match the DESIGN.md durations
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
