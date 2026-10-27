@@ -8,11 +8,12 @@ Conforms to TECH_RULES and PROJECT_OVERVIEW §21.1:
 - get_record: Retrieves an AnalysisRecord by UUID with eager loaded children.
 - list_records: Retrieves paginated AnalysisRecords with filtering and created_at DESC order.
 """
+
 from __future__ import annotations
 
 import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timezone, tzinfo
 from typing import Any, Generic, TypeVar
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -74,6 +75,7 @@ class SaveResult(Generic[T]):
 def normalize_datetime_to_utc(dt: datetime, tz_name: str) -> datetime:
     """Ensure datetime is timezone-aware and converted to UTC for database storage."""
     if dt.tzinfo is None:
+        tz: tzinfo
         try:
             tz = ZoneInfo(tz_name)
         except (ZoneInfoNotFoundError, ValueError):

@@ -561,9 +561,9 @@
 **Dependencies:** T2-021
 **Acceptance Criteria:**
 
-- [ ] Migration applies and reverts
-- [ ] `EXPLAIN` on the list query uses an index
-- [ ] Migration is committed
+- [x] Migration applies and reverts
+- [x] `EXPLAIN` on the list query uses an index
+- [x] Migration is committed
 
 **Estimated Effort:** 15 min
 **Assigned To:** Backend
