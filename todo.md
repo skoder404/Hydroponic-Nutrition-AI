@@ -824,9 +824,9 @@
 **Dependencies:** T4-010
 **Acceptance Criteria:**
 
-- [ ] Runs for lettuce end to end
-- [ ] Exported rules file is written
-- [ ] Seeds recorded
+- [x] Runs for lettuce end to end
+- [x] Exported rules file is written
+- [x] Seeds recorded
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

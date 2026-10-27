@@ -36,6 +36,7 @@ from ml.sensor_models.schemas import (
     assert_no_leakage,
     extract_feature_matrix,
     get_sensor_schema,
+    validate_feature_matrix,
 )
 
 
@@ -61,18 +62,48 @@ class SensorPipeline(Pipeline):
         return super().__getitem__(key)
 
 
-def get_classifier(model_type: str, seed: int = 42) -> tuple[ClassifierMixin, bool, str, dict[str, Any]]:
+def get_classifier(
+    model_type: str,
+    seed: int = 42,
+    max_depth: int | None = None,
+    min_samples_leaf: int = 1,
+    criterion: str = "gini",
+    **kwargs: Any,
+) -> tuple[ClassifierMixin, bool, str, dict[str, Any]]:
     """Factory creating classifier, scaler requirement flag, family name, and hyperparameters."""
     norm_type = model_type.strip().lower()
     if norm_type in ("decision_tree", "dt"):
-        params = {"criterion": "gini", "random_state": seed}
+        params: dict[str, Any] = {
+            "criterion": criterion,
+            "max_depth": max_depth,
+            "min_samples_leaf": min_samples_leaf,
+            "random_state": seed,
+        }
+        params.update(kwargs)
         return DecisionTreeClassifier(**params), False, "DecisionTreeClassifier", params
     elif norm_type in ("random_forest", "rf"):
-        params = {"n_estimators": 100, "random_state": seed}
-        return RandomForestClassifier(**params), False, "RandomForestClassifier", params
+        rf_params: dict[str, Any] = {
+            "n_estimators": 100,
+            "max_depth": max_depth,
+            "min_samples_leaf": min_samples_leaf,
+            "criterion": criterion,
+            "random_state": seed,
+        }
+        rf_params.update(kwargs)
+        return (
+            RandomForestClassifier(**rf_params),
+            False,
+            "RandomForestClassifier",
+            rf_params,
+        )
     elif norm_type in ("svm", "svc"):
-        params = {"kernel": "rbf", "probability": True, "random_state": seed}
-        return SVC(**params), True, "SVC", params
+        svm_params: dict[str, Any] = {
+            "kernel": "rbf",
+            "probability": True,
+            "random_state": seed,
+        }
+        svm_params.update(kwargs)
+        return SVC(**svm_params), True, "SVC", svm_params
     else:
         raise ValueError(
             f"Unsupported model_type '{model_type}'. Choose from 'decision_tree', 'random_forest', 'svm'."
@@ -106,6 +137,10 @@ def train_sensor_model(
     custom_val_df: pd.DataFrame | None = None,
     target_column: str = "label",
     reports_dir: Path | str | None = None,
+    feature_columns: Sequence[str] | None = None,
+    max_depth: int | None = None,
+    min_samples_leaf: int = 1,
+    criterion: str = "gini",
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -154,7 +189,9 @@ def train_sensor_model(
         val_df = custom_val_df
     else:
         resolved_data_dir = (
-            Path(data_dir) if data_dir else Path("processed_data") / "sensor" / clean_crop
+            Path(data_dir)
+            if data_dir
+            else Path("processed_data") / "sensor" / clean_crop
         )
         train_csv = resolved_data_dir / "train.csv"
         val_csv = resolved_data_dir / "val.csv"
@@ -173,22 +210,47 @@ def train_sensor_model(
     if target_column not in train_df.columns:
         raise ValueError(f"Target column '{target_column}' missing from training data.")
     if target_column not in val_df.columns:
-        raise ValueError(f"Target column '{target_column}' missing from validation data.")
+        raise ValueError(
+            f"Target column '{target_column}' missing from validation data."
+        )
 
-    # Check for leakage blacklist columns in feature columns (Acceptance Criterion 2)
-    # Prohibit passing blacklisted columns into model features
-    train_feat_cols = [c for c in train_df.columns if c != target_column]
-    assert_no_leakage(train_feat_cols, crop=clean_crop)
+    # Check for leakage blacklist columns
+    if feature_columns is not None:
+        assert_no_leakage(feature_columns, crop=clean_crop)
+        cols_to_use = list(feature_columns)
+        X_train = validate_feature_matrix(
+            train_df[cols_to_use],
+            crop=clean_crop,
+            strict_order=False,
+            check_bounds=False,
+        )
+        X_val = validate_feature_matrix(
+            val_df[cols_to_use], crop=clean_crop, strict_order=False, check_bounds=False
+        )
+    elif custom_train_df is not None:
+        assert_no_leakage(
+            [c for c in custom_train_df.columns if c != target_column], crop=clean_crop
+        )
+        X_train = extract_feature_matrix(train_df, crop=clean_crop, check_bounds=False)
+        X_val = extract_feature_matrix(val_df, crop=clean_crop, check_bounds=False)
+    else:
+        X_train = extract_feature_matrix(train_df, crop=clean_crop, check_bounds=False)
+        X_val = extract_feature_matrix(val_df, crop=clean_crop, check_bounds=False)
 
-    # Safely extract strictly audited features
-    X_train = extract_feature_matrix(train_df, crop=clean_crop, check_bounds=False)
     y_train = train_df[target_column].astype(str).values
-
-    X_val = extract_feature_matrix(val_df, crop=clean_crop, check_bounds=False)
     y_val = val_df[target_column].astype(str).values
 
+    assert target_column not in X_train.columns
+    assert target_column not in X_val.columns
+
     # 4. Instantiate model & build SensorPipeline with bundled scaler (Acceptance Criterion 3)
-    clf, needs_scaling, family_name, hyperparameters = get_classifier(model_type, seed=seed)
+    clf, needs_scaling, family_name, hyperparameters = get_classifier(
+        model_type,
+        seed=seed,
+        max_depth=max_depth,
+        min_samples_leaf=min_samples_leaf,
+        criterion=criterion,
+    )
     use_scaler = force_scale if force_scale is not None else needs_scaling
     pipeline = build_sensor_pipeline(clf, use_scaler=use_scaler)
 
@@ -197,15 +259,16 @@ def train_sensor_model(
 
     # 6. Evaluate on validation split per Section 18.2
     y_val_pred = pipeline.predict(X_val)
-    val_metrics = calculate_metrics(y_val, y_val_pred, labels=classes, zero_division=0.0)
+    val_metrics = calculate_metrics(
+        y_val, y_val_pred, labels=classes, zero_division=0.0
+    )
 
     # 7. Construct ModelMetadata
     model_name = f"{clean_crop}_sensor_{model_type}_v{artifact_version}"
     artifact_filename = f"{model_name}.joblib"
 
     display_mapping = {
-        lbl: ("healthy" if lbl == "Normal" else f"unhealthy/{lbl}")
-        for lbl in classes
+        lbl: ("healthy" if lbl == "Normal" else f"unhealthy/{lbl}") for lbl in classes
     }
 
     # Derive sample counts
@@ -217,42 +280,65 @@ def train_sensor_model(
 
     class_counts_per_split = {
         "train": {str(k): int(v) for k, v in pd.Series(y_train).value_counts().items()},
-        "validation": {str(k): int(v) for k, v in pd.Series(y_val).value_counts().items()},
+        "validation": {
+            str(k): int(v) for k, v in pd.Series(y_val).value_counts().items()
+        },
     }
 
-    metadata = ModelMetadata.model_validate({
-        "model_id": model_name,
-        "crop": clean_crop,
-        "task": "classification",
-        "modality": "sensor",
-        "family": family_name,
-        "artifact_version": artifact_version,
-        "artifact_file": artifact_filename,
-        "commit": "b6f1df1f87c2b3e8",
-        "training_date": datetime.now(timezone.utc).isoformat(),
-        "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
-        "rule_version": "1.0.0",
-        "preprocessing_version": "1.0.0",
-        "experimental": False,
-        "status": "candidate",
-        "classes": classes,
-        "display_mapping": display_mapping,
-        "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
-        "split_counts": split_counts,
-        "ordered_features": expected_features,
-        "feature_units": {f: schema.features[i].unit for i, f in enumerate(expected_features)},
-        "input_unit": "sensor_reading",
-        "hyperparameters": hyperparameters,
-        "confidence_settings": {"uncertainty_threshold": 0.40, "abstention_allowed": True},
-        "expected_input_schema": {"type": "object", "required": expected_features},
-        "dependency_versions": {"python": sys.version.split()[0], "scikit-learn": "1.6.1"},
-        "validation_metrics": to_serializable_metrics(val_metrics),
-        "final_test_metrics": None,
-    })
+    metadata = ModelMetadata.model_validate(
+        {
+            "model_id": model_name,
+            "crop": clean_crop,
+            "task": "classification",
+            "modality": "sensor",
+            "family": family_name,
+            "artifact_version": artifact_version,
+            "artifact_file": artifact_filename,
+            "commit": "b6f1df1f87c2b3e8",
+            "training_date": datetime.now(timezone.utc).isoformat(),
+            "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
+            "rule_version": "1.0.0",
+            "preprocessing_version": "1.0.0",
+            "experimental": False,
+            "status": "candidate",
+            "classes": classes,
+            "display_mapping": display_mapping,
+            "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+            "split_counts": split_counts,
+            "ordered_features": expected_features,
+            "feature_units": {
+                f: schema.features[i].unit for i, f in enumerate(expected_features)
+            },
+            "input_unit": "sensor_reading",
+            "hyperparameters": hyperparameters,
+            "confidence_settings": {
+                "uncertainty_threshold": 0.40,
+                "abstention_allowed": True,
+            },
+            "expected_input_schema": {"type": "object", "required": expected_features},
+            "dependency_versions": {
+                "python": sys.version.split()[0],
+                "scikit-learn": "1.6.1",
+            },
+            "validation_metrics": to_serializable_metrics(val_metrics),
+            "final_test_metrics": None,
+        }
+    )
 
     # 8. Save artifact and metadata in ModelRegistry
     registry = ModelRegistry(root_dir=registry_root)
-    artifact_path, metadata_path = registry.save_model(pipeline, metadata, overwrite=True)
+    artifact_path, metadata_path = registry.save_model(
+        pipeline, metadata, overwrite=True
+    )
+
+    # Export text rules next to the artifact for DecisionTreeClassifier (T4-011)
+    rules_path: Path | None = None
+    if isinstance(pipeline.classifier, DecisionTreeClassifier):
+        from sklearn.tree import export_text
+
+        rules_text = export_text(pipeline.classifier, feature_names=expected_features)
+        rules_path = artifact_path.parent / f"{model_name}_rules.txt"
+        rules_path.write_text(rules_text, encoding="utf-8")
 
     # 9. Write evaluation report
     json_report, md_report = write_evaluation_report(
@@ -289,21 +375,54 @@ def train_sensor_model(
         "val_macro_f1": val_metrics["macro_f1"],
         "val_accuracy": val_metrics["accuracy"],
         "scaler": pipeline.scaler,
+        "rules_path": rules_path,
     }
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     """CLI entrypoint for ml/sensor_models/train_sensor.py."""
     parser = argparse.ArgumentParser(description="Train sensor condition classifier.")
-    parser.add_argument("--crop", required=True, choices=["lettuce", "spinach", "tomato"], help="Crop family")
-    parser.add_argument("--model", default="random_forest", choices=["decision_tree", "random_forest", "svm", "dt", "rf", "svc"], help="Model type")
+    parser.add_argument(
+        "--crop",
+        required=True,
+        choices=["lettuce", "spinach", "tomato"],
+        help="Crop family",
+    )
+    parser.add_argument(
+        "--model",
+        default="random_forest",
+        choices=["decision_tree", "random_forest", "svm", "dt", "rf", "svc"],
+        help="Model type",
+    )
     parser.add_argument("--seed", type=int, default=42, help="Random seed")
     parser.add_argument("--version", default="1.0.0", help="Artifact version")
-    parser.add_argument("--data-dir", default=None, help="Prepared splits data directory")
-    parser.add_argument("--registry-root", default=None, help="Model registry root directory")
-    parser.add_argument("--reports-dir", default=None, help="Evaluation reports output directory")
-    parser.add_argument("--no-verify-splits", action="store_true", help="Skip split hash guard check")
-    parser.add_argument("--scale", action="store_true", default=None, help="Force scaler inclusion")
+    parser.add_argument(
+        "--data-dir", default=None, help="Prepared splits data directory"
+    )
+    parser.add_argument(
+        "--registry-root", default=None, help="Model registry root directory"
+    )
+    parser.add_argument(
+        "--reports-dir", default=None, help="Evaluation reports output directory"
+    )
+    parser.add_argument(
+        "--no-verify-splits", action="store_true", help="Skip split hash guard check"
+    )
+    parser.add_argument(
+        "--scale", action="store_true", default=None, help="Force scaler inclusion"
+    )
+    parser.add_argument(
+        "--max-depth", type=int, default=None, help="Maximum tree depth"
+    )
+    parser.add_argument(
+        "--min-samples-leaf", type=int, default=1, help="Minimum samples per leaf"
+    )
+    parser.add_argument(
+        "--criterion",
+        default="gini",
+        choices=["gini", "entropy", "log_loss"],
+        help="Split criterion",
+    )
 
     args = parser.parse_args(argv)
 
@@ -318,9 +437,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             verify_splits=not args.no_verify_splits,
             artifact_version=args.version,
             force_scale=args.scale,
+            max_depth=args.max_depth,
+            min_samples_leaf=args.min_samples_leaf,
+            criterion=args.criterion,
         )
         print(f"[SUCCESS] Trained {args.crop} {args.model} v{args.version}")
-        print(f"Validation Macro-F1: {res['val_macro_f1']:.4f} | Accuracy: {res['val_accuracy']:.4f}")
+        print(
+            f"Validation Macro-F1: {res['val_macro_f1']:.4f} | Accuracy: {res['val_accuracy']:.4f}"
+        )
         print(f"Artifact: {res['artifact_path']}")
         print(f"Metadata: {res['metadata_path']}")
         print(f"Report:   {res['md_report']}")
