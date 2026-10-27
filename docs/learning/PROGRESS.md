@@ -28,7 +28,7 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 | 12 | T4-014 | KNN and logistic regression baselines (distance, regularisation) | `docs/learning/knn-and-logistic-regression-baselines-distance.md` | [ ] | [ ] | [ ] | - | [x] | [ ] | [ ] | 2026-10-27 |
 | 13 | T4-015 | Hyperparameter search with grouped CV and its pitfalls | `docs/learning/hyperparameter-search-with-grouped-cv-and.md` | [x] | [ ] | [ ] | 2026-10-27 | [ ] | [ ] | [ ] | - |
 | 14 | T4-020 | Train/serve skew and feature availability (live-compatible models) | `docs/learning/trainserve-skew-and-feature-availability-livecompatible.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 15 | T4-021 | Why rule-derived labels inflate scores | `docs/learning/why-rulederived-labels-inflate-scores.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 15 | T4-021 | Why rule-derived labels inflate scores | `docs/learning/why-rulederived-labels-inflate-scores.md` | [x] | [ ] | [ ] | 2026-10-27 | [ ] | [ ] | [ ] | - |
 | 16 | T5-001 | Colour spaces (BGR/RGB/HSV) and vegetation indices (ExG, ExR) | `docs/learning/colour-spaces-bgrrgbhsv-and-vegetation-indices.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 17 | T5-003 | Texture features: GLCM contrast and entropy | `docs/learning/texture-features-glcm-contrast-and-entropy.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 18 | T5-007 | Shape descriptors: compactness, solidity, aspect ratio | `docs/learning/shape-descriptors-compactness-solidity-aspect-ratio.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |

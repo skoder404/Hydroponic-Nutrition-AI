@@ -1,0 +1,428 @@
+{
+  "generated_at": "2026-10-27T10:47:24.663825+00:00",
+  "task": "T4-021",
+  "prd_requirement": "LR-5",
+  "crops": {
+    "lettuce": {
+      "crop": "lettuce",
+      "train_samples": 1295,
+      "feature_count": 5,
+      "features": [
+        "ph",
+        "ec",
+        "water_temp",
+        "humidity",
+        "air_temp"
+      ],
+      "tree_hyperparameters": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 1,
+        "random_state": 42
+      },
+      "comparisons": [
+        {
+          "feature": "ph",
+          "unit": "pH",
+          "documented_lower_band": 5.5,
+          "learned_tree_lower_split": 5.45,
+          "documented_upper_band": 7.0,
+          "learned_tree_upper_split": 7.05,
+          "all_tree_splits": [
+            5.45,
+            7.05
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "ec",
+          "unit": "mS/cm",
+          "documented_lower_band": 1.2,
+          "learned_tree_lower_split": 1.2,
+          "documented_upper_band": 2.5,
+          "learned_tree_upper_split": 2.505,
+          "all_tree_splits": [
+            1.2,
+            2.505
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "water_temp",
+          "unit": "\u00b0C",
+          "documented_lower_band": 18.0,
+          "learned_tree_lower_split": 17.7,
+          "documented_upper_band": 26.0,
+          "learned_tree_upper_split": 26.05,
+          "all_tree_splits": [
+            17.7,
+            26.05,
+            26.1,
+            26.15
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "humidity",
+          "unit": "%",
+          "documented_lower_band": 50.0,
+          "learned_tree_lower_split": 49.995,
+          "documented_upper_band": 80.0,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [
+            49.995
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "air_temp",
+          "unit": "\u00b0C",
+          "documented_lower_band": 18.0,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": 30.0,
+          "learned_tree_upper_split": 30.73,
+          "all_tree_splits": [
+            30.73
+          ],
+          "recovery_status": "Recovered"
+        }
+      ]
+    },
+    "spinach": {
+      "crop": "spinach",
+      "train_samples": 958,
+      "feature_count": 5,
+      "features": [
+        "air_temperature_C",
+        "relative_humidity_percent",
+        "water_temperature_C",
+        "ph",
+        "ec_mS_cm"
+      ],
+      "tree_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 1,
+        "random_state": 42
+      },
+      "comparisons": [
+        {
+          "feature": "air_temperature_C",
+          "unit": "",
+          "documented_lower_band": null,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": null,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [],
+          "recovery_status": "Not Split"
+        },
+        {
+          "feature": "relative_humidity_percent",
+          "unit": "%",
+          "documented_lower_band": 45.0,
+          "learned_tree_lower_split": 44.955,
+          "documented_upper_band": 75.0,
+          "learned_tree_upper_split": 73.315,
+          "all_tree_splits": [
+            44.955,
+            73.315
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "water_temperature_C",
+          "unit": "\u00b0C",
+          "documented_lower_band": null,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": 21.0,
+          "learned_tree_upper_split": 21.105,
+          "all_tree_splits": [
+            21.105
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "ph",
+          "unit": "pH",
+          "documented_lower_band": 6.0,
+          "learned_tree_lower_split": 5.985,
+          "documented_upper_band": 7.0,
+          "learned_tree_upper_split": 7.0,
+          "all_tree_splits": [
+            5.985,
+            7.0
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "ec_mS_cm",
+          "unit": "mS/cm",
+          "documented_lower_band": 1.8,
+          "learned_tree_lower_split": 1.79,
+          "documented_upper_band": 2.3,
+          "learned_tree_upper_split": 2.305,
+          "all_tree_splits": [
+            1.79,
+            2.305
+          ],
+          "recovery_status": "Recovered"
+        }
+      ]
+    },
+    "tomato": {
+      "crop": "tomato",
+      "train_samples": 29943,
+      "feature_count": 8,
+      "features": [
+        "air_temperature_C",
+        "relative_humidity_percent",
+        "water_temperature_C",
+        "ph",
+        "ec_mS_cm",
+        "nitrogen_mg_L",
+        "phosphorus_mg_L",
+        "potassium_mg_L"
+      ],
+      "tree_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 1,
+        "random_state": 42
+      },
+      "comparisons": [
+        {
+          "feature": "air_temperature_C",
+          "unit": "\u00b0C",
+          "documented_lower_band": 18.0,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": 30.0,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [
+            36.26
+          ],
+          "recovery_status": "Not Split"
+        },
+        {
+          "feature": "relative_humidity_percent",
+          "unit": "%",
+          "documented_lower_band": 50.0,
+          "learned_tree_lower_split": 48.975,
+          "documented_upper_band": 85.0,
+          "learned_tree_upper_split": 86.345,
+          "all_tree_splits": [
+            45.205,
+            45.22,
+            45.58,
+            45.645,
+            45.735,
+            45.865,
+            45.91,
+            46.075,
+            46.205,
+            46.63,
+            46.985,
+            47.215,
+            48.095,
+            48.975,
+            61.455,
+            86.345,
+            87.855,
+            87.885,
+            88.315,
+            89.09,
+            89.2,
+            89.29,
+            89.415,
+            89.665,
+            89.705
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "water_temperature_C",
+          "unit": "\u00b0C",
+          "documented_lower_band": null,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": 25.0,
+          "learned_tree_upper_split": 25.025,
+          "all_tree_splits": [
+            18.025,
+            18.34,
+            18.82,
+            23.8,
+            25.025,
+            27.45,
+            28.265,
+            29.99
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "ph",
+          "unit": "pH",
+          "documented_lower_band": 6.0,
+          "learned_tree_lower_split": 5.73,
+          "documented_upper_band": 6.5,
+          "learned_tree_upper_split": 6.315,
+          "all_tree_splits": [
+            5.22,
+            5.7,
+            5.73,
+            6.315,
+            7.07,
+            7.255,
+            7.395,
+            7.435,
+            7.455
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "ec_mS_cm",
+          "unit": "mS/cm",
+          "documented_lower_band": 2.0,
+          "learned_tree_lower_split": 1.955,
+          "documented_upper_band": 4.0,
+          "learned_tree_upper_split": 3.975,
+          "all_tree_splits": [
+            0.785,
+            0.8,
+            0.805,
+            0.835,
+            0.865,
+            0.905,
+            0.945,
+            1.015,
+            1.085,
+            1.095,
+            1.255,
+            1.315,
+            1.375,
+            1.425,
+            1.955,
+            3.575,
+            3.975,
+            4.035,
+            4.095,
+            4.12,
+            4.13,
+            4.145,
+            4.155,
+            4.165,
+            4.175,
+            4.185
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "nitrogen_mg_L",
+          "unit": "ppm / mg/L",
+          "documented_lower_band": 90.0,
+          "learned_tree_lower_split": null,
+          "documented_upper_band": null,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [
+            41.65,
+            41.7,
+            42.05,
+            43.3,
+            44.45,
+            44.85,
+            44.9,
+            45.05,
+            45.1,
+            45.35,
+            46.3,
+            46.75,
+            47.2,
+            48.35,
+            49.1,
+            49.8,
+            50.75,
+            51.4,
+            51.45,
+            51.95,
+            52.1,
+            52.9,
+            55.75,
+            56.75,
+            58.2,
+            64.25,
+            71.05
+          ],
+          "recovery_status": "Not Split"
+        },
+        {
+          "feature": "phosphorus_mg_L",
+          "unit": "ppm / mg/L",
+          "documented_lower_band": 35.0,
+          "learned_tree_lower_split": 29.85,
+          "documented_upper_band": null,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [
+            16.15,
+            16.45,
+            16.55,
+            17.05,
+            17.8,
+            18.0,
+            18.45,
+            18.95,
+            19.05,
+            19.25,
+            19.55,
+            20.05,
+            20.15,
+            20.75,
+            21.15,
+            22.35,
+            22.65,
+            23.35,
+            24.15,
+            26.05,
+            28.75,
+            29.85,
+            71.75
+          ],
+          "recovery_status": "Recovered"
+        },
+        {
+          "feature": "potassium_mg_L",
+          "unit": "ppm / mg/L",
+          "documented_lower_band": 144.0,
+          "learned_tree_lower_split": 130.75,
+          "documented_upper_band": null,
+          "learned_tree_upper_split": null,
+          "all_tree_splits": [
+            91.1,
+            92.85,
+            93.6,
+            94.55,
+            94.65,
+            95.05,
+            98.0,
+            99.95,
+            100.85,
+            101.0,
+            101.4,
+            102.5,
+            102.65,
+            105.65,
+            110.3,
+            115.55,
+            124.25,
+            130.75
+          ],
+          "recovery_status": "Recovered"
+        }
+      ]
+    }
+  },
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

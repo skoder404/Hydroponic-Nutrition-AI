@@ -960,9 +960,9 @@
 **Dependencies:** T4-017, T4-018, T4-019
 **Acceptance Criteria:**
 
-- [ ] Learned thresholds are tabulated beside documented bands
-- [ ] Document answers LR-5 from the PRD in plain language
-- [ ] Both members can restate the conclusion in one paragraph
+- [x] Learned thresholds are tabulated beside documented bands
+- [x] Document answers LR-5 from the PRD in plain language
+- [x] Both members can restate the conclusion in one paragraph
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
