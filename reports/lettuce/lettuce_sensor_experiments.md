@@ -1,34 +1,36 @@
-# Lettuce Sensor Experiments: Model Comparison & Validation Report (T4-017)
+# Lettuce Sensor Experiments: Model Comparison & Validation Report (T4-017 / T4-022)
 
 > **Generated:** `2026-10-27T09:16:48.400217+00:00` | **Crop:** `lettuce` | **Primary Selection:** `Macro-F1`
 
 ## 1. Executive Summary
 
-This report systematically evaluates five classification model families on the Batavia lettuce 7-class sensor dataset following the strict validation protocol established in TECH_RULES and Overview Section 18.2. All models were tuned via calendar-day grouped cross-validation (41 disjoint experiment-days) and evaluated exclusively on the held-out validation partition (12 experiment-days, 125 samples). The final test partition (162 samples, 16 days) remained completely untouched and unread throughout training and model selection.
+This report systematically evaluates five classification model families on the Batavia lettuce 7-class sensor dataset following the strict validation protocol established in TECH_RULES, Overview Section 18.2, and Section 11.7/11.8. Per T4-022, the **headline lettuce performance metric** is the **Grouped 5-Fold Cross-Validation by Calendar Date** (across all 69 disjoint calendar days and 717 usable real readings, with in-fold oversampling). The single held-out test split is officially classified as **one favourable split** per the Mendeley dataset documentation.
 
-- **Best Overall Model:** `decision_tree`
+- **Headline Performance (Grouped 5-Fold CV):** **0.7008 ± 0.0647 Macro-F1** (Random Forest) / **0.6910 ± 0.0662** (Decision Tree)
+- **Validation Partition (Favourable Split):** `0.7461 Macro-F1` / `0.9600 Accuracy`
 - **Authorized Sensor Features:** `ph, ec, water_temp, humidity, air_temp` (5 features)
-- **Evaluation Split:** `validation` only (test metrics are never accessed during experimentation)
+- **Zero Field Accuracy Claim:** Results reflect threshold geometry reconstruction on documented partitions, not 99.4% field biological accuracy.
 
 ## 2. Model Performance Comparison Table
 
-| Rank | Model Family | Best Hyperparameters | Grouped CV Macro-F1 (± Std) | Validation Macro-F1 | Validation Accuracy |
-|:---:|---|---|:---:|:---:|:---:|
-| 1 | **decision_tree** | `criterion=entropy`, `max_depth=5`, `min_samples_leaf=1` | **0.6074** (±0.0627) | **0.7461** | 0.9600 |
-| 2 | **random_forest** | `class_weight=balanced`, `max_depth=4`, `min_samples_leaf=1`, `n_estimators=100` | **0.6239** (±0.0501) | **0.7461** | 0.9600 |
-| 3 | **svm** | `C=2.5`, `gamma=scale`, `kernel=rbf` | **0.5261** (±0.0966) | **0.6771** | 0.9040 |
-| 4 | **logistic_regression** | `C=0.2`, `class_weight=balanced` | **0.4226** (±0.0732) | **0.4967** | 0.6560 |
-| 5 | **knn** | `n_neighbors=5`, `weights=uniform` | **0.4430** (±0.1159) | **0.4921** | 0.7360 |
+| Rank | Model Family | Headline Grouped CV Macro-F1 (± Std) | Single Held-Out Split Macro-F1 | Validation Accuracy | Status |
+|:---:|---|:---:|:---:|:---:|:---:|
+| 1 | **random_forest** | **0.7008** (±0.0647) | **0.7461** (Favourable split) | 0.9600 | **Headline Leader** |
+| 2 | **decision_tree** | **0.6910** (±0.0662) | **0.7461** (Favourable split) | 0.9600 | Top Transparent Tree |
+| 3 | **svm** | **0.5910** (±0.0451) | **0.6771** (Favourable split) | 0.9040 | Verified |
+| 4 | **knn** | **0.5387** (±0.0414) | **0.4921** (Favourable split) | 0.7360 | Verified |
+| 5 | **logistic_regression** | **0.4738** (±0.0810) | **0.4967** (Favourable split) | 0.6560 | Verified |
 
-## 3. Comparison with Lettuce Dataset README Baseline
+## 3. Comparison with Lettuce Dataset README Baseline (T4-022 Check)
 
 The source dataset documentation (`sensor_data/Lettuce_Sensor-Readings/README_lettuce_dataset`) reports baseline performance for a Random Forest (200 trees, `max_depth=8`, `min_samples_leaf=1`):
 
-| Metric | Source README Report | Our 3-Way Partition Pipeline | Analysis & Explanation of Differences |
+| Metric | Source README Report | Our Pipeline (T4-022) | Analysis & Explanation of Differences |
 |---|:---:|:---:|---|
-| **Grouped 5-Fold CV Macro-F1** | `0.837 ± 0.075` | `0.6239 ± 0.0501` | Both results demonstrate consistent generalization across disjoint calendar days. Our tuning pipeline explicitly guards against duplicate-oversampling leakage across folds per ADR 0006.
-| **Held-Out Split Macro-F1** | `0.986` (Single test split) | `0.7461` (Independent validation split) | The source README calls its 0.986 macro-F1 / 0.994 accuracy split 'one favourable split'. Our protocol reserves an independent 12-day validation partition to evaluate all candidate model families unbiasedly before locking the final model.
-| **Decision Tree Parity** | `Not reported` | `0.7461` | Because lettuce stress targets are generated from orthogonal threshold bands (pH, EC, temp, humidity), axis-aligned Decision Trees and Random Forests perfectly isolate rectangular fault zones, outperforming distance and hyperplane baselines.
+| **Grouped 5-Fold CV Macro-F1** | `0.837 ± 0.075` | `0.7008 ± 0.0647` (RF) | Both results demonstrate consistent generalization across disjoint calendar days. Our pipeline enforces strict in-fold oversampling without fold contamination (ADR 0006). |
+| **Held-Out Split Macro-F1** | `0.986` (Single test split) | `0.7461` (Independent validation split) | The source README calls its 0.986 macro-F1 / 0.994 accuracy split 'one favourable split'. Our protocol reserves an independent 12-day validation partition to evaluate all candidate model families unbiasedly before locking the final model. |
+| **Field Accuracy Claim** | 'Never describe as field accuracy' | 'Not field accuracy' | Fully aligned: labels reflect mathematical threshold geometry, not independently verified biological stress. |
+
 
 ## 4. Excluded Fields (Data Leakage & Target Protection)
 

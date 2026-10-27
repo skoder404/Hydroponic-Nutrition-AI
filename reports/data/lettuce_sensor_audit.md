@@ -134,3 +134,12 @@
 - The three original raw Excel workbooks (`EXP_1.xlsx`, `EXP_2.xlsx`, `EXP_3.xlsx`) are not stored in the repository.
 - Consequently, `build_lettuce_dataset` cannot be re-executed without downloading them, which is not required for this project.
 - The generated CSVs (`hydroponic_lettuce_{full,train,test}.csv`) are the checked-in source of truth.
+
+## 8. Grouped 5-Fold Cross-Validation Check (T4-022)
+
+- ✅ **Stronger Check Executed**: As recommended in Overview §11.7 and §18.4, grouped 5-fold cross-validation by calendar date (`experiment + '_' + date`) was executed across all 69 disjoint calendar days (717 real readings) using strict in-fold oversampling (ADR 0006).
+- ✅ **Headline Score**: Random Forest achieved **0.7008 ± 0.0647 macro-F1** (mean accuracy 0.9721 ± 0.0191) across the 5 disjoint folds, aligning with the Mendeley dataset baseline (0.837 ± 0.075).
+- ✅ **Single Held-Out Split Characterization**: The single held-out test split (accuracy 0.994 / macro-F1 0.986) is officially categorized as **one favourable split**, not expected generalization across arbitrary days.
+- ✅ **Field Accuracy Prohibition**: Results are explicitly documented as diagnostic threshold geometry reconstruction, not biological disease detection or 99.4% field accuracy.
+- ✅ **Complete Report**: See [`reports/lettuce/lettuce_grouped_cv_report.md`](file:///d:/Hydroponic-Nutrition-AI/reports/lettuce/lettuce_grouped_cv_report.md) for full date listings per fold.
+

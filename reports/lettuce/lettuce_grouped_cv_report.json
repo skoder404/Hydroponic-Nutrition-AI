@@ -1,0 +1,7490 @@
+{
+  "generated_at": "2026-10-27T10:31:28.930122+00:00",
+  "crop": "lettuce",
+  "dataset_source": "sensor_data/Lettuce_Sensor-Readings/hydroponic_lettuce_full.csv",
+  "total_usable_samples": 717,
+  "total_calendar_days": 69,
+  "n_splits": 5,
+  "seed": 42,
+  "authorized_features": [
+    "ph",
+    "ec",
+    "water_temp",
+    "humidity",
+    "air_temp"
+  ],
+  "taxonomy": [
+    "EC_High",
+    "EC_Low",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "WaterTemp_Low",
+    "pH_High",
+    "pH_Low"
+  ],
+  "readme_baseline": {
+    "model": "Random Forest (200 trees, max_depth=8, min_samples_leaf=1)",
+    "reported_macro_f1_mean": 0.837,
+    "reported_macro_f1_std": 0.075,
+    "reported_single_split_accuracy": 0.994,
+    "reported_single_split_macro_f1": 0.986,
+    "reported_note": "Single held-out split (every 4th day, 162 rows) is one favourable split; the grouped 5-fold CV figure represents expected generalization across days."
+  },
+  "fold_compositions": [
+    {
+      "fold": 1,
+      "val_days_count": 13,
+      "val_samples_count": 142,
+      "train_samples_count": 1820,
+      "val_dates": [
+        "EXP.1_2024-03-16",
+        "EXP.1_2024-03-18",
+        "EXP.1_2024-03-26",
+        "EXP.1_2024-04-01",
+        "EXP.1_2024-04-04",
+        "EXP.2_2024-04-14",
+        "EXP.2_2024-04-20",
+        "EXP.2_2024-04-25",
+        "EXP.2_2024-05-04",
+        "EXP.2_2024-05-11",
+        "EXP.2_2024-05-12",
+        "EXP.3_2024-06-09",
+        "EXP.3_2024-06-17"
+      ]
+    },
+    {
+      "fold": 2,
+      "val_days_count": 14,
+      "val_samples_count": 144,
+      "train_samples_count": 1792,
+      "val_dates": [
+        "EXP.1_2024-03-14",
+        "EXP.1_2024-03-19",
+        "EXP.1_2024-03-25",
+        "EXP.1_2024-03-31",
+        "EXP.2_2024-04-13",
+        "EXP.2_2024-04-19",
+        "EXP.2_2024-04-24",
+        "EXP.2_2024-04-30",
+        "EXP.2_2024-05-09",
+        "EXP.2_2024-05-10",
+        "EXP.3_2024-06-08",
+        "EXP.3_2024-06-12",
+        "EXP.3_2024-06-14",
+        "EXP.3_2024-06-18"
+      ]
+    },
+    {
+      "fold": 3,
+      "val_days_count": 14,
+      "val_samples_count": 145,
+      "train_samples_count": 1743,
+      "val_dates": [
+        "EXP.1_2024-03-10",
+        "EXP.1_2024-03-13",
+        "EXP.1_2024-03-22",
+        "EXP.1_2024-03-23",
+        "EXP.1_2024-03-30",
+        "EXP.2_2024-04-16",
+        "EXP.2_2024-04-18",
+        "EXP.2_2024-04-23",
+        "EXP.2_2024-04-29",
+        "EXP.2_2024-05-03",
+        "EXP.2_2024-05-07",
+        "EXP.2_2024-05-08",
+        "EXP.3_2024-05-25",
+        "EXP.3_2024-06-13"
+      ]
+    },
+    {
+      "fold": 4,
+      "val_days_count": 14,
+      "val_samples_count": 143,
+      "train_samples_count": 1813,
+      "val_dates": [
+        "EXP.1_2024-03-12",
+        "EXP.1_2024-03-17",
+        "EXP.1_2024-03-21",
+        "EXP.1_2024-03-28",
+        "EXP.1_2024-03-29",
+        "EXP.1_2024-04-03",
+        "EXP.2_2024-04-22",
+        "EXP.2_2024-04-27",
+        "EXP.2_2024-05-01",
+        "EXP.2_2024-05-02",
+        "EXP.2_2024-05-06",
+        "EXP.3_2024-05-23",
+        "EXP.3_2024-06-11",
+        "EXP.3_2024-06-16"
+      ]
+    },
+    {
+      "fold": 5,
+      "val_days_count": 14,
+      "val_samples_count": 143,
+      "train_samples_count": 1988,
+      "val_dates": [
+        "EXP.1_2024-03-11",
+        "EXP.1_2024-03-15",
+        "EXP.1_2024-03-20",
+        "EXP.1_2024-03-24",
+        "EXP.1_2024-03-27",
+        "EXP.1_2024-04-02",
+        "EXP.2_2024-04-17",
+        "EXP.2_2024-04-21",
+        "EXP.2_2024-04-26",
+        "EXP.2_2024-04-28",
+        "EXP.2_2024-05-05",
+        "EXP.3_2024-05-21",
+        "EXP.3_2024-05-22",
+        "EXP.3_2024-06-10"
+      ]
+    }
+  ],
+  "model_results": {
+    "random_forest": {
+      "mean_macro_f1": 0.7008168240369052,
+      "std_macro_f1": 0.06474738101257295,
+      "min_macro_f1": 0.6042250233426704,
+      "max_macro_f1": 0.7660098522167488,
+      "mean_accuracy": 0.9721342681116842,
+      "std_accuracy": 0.019133950090474066,
+      "mean_macro_precision": 0.6940588423921759,
+      "mean_macro_recall": 0.7172172707466824,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9859154929577465,
+          "macro_precision": 0.7629629629629631,
+          "macro_recall": 0.7703703703703704,
+          "macro_f1": 0.7660098522167488,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 10
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.9333333333333333,
+              "f1": 0.9655172413793104,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 67
+            },
+            "WaterTemp_High": {
+              "precision": 0.8666666666666667,
+              "recall": 1.0,
+              "f1": 0.9285714285714286,
+              "support": 13
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 6
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              15,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              28,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              67,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              15,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              28,
+              0,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              67,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 142,
+          "fold": 1,
+          "train_samples": 1820,
+          "val_samples": 142,
+          "val_days": 13
+        },
+        {
+          "accuracy": 0.9375,
+          "macro_precision": 0.5914702581369249,
+          "macro_recall": 0.6388888888888888,
+          "macro_f1": 0.6042250233426704,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.7777777777777778,
+              "recall": 1.0,
+              "f1": 0.875,
+              "support": 14
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.5454545454545454,
+              "recall": 1.0,
+              "f1": 0.7058823529411765,
+              "support": 6
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.75,
+              "f1": 0.8571428571428571,
+              "support": 36
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 71
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 16
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              5,
+              27,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              71,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              16,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              5,
+              27,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              71,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              16,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 144,
+          "fold": 2,
+          "train_samples": 1792,
+          "val_samples": 144,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.9862068965517241,
+          "macro_precision": 0.636904761904762,
+          "macro_recall": 0.6565656565656566,
+          "macro_f1": 0.6454212454212455,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 4
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 28
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.9090909090909091,
+              "f1": 0.9523809523809523,
+              "support": 22
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 78
+            },
+            "WaterTemp_High": {
+              "precision": 0.8571428571428571,
+              "recall": 1.0,
+              "f1": 0.9230769230769231,
+              "support": 6
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.875,
+              "recall": 1.0,
+              "f1": 0.9333333333333333,
+              "support": 7
+            },
+            "pH_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "confusion_matrix": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              28,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              20,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              78,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              28,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              20,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              78,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 145,
+          "fold": 3,
+          "train_samples": 1743,
+          "val_samples": 145,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.986013986013986,
+          "macro_precision": 0.7592592592592593,
+          "macro_recall": 0.7647058823529412,
+          "macro_f1": 0.7607323232323232,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8333333333333334,
+              "recall": 1.0,
+              "f1": 0.9090909090909091,
+              "support": 10
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 17
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.8823529411764706,
+              "f1": 0.9375,
+              "support": 17
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 68
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 19
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 8
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              15,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              68,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              15,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              68,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 4,
+          "train_samples": 1813,
+          "val_samples": 143,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.965034965034965,
+          "macro_precision": 0.7196969696969697,
+          "macro_recall": 0.7555555555555555,
+          "macro_f1": 0.7276956759715381,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 0.9333333333333333,
+              "f1": 0.9655172413793104,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 26
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.8666666666666667,
+              "f1": 0.9285714285714286,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.9772727272727273,
+              "recall": 1.0,
+              "f1": 0.9885057471264368,
+              "support": 43
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 21
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 4
+            },
+            "pH_Low": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              43,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              43,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 5,
+          "train_samples": 1988,
+          "val_samples": 143,
+          "val_days": 14
+        }
+      ]
+    },
+    "decision_tree": {
+      "mean_macro_f1": 0.6909829258505165,
+      "std_macro_f1": 0.06618254779269117,
+      "min_macro_f1": 0.6042250233426704,
+      "max_macro_f1": 0.7607323232323232,
+      "mean_accuracy": 0.9623625342603003,
+      "std_accuracy": 0.01559447857730455,
+      "mean_macro_precision": 0.6947873670187514,
+      "mean_macro_recall": 0.6973108808402926,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9577464788732394,
+          "macro_precision": 0.7592592592592593,
+          "macro_recall": 0.7065527065527066,
+          "macro_f1": 0.7252525252525253,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 10
+            },
+            "Multiple_Stress": {
+              "precision": 0.8333333333333334,
+              "recall": 1.0,
+              "f1": 0.9090909090909091,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 67
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 0.6923076923076923,
+              "f1": 0.8181818181818182,
+              "support": 13
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 0.6666666666666666,
+              "f1": 0.8,
+              "support": 6
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              15,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              30,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              67,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              4,
+              0,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              15,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              30,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              67,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              4,
+              0,
+              9,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 142,
+          "fold": 1,
+          "train_samples": 1820,
+          "val_samples": 142,
+          "val_days": 13
+        },
+        {
+          "accuracy": 0.9375,
+          "macro_precision": 0.5914702581369249,
+          "macro_recall": 0.6388888888888888,
+          "macro_f1": 0.6042250233426704,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.7777777777777778,
+              "recall": 1.0,
+              "f1": 0.875,
+              "support": 14
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.5454545454545454,
+              "recall": 1.0,
+              "f1": 0.7058823529411765,
+              "support": 6
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.75,
+              "f1": 0.8571428571428571,
+              "support": 36
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 71
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 16
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              5,
+              27,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              71,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              16,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              5,
+              27,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              71,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              16,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 144,
+          "fold": 2,
+          "train_samples": 1792,
+          "val_samples": 144,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.9655172413793104,
+          "macro_precision": 0.6224120082815735,
+          "macro_recall": 0.6208513708513708,
+          "macro_f1": 0.6183783294894406,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 0.75,
+              "f1": 0.8571428571428571,
+              "support": 4
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 0.9285714285714286,
+              "f1": 0.9629629629629629,
+              "support": 28
+            },
+            "Multiple_Stress": {
+              "precision": 0.8695652173913043,
+              "recall": 0.9090909090909091,
+              "f1": 0.8888888888888888,
+              "support": 22
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 78
+            },
+            "WaterTemp_High": {
+              "precision": 0.8571428571428571,
+              "recall": 1.0,
+              "f1": 0.9230769230769231,
+              "support": 6
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.875,
+              "recall": 1.0,
+              "f1": 0.9333333333333333,
+              "support": 7
+            },
+            "pH_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "confusion_matrix": [
+            [
+              3,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              20,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              78,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              3,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              2,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              20,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              78,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 145,
+          "fold": 3,
+          "train_samples": 1743,
+          "val_samples": 145,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.986013986013986,
+          "macro_precision": 0.7592592592592593,
+          "macro_recall": 0.7647058823529412,
+          "macro_f1": 0.7607323232323232,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8333333333333334,
+              "recall": 1.0,
+              "f1": 0.9090909090909091,
+              "support": 10
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 17
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.8823529411764706,
+              "f1": 0.9375,
+              "support": 17
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 68
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 19
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 8
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              15,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              68,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              15,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              68,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 4,
+          "train_samples": 1813,
+          "val_samples": 143,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.965034965034965,
+          "macro_precision": 0.7415360501567398,
+          "macro_recall": 0.7555555555555555,
+          "macro_f1": 0.7463264279356233,
+          "per_class": {
+            "EC_High": {
+              "precision": 1.0,
+              "recall": 0.9333333333333333,
+              "f1": 0.9655172413793104,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.896551724137931,
+              "recall": 1.0,
+              "f1": 0.9454545454545454,
+              "support": 26
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.8666666666666667,
+              "f1": 0.9285714285714286,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.9772727272727273,
+              "recall": 1.0,
+              "f1": 0.9885057471264368,
+              "support": 43
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 21
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 4
+            },
+            "pH_Low": {
+              "precision": 0.8,
+              "recall": 1.0,
+              "f1": 0.8888888888888888,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              26,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              43,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              3,
+              26,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              43,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              21,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 5,
+          "train_samples": 1988,
+          "val_samples": 143,
+          "val_days": 14
+        }
+      ]
+    },
+    "svm": {
+      "mean_macro_f1": 0.5910067229763399,
+      "std_macro_f1": 0.04512124937723447,
+      "min_macro_f1": 0.5567082516709383,
+      "max_macro_f1": 0.6774613400597653,
+      "mean_accuracy": 0.8520140971488713,
+      "std_accuracy": 0.0350046115341978,
+      "mean_macro_precision": 0.5903970933344013,
+      "mean_macro_recall": 0.6298590975263154,
+      "fold_metrics": [
+        {
+          "accuracy": 0.8098591549295775,
+          "macro_precision": 0.557597170535767,
+          "macro_recall": 0.6224475911043075,
+          "macro_f1": 0.5673156360601266,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8125,
+              "recall": 0.8666666666666667,
+              "f1": 0.8387096774193549,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.9090909090909091,
+              "recall": 1.0,
+              "f1": 0.9523809523809523,
+              "support": 10
+            },
+            "Multiple_Stress": {
+              "precision": 0.6578947368421053,
+              "recall": 0.8333333333333334,
+              "f1": 0.7352941176470589,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.95,
+              "recall": 0.8507462686567164,
+              "f1": 0.8976377952755905,
+              "support": 67
+            },
+            "WaterTemp_High": {
+              "precision": 0.5555555555555556,
+              "recall": 0.38461538461538464,
+              "f1": 0.45454545454545453,
+              "support": 13
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.8,
+              "recall": 0.6666666666666666,
+              "f1": 0.7272727272727273,
+              "support": 6
+            },
+            "pH_Low": {
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              13,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              25,
+              0,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              5,
+              57,
+              0,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              7,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              13,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              25,
+              0,
+              4,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              5,
+              57,
+              0,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              7,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 142,
+          "fold": 1,
+          "train_samples": 1820,
+          "val_samples": 142,
+          "val_days": 13
+        },
+        {
+          "accuracy": 0.8680555555555556,
+          "macro_precision": 0.5438873833182777,
+          "macro_recall": 0.5960562759271679,
+          "macro_f1": 0.5567082516709383,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.7222222222222222,
+              "recall": 0.9285714285714286,
+              "f1": 0.8125,
+              "support": 14
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 6
+            },
+            "Multiple_Stress": {
+              "precision": 0.7560975609756098,
+              "recall": 0.8611111111111112,
+              "f1": 0.8051948051948052,
+              "support": 36
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 0.8873239436619719,
+              "f1": 0.9402985074626866,
+              "support": 71
+            },
+            "WaterTemp_High": {
+              "precision": 0.9166666666666666,
+              "recall": 0.6875,
+              "f1": 0.7857142857142857,
+              "support": 16
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_Low": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              31,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              4,
+              63,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              5,
+              0,
+              11,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              31,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              4,
+              63,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              5,
+              0,
+              11,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 144,
+          "fold": 2,
+          "train_samples": 1792,
+          "val_samples": 144,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.8758620689655172,
+          "macro_precision": 0.5349822425164891,
+          "macro_recall": 0.6174288674288674,
+          "macro_f1": 0.560004393448102,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.5,
+              "recall": 1.0,
+              "f1": 0.6666666666666666,
+              "support": 4
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.9583333333333334,
+              "recall": 0.8214285714285714,
+              "f1": 0.8846153846153846,
+              "support": 28
+            },
+            "Multiple_Stress": {
+              "precision": 0.95,
+              "recall": 0.8636363636363636,
+              "f1": 0.9047619047619048,
+              "support": 22
+            },
+            "Normal": {
+              "precision": 0.9315068493150684,
+              "recall": 0.8717948717948718,
+              "f1": 0.9006622516556292,
+              "support": 78
+            },
+            "WaterTemp_High": {
+              "precision": 0.6,
+              "recall": 1.0,
+              "f1": 0.75,
+              "support": 6
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.875,
+              "recall": 1.0,
+              "f1": 0.9333333333333333,
+              "support": 7
+            },
+            "pH_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "confusion_matrix": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              23,
+              1,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              19,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              68,
+              3,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              23,
+              1,
+              4,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              19,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              68,
+              3,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 145,
+          "fold": 3,
+          "train_samples": 1743,
+          "val_samples": 145,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.8951048951048951,
+          "macro_precision": 0.6973495650614294,
+          "macro_recall": 0.6862745098039215,
+          "macro_f1": 0.6774613400597653,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8333333333333334,
+              "recall": 1.0,
+              "f1": 0.9090909090909091,
+              "support": 10
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.68,
+              "recall": 1.0,
+              "f1": 0.8095238095238095,
+              "support": 17
+            },
+            "Multiple_Stress": {
+              "precision": 0.875,
+              "recall": 0.8235294117647058,
+              "f1": 0.8484848484848485,
+              "support": 17
+            },
+            "Normal": {
+              "precision": 0.9830508474576272,
+              "recall": 0.8529411764705882,
+              "f1": 0.9133858267716536,
+              "support": 68
+            },
+            "WaterTemp_High": {
+              "precision": 0.9047619047619048,
+              "recall": 1.0,
+              "f1": 0.95,
+              "support": 19
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 8
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              14,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              8,
+              1,
+              58,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              14,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              8,
+              1,
+              58,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 4,
+          "train_samples": 1813,
+          "val_samples": 143,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.8111888111888111,
+          "macro_precision": 0.6181691052400434,
+          "macro_recall": 0.6270882433673131,
+          "macro_f1": 0.5935439936427678,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.7368421052631579,
+              "recall": 0.9333333333333333,
+              "f1": 0.8235294117647058,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.9130434782608695,
+              "recall": 0.8076923076923077,
+              "f1": 0.8571428571428571,
+              "support": 26
+            },
+            "Multiple_Stress": {
+              "precision": 0.85,
+              "recall": 0.5666666666666667,
+              "f1": 0.68,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.8636363636363636,
+              "recall": 0.8837209302325582,
+              "f1": 0.8735632183908046,
+              "support": 43
+            },
+            "WaterTemp_High": {
+              "precision": 0.8,
+              "recall": 0.9523809523809523,
+              "f1": 0.8695652173913043,
+              "support": 21
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 0.5,
+              "f1": 0.6666666666666666,
+              "support": 4
+            },
+            "pH_Low": {
+              "precision": 0.4,
+              "recall": 1.0,
+              "f1": 0.5714285714285714,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              21,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              2,
+              17,
+              0,
+              4,
+              0,
+              0,
+              3
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              38,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              21,
+              0,
+              5,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              2,
+              17,
+              0,
+              4,
+              0,
+              0,
+              3
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              38,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 5,
+          "train_samples": 1988,
+          "val_samples": 143,
+          "val_days": 14
+        }
+      ]
+    },
+    "knn": {
+      "mean_macro_f1": 0.5387210132122892,
+      "std_macro_f1": 0.04143903487120327,
+      "min_macro_f1": 0.4635708084403352,
+      "max_macro_f1": 0.5787601919309235,
+      "mean_accuracy": 0.7725816869709535,
+      "std_accuracy": 0.04227006529648739,
+      "mean_macro_precision": 0.5314435789474259,
+      "mean_macro_recall": 0.5830500300615568,
+      "fold_metrics": [
+        {
+          "accuracy": 0.7535211267605634,
+          "macro_precision": 0.5416096515234446,
+          "macro_recall": 0.586418335672067,
+          "macro_f1": 0.5595091312510667,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.6875,
+              "recall": 0.7333333333333333,
+              "f1": 0.7096774193548387,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.7142857142857143,
+              "recall": 1.0,
+              "f1": 0.8333333333333334,
+              "support": 10
+            },
+            "Multiple_Stress": {
+              "precision": 0.7,
+              "recall": 0.7,
+              "f1": 0.7,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.9310344827586207,
+              "recall": 0.8059701492537313,
+              "f1": 0.864,
+              "support": 67
+            },
+            "WaterTemp_High": {
+              "precision": 0.4666666666666667,
+              "recall": 0.5384615384615384,
+              "f1": 0.5,
+              "support": 13
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.375,
+              "recall": 0.5,
+              "f1": 0.42857142857142855,
+              "support": 6
+            },
+            "pH_Low": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              11,
+              0,
+              0,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              21,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              4,
+              0,
+              54,
+              0,
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              6,
+              0,
+              7,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              11,
+              0,
+              0,
+              2,
+              2,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              0,
+              21,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              4,
+              0,
+              54,
+              0,
+              0,
+              5,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              6,
+              0,
+              7,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              2,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 142,
+          "fold": 1,
+          "train_samples": 1820,
+          "val_samples": 142,
+          "val_days": 13
+        },
+        {
+          "accuracy": 0.8541666666666666,
+          "macro_precision": 0.5171434875735951,
+          "macro_recall": 0.5890683607819758,
+          "macro_f1": 0.5258754653581619,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.7222222222222222,
+              "recall": 0.9285714285714286,
+              "f1": 0.8125,
+              "support": 14
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.75,
+              "recall": 1.0,
+              "f1": 0.8571428571428571,
+              "support": 6
+            },
+            "Multiple_Stress": {
+              "precision": 0.8648648648648649,
+              "recall": 0.8888888888888888,
+              "f1": 0.8767123287671232,
+              "support": 36
+            },
+            "Normal": {
+              "precision": 0.9838709677419355,
+              "recall": 0.8591549295774648,
+              "f1": 0.9172932330827067,
+              "support": 71
+            },
+            "WaterTemp_High": {
+              "precision": 1.0,
+              "recall": 0.625,
+              "f1": 0.7692307692307693,
+              "support": 16
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_Low": {
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              0,
+              0,
+              32,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              1,
+              0,
+              61,
+              0,
+              0,
+              5,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              4,
+              1,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              0,
+              0,
+              32,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              2,
+              0,
+              1,
+              0,
+              61,
+              0,
+              0,
+              5,
+              2
+            ],
+            [
+              0,
+              0,
+              1,
+              4,
+              1,
+              10,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 144,
+          "fold": 2,
+          "train_samples": 1792,
+          "val_samples": 144,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.7517241379310344,
+          "macro_precision": 0.45426731078904997,
+          "macro_recall": 0.5537425537425538,
+          "macro_f1": 0.4635708084403352,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.4,
+              "recall": 1.0,
+              "f1": 0.5714285714285714,
+              "support": 4
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.9,
+              "recall": 0.6428571428571429,
+              "f1": 0.75,
+              "support": 28
+            },
+            "Multiple_Stress": {
+              "precision": 1.0,
+              "recall": 0.7272727272727273,
+              "f1": 0.8421052631578947,
+              "support": 22
+            },
+            "Normal": {
+              "precision": 0.855072463768116,
+              "recall": 0.7564102564102564,
+              "f1": 0.8027210884353742,
+              "support": 78
+            },
+            "WaterTemp_High": {
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 6
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.6,
+              "recall": 0.8571428571428571,
+              "f1": 0.7058823529411765,
+              "support": 7
+            },
+            "pH_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "confusion_matrix": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              18,
+              0,
+              8,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              16,
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              2,
+              0,
+              59,
+              7,
+              0,
+              4,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              18,
+              0,
+              8,
+              2,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              0,
+              16,
+              1,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              2,
+              0,
+              59,
+              7,
+              0,
+              4,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 145,
+          "fold": 3,
+          "train_samples": 1743,
+          "val_samples": 145,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.7692307692307693,
+          "macro_precision": 0.5803821692710582,
+          "macro_recall": 0.5986928104575164,
+          "macro_f1": 0.5787601919309235,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.5333333333333333,
+              "recall": 0.8,
+              "f1": 0.64,
+              "support": 10
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.48148148148148145,
+              "recall": 0.7647058823529411,
+              "f1": 0.5909090909090909,
+              "support": 17
+            },
+            "Multiple_Stress": {
+              "precision": 0.7692307692307693,
+              "recall": 0.5882352941176471,
+              "f1": 0.6666666666666666,
+              "support": 17
+            },
+            "Normal": {
+              "precision": 0.9090909090909091,
+              "recall": 0.7352941176470589,
+              "f1": 0.8130081300813008,
+              "support": 68
+            },
+            "WaterTemp_High": {
+              "precision": 0.8636363636363636,
+              "recall": 1.0,
+              "f1": 0.926829268292683,
+              "support": 19
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "support": 8
+            },
+            "pH_Low": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5,
+              "f1": 0.5714285714285714,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              8,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              13,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              0,
+              0,
+              10,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              14,
+              0,
+              50,
+              2,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              8,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              13,
+              1,
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              0,
+              0,
+              10,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              14,
+              0,
+              50,
+              2,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 4,
+          "train_samples": 1813,
+          "val_samples": 143,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.7342657342657343,
+          "macro_precision": 0.5638152755799815,
+          "macro_recall": 0.5873280896536711,
+          "macro_f1": 0.5658894690809584,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8,
+              "recall": 0.8,
+              "f1": 0.8,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.5882352941176471,
+              "recall": 0.7692307692307693,
+              "f1": 0.6666666666666666,
+              "support": 26
+            },
+            "Multiple_Stress": {
+              "precision": 0.7727272727272727,
+              "recall": 0.5666666666666667,
+              "f1": 0.6538461538461539,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.8108108108108109,
+              "recall": 0.6976744186046512,
+              "f1": 0.75,
+              "support": 43
+            },
+            "WaterTemp_High": {
+              "precision": 0.7692307692307693,
+              "recall": 0.9523809523809523,
+              "f1": 0.851063829787234,
+              "support": 21
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.6666666666666666,
+              "recall": 0.5,
+              "f1": 0.5714285714285714,
+              "support": 4
+            },
+            "pH_Low": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              12,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              20,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              17,
+              0,
+              5,
+              0,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              10,
+              0,
+              30,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              12,
+              0,
+              0,
+              2,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              20,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              2,
+              0,
+              4,
+              17,
+              0,
+              5,
+              0,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              10,
+              0,
+              30,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 5,
+          "train_samples": 1988,
+          "val_samples": 143,
+          "val_days": 14
+        }
+      ]
+    },
+    "logistic_regression": {
+      "mean_macro_f1": 0.47375666414615714,
+      "std_macro_f1": 0.08103669548251993,
+      "min_macro_f1": 0.3977235038405251,
+      "max_macro_f1": 0.6118608452555785,
+      "mean_accuracy": 0.6889321296047862,
+      "std_accuracy": 0.06590147781867983,
+      "mean_macro_precision": 0.4540620677198376,
+      "mean_macro_recall": 0.5842642817047989,
+      "fold_metrics": [
+        {
+          "accuracy": 0.5915492957746479,
+          "macro_precision": 0.364729634543876,
+          "macro_recall": 0.5442956159374069,
+          "macro_f1": 0.3977235038405251,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.5833333333333334,
+              "recall": 0.9333333333333333,
+              "f1": 0.717948717948718,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.5,
+              "recall": 0.9,
+              "f1": 0.6428571428571429,
+              "support": 10
+            },
+            "Multiple_Stress": {
+              "precision": 0.4117647058823529,
+              "recall": 0.23333333333333334,
+              "f1": 0.2978723404255319,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 0.9333333333333333,
+              "recall": 0.6268656716417911,
+              "f1": 0.75,
+              "support": 67
+            },
+            "WaterTemp_High": {
+              "precision": 0.3684210526315789,
+              "recall": 0.5384615384615384,
+              "f1": 0.4375,
+              "support": 13
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.2857142857142857,
+              "recall": 0.6666666666666666,
+              "f1": 0.4,
+              "support": 6
+            },
+            "pH_Low": {
+              "precision": 0.2,
+              "recall": 1.0,
+              "f1": 0.3333333333333333,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              9,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              0,
+              2,
+              7,
+              0,
+              12,
+              0,
+              2,
+              0
+            ],
+            [
+              3,
+              0,
+              7,
+              3,
+              42,
+              0,
+              0,
+              8,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              6,
+              0,
+              7,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              14,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              9,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              7,
+              0,
+              2,
+              7,
+              0,
+              12,
+              0,
+              2,
+              0
+            ],
+            [
+              3,
+              0,
+              7,
+              3,
+              42,
+              0,
+              0,
+              8,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              6,
+              0,
+              7,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              2,
+              0,
+              0,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 142,
+          "fold": 1,
+          "train_samples": 1820,
+          "val_samples": 142,
+          "val_days": 13
+        },
+        {
+          "accuracy": 0.7361111111111112,
+          "macro_precision": 0.4363173365512547,
+          "macro_recall": 0.5603450952629356,
+          "macro_f1": 0.447933508148562,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.6842105263157895,
+              "recall": 0.9285714285714286,
+              "f1": 0.7878787878787878,
+              "support": 14
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.24,
+              "recall": 1.0,
+              "f1": 0.3870967741935484,
+              "support": 6
+            },
+            "Multiple_Stress": {
+              "precision": 0.7407407407407407,
+              "recall": 0.5555555555555556,
+              "f1": 0.6349206349206349,
+              "support": 36
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 0.7464788732394366,
+              "f1": 0.8548387096774194,
+              "support": 71
+            },
+            "WaterTemp_High": {
+              "precision": 0.9285714285714286,
+              "recall": 0.8125,
+              "f1": 0.8666666666666667,
+              "support": 16
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_Low": {
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 1
+            }
+          },
+          "confusion_matrix": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              0,
+              8,
+              20,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              11,
+              3,
+              53,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              3,
+              0,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              13,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              6,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              6,
+              0,
+              8,
+              20,
+              0,
+              0,
+              0,
+              2,
+              0
+            ],
+            [
+              0,
+              0,
+              11,
+              3,
+              53,
+              1,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              3,
+              0,
+              13,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 144,
+          "fold": 2,
+          "train_samples": 1792,
+          "val_samples": 144,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.6344827586206897,
+          "macro_precision": 0.3687579821200511,
+          "macro_recall": 0.5309320309320309,
+          "macro_f1": 0.3979389949491611,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.4,
+              "recall": 1.0,
+              "f1": 0.5714285714285714,
+              "support": 4
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.6896551724137931,
+              "recall": 0.7142857142857143,
+              "f1": 0.7017543859649122,
+              "support": 28
+            },
+            "Multiple_Stress": {
+              "precision": 0.4583333333333333,
+              "recall": 0.5,
+              "f1": 0.4782608695652174,
+              "support": 22
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 0.5641025641025641,
+              "f1": 0.7213114754098361,
+              "support": 78
+            },
+            "WaterTemp_High": {
+              "precision": 0.3333333333333333,
+              "recall": 1.0,
+              "f1": 0.5,
+              "support": 6
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.4375,
+              "recall": 1.0,
+              "f1": 0.6086956521739131,
+              "support": 7
+            },
+            "pH_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            }
+          },
+          "confusion_matrix": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              20,
+              7,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              5,
+              0,
+              2,
+              11,
+              0,
+              2,
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              7,
+              6,
+              44,
+              10,
+              0,
+              7,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              20,
+              7,
+              0,
+              0,
+              0,
+              0,
+              1
+            ],
+            [
+              5,
+              0,
+              2,
+              11,
+              0,
+              2,
+              0,
+              2,
+              0
+            ],
+            [
+              1,
+              0,
+              7,
+              6,
+              44,
+              10,
+              0,
+              7,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              7,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 145,
+          "fold": 3,
+          "train_samples": 1743,
+          "val_samples": 145,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.7692307692307693,
+          "macro_precision": 0.5843668784560258,
+          "macro_recall": 0.6849673202614378,
+          "macro_f1": 0.6118608452555785,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.5625,
+              "recall": 0.9,
+              "f1": 0.6923076923076923,
+              "support": 10
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.5151515151515151,
+              "recall": 1.0,
+              "f1": 0.68,
+              "support": 17
+            },
+            "Multiple_Stress": {
+              "precision": 0.7857142857142857,
+              "recall": 0.6470588235294118,
+              "f1": 0.7096774193548387,
+              "support": 17
+            },
+            "Normal": {
+              "precision": 0.9767441860465116,
+              "recall": 0.6176470588235294,
+              "f1": 0.7567567567567568,
+              "support": 68
+            },
+            "WaterTemp_High": {
+              "precision": 0.8636363636363636,
+              "recall": 1.0,
+              "f1": 0.926829268292683,
+              "support": 19
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.8888888888888888,
+              "recall": 1.0,
+              "f1": 0.9411764705882353,
+              "support": 8
+            },
+            "pH_Low": {
+              "precision": 0.6666666666666666,
+              "recall": 1.0,
+              "f1": 0.8,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              9,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              11,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              0,
+              16,
+              2,
+              42,
+              2,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              9,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              17,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              0,
+              0,
+              11,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              0,
+              16,
+              2,
+              42,
+              2,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              19,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 4,
+          "train_samples": 1813,
+          "val_samples": 143,
+          "val_days": 14
+        },
+        {
+          "accuracy": 0.7132867132867133,
+          "macro_precision": 0.5161385069279807,
+          "macro_recall": 0.6007813461301833,
+          "macro_f1": 0.5133264685369585,
+          "per_class": {
+            "EC_High": {
+              "precision": 0.8333333333333334,
+              "recall": 0.6666666666666666,
+              "f1": 0.7407407407407407,
+              "support": 15
+            },
+            "EC_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "Humidity_Low": {
+              "precision": 0.7027027027027027,
+              "recall": 1.0,
+              "f1": 0.8253968253968254,
+              "support": 26
+            },
+            "Multiple_Stress": {
+              "precision": 0.6842105263157895,
+              "recall": 0.43333333333333335,
+              "f1": 0.5306122448979592,
+              "support": 30
+            },
+            "Normal": {
+              "precision": 1.0,
+              "recall": 0.6046511627906976,
+              "f1": 0.7536231884057971,
+              "support": 43
+            },
+            "WaterTemp_High": {
+              "precision": 0.8,
+              "recall": 0.9523809523809523,
+              "f1": 0.8695652173913043,
+              "support": 21
+            },
+            "WaterTemp_Low": {
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "support": 0
+            },
+            "pH_High": {
+              "precision": 0.375,
+              "recall": 0.75,
+              "f1": 0.5,
+              "support": 4
+            },
+            "pH_Low": {
+              "precision": 0.25,
+              "recall": 1.0,
+              "f1": 0.4,
+              "support": 4
+            }
+          },
+          "confusion_matrix": [
+            [
+              10,
+              0,
+              1,
+              3,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              4,
+              13,
+              0,
+              3,
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              0,
+              5,
+              2,
+              26,
+              1,
+              0,
+              0,
+              8
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "confusion_matrix_list": [
+            [
+              10,
+              0,
+              1,
+              3,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              26,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              1,
+              0,
+              4,
+              13,
+              0,
+              3,
+              0,
+              5,
+              4
+            ],
+            [
+              1,
+              0,
+              5,
+              2,
+              26,
+              1,
+              0,
+              0,
+              8
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              20,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              3,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          ],
+          "labels": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "class_order": [
+            "EC_High",
+            "EC_Low",
+            "Humidity_Low",
+            "Multiple_Stress",
+            "Normal",
+            "WaterTemp_High",
+            "WaterTemp_Low",
+            "pH_High",
+            "pH_Low"
+          ],
+          "total_samples": 143,
+          "fold": 5,
+          "train_samples": 1988,
+          "val_samples": 143,
+          "val_days": 14
+        }
+      ]
+    }
+  },
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

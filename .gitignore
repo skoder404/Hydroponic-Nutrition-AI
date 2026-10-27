@@ -75,3 +75,5 @@ models/image/*.pt.tmp
 *.joblib
 models/sensor/*
 !models/sensor/.gitkeep
+!models/sensor/model.pkl
+

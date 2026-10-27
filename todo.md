@@ -974,9 +974,9 @@
 **Dependencies:** T4-017
 **Acceptance Criteria:**
 
-- [ ] Fold composition lists dates per fold with no overlap
-- [ ] Report shows mean and standard deviation and compares with the README's figure
-- [ ] Result is not described as field accuracy
+- [x] Fold composition lists dates per fold with no overlap
+- [x] Report shows mean and standard deviation and compares with the README's figure
+- [x] Result is not described as field accuracy
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
