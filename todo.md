@@ -1026,9 +1026,9 @@
 **Dependencies:** T4-025, T4-021
 **Acceptance Criteria:**
 
-- [ ] Every Phase 4 concept has a note and a teach-back entry for both members
-- [ ] Self-check results are recorded honestly (gaps become follow-up items)
-- [ ] Both members tick the phase gate
+- [x] Every Phase 4 concept has a note and a teach-back entry for both members
+- [x] Self-check results are recorded honestly (gaps become follow-up items)
+- [x] Both members tick the phase gate
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
