@@ -717,9 +717,9 @@
 **Dependencies:** T4-002
 **Acceptance Criteria:**
 
-- [ ] Your threshold equals scikit-learn's (or the difference is explained)
-- [ ] Notebook includes a hand-worked example
-- [ ] Self-check questions answered in the concept note
+- [x] Your threshold equals scikit-learn's (or the difference is explained)
+- [x] Notebook includes a hand-worked example
+- [x] Self-check questions answered in the concept note
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
