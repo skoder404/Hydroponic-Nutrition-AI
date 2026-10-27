@@ -1,0 +1,859 @@
+|--- ec_mS_cm <= 4.04
+|   |--- relative_humidity_percent <= 48.86
+|   |   |--- ec_mS_cm <= 1.10
+|   |   |   |--- relative_humidity_percent <= 45.89
+|   |   |   |   |--- ec_mS_cm <= 0.78
+|   |   |   |   |   |--- ph <= 6.75
+|   |   |   |   |   |   |--- water_temperature_C <= 19.28
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.73
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.73
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- water_temperature_C >  19.28
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- ph >  6.75
+|   |   |   |   |   |   |--- water_temperature_C <= 25.04
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- water_temperature_C >  25.04
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- ec_mS_cm >  0.78
+|   |   |   |   |   |--- ec_mS_cm <= 0.82
+|   |   |   |   |   |   |--- ph <= 5.66
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ph >  5.66
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- ec_mS_cm >  0.82
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |--- relative_humidity_percent >  45.89
+|   |   |   |   |--- relative_humidity_percent <= 46.34
+|   |   |   |   |   |--- ec_mS_cm <= 0.97
+|   |   |   |   |   |   |--- relative_humidity_percent <= 46.31
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.91
+|   |   |   |   |   |   |   |   |--- ph <= 7.14
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- ph >  7.14
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  45.91
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- relative_humidity_percent >  46.31
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  0.97
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- relative_humidity_percent >  46.34
+|   |   |   |   |   |--- ph <= 7.31
+|   |   |   |   |   |   |--- air_temperature_C <= 35.48
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- air_temperature_C >  35.48
+|   |   |   |   |   |   |   |--- air_temperature_C <= 35.52
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- air_temperature_C >  35.52
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 26.13
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  26.13
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |--- ph >  7.31
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.77
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.77
+|   |   |   |   |   |   |   |--- ph <= 7.40
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.96
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.96
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ph >  7.40
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |--- ec_mS_cm >  1.10
+|   |   |   |--- relative_humidity_percent <= 47.25
+|   |   |   |   |--- ph <= 7.43
+|   |   |   |   |   |--- ph <= 7.23
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.19
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.58
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  46.58
+|   |   |   |   |   |   |   |   |--- air_temperature_C <= 35.82
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- air_temperature_C >  35.82
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- ec_mS_cm >  1.19
+|   |   |   |   |   |   |   |--- water_temperature_C <= 29.43
+|   |   |   |   |   |   |   |   |--- ph <= 5.23
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.24
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.24
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ph >  5.23
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.30
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.53
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.53
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.30
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |--- water_temperature_C >  29.43
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.44
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.44
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |--- ph >  7.23
+|   |   |   |   |   |   |--- relative_humidity_percent <= 46.17
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.68
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  45.68
+|   |   |   |   |   |   |   |   |--- ph <= 7.32
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- ph >  7.32
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- relative_humidity_percent >  46.17
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- ph >  7.43
+|   |   |   |   |   |--- relative_humidity_percent <= 45.32
+|   |   |   |   |   |   |--- ph <= 7.46
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- ph >  7.46
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 2.51
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  2.51
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- relative_humidity_percent >  45.32
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |--- relative_humidity_percent >  47.25
+|   |   |   |   |--- water_temperature_C <= 27.45
+|   |   |   |   |   |--- ph <= 7.03
+|   |   |   |   |   |   |--- ph <= 5.51
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.25
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.25
+|   |   |   |   |   |   |   |   |--- air_temperature_C <= 34.60
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- air_temperature_C >  34.60
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 47.53
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  47.53
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ph >  5.51
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.33
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.33
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.46
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 47.79
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 47.58
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  47.58
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  47.79
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.46
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.14
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 6.93
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |   |--- ph >  6.93
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.14
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.29
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  48.29
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |--- ph >  7.03
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- water_temperature_C >  27.45
+|   |   |   |   |   |--- relative_humidity_percent <= 47.50
+|   |   |   |   |   |   |--- water_temperature_C <= 28.44
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.55
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.55
+|   |   |   |   |   |   |   |   |--- ph <= 7.10
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- ph >  7.10
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- water_temperature_C >  28.44
+|   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |--- relative_humidity_percent >  47.50
+|   |   |   |   |   |   |--- ph <= 5.30
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ph >  5.30
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.27
+|   |   |   |   |   |   |   |   |--- air_temperature_C <= 36.19
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- air_temperature_C >  36.19
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.27
+|   |   |   |   |   |   |   |   |--- ph <= 7.05
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 47.86
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.19
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.19
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  47.86
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ph >  7.05
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.81
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.81
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |--- relative_humidity_percent >  48.86
+|   |   |--- relative_humidity_percent <= 86.16
+|   |   |   |--- ec_mS_cm <= 1.58
+|   |   |   |   |--- ph <= 7.21
+|   |   |   |   |   |--- water_temperature_C <= 28.30
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.27
+|   |   |   |   |   |   |   |--- ph <= 5.27
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.03
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.03
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ph >  5.27
+|   |   |   |   |   |   |   |   |--- ph <= 7.12
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.41
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.15
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.15
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ph >  5.41
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.08
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.08
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- ph >  7.12
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.16
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.32
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.32
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.16
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ec_mS_cm >  1.27
+|   |   |   |   |   |   |   |--- ph <= 5.46
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 50.08
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  50.08
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ph >  5.46
+|   |   |   |   |   |   |   |   |--- ph <= 6.95
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.70
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.70
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.39
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.39
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- ph >  6.95
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.04
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.39
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.39
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ph >  7.04
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- water_temperature_C >  28.30
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.17
+|   |   |   |   |   |   |   |--- water_temperature_C <= 29.53
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.15
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.15
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.09
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.09
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- water_temperature_C >  29.53
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.05
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 30.55
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.59
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.59
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  30.55
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.05
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |--- ec_mS_cm >  1.17
+|   |   |   |   |   |   |   |--- ph <= 5.38
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.54
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.54
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  5.38
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.27
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.02
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.02
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.27
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.44
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.33
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.33
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.44
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |--- ph >  7.21
+|   |   |   |   |   |--- ec_mS_cm <= 1.00
+|   |   |   |   |   |   |--- ph <= 7.35
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ph >  7.35
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.86
+|   |   |   |   |   |   |   |   |--- air_temperature_C <= 36.58
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.46
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.82
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.82
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ph >  7.46
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 28.70
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  28.70
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- air_temperature_C >  36.58
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.86
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  1.00
+|   |   |   |   |   |   |--- water_temperature_C <= 29.88
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.05
+|   |   |   |   |   |   |   |   |--- ph <= 7.27
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.27
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.05
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- water_temperature_C >  29.88
+|   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |--- ec_mS_cm >  1.58
+|   |   |   |   |--- water_temperature_C <= 25.03
+|   |   |   |   |   |--- ph <= 6.51
+|   |   |   |   |   |   |--- ph <= 5.99
+|   |   |   |   |   |   |   |--- ph <= 5.80
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 86.11
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.71
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.71
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  86.11
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ph >  5.80
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.84
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.84
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 49.78
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  49.78
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.07
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.07
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |--- ph >  5.99
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 2.00
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.31
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 31.85
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 50.03
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  50.03
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C >  31.85
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.31
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ec_mS_cm >  2.00
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 49.95
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.02
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.02
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 24.42
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  24.42
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  49.95
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.01
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.01
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.01
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.01
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |--- ph >  6.51
+|   |   |   |   |   |   |--- ph <= 6.66
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.91
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.91
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.38
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 49.64
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  49.64
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.00
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.00
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.38
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |--- ph >  6.66
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.93
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  48.93
+|   |   |   |   |   |   |   |   |--- ph <= 6.74
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.72
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.72
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 85.74
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  85.74
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- ph >  6.74
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.61
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 50.78
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  50.78
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.61
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- water_temperature_C >  25.03
+|   |   |   |   |   |--- ph <= 7.04
+|   |   |   |   |   |   |--- ph <= 5.58
+|   |   |   |   |   |   |   |--- water_temperature_C <= 28.38
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.89
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  27.89
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.49
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ph >  5.49
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 2.49
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  2.49
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- water_temperature_C >  28.38
+|   |   |   |   |   |   |   |   |--- ph <= 5.30
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ph >  5.30
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.41
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.99
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.99
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ph >  5.41
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |--- ph >  5.58
+|   |   |   |   |   |   |   |--- water_temperature_C <= 25.88
+|   |   |   |   |   |   |   |   |--- ph <= 6.62
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.89
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 51.24
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  51.24
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ph >  5.89
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 7
+|   |   |   |   |   |   |   |   |--- ph >  6.62
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.68
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 6.76
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ph >  6.76
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.68
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- water_temperature_C >  25.88
+|   |   |   |   |   |   |   |   |--- ph <= 6.86
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 26.81
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 9
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  26.81
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |--- ph >  6.86
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.65
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 84.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  84.28
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.65
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.77
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.77
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |--- ph >  7.04
+|   |   |   |   |   |   |--- water_temperature_C <= 29.05
+|   |   |   |   |   |   |   |--- ph <= 7.05
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.48
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  28.48
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  7.05
+|   |   |   |   |   |   |   |   |--- ph <= 7.07
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.55
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.55
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ph >  7.07
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- water_temperature_C >  29.05
+|   |   |   |   |   |   |   |--- ph <= 7.17
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.64
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.64
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  7.17
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.77
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  29.77
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |--- relative_humidity_percent >  86.16
+|   |   |   |--- ec_mS_cm <= 1.09
+|   |   |   |   |--- relative_humidity_percent <= 89.15
+|   |   |   |   |   |--- relative_humidity_percent <= 88.65
+|   |   |   |   |   |   |--- air_temperature_C <= 36.20
+|   |   |   |   |   |   |   |--- ph <= 7.42
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ph >  7.42
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- air_temperature_C >  36.20
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.94
+|   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.94
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.03
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.03
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- relative_humidity_percent >  88.65
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.98
+|   |   |   |   |   |   |   |--- water_temperature_C <= 28.55
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.96
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.96
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.01
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.01
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- water_temperature_C >  28.55
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ec_mS_cm >  0.98
+|   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |--- relative_humidity_percent >  89.15
+|   |   |   |   |   |--- ec_mS_cm <= 0.81
+|   |   |   |   |   |   |--- relative_humidity_percent <= 89.69
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- relative_humidity_percent >  89.69
+|   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |--- ec_mS_cm >  0.81
+|   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |--- ec_mS_cm >  1.09
+|   |   |   |   |--- ph <= 7.38
+|   |   |   |   |   |--- relative_humidity_percent <= 87.77
+|   |   |   |   |   |   |--- water_temperature_C <= 28.10
+|   |   |   |   |   |   |   |--- ph <= 5.51
+|   |   |   |   |   |   |   |   |--- ph <= 5.45
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.16
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.16
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ph >  5.45
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.22
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.22
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.62
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.62
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ph >  5.51
+|   |   |   |   |   |   |   |   |--- ph <= 6.99
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.38
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.61
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.61
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.38
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 10
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- ph >  6.99
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.18
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.11
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.11
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.18
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- water_temperature_C >  28.10
+|   |   |   |   |   |   |   |--- ph <= 5.47
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.32
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  29.32
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  5.47
+|   |   |   |   |   |   |   |   |--- ph <= 7.17
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.66
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 3.98
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  3.98
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.66
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.88
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.88
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ph >  7.17
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- relative_humidity_percent >  87.77
+|   |   |   |   |   |   |--- water_temperature_C <= 28.97
+|   |   |   |   |   |   |   |--- ph <= 7.33
+|   |   |   |   |   |   |   |   |--- ph <= 5.40
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.13
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.13
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.67
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.67
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- ph >  5.40
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.25
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.09
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.09
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.25
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.85
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.85
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |--- ph >  7.33
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.09
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.09
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |--- water_temperature_C >  28.97
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.35
+|   |   |   |   |   |   |   |   |--- air_temperature_C <= 37.53
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- air_temperature_C >  37.53
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.12
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.12
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  88.35
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.89
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.25
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- ph >  7.25
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.21
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.21
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  29.89
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.86
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.86
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |--- ph >  7.38
+|   |   |   |   |   |--- relative_humidity_percent <= 89.58
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- relative_humidity_percent >  89.58
+|   |   |   |   |   |   |--- relative_humidity_percent <= 89.74
+|   |   |   |   |   |   |   |--- ph <= 7.43
+|   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ph >  7.43
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- relative_humidity_percent >  89.74
+|   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|--- ec_mS_cm >  4.04
+|   |--- relative_humidity_percent <= 46.99
+|   |   |--- ec_mS_cm <= 4.15
+|   |   |   |--- ph <= 5.22
+|   |   |   |   |--- class: pH_Imbalance
+|   |   |   |--- ph >  5.22
+|   |   |   |   |--- relative_humidity_percent <= 46.63
+|   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- relative_humidity_percent >  46.63
+|   |   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |--- ec_mS_cm >  4.15
+|   |   |   |--- relative_humidity_percent <= 45.58
+|   |   |   |   |--- ec_mS_cm <= 4.18
+|   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- ec_mS_cm >  4.18
+|   |   |   |   |   |--- relative_humidity_percent <= 45.18
+|   |   |   |   |   |   |--- ec_mS_cm <= 4.19
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- ec_mS_cm >  4.19
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |--- relative_humidity_percent >  45.18
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |--- relative_humidity_percent >  45.58
+|   |   |   |   |--- relative_humidity_percent <= 45.68
+|   |   |   |   |   |--- ec_mS_cm <= 4.17
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- ec_mS_cm >  4.17
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |--- relative_humidity_percent >  45.68
+|   |   |   |   |   |--- class: EC_High_Toxicity
+|   |--- relative_humidity_percent >  46.99
+|   |   |--- relative_humidity_percent <= 87.85
+|   |   |   |--- ec_mS_cm <= 4.10
+|   |   |   |   |--- water_temperature_C <= 27.45
+|   |   |   |   |   |--- ph <= 6.93
+|   |   |   |   |   |   |--- relative_humidity_percent <= 48.28
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 4.09
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.15
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  48.15
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.23
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  48.23
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- ec_mS_cm >  4.09
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- relative_humidity_percent >  48.28
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 86.83
+|   |   |   |   |   |   |   |   |--- ph <= 5.61
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 29.09
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C >  29.09
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 63.51
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  63.51
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ph >  5.61
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 26.53
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  48.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  26.53
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.05
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.05
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  86.83
+|   |   |   |   |   |   |   |   |--- ph <= 5.84
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- ph >  5.84
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 18.17
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  18.17
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |--- ph >  6.93
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- water_temperature_C >  27.45
+|   |   |   |   |   |--- ph <= 6.84
+|   |   |   |   |   |   |--- ph <= 5.45
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ph >  5.45
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.23
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.89
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.09
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.09
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  27.89
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  87.23
+|   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |--- ph >  6.84
+|   |   |   |   |   |   |--- ph <= 6.92
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- ph >  6.92
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |--- ec_mS_cm >  4.10
+|   |   |   |   |--- ph <= 7.45
+|   |   |   |   |   |--- ph <= 7.34
+|   |   |   |   |   |   |--- water_temperature_C <= 30.31
+|   |   |   |   |   |   |   |--- water_temperature_C <= 29.22
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 47.06
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 20.11
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  20.11
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  47.06
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.24
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.26
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.26
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |--- ph >  7.24
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.15
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.15
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |--- water_temperature_C >  29.22
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.91
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.91
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.81
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.81
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- water_temperature_C >  30.31
+|   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |--- ph >  7.34
+|   |   |   |   |   |   |--- ec_mS_cm <= 4.16
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ec_mS_cm >  4.16
+|   |   |   |   |   |   |   |--- air_temperature_C <= 36.15
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.17
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 73.72
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  73.72
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.17
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |--- air_temperature_C >  36.15
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.57
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  28.57
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |--- ph >  7.45
+|   |   |   |   |   |--- ec_mS_cm <= 4.19
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  4.19
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |--- relative_humidity_percent >  87.85
+|   |   |   |--- ec_mS_cm <= 4.14
+|   |   |   |   |--- relative_humidity_percent <= 88.31
+|   |   |   |   |   |--- ec_mS_cm <= 4.12
+|   |   |   |   |   |   |--- ph <= 7.22
+|   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |--- ph >  7.22
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  4.12
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |--- relative_humidity_percent >  88.31
+|   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |--- ec_mS_cm >  4.14
+|   |   |   |   |--- relative_humidity_percent <= 89.71
+|   |   |   |   |   |--- relative_humidity_percent <= 89.09
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |--- relative_humidity_percent >  89.09
+|   |   |   |   |   |   |--- ec_mS_cm <= 4.17
+|   |   |   |   |   |   |   |--- ph <= 6.14
+|   |   |   |   |   |   |   |   |--- ph <= 6.01
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- ph >  6.01
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |--- ph >  6.14
+|   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |--- ec_mS_cm >  4.17
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |--- relative_humidity_percent >  89.71
+|   |   |   |   |   |--- class: Humidity_High_Mildew_Risk

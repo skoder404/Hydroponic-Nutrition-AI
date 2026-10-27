@@ -1,0 +1,1192 @@
+|--- ec_mS_cm <= 4.04
+|   |--- relative_humidity_percent <= 48.09
+|   |   |--- phosphorus_mg_L <= 21.15
+|   |   |   |--- relative_humidity_percent <= 46.08
+|   |   |   |   |--- phosphorus_mg_L <= 16.55
+|   |   |   |   |   |--- relative_humidity_percent <= 45.20
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- relative_humidity_percent >  45.20
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.31
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- ec_mS_cm >  1.31
+|   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |--- phosphorus_mg_L >  16.55
+|   |   |   |   |   |--- nitrogen_mg_L <= 45.35
+|   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |--- nitrogen_mg_L >  45.35
+|   |   |   |   |   |   |--- potassium_mg_L <= 94.55
+|   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- potassium_mg_L >  94.55
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.86
+|   |   |   |   |   |   |   |   |--- ph <= 7.30
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- ph >  7.30
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.38
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.38
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  45.86
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.55
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.55
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |--- relative_humidity_percent >  46.08
+|   |   |   |   |--- nitrogen_mg_L <= 52.10
+|   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |--- nitrogen_mg_L >  52.10
+|   |   |   |   |   |--- potassium_mg_L <= 110.30
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.94
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.94
+|   |   |   |   |   |   |   |--- water_temperature_C <= 23.80
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |--- water_temperature_C >  23.80
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 19.25
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  19.25
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |--- potassium_mg_L >  110.30
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.80
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.80
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 20.75
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  20.75
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 20.90
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  20.90
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |--- phosphorus_mg_L >  21.15
+|   |   |   |--- potassium_mg_L <= 102.65
+|   |   |   |   |--- relative_humidity_percent <= 45.74
+|   |   |   |   |   |--- potassium_mg_L <= 92.85
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.80
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.80
+|   |   |   |   |   |   |   |--- water_temperature_C <= 28.38
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |--- water_temperature_C >  28.38
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- potassium_mg_L >  92.85
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- relative_humidity_percent >  45.74
+|   |   |   |   |   |--- nitrogen_mg_L <= 51.40
+|   |   |   |   |   |   |--- potassium_mg_L <= 95.35
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- potassium_mg_L >  95.35
+|   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |--- nitrogen_mg_L >  51.40
+|   |   |   |   |   |   |--- ec_mS_cm <= 3.98
+|   |   |   |   |   |   |   |--- water_temperature_C <= 18.82
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 18.04
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  18.04
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- water_temperature_C >  18.82
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  3.98
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |--- potassium_mg_L >  102.65
+|   |   |   |   |--- nitrogen_mg_L <= 52.90
+|   |   |   |   |   |--- relative_humidity_percent <= 45.65
+|   |   |   |   |   |   |--- nitrogen_mg_L <= 42.05
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 3.57
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  3.57
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- nitrogen_mg_L >  42.05
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 44.90
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.33
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  45.33
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 2.35
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  2.35
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  44.90
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- relative_humidity_percent >  45.65
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.81
+|   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.81
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.20
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 47.30
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  47.30
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 19.78
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C >  19.78
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.16
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.16
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  46.20
+|   |   |   |   |   |   |   |   |--- ph <= 5.24
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 2.36
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  2.36
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  5.24
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |--- nitrogen_mg_L >  52.90
+|   |   |   |   |   |--- ec_mS_cm <= 1.01
+|   |   |   |   |   |   |--- relative_humidity_percent <= 45.91
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.78
+|   |   |   |   |   |   |   |   |--- ph <= 6.75
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.72
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.72
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- ph >  6.75
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.21
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  45.21
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.78
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 72.80
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  72.80
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 137.30
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  137.30
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- relative_humidity_percent >  45.91
+|   |   |   |   |   |   |   |--- water_temperature_C <= 18.03
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- water_temperature_C >  18.03
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 21.70
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  21.70
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 114.65
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.08
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.08
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  114.65
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |--- ec_mS_cm >  1.01
+|   |   |   |   |   |   |--- relative_humidity_percent <= 47.22
+|   |   |   |   |   |   |   |--- ph <= 7.43
+|   |   |   |   |   |   |   |   |--- ph <= 7.23
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.19
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.58
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.58
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.19
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 107.15
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  107.15
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 13
+|   |   |   |   |   |   |   |   |--- ph >  7.23
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 46.19
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.68
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  45.68
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  46.19
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ph >  7.43
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.32
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 2.20
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.83
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.83
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  2.20
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  45.32
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- relative_humidity_percent >  47.22
+|   |   |   |   |   |   |   |--- ph <= 7.07
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.44
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 115.20
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  115.20
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.31
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.31
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 11
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  28.44
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 113.65
+|   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  113.65
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 35.45
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  35.45
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  7.07
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 111.75
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  111.75
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 62.45
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  62.45
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.98
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.98
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |--- relative_humidity_percent >  48.09
+|   |   |--- relative_humidity_percent <= 86.34
+|   |   |   |--- potassium_mg_L <= 124.25
+|   |   |   |   |--- ec_mS_cm <= 1.09
+|   |   |   |   |   |--- potassium_mg_L <= 101.40
+|   |   |   |   |   |   |--- ec_mS_cm <= 0.87
+|   |   |   |   |   |   |   |--- potassium_mg_L <= 93.60
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |--- potassium_mg_L >  93.60
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.81
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 51.87
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  51.87
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.81
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 23.63
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 19.11
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  19.11
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  23.63
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  0.87
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.45
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.45
+|   |   |   |   |   |   |   |   |--- ph <= 7.41
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 18.10
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 17.82
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  17.82
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  18.10
+|   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.41
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- potassium_mg_L >  101.40
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 19.25
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.83
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 21.37
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  21.37
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.83
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 122.35
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  122.35
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |--- phosphorus_mg_L >  19.25
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 47.20
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 27.40
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  27.40
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  47.20
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.05
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.30
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 102.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  102.55
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.30
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.92
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.92
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.05
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 111.15
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 25.82
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  25.82
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  111.15
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |--- ec_mS_cm >  1.09
+|   |   |   |   |   |--- nitrogen_mg_L <= 56.75
+|   |   |   |   |   |   |--- potassium_mg_L <= 98.00
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 43.30
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 91.65
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  91.65
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  43.30
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.45
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.45
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- potassium_mg_L >  98.00
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 50.75
+|   |   |   |   |   |   |   |   |--- ph <= 7.43
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.25
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.25
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.10
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.10
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- ph >  7.43
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  50.75
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 105.05
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 19.10
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  19.10
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.38
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.38
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  105.05
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.20
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 107.60
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  107.60
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.20
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 21.23
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  21.23
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- nitrogen_mg_L >  56.75
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 21.15
+|   |   |   |   |   |   |   |--- potassium_mg_L <= 102.50
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.85
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 92.75
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 105.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  105.50
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  92.75
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.85
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.25
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 96.20
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  96.20
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.25
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 101.75
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  101.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |--- potassium_mg_L >  102.50
+|   |   |   |   |   |   |   |   |--- ph <= 7.32
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 104.35
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 19.35
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  19.35
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  104.35
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.32
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.10
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.10
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- phosphorus_mg_L >  21.15
+|   |   |   |   |   |   |   |--- potassium_mg_L <= 115.55
+|   |   |   |   |   |   |   |   |--- ph <= 7.38
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.96
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 9
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.96
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 106.85
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  106.85
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- ph >  7.38
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 95.60
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 2.23
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  2.23
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  95.60
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- potassium_mg_L >  115.55
+|   |   |   |   |   |   |   |   |--- ph <= 7.04
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.75
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.45
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.45
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 13
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.75
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.38
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.38
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 7
+|   |   |   |   |   |   |   |   |--- ph >  7.04
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.19
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.14
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.14
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.19
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |--- potassium_mg_L >  124.25
+|   |   |   |   |--- nitrogen_mg_L <= 71.05
+|   |   |   |   |   |--- phosphorus_mg_L <= 20.05
+|   |   |   |   |   |   |--- nitrogen_mg_L <= 44.45
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.15
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 357.30
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  357.30
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.15
+|   |   |   |   |   |   |   |   |--- ph <= 7.39
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.39
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- nitrogen_mg_L >  44.45
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 49.80
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.75
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.41
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.41
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.75
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 336.05
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.95
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  336.05
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  49.80
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.95
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.35
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.35
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.95
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.44
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 19.75
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  19.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ph >  7.44
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 27.65
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  27.65
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |--- phosphorus_mg_L >  20.05
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.10
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 51.45
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.84
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 44.20
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.76
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.76
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  44.20
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.84
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.41
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 49.10
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  49.10
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ph >  7.41
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  51.45
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.97
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.06
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.26
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.26
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.06
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 54.60
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  54.60
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  29.97
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |--- ec_mS_cm >  1.10
+|   |   |   |   |   |   |   |--- ph <= 7.26
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 61.15
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.19
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 7
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.19
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 52.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  52.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  61.15
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.94
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 25.25
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  25.25
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 13
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.94
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 23.60
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  23.60
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 7
+|   |   |   |   |   |   |   |--- ph >  7.26
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 50.25
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.40
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 3.55
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  3.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ph >  7.40
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 43.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  43.75
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  50.25
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.91
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 131.70
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  131.70
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.91
+|   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |--- nitrogen_mg_L >  71.05
+|   |   |   |   |   |--- phosphorus_mg_L <= 28.75
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.25
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.95
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.83
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.25
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.72
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.72
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.25
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.83
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.40
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.94
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.94
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.40
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 318.10
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  318.10
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.95
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.06
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.34
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 30.00
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  30.00
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |--- ph >  7.34
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.78
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.78
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.06
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 21.75
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 332.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  332.50
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  21.75
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.44
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.44
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |--- ec_mS_cm >  1.25
+|   |   |   |   |   |   |   |--- water_temperature_C <= 28.27
+|   |   |   |   |   |   |   |   |--- ph <= 7.32
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 25.55
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 8
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  25.55
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 6.92
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 10
+|   |   |   |   |   |   |   |   |   |   |--- ph >  6.92
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- ph >  7.32
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.55
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.45
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.45
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.55
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- water_temperature_C >  28.27
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 22.75
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.60
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.32
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.32
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.60
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 19.10
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  19.10
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  22.75
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.21
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 125.25
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  125.25
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |--- ph >  7.21
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- phosphorus_mg_L >  28.75
+|   |   |   |   |   |   |--- water_temperature_C <= 25.03
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.96
+|   |   |   |   |   |   |   |   |--- ph <= 6.92
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.62
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.45
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.45
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.62
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.73
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 12
+|   |   |   |   |   |   |   |   |--- ph >  6.92
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.15
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.34
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.15
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.07
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.07
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.96
+|   |   |   |   |   |   |   |   |--- ph <= 6.51
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.99
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.77
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.77
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 11
+|   |   |   |   |   |   |   |   |   |--- ph >  5.99
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 89.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 8
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  89.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 9
+|   |   |   |   |   |   |   |   |--- ph >  6.51
+|   |   |   |   |   |   |   |   |   |--- ph <= 6.74
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 141.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  141.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 9
+|   |   |   |   |   |   |   |   |   |--- ph >  6.74
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 48.36
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  48.36
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |--- water_temperature_C >  25.03
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 1.42
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.60
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.21
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.30
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.30
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |--- ph >  7.21
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.00
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 4
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.00
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  28.60
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.15
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.67
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.67
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.15
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.28
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  1.42
+|   |   |   |   |   |   |   |   |--- ph <= 7.04
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.58
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.38
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.38
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |--- ph >  5.58
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 26.70
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 18
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  26.70
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 16
+|   |   |   |   |   |   |   |   |--- ph >  7.04
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.05
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.58
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.58
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.05
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.16
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.16
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |--- relative_humidity_percent >  86.34
+|   |   |   |--- potassium_mg_L <= 99.95
+|   |   |   |   |--- relative_humidity_percent <= 89.67
+|   |   |   |   |   |--- phosphorus_mg_L <= 17.80
+|   |   |   |   |   |   |--- potassium_mg_L <= 94.65
+|   |   |   |   |   |   |   |--- potassium_mg_L <= 92.10
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |--- potassium_mg_L >  92.10
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- potassium_mg_L >  94.65
+|   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |--- phosphorus_mg_L >  17.80
+|   |   |   |   |   |   |--- nitrogen_mg_L <= 45.10
+|   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- nitrogen_mg_L >  45.10
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.29
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.89
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.34
+|   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  27.34
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.89
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  89.29
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 93.60
+|   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  93.60
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 25.82
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C >  25.82
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 6.59
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ph >  6.59
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |--- relative_humidity_percent >  89.67
+|   |   |   |   |   |--- potassium_mg_L <= 91.10
+|   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |--- potassium_mg_L >  91.10
+|   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |--- potassium_mg_L >  99.95
+|   |   |   |   |--- relative_humidity_percent <= 87.88
+|   |   |   |   |   |--- phosphorus_mg_L <= 24.15
+|   |   |   |   |   |   |--- nitrogen_mg_L <= 58.20
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 17.05
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  17.05
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- nitrogen_mg_L >  58.20
+|   |   |   |   |   |   |   |--- air_temperature_C <= 36.26
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.94
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.94
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.42
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 20.65
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  20.65
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ph >  5.42
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.26
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.26
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |--- air_temperature_C >  36.26
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.47
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.47
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |--- phosphorus_mg_L >  24.15
+|   |   |   |   |   |   |--- ec_mS_cm <= 1.38
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 55.75
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.85
+|   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.85
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  55.75
+|   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.19
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.19
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 34.36
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  34.36
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.19
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 37.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- air_temperature_C >  37.28
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.19
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.42
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ph >  5.42
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 22.52
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  22.52
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |--- ec_mS_cm >  1.38
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 64.25
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 114.35
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 3.65
+|   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  3.65
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  114.35
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.20
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.53
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.53
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- ph >  7.20
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  64.25
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.10
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 118.35
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 118.05
+|   |   |   |   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  118.05
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  118.35
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.43
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.43
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 12
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  28.10
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.17
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.47
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.47
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |   |   |--- ph >  7.17
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- relative_humidity_percent >  87.88
+|   |   |   |   |   |--- nitrogen_mg_L <= 46.75
+|   |   |   |   |   |   |--- relative_humidity_percent <= 89.42
+|   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- relative_humidity_percent >  89.42
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 41.70
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  41.70
+|   |   |   |   |   |   |   |   |--- ph <= 7.44
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- ph >  7.44
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- nitrogen_mg_L >  46.75
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 18.45
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.29
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  89.29
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.30
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C <= 33.80
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- air_temperature_C >  33.80
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.30
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |--- phosphorus_mg_L >  18.45
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 0.91
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.32
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.39
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.39
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.80
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.80
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.32
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.63
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 0.81
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  0.81
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.63
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ec_mS_cm >  0.91
+|   |   |   |   |   |   |   |   |--- ph <= 7.38
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.65
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 1.09
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  1.09
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 14
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.65
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 48.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  48.95
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 8
+|   |   |   |   |   |   |   |   |--- ph >  7.38
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.58
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.58
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 89.64
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  89.64
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|--- ec_mS_cm >  4.04
+|   |--- relative_humidity_percent <= 46.99
+|   |   |--- ec_mS_cm <= 4.15
+|   |   |   |--- potassium_mg_L <= 100.85
+|   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |--- potassium_mg_L >  100.85
+|   |   |   |   |--- nitrogen_mg_L <= 44.85
+|   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |--- nitrogen_mg_L >  44.85
+|   |   |   |   |   |--- ph <= 5.22
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ph >  5.22
+|   |   |   |   |   |   |--- relative_humidity_percent <= 46.63
+|   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |--- relative_humidity_percent >  46.63
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |   |   |   |--- ph <= 5.34
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- ph >  5.34
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |--- ec_mS_cm >  4.15
+|   |   |   |--- relative_humidity_percent <= 45.58
+|   |   |   |   |--- ec_mS_cm <= 4.18
+|   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- ec_mS_cm >  4.18
+|   |   |   |   |   |--- potassium_mg_L <= 130.75
+|   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |--- potassium_mg_L >  130.75
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 22.65
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 45.18
+|   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  45.18
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- phosphorus_mg_L >  22.65
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |--- relative_humidity_percent >  45.58
+|   |   |   |   |--- phosphorus_mg_L <= 19.05
+|   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |--- phosphorus_mg_L >  19.05
+|   |   |   |   |   |--- nitrogen_mg_L <= 46.30
+|   |   |   |   |   |   |--- water_temperature_C <= 24.36
+|   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- water_temperature_C >  24.36
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |--- nitrogen_mg_L >  46.30
+|   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |--- relative_humidity_percent >  46.99
+|   |   |--- potassium_mg_L <= 105.65
+|   |   |   |--- ec_mS_cm <= 4.16
+|   |   |   |   |--- relative_humidity_percent <= 89.20
+|   |   |   |   |   |--- nitrogen_mg_L <= 45.05
+|   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |--- nitrogen_mg_L >  45.05
+|   |   |   |   |   |   |--- ec_mS_cm <= 4.15
+|   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  4.15
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 27.85
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  27.85
+|   |   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |--- relative_humidity_percent >  89.20
+|   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |--- ec_mS_cm >  4.16
+|   |   |   |   |--- potassium_mg_L <= 95.05
+|   |   |   |   |   |--- relative_humidity_percent <= 64.52
+|   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |--- relative_humidity_percent >  64.52
+|   |   |   |   |   |   |--- ec_mS_cm <= 4.18
+|   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- ec_mS_cm >  4.18
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |--- potassium_mg_L >  95.05
+|   |   |   |   |   |--- ph <= 7.39
+|   |   |   |   |   |   |--- relative_humidity_percent <= 48.98
+|   |   |   |   |   |   |   |--- class: K_Deficiency
+|   |   |   |   |   |   |--- relative_humidity_percent >  48.98
+|   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |--- ph >  7.39
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |--- potassium_mg_L >  105.65
+|   |   |   |--- relative_humidity_percent <= 87.85
+|   |   |   |   |--- nitrogen_mg_L <= 51.95
+|   |   |   |   |   |--- ec_mS_cm <= 4.16
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 20.15
+|   |   |   |   |   |   |   |--- relative_humidity_percent <= 76.70
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- relative_humidity_percent >  76.70
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- phosphorus_mg_L >  20.15
+|   |   |   |   |   |   |   |--- ph <= 7.41
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.99
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  29.99
+|   |   |   |   |   |   |   |   |   |--- class: Water_Temp_High
+|   |   |   |   |   |   |   |--- ph >  7.41
+|   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  4.16
+|   |   |   |   |   |   |--- nitrogen_mg_L <= 41.65
+|   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |--- nitrogen_mg_L >  41.65
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 71.75
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 348.25
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 52.33
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 250.30
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  250.30
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  52.33
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  348.25
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.18
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.18
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  71.75
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 46.95
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  46.95
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- nitrogen_mg_L >  51.95
+|   |   |   |   |   |--- ec_mS_cm <= 4.10
+|   |   |   |   |   |   |--- water_temperature_C <= 27.45
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 26.05
+|   |   |   |   |   |   |   |   |--- ph <= 7.09
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 57.60
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  57.60
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 5.38
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ph >  5.38
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.09
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  26.05
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 67.25
+|   |   |   |   |   |   |   |   |   |--- ph <= 7.10
+|   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  7.10
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  67.25
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 125.05
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 7.25
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 6
+|   |   |   |   |   |   |   |   |   |   |--- ph >  7.25
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  125.05
+|   |   |   |   |   |   |   |   |   |   |--- ph <= 6.93
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 11
+|   |   |   |   |   |   |   |   |   |   |--- ph >  6.93
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- water_temperature_C >  27.45
+|   |   |   |   |   |   |   |--- phosphorus_mg_L <= 22.35
+|   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |--- phosphorus_mg_L >  22.35
+|   |   |   |   |   |   |   |   |--- ph <= 6.84
+|   |   |   |   |   |   |   |   |   |--- ph <= 5.45
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 28.49
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |   |--- water_temperature_C >  28.49
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ph >  5.45
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 87.23
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 5
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  87.23
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |--- ph >  6.84
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 54.92
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_Low_Stress
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  54.92
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |--- ec_mS_cm >  4.10
+|   |   |   |   |   |   |--- phosphorus_mg_L <= 19.55
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 4.15
+|   |   |   |   |   |   |   |   |--- ph <= 7.31
+|   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |--- ph >  7.31
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  4.15
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 16.45
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.18
+|   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.18
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 50.76
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  50.76
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  16.45
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.16
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 18.30
+|   |   |   |   |   |   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  18.30
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.16
+|   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- phosphorus_mg_L >  19.55
+|   |   |   |   |   |   |   |--- ph <= 7.45
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 57.65
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 337.60
+|   |   |   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  337.60
+|   |   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L <= 345.55
+|   |   |   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |   |   |--- potassium_mg_L >  345.55
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  57.65
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C <= 29.22
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L <= 199.75
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 9
+|   |   |   |   |   |   |   |   |   |   |--- nitrogen_mg_L >  199.75
+|   |   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- water_temperature_C >  29.22
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm <= 4.13
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 2
+|   |   |   |   |   |   |   |   |   |   |--- ec_mS_cm >  4.13
+|   |   |   |   |   |   |   |   |   |   |   |--- truncated branch of depth 3
+|   |   |   |   |   |   |   |--- ph >  7.45
+|   |   |   |   |   |   |   |   |--- water_temperature_C <= 27.38
+|   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |   |--- water_temperature_C >  27.38
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |--- relative_humidity_percent >  87.85
+|   |   |   |   |--- ec_mS_cm <= 4.14
+|   |   |   |   |   |--- phosphorus_mg_L <= 18.00
+|   |   |   |   |   |   |--- class: P_Deficiency
+|   |   |   |   |   |--- phosphorus_mg_L >  18.00
+|   |   |   |   |   |   |--- relative_humidity_percent <= 88.31
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 4.12
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 24.70
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  24.70
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent <= 88.23
+|   |   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |   |   |--- relative_humidity_percent >  88.23
+|   |   |   |   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |   |--- ec_mS_cm >  4.12
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- relative_humidity_percent >  88.31
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 48.35
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L <= 34.95
+|   |   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |   |--- phosphorus_mg_L >  34.95
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  48.35
+|   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |--- ec_mS_cm >  4.14
+|   |   |   |   |   |--- relative_humidity_percent <= 89.71
+|   |   |   |   |   |   |--- relative_humidity_percent <= 89.09
+|   |   |   |   |   |   |   |--- nitrogen_mg_L <= 49.10
+|   |   |   |   |   |   |   |   |--- class: N_Deficiency
+|   |   |   |   |   |   |   |--- nitrogen_mg_L >  49.10
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |--- relative_humidity_percent >  89.09
+|   |   |   |   |   |   |   |--- ec_mS_cm <= 4.17
+|   |   |   |   |   |   |   |   |--- potassium_mg_L <= 133.25
+|   |   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |   |   |   |--- potassium_mg_L >  133.25
+|   |   |   |   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |   |   |   |   |   |--- ec_mS_cm >  4.17
+|   |   |   |   |   |   |   |   |--- class: EC_High_Toxicity
+|   |   |   |   |   |--- relative_humidity_percent >  89.71
+|   |   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
