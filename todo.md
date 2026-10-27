@@ -618,9 +618,9 @@
 **Dependencies:** T1-009
 **Acceptance Criteria:**
 
-- [ ] Each code returns the documented HTTP status
-- [ ] Unhandled error response contains no stack trace or path
-- [ ] `retryable` is true only for segmentation failure and device states
+- [x] Each code returns the documented HTTP status
+- [x] Unhandled error response contains no stack trace or path
+- [x] `retryable` is true only for segmentation failure and device states
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend
