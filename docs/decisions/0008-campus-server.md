@@ -2,154 +2,115 @@
 
 | Field | Value |
 |---|---|
-| **Status** | Draft — pending live verification on campus network |
-| **Date** | 2026-10-25 |
+| Field | Value |
+|---|---|
+| **Status** | Live Verified on Campus Network |
+| **Date** | 2026-10-27 |
 | **Driver** | Yashwant |
-| **Sources** | `cloud_server/server.py`, `cloud_server/schema.sql`, `cloud_server/read.txt`, `cloud_server/mysql_config.json`, campus setup documentation |
+| **Navigator** | Sushil |
+| **Sources** | `cloud_server/server.py`, `cloud_server/schema.sql`, `cloud_server/read.txt`, `cloud_server/mysql_config.json`, Live Probe via `scripts/probe_campus_server.py` |
 
 ## Context
 
 The campus polyhouse system uses a two-tier architecture:
 
-1. **Gateway device** — a Modbus-connected controller (possibly Raspberry Pi or similar) that reads sensors and controls relays. It periodically POSTs sensor data to the cloud server and polls for relay commands.
-2. **Cloud server** (`server.py`) — a Python `http.server.ThreadingHTTPServer` that runs on a laptop on the campus LAN. It receives sensor uploads via HTTP, stores them in a MySQL database, and serves a relay-control web panel.
+1. **Gateway device** (`:5000`) — a controller running a Flask/HTTP server that directly reads Modbus sensors, manages pulse timers, and controls relays. It exposes `/api/data` with live telemetry.
+2. **Cloud server** (`server.py`, `:50503`) — a Python `http.server.ThreadingHTTPServer` that runs on a campus laptop. It receives sensor uploads via HTTP, stores them in MySQL, and serves a relay-control web panel.
+3. **Camera NVR** — a CPPLUS NVR on the local network serving camera streams and HTTP Digest snapshot captures.
 
-Our application needs to read sensor telemetry and (eventually) camera frames from this infrastructure.
+Our application reads sensor telemetry and camera frames from this infrastructure.
 
 ## Decision
 
-### Protocol
+### Protocol & Endpoints
 
-- **HTTP** (plain, no TLS) — the cloud server uses `http.server.ThreadingHTTPServer`.
-- **No WebSocket, MQTT, or RTSP** endpoints are present in the codebase.
-- The server binds to `0.0.0.0` on port **50503** by default (configurable via `mysql_config.json` → `http_port`).
+- **Gateway Device (Port 5000):**
+  - `GET /api/data`: Returns live sensor telemetry and relay statuses without authentication (session login also supported at `POST /api/login`).
+- **Cloud Server (Port 50503):**
+  - `GET /api/status`: Latest sensor payload stored in MySQL + pending relay commands.
+  - `POST /api/data`: Gateway device upload endpoint.
+- **Camera (CPPLUS NVR):**
+  - **Live Video Streaming (RTSP):**
+    - Protocol: RTSP on port `554`.
+    - Main Stream (4K 3200x1800, high-res): `rtsp://<user>:<password>@<nvr-ip>:554/cam/realmonitor?channel=1&subtype=0`
+    - Sub-Stream (D1 704x576, low-latency live preview): `rtsp://<user>:<password>@<nvr-ip>:554/cam/realmonitor?channel=1&subtype=1`
+    - Verified with OpenCV `cv2.VideoCapture` (both streams decode cleanly in RGB).
+  - **Snapshot Capture (HTTPS):**
+    - Protocol: HTTPS on port `443` with self-signed certificate.
+    - Authentication: HTTP Digest Authentication.
+    - Endpoint: `GET /cgi-bin/snapshot.cgi?channel=1` (returns on-demand JPEG frame `Content-Type: image/jpeg`, 3200x1800).
 
-### Authentication
 
-- **None.** The cloud server has no authentication, no API keys, no session tokens. All endpoints are open to any client on the network.
-- The campus setup documentation mentions a gateway device dashboard at `<campus-server-ip>:5000` with authentication credentials, but this is a **separate device dashboard**, not the cloud server itself.
-- ⚠️ **UNKNOWN**: Whether the device dashboard at port 5000 exposes any additional sensor or camera API. Must be probed live.
+### Verified Live Sensor Fields
 
-### Endpoints (from `server.py`)
+Captured directly from the live gateway (`live_device_payload.json`):
 
-| Method | Path | Purpose | Request Body | Response |
+| Sensor Field | Modbus Name | Unit | Live Value | Model Feature Mapping |
 |---|---|---|---|---|
-| `GET` | `/` | Relay control web panel (HTML) | — | HTML page |
-| `GET` | `/api/status` | Latest sensor payload + pending commands | — | `{ "status": "ok", "latest": <payload>, "current_commands": [...] }` |
-| `GET` | `/api/commands` | Device polls for pending commands | — | `{ "commands": [...] }` |
-| `POST` | `/api/data` | Device uploads sensor snapshot | Full JSON payload | `{ "status": "ok", "message": "data stored" }` |
-| `POST` | `/api/relay/control` | Queue a relay ON/OFF command | `{ "name": "PUMP1", "state": true }` or `{ "slave_id": 2, "address": 0, "state": true }` | `{ "status": "ok", "message": "..." }` |
-| `POST` | `/api/relay/clear` | Clear all pending commands | — | `{ "status": "ok" }` |
-| `POST` | `/api/ack` | Device reports command execution results | Ack payload with `request_id` | `{ "status": "ok" }` |
+| `ph` | pH | pH | ~7.66 | `ph` |
+| `ec` | EC | µS/cm | ~36.8 | `ec` (scaled to mS/cm) |
+| `temp_avg` | Average Air Temp | °C | ~41.5 | `air_temp` / `air_temperature_C` |
+| `temperature1` | Ambient Temp 1 | °C | ~42.6 | Optional auxiliary |
+| `temperature2` | Ambient Temp 2 | °C | ~40.4 | Optional auxiliary |
+| `humidity_avg` | Average Humidity | % | ~34.7 | `humidity` / `relative_humidity_percent` |
+| `humidity1` | Relative Humidity 1 | % | ~33.2 | Optional auxiliary |
+| `humidity2` | Relative Humidity 2 | % | ~36.1 | Optional auxiliary |
+| `salinity` | Salinity | PPT | ~0.02 | Auxiliary |
+| `tds` | Total Dissolved Solids | ppm | ~18.3 | Excluded (redundant with EC) |
+| `ldr1`, `ldr2` | Light Intensity | Lux/raw | ~14800 | Auxiliary |
+| `devices` | Relay States (fan1, pump1..4) | bool | active | Relays & actuators |
 
-**Our application reads from:** `GET /api/status` — this returns the most recent device payload from MySQL.
+### Physical Actuator & Relay Mapping (from `cloud_server/server.py`)
 
-### Payload Structure
+The campus polyhouse hardware uses two RS-485 Modbus relay slaves:
+- **Slave 1 (Coils 0–7):**
+  - `0`: `FAN1`
+  - `1`: `FAN2`
+  - `2`: `FOGGER`
+  - `3`: `HONEYCOMB`
+  - `4–7`: `OUT5` – `OUT8`
+- **Slave 2 (Coils 0–3):**
+  - `0`: `PUMP1`
+  - `1`: `PUMP2`
+  - `2`: `PUMP3`
+  - `3`: `PUMP4`
 
-The device payload is stored as a JSON blob in MySQL (`device_data.payload`). The structure is:
+Relay control commands can be dispatched via `POST /api/relay/control` on the cloud server (`{"slave_id": 2, "address": 0, "state": true}` or `{"name": "PUMP1", "state": true}`) or posted to `/api/commands` for gateway polling.
 
+
+### Critical Finding: N/P/K Availability
+
+The gateway device configuration explicitly lists in `_deleted_keys`:
 ```json
-{
-  "device_id": "...",
-  "customer_id": "...",
-  "timestamp": "...",
-  "relay_status": [
-    { "name": "FAN1", "state": true, "control_mode": "auto" },
-    ...
-  ]
-  // + sensor fields (⚠️ UNKNOWN — see below)
-}
+"_deleted_keys": ["nitrogen", "phosphorus", "potassium", "relay_2"]
 ```
+**Conclusion:** Nitrogen (N), Phosphorus (P), and Potassium (K) hardware sensors are **disabled/deleted** in the physical campus setup.
+**Consequence for Models:** Per PRD D11 and T4-020, the live-compatible tomato sensor model must not rely on N/P/K and must be trained exclusively on the live-available features (`ph`, `ec`, `temp_avg`, `humidity_avg`).
 
-**Known fields** (from `server.py` code):
-- `device_id` (string) — inserted into `device_data.device_id`
-- `customer_id` (string) — inserted into `device_data.customer_id`
-- `timestamp` (string) — inserted into `device_data.ts`
-- `relay_status` (array) — confirmed from the web panel JavaScript: each entry has `name`, `state` (boolean), `control_mode` ("auto" | "manual")
+---
 
-### ⚠️ UNKNOWN — Sensor Fields
+## Resolved Unknowns (Live Verified)
 
-The **exact sensor fields, their names, units, and ranges** are **not known from the code alone**. The `_save_data()` method stores the entire JSON blob without parsing individual sensor fields. The sensor fields can only be determined by capturing a live payload.
-
-**Expected fields** (based on polyhouse context — must be verified):
-- Temperature (°C)
-- Humidity (%)
-- pH
-- EC / TDS (µS/cm or ppm)
-- Possibly: dissolved oxygen, water temperature, light intensity, CO₂
-
-**Critical question for our models:** Does the payload include **nitrogen (N), phosphorus (P), potassium (K)**? If not, the live-compatible tomato model variant must be trained on only the features the campus server provides (per PRD D11).
-
-### Relay Map
-
-From `server.py` RELAYS constant:
-
-| Slave | Address | Name | Purpose (inferred) |
+| # | Unknown | Live Finding / Resolution | Impact |
 |---|---|---|---|
-| 1 | 0 | FAN1 | Ventilation fan |
-| 1 | 1 | FAN2 | Ventilation fan |
-| 1 | 2 | FOGGER | Humidity control |
-| 1 | 3 | HONEYCOMB | Evaporative cooling pad |
-| 1 | 4–7 | OUT5–OUT8 | General-purpose outputs |
-| 2 | 0–3 | PUMP1–PUMP4 | Nutrient/water pumps |
+| 1 | Exact sensor fields, names, units | Verified via `/api/data`: `ph`, `ec` (µS/cm), `temp_avg` (°C), `humidity_avg` (%), `salinity` (PPT), `tds` (ppm). | Feature mapping in `CampusServerAdapter` confirmed. |
+| 2 | N/P/K availability | **CONFIRMED NOT AVAILABLE**: `_deleted_keys` explicitly disables N/P/K. | Validates T4-020 live-compatible tomato model requirement. |
+| 3 | Camera feed location and format | **CONFIRMED**: CPPLUS NVR serves live RTSP streams on port 554 (4K `subtype=0`, D1 `subtype=1`) and on-demand JPEG snapshots at `/cgi-bin/snapshot.cgi?channel=1` via HTTP Digest Auth. | Frame capture & live streaming pipeline confirmed. |
+| 4 | Device upload frequency | Sensor readings refresh at ~1-5s intervals on the gateway. | `CAMPUS_POLL_INTERVAL_S=30` is well within sensor update rate. |
+| 5 | Dashboard API at `:5000` | Gateway dashboard exposes `/api/data` directly. | Dual source: adapter can read from `:5000/api/data` or `:50503/api/status`. |
+| 6 | Off-campus reachability | Verified campus network only (`192.168.100.x` subnet). | Development uses MockAdapter off-campus. |
 
-### Database Schema
+## Captured Live Samples
 
-MySQL database `polyhouse` with two tables:
-- `device_data` — `id`, `device_id`, `customer_id`, `ts`, `payload` (JSON), `created_at`
-- `commands_log` — `id`, `device_id`, `ts`, `payload` (JSON), `created_at`
-
-### Update Frequency
-
-- ⚠️ **UNKNOWN** — the gateway's upload interval is configured on the device side (not in the cloud server code). The web panel polls `/api/status` every **5 seconds** for display. The device polls `/api/commands` at a configurable interval (documentation says ~10 seconds).
-
-### Camera
-
-- ⚠️ **UNKNOWN** — no camera endpoint exists in `server.py`. The secondary campus IP (`<campus-secondary-ip>`) may serve camera feeds (RTSP, MJPEG, or HTTP snapshots), but this cannot be determined without a live probe.
-- The device dashboard at `<campus-server-ip>:5000` may also embed a camera view.
-
-### Network Reachability
-
-- The cloud server is on the **campus LAN only** (`192.168.x.x` subnet).
-- ⚠️ **UNKNOWN**: Whether it is reachable via VPN or only from physically connected campus Wi-Fi.
-
-## Environment Variables
-
-All IPs and credentials stay in `.env` (gitignored). The `.env.example` provides safe placeholder values:
-
-```env
-CAMPUS_SERVER_URL=http://127.0.0.1:50503
-CAMPUS_CAMERA_URL=http://127.0.0.1:50503/feed
-CAMPUS_POLL_INTERVAL_S=30
-CAMPUS_MAX_AGE_S=120
-CAMPUS_REQUEST_TIMEOUT_S=5
-```
-
-When connected to campus Wi-Fi, `.env` should use the real campus IP and port.
-
-## Unknowns to Resolve on Campus Network
-
-| # | Unknown | How to resolve | Impact |
-|---|---|---|---|
-| 1 | Exact sensor fields, names, units | `GET /api/status` on live server; save redacted payload | Feature mapping for models |
-| 2 | N/P/K availability | Same as #1 | Determines tomato model variant |
-| 3 | Camera feed location and format | Probe `<campus-secondary-ip>`, probe `<campus-server-ip>:5000` | `CAMPUS_CAMERA_URL` and frame capture |
-| 4 | Device upload frequency | Observe two consecutive `GET /api/status` timestamps | `CAMPUS_POLL_INTERVAL_S` default |
-| 5 | Dashboard API at `:5000` | Browse `<campus-server-ip>:5000`, inspect endpoints | Additional data sources |
-| 6 | Off-campus reachability | Test from non-campus network | Development workflow |
-
-## Sample Payloads
-
-Redacted samples (inferred from code) are in [`docs/decisions/0008-campus-server/`](file:///d:/Hydroponic-Nutrition-AI/docs/decisions/0008-campus-server/):
-- `sample_payload_1.json` — device upload structure (relay_status confirmed, sensor fields unknown)
-- `sample_api_status_response.json` — GET /api/status response structure
-- `sample_relay_control_request.json` — POST /api/relay/control request forms
-
-**These will be replaced with real captured payloads after the live probe.**
+Redacted real artifacts captured from the campus network are in [`docs/decisions/0008-campus-server/`](file:///d:/Hydroponic-Nutrition-AI/docs/decisions/0008-campus-server/):
+- `live_status_response.json` — Gateway status response
+- `live_device_payload.json` — Complete live telemetry payload with Modbus configs
+- `sample_frame.jpg` — Real 656 KB JPEG snapshot captured from CPPLUS camera
 
 ## Consequences
 
-- **CampusServerAdapter** will use `httpx` to call `GET {CAMPUS_SERVER_URL}/api/status`, parse `latest` for sensor readings, and map field names to each crop's model schema.
-- Until the live probe confirms sensor fields, the adapter will use a best-effort field mapping and raise clear warnings for any missing/unexpected fields.
-- The mock adapter and manual entry remain the default; campus mode is opt-in via `DEVICE_ADAPTER=campus`.
-- Camera integration is deferred until the camera endpoint is discovered.
+- **CampusServerAdapter (T6-013):**
+  - Will query `GET /api/data` (or `/api/status`), map `ph`, `ec`, `temp_avg`, `humidity_avg`, and map relay statuses.
+  - Will use Digest Authentication with unverified SSL context to fetch camera frames from `/cgi-bin/snapshot.cgi?channel=1`.
+- **Live Tomato Model (T4-020):**
+  - Sits on solid ground: N/P/K exclusion is empirically verified.
