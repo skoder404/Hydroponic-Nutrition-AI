@@ -758,9 +758,9 @@
 **Dependencies:** T4-005, T2-020
 **Acceptance Criteria:**
 
-- [ ] Every Overview §18.2 item has a field
-- [ ] Validation and test metrics are never mixed
-- [ ] Limitations block is always included
+- [x] Every Overview §18.2 item has a field
+- [x] Validation and test metrics are never mixed
+- [x] Limitations block is always included
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
