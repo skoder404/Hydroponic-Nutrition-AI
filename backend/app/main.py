@@ -8,6 +8,7 @@ Features:
 - Defensive security headers middleware (X-Content-Type-Options, Referrer-Policy, Content-Security-Policy, etc.)
 - /api/v1 router mounting
 """
+
 from __future__ import annotations
 
 import logging
@@ -21,6 +22,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from backend.app.api.v1 import api_v1_router
 from backend.app.core.config import get_settings
+from backend.app.core.errors import register_error_handlers
 from backend.app.core.logging import JSONFormatter, request_id_ctx_var, setup_logging
 
 logger = logging.getLogger(__name__)
@@ -67,7 +69,11 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         t0 = time.perf_counter()
         logger.info(
             f"Request started: {request.method} {request.url.path}",
-            extra={"method": request.method, "path": request.url.path, "request_id": req_id},
+            extra={
+                "method": request.method,
+                "path": request.url.path,
+                "request_id": req_id,
+            },
         )
 
         try:
@@ -75,7 +81,11 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         except Exception:
             logger.exception(
                 f"Unhandled error during request: {request.method} {request.url.path}",
-                extra={"method": request.method, "path": request.url.path, "request_id": req_id},
+                extra={
+                    "method": request.method,
+                    "path": request.url.path,
+                    "request_id": req_id,
+                },
             )
             raise
         finally:
@@ -136,7 +146,12 @@ def create_app(configure_logging: bool = True) -> FastAPI:
     # Route mounting
     app.include_router(api_v1_router, prefix="/api/v1")
 
-    logger.info("FastAPI application initialized successfully", extra={"event": "app_startup"})
+    # Unified error envelope handlers
+    register_error_handlers(app)
+
+    logger.info(
+        "FastAPI application initialized successfully", extra={"event": "app_startup"}
+    )
     return app
 
 

@@ -592,9 +592,9 @@
 **Dependencies:** T1-009, T1-004
 **Acceptance Criteria:**
 
-- [ ] A renamed text file with a .jpg extension is rejected
-- [ ] Path traversal in filename has no effect
-- [ ] Oversized file returns 413 code `PAYLOAD_TOO_LARGE`
+- [x] A renamed text file with a .jpg extension is rejected
+- [x] Path traversal in filename has no effect
+- [x] Oversized file returns 413 code `PAYLOAD_TOO_LARGE`
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
