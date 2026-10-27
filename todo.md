@@ -1994,9 +1994,9 @@
 **Dependencies:** T2-016, T3-003, T3-004
 **Acceptance Criteria:**
 
-- [ ] Every Overview §6 class is covered
-- [ ] Missing vs 0 behaviour is asserted
-- [ ] Tests run in CI
+- [x] Every Overview §6 class is covered
+- [x] Missing vs 0 behaviour is asserted
+- [x] Tests run in CI
 
 **Estimated Effort:** 60 min
 **Assigned To:** QA
