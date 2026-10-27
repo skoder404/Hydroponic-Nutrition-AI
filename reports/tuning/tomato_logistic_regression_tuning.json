@@ -1,0 +1,110 @@
+{
+  "crop": "tomato",
+  "model_family": "logistic_regression",
+  "config_version": "1.0.0",
+  "seed": 42,
+  "runtime_seconds": 32.93,
+  "n_splits": 5,
+  "n_candidates": 8,
+  "best_params": {
+    "C": 5.0,
+    "class_weight": "balanced"
+  },
+  "best_macro_f1": 0.8536,
+  "best_std_macro_f1": 0.0058,
+  "all_results": [
+    {
+      "params": {
+        "C": 0.05,
+        "class_weight": null
+      },
+      "mean_macro_f1": 0.8062,
+      "std_macro_f1": 0.0086,
+      "mean_accuracy": 0.821,
+      "std_accuracy": 0.0088
+    },
+    {
+      "params": {
+        "C": 0.05,
+        "class_weight": "balanced"
+      },
+      "mean_macro_f1": 0.8065,
+      "std_macro_f1": 0.0082,
+      "mean_accuracy": 0.8216,
+      "std_accuracy": 0.0085
+    },
+    {
+      "params": {
+        "C": 0.2,
+        "class_weight": null
+      },
+      "mean_macro_f1": 0.8305,
+      "std_macro_f1": 0.0077,
+      "mean_accuracy": 0.8414,
+      "std_accuracy": 0.008
+    },
+    {
+      "params": {
+        "C": 0.2,
+        "class_weight": "balanced"
+      },
+      "mean_macro_f1": 0.8307,
+      "std_macro_f1": 0.0074,
+      "mean_accuracy": 0.8418,
+      "std_accuracy": 0.0076
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "class_weight": null
+      },
+      "mean_macro_f1": 0.848,
+      "std_macro_f1": 0.0066,
+      "mean_accuracy": 0.8567,
+      "std_accuracy": 0.0069
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "class_weight": "balanced"
+      },
+      "mean_macro_f1": 0.8484,
+      "std_macro_f1": 0.0065,
+      "mean_accuracy": 0.8574,
+      "std_accuracy": 0.0068
+    },
+    {
+      "params": {
+        "C": 5.0,
+        "class_weight": null
+      },
+      "mean_macro_f1": 0.8535,
+      "std_macro_f1": 0.0061,
+      "mean_accuracy": 0.8611,
+      "std_accuracy": 0.0066
+    },
+    {
+      "params": {
+        "C": 5.0,
+        "class_weight": "balanced"
+      },
+      "mean_macro_f1": 0.8536,
+      "std_macro_f1": 0.0058,
+      "mean_accuracy": 0.8613,
+      "std_accuracy": 0.0061
+    }
+  ],
+  "search_space": {
+    "C": [
+      0.05,
+      0.2,
+      1.0,
+      5.0
+    ],
+    "class_weight": [
+      null,
+      "balanced"
+    ]
+  },
+  "completed_at": "2026-10-27T10:03:46.320274+00:00"
+}

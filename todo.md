@@ -933,9 +933,9 @@
 **Dependencies:** T4-015, T4-016
 **Acceptance Criteria:**
 
-- [ ] Month-based assignment is used
-- [ ] Metadata has `experimental=true`
-- [ ] Report documents transformed and synthetic features
+- [x] Month-based assignment is used
+- [x] Metadata has `experimental=true`
+- [x] Report documents transformed and synthetic features
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

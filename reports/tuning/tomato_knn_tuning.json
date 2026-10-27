@@ -1,0 +1,110 @@
+{
+  "crop": "tomato",
+  "model_family": "knn",
+  "config_version": "1.0.0",
+  "seed": 42,
+  "runtime_seconds": 21.39,
+  "n_splits": 5,
+  "n_candidates": 8,
+  "best_params": {
+    "n_neighbors": 9,
+    "weights": "distance"
+  },
+  "best_macro_f1": 0.7106,
+  "best_std_macro_f1": 0.0118,
+  "all_results": [
+    {
+      "params": {
+        "n_neighbors": 3,
+        "weights": "uniform"
+      },
+      "mean_macro_f1": 0.6639,
+      "std_macro_f1": 0.0074,
+      "mean_accuracy": 0.667,
+      "std_accuracy": 0.0072
+    },
+    {
+      "params": {
+        "n_neighbors": 3,
+        "weights": "distance"
+      },
+      "mean_macro_f1": 0.6658,
+      "std_macro_f1": 0.0069,
+      "mean_accuracy": 0.6688,
+      "std_accuracy": 0.0067
+    },
+    {
+      "params": {
+        "n_neighbors": 5,
+        "weights": "uniform"
+      },
+      "mean_macro_f1": 0.6798,
+      "std_macro_f1": 0.0105,
+      "mean_accuracy": 0.6849,
+      "std_accuracy": 0.0094
+    },
+    {
+      "params": {
+        "n_neighbors": 5,
+        "weights": "distance"
+      },
+      "mean_macro_f1": 0.6884,
+      "std_macro_f1": 0.0098,
+      "mean_accuracy": 0.6924,
+      "std_accuracy": 0.0092
+    },
+    {
+      "params": {
+        "n_neighbors": 7,
+        "weights": "uniform"
+      },
+      "mean_macro_f1": 0.697,
+      "std_macro_f1": 0.0129,
+      "mean_accuracy": 0.7019,
+      "std_accuracy": 0.012
+    },
+    {
+      "params": {
+        "n_neighbors": 7,
+        "weights": "distance"
+      },
+      "mean_macro_f1": 0.7017,
+      "std_macro_f1": 0.011,
+      "mean_accuracy": 0.7061,
+      "std_accuracy": 0.0102
+    },
+    {
+      "params": {
+        "n_neighbors": 9,
+        "weights": "uniform"
+      },
+      "mean_macro_f1": 0.7037,
+      "std_macro_f1": 0.0112,
+      "mean_accuracy": 0.7095,
+      "std_accuracy": 0.0103
+    },
+    {
+      "params": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "mean_macro_f1": 0.7106,
+      "std_macro_f1": 0.0118,
+      "mean_accuracy": 0.7156,
+      "std_accuracy": 0.011
+    }
+  ],
+  "search_space": {
+    "n_neighbors": [
+      3,
+      5,
+      7,
+      9
+    ],
+    "weights": [
+      "uniform",
+      "distance"
+    ]
+  },
+  "completed_at": "2026-10-27T10:03:12.602874+00:00"
+}

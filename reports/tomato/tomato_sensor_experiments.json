@@ -1,0 +1,255 @@
+{
+  "title": "Tomato Sensor Model Experiments Comparison Report",
+  "crop": "tomato",
+  "generated_at": "2026-10-27T10:05:13.221598+00:00",
+  "task_id": "T4-019",
+  "seed": 42,
+  "n_splits": 5,
+  "experimental": true,
+  "best_overall_model": "random_forest",
+  "split_integrity": {
+    "train_rows": 29943,
+    "val_rows": 5377,
+    "test_rows": 8830,
+    "train_months": 89,
+    "val_months": 16,
+    "test_months": 27,
+    "total_months": 132,
+    "overlap_months": 0,
+    "overlap_sample_ids": 0,
+    "group_separation_verified": true
+  },
+  "authorized_features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm",
+    "nitrogen_mg_L",
+    "phosphorus_mg_L",
+    "potassium_mg_L"
+  ],
+  "excluded_fields": {
+    "n_rules_broken": "Count of threshold rule violations; direct target and severity leakage",
+    "source_row": "Original row pointer in raw 200k Kolar precision agriculture dataset; provenance metadata",
+    "source_timestamp": "Logger timestamp string; temporal sequence and calendar-month leakage",
+    "sample_id": "Arbitrary unique row identifier (TM000001+); non-generalizable metadata",
+    "label_id": "Direct integer encoding of target label (0-9); target leakage",
+    "label": "Target classification label; ground truth target leakage"
+  },
+  "proxy_transforms": {
+    "air_temperature_C": "Ambient_Temp (unchanged from Kolar open-field observational logger)",
+    "relative_humidity_percent": "Humidity + 15.0 (calibrated offset to match enclosed greenhouse humidity)",
+    "water_temperature_C": "8.0 + 0.55 * air + 0.003 * (solar - 700) + Normal(0, 0.6) [simulated reservoir thermal dynamics, seed 42]",
+    "ph": "Soil_pH - 1.0 (calibrated offset mapping soil pH to hydroponic nutrient solution range)",
+    "ec_mS_cm": "EC_mS_cm * 1.4 (scaled proxy mapping bulk soil salinity to hydroponic EC)",
+    "nitrogen_mg_L": "Nitrogen_Level * 4.0 (scaled proxy converting soil fertility test index to solution mg/L)",
+    "phosphorus_mg_L": "Phosphorus_Level * 3.0 (scaled proxy converting soil phosphorus index to solution mg/L)",
+    "potassium_mg_L": "Potassium_Level * 6.0 (scaled proxy converting soil potassium index to solution mg/L)"
+  },
+  "models": [
+    {
+      "model_type": "decision_tree",
+      "experimental": true,
+      "best_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 0.9492,
+      "cv_std_macro_f1": 0.0043,
+      "val_macro_f1": 0.9573,
+      "val_accuracy": 0.9576,
+      "val_macro_precision": 0.9574,
+      "val_macro_recall": 0.9573,
+      "json_report": "reports\\tomato\\tomato_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_decision_tree_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "random_forest",
+      "experimental": true,
+      "best_hyperparameters": {
+        "class_weight": null,
+        "max_depth": null,
+        "min_samples_leaf": 1,
+        "n_estimators": 100
+      },
+      "cv_macro_f1": 0.9651,
+      "cv_std_macro_f1": 0.0048,
+      "val_macro_f1": 0.9689,
+      "val_accuracy": 0.9695,
+      "val_macro_precision": 0.9702,
+      "val_macro_recall": 0.9689,
+      "json_report": "reports\\tomato\\tomato_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_random_forest_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "svm",
+      "experimental": true,
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.9101,
+      "cv_std_macro_f1": 0.0054,
+      "val_macro_f1": 0.9187,
+      "val_accuracy": 0.9204,
+      "val_macro_precision": 0.9255,
+      "val_macro_recall": 0.9193,
+      "json_report": "reports\\tomato\\tomato_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_svm_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "knn",
+      "experimental": true,
+      "best_hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "cv_macro_f1": 0.7106,
+      "cv_std_macro_f1": 0.0118,
+      "val_macro_f1": 0.7295,
+      "val_accuracy": 0.7359,
+      "val_macro_precision": 0.7369,
+      "val_macro_recall": 0.7336,
+      "json_report": "reports\\tomato\\tomato_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_knn_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "logistic_regression",
+      "experimental": true,
+      "best_hyperparameters": {
+        "C": 5.0,
+        "class_weight": "balanced"
+      },
+      "cv_macro_f1": 0.8536,
+      "cv_std_macro_f1": 0.0058,
+      "val_macro_f1": 0.8587,
+      "val_accuracy": 0.8709,
+      "val_macro_precision": 0.8524,
+      "val_macro_recall": 0.8684,
+      "json_report": "reports\\tomato\\tomato_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_logistic_regression_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    }
+  ],
+  "ranked_models": [
+    {
+      "model_type": "random_forest",
+      "experimental": true,
+      "best_hyperparameters": {
+        "class_weight": null,
+        "max_depth": null,
+        "min_samples_leaf": 1,
+        "n_estimators": 100
+      },
+      "cv_macro_f1": 0.9651,
+      "cv_std_macro_f1": 0.0048,
+      "val_macro_f1": 0.9689,
+      "val_accuracy": 0.9695,
+      "val_macro_precision": 0.9702,
+      "val_macro_recall": 0.9689,
+      "json_report": "reports\\tomato\\tomato_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_random_forest_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "decision_tree",
+      "experimental": true,
+      "best_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 0.9492,
+      "cv_std_macro_f1": 0.0043,
+      "val_macro_f1": 0.9573,
+      "val_accuracy": 0.9576,
+      "val_macro_precision": 0.9574,
+      "val_macro_recall": 0.9573,
+      "json_report": "reports\\tomato\\tomato_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_decision_tree_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "svm",
+      "experimental": true,
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.9101,
+      "cv_std_macro_f1": 0.0054,
+      "val_macro_f1": 0.9187,
+      "val_accuracy": 0.9204,
+      "val_macro_precision": 0.9255,
+      "val_macro_recall": 0.9193,
+      "json_report": "reports\\tomato\\tomato_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_svm_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "logistic_regression",
+      "experimental": true,
+      "best_hyperparameters": {
+        "C": 5.0,
+        "class_weight": "balanced"
+      },
+      "cv_macro_f1": 0.8536,
+      "cv_std_macro_f1": 0.0058,
+      "val_macro_f1": 0.8587,
+      "val_accuracy": 0.8709,
+      "val_macro_precision": 0.8524,
+      "val_macro_recall": 0.8684,
+      "json_report": "reports\\tomato\\tomato_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_logistic_regression_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "knn",
+      "experimental": true,
+      "best_hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "cv_macro_f1": 0.7106,
+      "cv_std_macro_f1": 0.0118,
+      "val_macro_f1": 0.7295,
+      "val_accuracy": 0.7359,
+      "val_macro_precision": 0.7369,
+      "val_macro_recall": 0.7336,
+      "json_report": "reports\\tomato\\tomato_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\tomato\\tomato_sensor_knn_v1.0.0_validation.md",
+      "artifact_path": "models\\sensor\\tomato\\v1.0.0\\tomato_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "models\\sensor\\tomato\\v1.0.0\\metadata.json"
+    }
+  ],
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "limitations": [
+    "Experimental Status: Models are marked experimental=true in ModelMetadata until live-sensor telemetry is verified against campus greenhouse hardware (Overview \u00a715.7).",
+    "Proxy-Transformed & Simulated Features: The underlying Kolar tomato dataset originates from open-field precision agriculture with simulated noise. Nutrient solution features (water_temperature_C, pH, EC, N, P, K) were generated using calibrated proxy transformations rather than direct hydroponic tank sensing.",
+    "Rule-Derived Diagnostic Targets: Labels are generated mathematically using multi-fault severity ranking over nine threshold rules (Water_Temp_High, EC_High/Low, pH_Imbalance, Humidity_High/Low, N/P/K_Deficiency).",
+    "Strict Zero-Leakage Protocol: Grouped 5-fold cross-validation by calendar month (89 disjoint months) prevents temporal autocorrelation leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Features: n_rules_broken, source_row, source_timestamp, sample_id, and label_id were strictly excluded from model feature inputs."
+  ]
+}

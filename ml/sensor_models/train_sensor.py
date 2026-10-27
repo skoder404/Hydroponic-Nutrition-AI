@@ -205,6 +205,7 @@ def train_sensor_model(
     weights: str = "uniform",
     max_iter: int = 1000,
     limitations: Sequence[str] | None = None,
+    experimental: bool = False,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -372,7 +373,7 @@ def train_sensor_model(
             "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
             "rule_version": "1.0.0",
             "preprocessing_version": "1.0.0",
-            "experimental": False,
+            "experimental": experimental,
             "status": "candidate",
             "classes": classes,
             "display_mapping": display_mapping,
@@ -579,6 +580,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         default=1000,
         help="Maximum iterations for Logistic Regression",
     )
+    parser.add_argument(
+        "--experimental",
+        action="store_true",
+        help="Mark artifact as experimental in metadata",
+    )
 
     args = parser.parse_args(argv)
 
@@ -605,6 +611,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             n_neighbors=args.n_neighbors,
             weights=args.weights,
             max_iter=args.max_iter,
+            experimental=args.experimental,
         )
         print(f"[SUCCESS] Trained {args.crop} {args.model} v{args.version}")
         print(

@@ -143,6 +143,8 @@ def to_serializable_metrics(metrics: dict[str, Any]) -> dict[str, Any]:
     for key, val in metrics.items():
         if isinstance(val, np.ndarray):
             serializable[key] = val.tolist()
+        elif isinstance(val, (bool, np.bool_)):
+            serializable[key] = bool(val)
         elif isinstance(val, (np.floating, float)):
             serializable[key] = float(val)
         elif isinstance(val, (np.integer, int)):
@@ -150,11 +152,7 @@ def to_serializable_metrics(metrics: dict[str, Any]) -> dict[str, Any]:
         elif isinstance(val, dict):
             serializable[key] = {
                 k: {
-                    sub_k: (
-                        int(sub_v)
-                        if sub_k == "support"
-                        else float(sub_v)
-                    )
+                    sub_k: (int(sub_v) if sub_k == "support" else float(sub_v))
                     for sub_k, sub_v in v.items()
                 }
                 if isinstance(v, dict)

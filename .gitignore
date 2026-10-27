@@ -68,8 +68,10 @@ Thumbs.db
 *.swo
 
 # ------------------------------------------------------------------------------
-# Pretrained Foundation Model Checkpoints (>100MB)
+# Pretrained Foundation Model Checkpoints (>100MB) and Trained Model Binaries
 # ------------------------------------------------------------------------------
 models/image/sam2.1_hiera_tiny.pt
 models/image/*.pt.tmp
-
+*.joblib
+models/sensor/*
+!models/sensor/.gitkeep

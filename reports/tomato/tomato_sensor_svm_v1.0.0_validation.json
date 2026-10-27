@@ -1,0 +1,416 @@
+{
+  "crop": "tomato",
+  "model_name": "tomato_sensor_svm_v1.0.0",
+  "model_family": "SVC",
+  "artifact_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "evaluation_date": "2026-10-27T10:02:51.035304+00:00",
+  "split_evaluated": "validation",
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "source_dataset_manifest": "processed_data/sensor/tomato/manifest.json",
+  "label_generation_method": "Rule-derived thresholds mapped from physical hydroponic solution bands",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "C": 2.5,
+    "kernel": "rbf",
+    "gamma": 0.1,
+    "probability": true,
+    "random_state": 42
+  },
+  "split_counts": {
+    "train": 29943,
+    "validation": 5377,
+    "test": 0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "pH_Imbalance": 3018,
+      "EC_Low_Deficiency": 3012,
+      "P_Deficiency": 3004,
+      "Humidity_High_Mildew_Risk": 2999,
+      "EC_High_Toxicity": 2998,
+      "Humidity_Low_Stress": 2992,
+      "K_Deficiency": 2990,
+      "N_Deficiency": 2986,
+      "Normal": 2983,
+      "Water_Temp_High": 2961
+    },
+    "validation": {
+      "Water_Temp_High": 571,
+      "Normal": 549,
+      "N_Deficiency": 546,
+      "K_Deficiency": 542,
+      "Humidity_Low_Stress": 540,
+      "EC_High_Toxicity": 534,
+      "Humidity_High_Mildew_Risk": 533,
+      "P_Deficiency": 528,
+      "EC_Low_Deficiency": 520,
+      "pH_Imbalance": 514
+    }
+  },
+  "class_order": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "K_Deficiency",
+    "N_Deficiency",
+    "Normal",
+    "P_Deficiency",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "metrics": {
+    "accuracy": 0.9204017109912591,
+    "macro_precision": 0.9254662895269193,
+    "macro_recall": 0.9192893932672878,
+    "macro_f1": 0.9187038117998769,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 0.8359872611464968,
+        "recall": 0.9831460674157303,
+        "f1": 0.9036144578313253,
+        "support": 534
+      },
+      "EC_Low_Deficiency": {
+        "precision": 0.9516129032258065,
+        "recall": 0.9076923076923077,
+        "f1": 0.9291338582677166,
+        "support": 520
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 0.875,
+        "recall": 0.9718574108818011,
+        "f1": 0.9208888888888889,
+        "support": 533
+      },
+      "Humidity_Low_Stress": {
+        "precision": 0.877104377104377,
+        "recall": 0.9648148148148148,
+        "f1": 0.9188712522045855,
+        "support": 540
+      },
+      "K_Deficiency": {
+        "precision": 0.9214285714285714,
+        "recall": 0.9520295202952029,
+        "f1": 0.9364791288566243,
+        "support": 542
+      },
+      "N_Deficiency": {
+        "precision": 0.960552268244576,
+        "recall": 0.891941391941392,
+        "f1": 0.9249762583095916,
+        "support": 546
+      },
+      "Normal": {
+        "precision": 0.9291882556131261,
+        "recall": 0.9799635701275046,
+        "f1": 0.9539007092198581,
+        "support": 549
+      },
+      "P_Deficiency": {
+        "precision": 0.9515151515151515,
+        "recall": 0.8920454545454546,
+        "f1": 0.9208211143695014,
+        "support": 528
+      },
+      "Water_Temp_High": {
+        "precision": 0.9603603603603603,
+        "recall": 0.9334500875656743,
+        "f1": 0.9467140319715808,
+        "support": 571
+      },
+      "pH_Imbalance": {
+        "precision": 0.9919137466307277,
+        "recall": 0.7159533073929961,
+        "f1": 0.831638418079096,
+        "support": 514
+      }
+    },
+    "confusion_matrix": [
+      [
+        525,
+        0,
+        2,
+        5,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        472,
+        16,
+        14,
+        6,
+        2,
+        1,
+        4,
+        4,
+        1
+      ],
+      [
+        7,
+        0,
+        518,
+        0,
+        5,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        14,
+        0,
+        0,
+        521,
+        3,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        7,
+        3,
+        5,
+        6,
+        516,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      [
+        16,
+        4,
+        15,
+        10,
+        8,
+        487,
+        1,
+        3,
+        2,
+        0
+      ],
+      [
+        5,
+        0,
+        2,
+        3,
+        1,
+        0,
+        538,
+        0,
+        0,
+        0
+      ],
+      [
+        15,
+        2,
+        5,
+        14,
+        7,
+        4,
+        5,
+        471,
+        4,
+        1
+      ],
+      [
+        15,
+        2,
+        6,
+        9,
+        1,
+        1,
+        4,
+        0,
+        533,
+        0
+      ],
+      [
+        24,
+        13,
+        23,
+        12,
+        12,
+        12,
+        24,
+        15,
+        11,
+        368
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        525,
+        0,
+        2,
+        5,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        472,
+        16,
+        14,
+        6,
+        2,
+        1,
+        4,
+        4,
+        1
+      ],
+      [
+        7,
+        0,
+        518,
+        0,
+        5,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      [
+        14,
+        0,
+        0,
+        521,
+        3,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      [
+        7,
+        3,
+        5,
+        6,
+        516,
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      [
+        16,
+        4,
+        15,
+        10,
+        8,
+        487,
+        1,
+        3,
+        2,
+        0
+      ],
+      [
+        5,
+        0,
+        2,
+        3,
+        1,
+        0,
+        538,
+        0,
+        0,
+        0
+      ],
+      [
+        15,
+        2,
+        5,
+        14,
+        7,
+        4,
+        5,
+        471,
+        4,
+        1
+      ],
+      [
+        15,
+        2,
+        6,
+        9,
+        1,
+        1,
+        4,
+        0,
+        533,
+        0
+      ],
+      [
+        24,
+        13,
+        23,
+        12,
+        12,
+        12,
+        24,
+        15,
+        11,
+        368
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 5377
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "limitations": [
+    "Experimental Status: Models are marked experimental=true in ModelMetadata until live-sensor telemetry is verified against campus greenhouse hardware (Overview \u00a715.7).",
+    "Proxy-Transformed & Simulated Features: The underlying Kolar tomato dataset originates from open-field precision agriculture with simulated noise. Nutrient solution features (water_temperature_C, pH, EC, N, P, K) were generated using calibrated proxy transformations rather than direct hydroponic tank sensing.",
+    "Rule-Derived Diagnostic Targets: Labels are generated mathematically using multi-fault severity ranking over nine threshold rules (Water_Temp_High, EC_High/Low, pH_Imbalance, Humidity_High/Low, N/P/K_Deficiency).",
+    "Strict Zero-Leakage Protocol: Grouped 5-fold cross-validation by calendar month (89 disjoint months) prevents temporal autocorrelation leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Features: n_rules_broken, source_row, source_timestamp, sample_id, and label_id were strictly excluded from model feature inputs."
+  ]
+}

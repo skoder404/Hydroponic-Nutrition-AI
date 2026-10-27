@@ -74,6 +74,9 @@ def resolve_groups(
         )
         return blocks.to_numpy()
 
+    if "source_timestamp" in df.columns:
+        return df["source_timestamp"].astype(str).str[:7].to_numpy()
+
     for col in ["experiment", "date", "day_index"]:
         if col in df.columns:
             return df[col].astype(str).to_numpy()
@@ -206,11 +209,15 @@ def tune_sensor_model(
     best_std_macro_f1 = 0.0
 
     for candidate_params in param_grid:
+        tune_kwargs: dict[str, Any] = dict(candidate_params)
+        if model_type.lower() in ("svm", "svc") and "probability" not in tune_kwargs:
+            tune_kwargs["probability"] = False
+
         # Build classifier with candidate hyperparameters
         clf, needs_scaling, _family_name, _ = get_classifier(
             model_type=model_type,
             seed=seed,
-            **candidate_params,
+            **tune_kwargs,
         )
         pipeline = build_sensor_pipeline(clf, use_scaler=needs_scaling)
 
