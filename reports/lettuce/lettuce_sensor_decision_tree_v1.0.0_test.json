@@ -1,0 +1,368 @@
+{
+  "crop": "lettuce",
+  "model_name": "lettuce_sensor_decision_tree_v1.0.0",
+  "model_family": "DecisionTreeClassifier",
+  "artifact_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "evaluation_date": "2026-10-27T12:20:10.734498+00:00",
+  "split_evaluated": "test",
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched until final evaluation)",
+  "source_dataset_manifest": "processed_data/sensor/lettuce/manifest.json",
+  "label_generation_method": "Rule-derived thresholds mapped from physical hydroponic solution bands",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "criterion": "entropy",
+    "max_depth": 5,
+    "min_samples_leaf": 1,
+    "random_state": 42
+  },
+  "split_counts": {
+    "train": 1295,
+    "validation": 125,
+    "test": 162
+  },
+  "class_counts_per_split": {
+    "train": {
+      "EC_High": 185,
+      "Multiple_Stress": 185,
+      "pH_Low": 185,
+      "pH_High": 185,
+      "Humidity_Low": 185,
+      "Normal": 185,
+      "WaterTemp_High": 185
+    },
+    "validation": {
+      "Normal": 55,
+      "Multiple_Stress": 31,
+      "WaterTemp_High": 16,
+      "Humidity_Low": 11,
+      "EC_High": 10,
+      "pH_Low": 1,
+      "pH_High": 1
+    },
+    "test": {
+      "Normal": 87,
+      "Multiple_Stress": 23,
+      "WaterTemp_High": 19,
+      "Humidity_Low": 16,
+      "EC_High": 9,
+      "pH_High": 6,
+      "pH_Low": 2
+    }
+  },
+  "class_order": [
+    "EC_High",
+    "EC_Low",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "WaterTemp_Low",
+    "pH_High",
+    "pH_Low"
+  ],
+  "metrics": {
+    "accuracy": 0.9876543209876543,
+    "macro_precision": 0.7563492063492063,
+    "macro_recall": 0.7681159420289855,
+    "macro_f1": 0.7613312613312614,
+    "per_class": {
+      "EC_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 9
+      },
+      "EC_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "Humidity_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 16
+      },
+      "Multiple_Stress": {
+        "precision": 1.0,
+        "recall": 0.9130434782608695,
+        "f1": 0.9545454545454546,
+        "support": 23
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 87
+      },
+      "WaterTemp_High": {
+        "precision": 0.95,
+        "recall": 1.0,
+        "f1": 0.9743589743589743,
+        "support": 19
+      },
+      "WaterTemp_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "pH_High": {
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.9230769230769231,
+        "support": 6
+      },
+      "pH_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2
+      }
+    },
+    "confusion_matrix": [
+      [
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        21,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        87,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        21,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        87,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    ],
+    "labels": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "class_order": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "total_samples": 162
+  },
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  },
+  "limitations": [
+    "Final Test Evaluation: Performance evaluated strictly on the preserved held-out test partition after all model selection decisions were finalized.",
+    "Rule-Derived Diagnostic Targets: Sensor labels are mathematically mapped from published physical action bands. Models learn the decision threshold geometry rather than independent biological plant health validated by agronomists.",
+    "Un-oversampled Test Evaluation: The test split contains the untouched natural class distribution without synthetic oversampling.",
+    "Strict Zero Leakage: Test partition remained unread during feature exploration, hyperparameter tuning, and candidate model selection.",
+    "Small Physical Dataset: Held-out test set contains 162 physical sensor readings across 12 disjoint calendar days. Low-frequency classes EC_Low and WaterTemp_Low were excluded due to lack of support."
+  ]
+}

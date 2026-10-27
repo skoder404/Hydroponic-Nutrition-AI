@@ -1000,9 +1000,9 @@
 **Dependencies:** T4-023
 **Acceptance Criteria:**
 
-- [ ] First run writes metrics and a log entry
-- [ ] Second run without `--force` refuses
-- [ ] Report labels metrics as test results on the documented split
+- [x] First run writes metrics and a log entry
+- [x] Second run without `--force` refuses
+- [x] Report labels metrics as test results on the documented split
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
