@@ -670,9 +670,9 @@
 **Dependencies:** T1-009
 **Acceptance Criteria:**
 
-- [ ] Doc includes a working sample config
-- [ ] States localhost-only exception
-- [ ] Linked from README
+- [x] Doc includes a working sample config
+- [x] States localhost-only exception
+- [x] Linked from README
 
 **Estimated Effort:** 30 min
 **Assigned To:** DevOps

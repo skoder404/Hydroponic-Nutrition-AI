@@ -67,6 +67,7 @@ Details: [`TECH_RULES.md`](./TECH_RULES.md).
 | `docs/learning/` | Concept notes, teach-backs, quizzes (created during the project) |
 | `docs/datasets/` | Dataset provenance sheets |
 | `docs/decisions/` | Architecture decision records |
+| [`docs/deployment/https.md`](./docs/deployment/https.md) | HTTPS/TLS reverse-proxy configuration (Caddy/NGINX) and HSTS |
 
 ---
 
@@ -136,7 +137,7 @@ Rule-generated labels · oversampled/artificial class balance · mixed real/synt
 
 ## 🔐 Security notes
 
-No login in v1 (see [ADR 0005: No Auth](./docs/decisions/0005-no-auth.md)) · secrets only via `.env` · uploads validated (type, size, decodability) · Gemini output treated as untrusted · model loading limited to configured paths. See [`TECH_RULES.md`](./docs/TECH_RULES.md#security-rules).
+No login in v1 (see [ADR 0005: No Auth](./docs/decisions/0005-no-auth.md)) · secrets only via `.env` · uploads validated (type, size, decodability) · Gemini output treated as untrusted · model loading limited to configured paths · HTTPS/TLS required for all non-localhost deployments (see [HTTPS Deployment Guide](./docs/deployment/https.md)). See [`TECH_RULES.md`](./docs/TECH_RULES.md#security-rules).
 
 ---
 
