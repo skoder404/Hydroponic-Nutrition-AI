@@ -174,3 +174,40 @@ def test_versioned_directory_structure_preserved(tmp_path: Path) -> None:
     assert meta_path.parent == expected_dir
     assert art_path.is_file()
     assert meta_path.is_file()
+
+
+def test_t4_025_promoted_sensor_models_verification() -> None:
+    """Verify T4-025 promoted sensor models and verification script."""
+    from scripts.verify_model_registry import (
+        verify_promoted_models_integrity,
+        verify_rollback_on_dummy_version,
+        verify_three_promoted_entries_exist,
+    )
+
+    registry = ModelRegistry()
+
+    # 1. Check three promoted entries exist
+    ok1, msg1 = verify_three_promoted_entries_exist(registry)
+    assert ok1, msg1
+
+    # 2. Check metadata, artifacts, and schema compatibility
+    ok2, msg2 = verify_promoted_models_integrity(registry)
+    assert ok2, msg2
+
+    # 3. Check rollback on dummy version
+    ok3, msg3 = verify_rollback_on_dummy_version()
+    assert ok3, msg3
+
+
+def test_t4_025_tomato_stays_experimental() -> None:
+    """Acceptance requirement: tomato stays experimental=true per Overview §15 & ADR 0005."""
+    registry = ModelRegistry()
+    tomato_meta = registry.get_active_metadata("tomato", "sensor")
+    assert tomato_meta.experimental is True
+    assert tomato_meta.status == "promoted"
+    assert tomato_meta.family == "RandomForestClassifier"
+
+    # In contrast, lettuce and spinach are false
+    assert registry.get_active_metadata("lettuce", "sensor").experimental is False
+    assert registry.get_active_metadata("spinach", "sensor").experimental is False
+

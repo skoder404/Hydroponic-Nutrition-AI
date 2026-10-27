@@ -1,0 +1,11 @@
+{
+  "crop": "spinach",
+  "modality": "sensor",
+  "active_version": "1.0.0",
+  "active_metadata_path": "sensor/spinach/v1.0.0/metadata.json",
+  "active_artifact_path": "sensor/spinach/v1.0.0/spinach_sensor_decision_tree_v1.0.0.joblib",
+  "previous_version": null,
+  "previous_metadata_path": null,
+  "previous_artifact_path": null,
+  "promoted_at": "2026-10-27T15:12:32.160950+00:00"
+}

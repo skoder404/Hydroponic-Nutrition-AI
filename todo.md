@@ -1013,9 +1013,9 @@
 **Dependencies:** T4-024, T4-009
 **Acceptance Criteria:**
 
-- [ ] Three promoted entries exist
-- [ ] Registry validation script passes
-- [ ] Rollback tested once on a dummy version
+- [x] Three promoted entries exist
+- [x] Registry validation script passes
+- [x] Rollback tested once on a dummy version
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

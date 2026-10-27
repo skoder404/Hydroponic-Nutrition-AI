@@ -1,0 +1,55 @@
+{
+  "task_id": "T4-025",
+  "promoted_at": "2026-10-27T15:12:35+00:00",
+  "rationale_version": "1.0.0",
+  "selection_policy": "Overview Section 18.2 / Section 24.2 - Explicit promotion based on validation macro-F1, tie-break hierarchy, and run-once final test evaluation",
+  "promoted_models": {
+    "lettuce": {
+      "modality": "sensor",
+      "model_id": "lettuce_sensor_decision_tree_v1.0.0",
+      "family": "DecisionTreeClassifier",
+      "artifact_version": "1.0.0",
+      "artifact_path": "sensor/lettuce/v1.0.0/lettuce_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "sensor/lettuce/v1.0.0/metadata.json",
+      "pointer_file": "models/manifests/active_lettuce_sensor.json",
+      "experimental": false,
+      "validation_macro_f1": 0.746146,
+      "test_macro_f1": 0.761313,
+      "test_accuracy": 0.987654,
+      "rationale": "Validation Macro-F1 tied at 0.7461 with Random Forest. Decision Tree chosen per tie-break hierarchy step 4 (parsimony and full interpretable white-box logic). Passed run-once held-out test evaluation with 0.7613 Macro-F1 and 0.9877 Accuracy."
+    },
+    "spinach": {
+      "modality": "sensor",
+      "model_id": "spinach_sensor_decision_tree_v1.0.0",
+      "family": "DecisionTreeClassifier",
+      "artifact_version": "1.0.0",
+      "artifact_path": "sensor/spinach/v1.0.0/spinach_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "sensor/spinach/v1.0.0/metadata.json",
+      "pointer_file": "models/manifests/active_spinach_sensor.json",
+      "experimental": false,
+      "validation_macro_f1": 1.0,
+      "test_macro_f1": 1.0,
+      "test_accuracy": 1.0,
+      "rationale": "Validation Macro-F1 reached 1.0000 with clean, non-overfitting boundary separation. Verified on 280 held-out test split samples with 1.0000 Macro-F1."
+    },
+    "tomato": {
+      "modality": "sensor",
+      "model_id": "tomato_sensor_random_forest_v1.0.0",
+      "family": "RandomForestClassifier",
+      "artifact_version": "1.0.0",
+      "artifact_path": "sensor/tomato/v1.0.0/tomato_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "sensor/tomato/v1.0.0/metadata.json",
+      "pointer_file": "models/manifests/active_tomato_sensor.json",
+      "experimental": true,
+      "validation_macro_f1": 0.968912,
+      "test_macro_f1": 0.968511,
+      "test_accuracy": 0.968856,
+      "rationale": "Highest validation Macro-F1 (0.9689) across all 5 candidate families on 10-class nutrient stress problem. Evaluated on 8,830 held-out test samples yielding 0.9685 Macro-F1. Per Canonical Overview Section 15 and ADR 0005, tomato sensor model strictly maintains 'experimental=true' due to rule-synthesized label boundaries."
+    }
+  },
+  "acceptance_criteria": {
+    "three_promoted_entries_exist": true,
+    "registry_validation_passed": true,
+    "rollback_tested_dummy_version": true
+  }
+}
