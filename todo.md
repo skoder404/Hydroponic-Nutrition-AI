@@ -852,9 +852,9 @@
 **Dependencies:** T4-012
 **Acceptance Criteria:**
 
-- [ ] Scaling comparison is recorded in the concept note
-- [ ] Scaler is part of the saved artifact
-- [ ] Probability output setting is documented
+- [x] Scaling comparison is recorded in the concept note
+- [x] Scaler is part of the saved artifact
+- [x] Probability output setting is documented
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

@@ -23,6 +23,7 @@ from typing import Any
 import pandas as pd
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
@@ -47,7 +48,13 @@ class SensorPipeline(Pipeline):
     @property
     def scaler(self) -> Any | None:
         """Return the fitted scaler if present, else None."""
-        return self.named_steps.get("scaler")
+        step = self.named_steps.get("scaler")
+        return step if isinstance(step, StandardScaler) else None
+
+    @property
+    def imputer(self) -> Any | None:
+        """Return the fitted imputer if present, else None."""
+        return self.named_steps.get("imputer")
 
     @property
     def classifier(self) -> Any:
@@ -55,9 +62,11 @@ class SensorPipeline(Pipeline):
         return self.named_steps.get("classifier")
 
     def __getitem__(self, key: Any) -> Any:
-        """Support dict-style access for 'scaler' and 'classifier'."""
+        """Support dict-style access for 'scaler', 'imputer', and 'classifier'."""
         if key == "scaler":
             return self.scaler
+        if key == "imputer":
+            return self.imputer
         if key in ("classifier", "model"):
             return self.classifier
         return super().__getitem__(key)
@@ -71,6 +80,10 @@ def get_classifier(
     criterion: str = "gini",
     n_estimators: int = 100,
     class_weight: str | dict | None = None,
+    C: float = 1.0,
+    gamma: str | float = "scale",
+    kernel: str = "rbf",
+    probability: bool = True,
     **kwargs: Any,
 ) -> tuple[ClassifierMixin, bool, str, dict[str, Any]]:
     """Factory creating classifier, scaler requirement flag, family name, and hyperparameters."""
@@ -102,8 +115,10 @@ def get_classifier(
         )
     elif norm_type in ("svm", "svc"):
         svm_params: dict[str, Any] = {
-            "kernel": "rbf",
-            "probability": True,
+            "C": C,
+            "kernel": kernel,
+            "gamma": gamma,
+            "probability": probability,
             "random_state": seed,
         }
         svm_params.update(kwargs)
@@ -117,9 +132,12 @@ def get_classifier(
 def build_sensor_pipeline(
     classifier: BaseEstimator,
     use_scaler: bool = True,
+    impute_missing: bool = True,
 ) -> SensorPipeline:
-    """Build a SensorPipeline bundling an optional StandardScaler with the classifier."""
+    """Build a SensorPipeline bundling an optional imputer and StandardScaler with the classifier."""
     steps: list[tuple[str, Any]] = []
+    if impute_missing:
+        steps.append(("imputer", SimpleImputer(strategy="median")))
     if use_scaler:
         steps.append(("scaler", StandardScaler()))
     else:
@@ -147,6 +165,10 @@ def train_sensor_model(
     criterion: str = "gini",
     n_estimators: int = 100,
     class_weight: str | dict | None = None,
+    C: float = 1.0,
+    gamma: str | float = "scale",
+    kernel: str = "rbf",
+    probability: bool = True,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -258,6 +280,10 @@ def train_sensor_model(
         criterion=criterion,
         n_estimators=n_estimators,
         class_weight=class_weight,
+        C=C,
+        gamma=gamma,
+        kernel=kernel,
+        probability=probability,
     )
     use_scaler = force_scale if force_scale is not None else needs_scaling
     pipeline = build_sensor_pipeline(clf, use_scaler=use_scaler)
@@ -460,6 +486,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=[None, "balanced", "balanced_subsample"],
         help="Class weight strategy",
     )
+    parser.add_argument(
+        "--C", type=float, default=1.0, help="SVM regularization parameter"
+    )
+    parser.add_argument(
+        "--kernel",
+        default="rbf",
+        choices=["rbf", "linear", "poly", "sigmoid"],
+        help="SVM kernel",
+    )
+    parser.add_argument("--gamma", default="scale", help="SVM kernel coefficient")
+    parser.add_argument(
+        "--no-probability",
+        action="store_true",
+        help="Disable SVM probability calibration",
+    )
 
     args = parser.parse_args(argv)
 
@@ -479,6 +520,10 @@ def main(argv: Sequence[str] | None = None) -> int:
             criterion=args.criterion,
             n_estimators=args.n_estimators,
             class_weight=args.class_weight,
+            C=args.C,
+            gamma=args.gamma,
+            kernel=args.kernel,
+            probability=not args.no_probability,
         )
         print(f"[SUCCESS] Trained {args.crop} {args.model} v{args.version}")
         print(
