@@ -244,21 +244,95 @@ class TomatoSensorRequest(BaseModel):
 
 
 # ==============================================================================
+# Tomato Live-Compatible Sensor Request Validator (T4-020)
+# ==============================================================================
+
+
+class TomatoLiveSensorRequest(BaseModel):
+    """Tomato live-compatible sensor input validation schema (T4-020)."""
+
+    model_config = ConfigDict(extra="forbid", validate_default=True)
+
+    air_temperature_C: float | None = Field(
+        default=None,
+        description="Greenhouse air temperature (unit: degC, physical range: [0.0, 55.0])",
+    )
+    relative_humidity_percent: float | None = Field(
+        default=None,
+        description="Greenhouse relative humidity (unit: %, physical range: [0.0, 100.0])",
+    )
+    water_temperature_C: float | None = Field(
+        default=None,
+        description="Water temperature (unit: degC, physical range: [0.0, 45.0])",
+    )
+    ph: float | None = Field(
+        default=None,
+        description="Nutrient solution pH (unit: pH, physical range: [3.0, 10.0])",
+    )
+    ec_mS_cm: float | None = Field(
+        default=None,
+        description="Electrical conductivity (unit: mS/cm, physical range: [0.0, 8.0])",
+    )
+
+    @field_validator(
+        "air_temperature_C",
+        "relative_humidity_percent",
+        "water_temperature_C",
+        "ph",
+        "ec_mS_cm",
+        mode="before",
+    )
+    @classmethod
+    def _validate_fields(cls, v: Any, info: ValidationInfo) -> float:
+        assert info.field_name is not None
+        return validate_sensor_field("tomato_live", info.field_name, v)
+
+    def to_feature_dict(self) -> dict[str, float]:
+        """Convert validated request to ordered feature dictionary for model inference."""
+        return {
+            "air_temperature_C": float(self.air_temperature_C),  # type: ignore[arg-type]
+            "relative_humidity_percent": float(self.relative_humidity_percent),  # type: ignore[arg-type]
+            "water_temperature_C": float(self.water_temperature_C),  # type: ignore[arg-type]
+            "ph": float(self.ph),  # type: ignore[arg-type]
+            "ec_mS_cm": float(self.ec_mS_cm),  # type: ignore[arg-type]
+        }
+
+
+# ==============================================================================
 # Model Factory and Utility Functions
 # ==============================================================================
 
-CropSensorRequest = LettuceSensorRequest | SpinachSensorRequest | TomatoSensorRequest
+CropSensorRequest = (
+    LettuceSensorRequest
+    | SpinachSensorRequest
+    | TomatoSensorRequest
+    | TomatoLiveSensorRequest
+)
 
-CROP_REQUEST_MODELS: dict[str, type[LettuceSensorRequest | SpinachSensorRequest | TomatoSensorRequest]] = {
+CROP_REQUEST_MODELS: dict[
+    str,
+    type[
+        LettuceSensorRequest
+        | SpinachSensorRequest
+        | TomatoSensorRequest
+        | TomatoLiveSensorRequest
+    ],
+] = {
     "lettuce": LettuceSensorRequest,
     "spinach": SpinachSensorRequest,
     "tomato": TomatoSensorRequest,
+    "tomato_live": TomatoLiveSensorRequest,
 }
 
 
 def get_sensor_request_model(
     crop: str,
-) -> type[LettuceSensorRequest | SpinachSensorRequest | TomatoSensorRequest]:
+) -> type[
+    LettuceSensorRequest
+    | SpinachSensorRequest
+    | TomatoSensorRequest
+    | TomatoLiveSensorRequest
+]:
     """Return the request validation model class for the given crop."""
     normalized_crop = crop.strip().lower()
     if normalized_crop not in CROP_REQUEST_MODELS:
@@ -271,7 +345,12 @@ def get_sensor_request_model(
 def validate_sensor_request(
     crop: str,
     payload: dict[str, Any],
-) -> LettuceSensorRequest | SpinachSensorRequest | TomatoSensorRequest:
+) -> (
+    LettuceSensorRequest
+    | SpinachSensorRequest
+    | TomatoSensorRequest
+    | TomatoLiveSensorRequest
+):
     """Validate a raw sensor payload dictionary against the target crop schema."""
     model_cls = get_sensor_request_model(crop)
     return model_cls.model_validate(payload)

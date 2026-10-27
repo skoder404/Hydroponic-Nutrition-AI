@@ -1,0 +1,300 @@
+{
+  "crop": "tomato_live",
+  "model_family": "decision_tree",
+  "config_version": "1.0.0",
+  "seed": 42,
+  "runtime_seconds": 22.22,
+  "n_splits": 5,
+  "n_candidates": 24,
+  "best_params": {
+    "criterion": "gini",
+    "max_depth": null,
+    "min_samples_leaf": 1
+  },
+  "best_macro_f1": 0.9774,
+  "best_std_macro_f1": 0.0025,
+  "all_results": [
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 3,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.461,
+      "std_macro_f1": 0.007,
+      "mean_accuracy": 0.552,
+      "std_accuracy": 0.0044
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 3,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.461,
+      "std_macro_f1": 0.007,
+      "mean_accuracy": 0.552,
+      "std_accuracy": 0.0044
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 3,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.461,
+      "std_macro_f1": 0.007,
+      "mean_accuracy": 0.552,
+      "std_accuracy": 0.0044
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 5,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.7691,
+      "std_macro_f1": 0.0032,
+      "mean_accuracy": 0.8103,
+      "std_accuracy": 0.0034
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 5,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.769,
+      "std_macro_f1": 0.0032,
+      "mean_accuracy": 0.8102,
+      "std_accuracy": 0.0035
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 5,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.7688,
+      "std_macro_f1": 0.0032,
+      "mean_accuracy": 0.8101,
+      "std_accuracy": 0.0036
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.9443,
+      "std_macro_f1": 0.0039,
+      "mean_accuracy": 0.9446,
+      "std_accuracy": 0.0039
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.945,
+      "std_macro_f1": 0.0033,
+      "mean_accuracy": 0.9453,
+      "std_accuracy": 0.0033
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.9438,
+      "std_macro_f1": 0.0032,
+      "mean_accuracy": 0.9441,
+      "std_accuracy": 0.0032
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.9774,
+      "std_macro_f1": 0.0025,
+      "mean_accuracy": 0.9774,
+      "std_accuracy": 0.0024
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.9771,
+      "std_macro_f1": 0.001,
+      "mean_accuracy": 0.9772,
+      "std_accuracy": 0.001
+    },
+    {
+      "params": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.975,
+      "std_macro_f1": 0.001,
+      "mean_accuracy": 0.975,
+      "std_accuracy": 0.0011
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 3,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.4525,
+      "std_macro_f1": 0.0028,
+      "mean_accuracy": 0.5616,
+      "std_accuracy": 0.0048
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 3,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.4525,
+      "std_macro_f1": 0.0028,
+      "mean_accuracy": 0.5616,
+      "std_accuracy": 0.0048
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 3,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.4525,
+      "std_macro_f1": 0.0028,
+      "mean_accuracy": 0.5616,
+      "std_accuracy": 0.0048
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.7488,
+      "std_macro_f1": 0.0029,
+      "mean_accuracy": 0.8076,
+      "std_accuracy": 0.0042
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.7488,
+      "std_macro_f1": 0.0029,
+      "mean_accuracy": 0.8076,
+      "std_accuracy": 0.0042
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.7486,
+      "std_macro_f1": 0.003,
+      "mean_accuracy": 0.8076,
+      "std_accuracy": 0.0041
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 8,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.9511,
+      "std_macro_f1": 0.0031,
+      "mean_accuracy": 0.9517,
+      "std_accuracy": 0.003
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 8,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.9504,
+      "std_macro_f1": 0.003,
+      "mean_accuracy": 0.951,
+      "std_accuracy": 0.0028
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": 8,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.9502,
+      "std_macro_f1": 0.0028,
+      "mean_accuracy": 0.9508,
+      "std_accuracy": 0.0028
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": null,
+        "min_samples_leaf": 1
+      },
+      "mean_macro_f1": 0.9757,
+      "std_macro_f1": 0.0015,
+      "mean_accuracy": 0.9757,
+      "std_accuracy": 0.0016
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": null,
+        "min_samples_leaf": 2
+      },
+      "mean_macro_f1": 0.9746,
+      "std_macro_f1": 0.0019,
+      "mean_accuracy": 0.9748,
+      "std_accuracy": 0.0019
+    },
+    {
+      "params": {
+        "criterion": "entropy",
+        "max_depth": null,
+        "min_samples_leaf": 4
+      },
+      "mean_macro_f1": 0.9715,
+      "std_macro_f1": 0.0025,
+      "mean_accuracy": 0.9716,
+      "std_accuracy": 0.0026
+    }
+  ],
+  "search_space": {
+    "max_depth": [
+      3,
+      5,
+      8,
+      null
+    ],
+    "min_samples_leaf": [
+      1,
+      2,
+      4
+    ],
+    "criterion": [
+      "gini",
+      "entropy"
+    ]
+  },
+  "completed_at": "2026-10-27T16:08:42.309373+00:00"
+}

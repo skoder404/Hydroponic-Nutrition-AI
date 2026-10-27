@@ -206,6 +206,7 @@ def train_sensor_model(
     max_iter: int = 1000,
     limitations: Sequence[str] | None = None,
     experimental: bool = False,
+    feature_set: str | None = None,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -383,6 +384,7 @@ def train_sensor_model(
             "feature_units": {
                 f: schema.features[i].unit for i, f in enumerate(expected_features)
             },
+            "feature_set": feature_set,
             "input_unit": "sensor_reading",
             "hyperparameters": hyperparameters,
             "confidence_settings": {

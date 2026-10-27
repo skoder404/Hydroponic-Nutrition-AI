@@ -6,6 +6,7 @@ Adheres to TECH_RULES and PROJECT_OVERVIEW Section 6:
 - Deterministic display mapping: 'healthy' or 'unhealthy/<original class>'.
 - Unknown labels raise a clear error; never infer a class from a filename.
 """
+
 from __future__ import annotations
 
 from typing import Final, Literal
@@ -90,6 +91,18 @@ TOMATO_SENSOR_CLASSES: Final[tuple[str, ...]] = (
     "pH_Imbalance",
 )
 
+# Live-compatible tomato sensor variant (T4-020):
+# Excludes N/P/K deficiencies because Modbus N/P/K hardware sensors are disabled/deleted on the campus gateway (ADR 0008).
+TOMATO_LIVE_SENSOR_CLASSES: Final[tuple[str, ...]] = (
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance",
+)
+
 # Registry Maps
 IMAGE_CLASSES: Final[dict[str, tuple[str, ...]]] = {
     "lettuce": LETTUCE_IMAGE_CLASSES,
@@ -101,20 +114,25 @@ SENSOR_CLASSES: Final[dict[str, tuple[str, ...]]] = {
     "lettuce": LETTUCE_SENSOR_CLASSES,
     "spinach": SPINACH_SENSOR_CLASSES,
     "tomato": TOMATO_SENSOR_CLASSES,
+    "tomato_live": TOMATO_LIVE_SENSOR_CLASSES,
 }
 
 # Healthy label representations across modalities
-HEALTHY_IMAGE_LABELS: Final[frozenset[str]] = frozenset({
-    "Healthier",
-    "Spinach_Healthy",
-    "Tomato_Healthy",
-    "Healthy",
-    "healthy",
-})
+HEALTHY_IMAGE_LABELS: Final[frozenset[str]] = frozenset(
+    {
+        "Healthier",
+        "Spinach_Healthy",
+        "Tomato_Healthy",
+        "Healthy",
+        "healthy",
+    }
+)
 
-HEALTHY_SENSOR_LABELS: Final[frozenset[str]] = frozenset({
-    "Normal",
-})
+HEALTHY_SENSOR_LABELS: Final[frozenset[str]] = frozenset(
+    {
+        "Normal",
+    }
+)
 
 
 # ==============================================================================

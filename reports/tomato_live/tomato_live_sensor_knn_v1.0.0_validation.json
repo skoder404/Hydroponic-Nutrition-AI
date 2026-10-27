@@ -1,0 +1,309 @@
+{
+  "model_id": "tomato_live_sensor_knn_v1.0.0",
+  "crop": "tomato",
+  "variant": "live_compatible",
+  "feature_set": "live_compatible",
+  "features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm"
+  ],
+  "classes": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "experimental": true,
+  "best_params": {
+    "n_neighbors": 5,
+    "weights": "distance"
+  },
+  "cv_macro_f1": 0.8845633596508744,
+  "cv_std": 0.006239418199230717,
+  "metrics": {
+    "accuracy": 0.8939111938314278,
+    "macro_precision": 0.8974861007680154,
+    "macro_recall": 0.8926698327963524,
+    "macro_f1": 0.8915606334592813,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 0.8455008488964346,
+        "recall": 0.9325842696629213,
+        "f1": 0.8869100623330365,
+        "support": 534
+      },
+      "EC_Low_Deficiency": {
+        "precision": 0.9129593810444874,
+        "recall": 0.9076923076923077,
+        "f1": 0.9103182256509161,
+        "support": 520
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 0.8588850174216028,
+        "recall": 0.924953095684803,
+        "f1": 0.8906955736224029,
+        "support": 533
+      },
+      "Humidity_Low_Stress": {
+        "precision": 0.8617200674536256,
+        "recall": 0.9462962962962963,
+        "f1": 0.9020300088261254,
+        "support": 540
+      },
+      "Normal": {
+        "precision": 0.9185840707964602,
+        "recall": 0.9453551912568307,
+        "f1": 0.9317773788150808,
+        "support": 549
+      },
+      "Water_Temp_High": {
+        "precision": 0.9373848987108656,
+        "recall": 0.8914185639229422,
+        "f1": 0.9138240574506283,
+        "support": 571
+      },
+      "pH_Imbalance": {
+        "precision": 0.9473684210526315,
+        "recall": 0.7003891050583657,
+        "f1": 0.8053691275167785,
+        "support": 514
+      }
+    },
+    "confusion_matrix": [
+      [
+        498,
+        0,
+        11,
+        11,
+        5,
+        6,
+        3
+      ],
+      [
+        0,
+        472,
+        17,
+        18,
+        3,
+        5,
+        5
+      ],
+      [
+        10,
+        13,
+        493,
+        0,
+        5,
+        3,
+        9
+      ],
+      [
+        9,
+        10,
+        0,
+        511,
+        4,
+        5,
+        1
+      ],
+      [
+        15,
+        0,
+        4,
+        9,
+        519,
+        1,
+        1
+      ],
+      [
+        21,
+        2,
+        15,
+        17,
+        6,
+        509,
+        1
+      ],
+      [
+        36,
+        20,
+        34,
+        27,
+        23,
+        14,
+        360
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        498,
+        0,
+        11,
+        11,
+        5,
+        6,
+        3
+      ],
+      [
+        0,
+        472,
+        17,
+        18,
+        3,
+        5,
+        5
+      ],
+      [
+        10,
+        13,
+        493,
+        0,
+        5,
+        3,
+        9
+      ],
+      [
+        9,
+        10,
+        0,
+        511,
+        4,
+        5,
+        1
+      ],
+      [
+        15,
+        0,
+        4,
+        9,
+        519,
+        1,
+        1
+      ],
+      [
+        21,
+        2,
+        15,
+        17,
+        6,
+        509,
+        1
+      ],
+      [
+        36,
+        20,
+        34,
+        27,
+        23,
+        14,
+        360
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 3761
+  },
+  "feature_availability_table": [
+    {
+      "model_feature": "air_temperature_C",
+      "server_field": "temp_avg",
+      "server_unit": "\u00b0C",
+      "model_unit": "degC",
+      "conversion": "Direct 1:1 float (fallback: temperature1/temperature2)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 5 (~41.5 \u00b0C)."
+    },
+    {
+      "model_feature": "relative_humidity_percent",
+      "server_field": "humidity_avg",
+      "server_unit": "%",
+      "model_unit": "%",
+      "conversion": "Direct 1:1 float (fallback: humidity1/humidity2)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 5 (~34.7 %)."
+    },
+    {
+      "model_feature": "water_temperature_C",
+      "server_field": "None (unmetered)",
+      "server_unit": "N/A",
+      "model_unit": "degC",
+      "conversion": "Thermal proxy: 8.0 + 0.55 * air_temp",
+      "status": "Derived Proxy",
+      "notes": "Physical campus tank lacks immersion probe; modeled from ambient thermal equilibrium."
+    },
+    {
+      "model_feature": "ph",
+      "server_field": "ph",
+      "server_unit": "pH",
+      "model_unit": "pH",
+      "conversion": "Direct 1:1 float",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 1 (~7.66 pH)."
+    },
+    {
+      "model_feature": "ec_mS_cm",
+      "server_field": "ec",
+      "server_unit": "\u00b5S/cm",
+      "model_unit": "mS/cm",
+      "conversion": "Scaled: ec / 1000.0 (if raw > 10.0)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 6 (~36.8 \u00b5S/cm -> 0.0368 mS/cm)."
+    },
+    {
+      "model_feature": "nitrogen_mg_L",
+      "server_field": "nitrogen",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    },
+    {
+      "model_feature": "phosphorus_mg_L",
+      "server_field": "phosphorus",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    },
+    {
+      "model_feature": "potassium_mg_L",
+      "server_field": "potassium",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    }
+  ],
+  "limitations": [
+    "Live-Compatible Variant: Trained exclusively on the 5 features confirmed available or proxy-derivable from the campus hardware gateway.",
+    "Excluded Deficiencies: Nitrogen, phosphorus, and potassium sensors are disabled/deleted on the campus gateway (ADR 0008). Therefore, N_Deficiency, P_Deficiency, and K_Deficiency classes are excluded from this variant.",
+    "Experimental Status: Models are marked experimental=true in ModelMetadata until direct live telemetry is validated across seasonal temperature variations.",
+    "Thermal Water Proxy: Reservoir water temperature is inferred via ambient thermal dynamics (8.0 + 0.55 * air_temp) in the absence of immersion hardware.",
+    "Zero-Leakage Protocol: Calendar-month group cross-validation guarantees zero temporal autocorrelation leakage."
+  ]
+}

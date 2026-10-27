@@ -16,7 +16,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-CropType = Literal["lettuce", "spinach", "tomato"]
+CropType = Literal["lettuce", "spinach", "tomato", "tomato_live"]
 TaskType = Literal["classification", "segmentation", "feature_extraction"]
 ModalityType = Literal["image", "sensor", "feature"]
 ModelStatus = Literal["candidate", "promoted", "deprecated", "archived"]
@@ -29,59 +29,143 @@ class ModelMetadata(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     # Core Identifiers
-    model_id: str = Field(..., min_length=3, description="Unique identifier for the model artifact.")
+    model_id: str = Field(
+        ..., min_length=3, description="Unique identifier for the model artifact."
+    )
     crop: CropType = Field(..., description="Crop family: lettuce, spinach, or tomato.")
-    task: TaskType = Field(..., description="Machine learning task performed by the model.")
-    modality: ModalityType = Field(..., description="Input modality: image, sensor, or feature-based image.")
-    family: str = Field(..., min_length=2, description="Model family or architecture (e.g. RandomForest, EfficientNetB0).")
-    artifact_version: str = Field(..., min_length=1, description="Semantic version of the model artifact (e.g. 1.0.0).")
-    artifact_file: str = Field(..., min_length=1, description="Filename or relative path to the serialized model file.")
+    task: TaskType = Field(
+        ..., description="Machine learning task performed by the model."
+    )
+    modality: ModalityType = Field(
+        ..., description="Input modality: image, sensor, or feature-based image."
+    )
+    family: str = Field(
+        ...,
+        min_length=2,
+        description="Model family or architecture (e.g. RandomForest, EfficientNetB0).",
+    )
+    artifact_version: str = Field(
+        ...,
+        min_length=1,
+        description="Semantic version of the model artifact (e.g. 1.0.0).",
+    )
+    artifact_file: str = Field(
+        ...,
+        min_length=1,
+        description="Filename or relative path to the serialized model file.",
+    )
 
     # Provenance & Tracking
-    commit: str = Field(..., min_length=7, description="Git commit hash of the training codebase.")
-    training_date: str = Field(..., description="ISO 8601 UTC timestamp when model training completed.")
-    dataset_manifest_hash: str = Field(..., min_length=16, description="SHA-256 hash of the dataset manifest used for training.")
-    rule_version: str = Field(..., min_length=1, description="Version of the rule/label definition applied.")
-    preprocessing_version: str = Field(..., min_length=1, description="Version of the preprocessing pipeline applied.")
+    commit: str = Field(
+        ..., min_length=7, description="Git commit hash of the training codebase."
+    )
+    training_date: str = Field(
+        ..., description="ISO 8601 UTC timestamp when model training completed."
+    )
+    dataset_manifest_hash: str = Field(
+        ...,
+        min_length=16,
+        description="SHA-256 hash of the dataset manifest used for training.",
+    )
+    rule_version: str = Field(
+        ..., min_length=1, description="Version of the rule/label definition applied."
+    )
+    preprocessing_version: str = Field(
+        ..., min_length=1, description="Version of the preprocessing pipeline applied."
+    )
 
     # Lifecycle & Governance (Acceptance Criterion 2)
-    experimental: bool = Field(..., description="Flag indicating whether model is experimental or production-ready.")
-    status: ModelStatus = Field(..., description="Lifecycle status: candidate, promoted, deprecated, or archived.")
+    experimental: bool = Field(
+        ...,
+        description="Flag indicating whether model is experimental or production-ready.",
+    )
+    status: ModelStatus = Field(
+        ...,
+        description="Lifecycle status: candidate, promoted, deprecated, or archived.",
+    )
 
     # Taxonomy & Display Mapping
-    classes: list[str] = Field(..., min_length=2, description="Ordered list of target class labels.")
-    display_mapping: dict[str, str] = Field(..., description="Mapping of raw class label to user-facing display label.")
+    classes: list[str] = Field(
+        ..., min_length=2, description="Ordered list of target class labels."
+    )
+    display_mapping: dict[str, str] = Field(
+        ..., description="Mapping of raw class label to user-facing display label."
+    )
 
     # Dataset & Partitioning
-    split_protocol: str = Field(..., min_length=5, description="Protocol used for partitioning train/validation/test sets.")
-    split_counts: dict[str, int] = Field(..., description="Sample counts per partition: {'train': N, 'validation': N, 'test': N}.")
+    split_protocol: str = Field(
+        ...,
+        min_length=5,
+        description="Protocol used for partitioning train/validation/test sets.",
+    )
+    split_counts: dict[str, int] = Field(
+        ...,
+        description="Sample counts per partition: {'train': N, 'validation': N, 'test': N}.",
+    )
 
     # Feature & Sensor Specifications (Mandatory for sensor/feature models)
-    ordered_features: list[str] | None = Field(default=None, description="Ordered list of feature column names for tabular/sensor models.")
-    feature_units: dict[str, str] | None = Field(default=None, description="Units associated with each ordered feature.")
+    ordered_features: list[str] | None = Field(
+        default=None,
+        description="Ordered list of feature column names for tabular/sensor models.",
+    )
+    feature_units: dict[str, str] | None = Field(
+        default=None, description="Units associated with each ordered feature."
+    )
+    feature_set: str | None = Field(
+        default=None,
+        description="Feature set variant identifier (e.g. 'live_compatible', 'full_8').",
+    )
 
     # Image Specifications (Mandatory for image models)
     input_unit: str = Field(
         ...,
         description="Input semantic unit (always 'leaf' or 'single_leaf' for image models per §24.1).",
     )
-    image_size: list[int] | None = Field(default=None, description="Expected image dimensions [height, width].")
-    image_normalization: dict[str, Any] | None = Field(default=None, description="Image normalization parameters (e.g. mean, std).")
-    channel_order: ChannelOrderType | None = Field(default=None, description="Expected image channel convention: RGB, BGR, or grayscale.")
+    image_size: list[int] | None = Field(
+        default=None, description="Expected image dimensions [height, width]."
+    )
+    image_normalization: dict[str, Any] | None = Field(
+        default=None, description="Image normalization parameters (e.g. mean, std)."
+    )
+    channel_order: ChannelOrderType | None = Field(
+        default=None,
+        description="Expected image channel convention: RGB, BGR, or grayscale.",
+    )
 
     # Extraction & Segmentation Config
-    segmentation_config: dict[str, Any] | None = Field(default=None, description="Segmentation parameters (e.g. SAM2 threshold, mask rules).")
-    feature_config: dict[str, Any] | None = Field(default=None, description="Feature extractor hyperparameters (e.g. GLCM, HSV thresholds).")
+    segmentation_config: dict[str, Any] | None = Field(
+        default=None,
+        description="Segmentation parameters (e.g. SAM2 threshold, mask rules).",
+    )
+    feature_config: dict[str, Any] | None = Field(
+        default=None,
+        description="Feature extractor hyperparameters (e.g. GLCM, HSV thresholds).",
+    )
 
     # Hyperparameters & Inference Configurations
-    hyperparameters: dict[str, Any] = Field(..., description="Hyperparameters used for model training.")
-    confidence_settings: dict[str, Any] = Field(..., description="Threshold settings for uncertainty, abstention, or calibration.")
-    expected_input_schema: dict[str, Any] = Field(..., description="Schema specification for valid inference inputs.")
-    dependency_versions: dict[str, str] = Field(..., description="Software/runtime dependency versions (python, sklearn, torch, etc.).")
+    hyperparameters: dict[str, Any] = Field(
+        ..., description="Hyperparameters used for model training."
+    )
+    confidence_settings: dict[str, Any] = Field(
+        ...,
+        description="Threshold settings for uncertainty, abstention, or calibration.",
+    )
+    expected_input_schema: dict[str, Any] = Field(
+        ..., description="Schema specification for valid inference inputs."
+    )
+    dependency_versions: dict[str, str] = Field(
+        ...,
+        description="Software/runtime dependency versions (python, sklearn, torch, etc.).",
+    )
 
     # Metrics
-    validation_metrics: dict[str, Any] = Field(..., description="Evaluation metrics on validation partition per §18.2.")
-    final_test_metrics: dict[str, Any] | None = Field(default=None, description="Final held-out test evaluation metrics when available.")
+    validation_metrics: dict[str, Any] = Field(
+        ..., description="Evaluation metrics on validation partition per §18.2."
+    )
+    final_test_metrics: dict[str, Any] | None = Field(
+        default=None,
+        description="Final held-out test evaluation metrics when available.",
+    )
 
     @field_validator("training_date")
     @classmethod
@@ -90,7 +174,9 @@ class ModelMetadata(BaseModel):
         try:
             datetime.fromisoformat(v.replace("Z", "+00:00"))
         except Exception as e:
-            raise ValueError(f"training_date '{v}' is not a valid ISO 8601 datetime: {e}") from e
+            raise ValueError(
+                f"training_date '{v}' is not a valid ISO 8601 datetime: {e}"
+            ) from e
         return v
 
     @field_validator("classes")
@@ -122,7 +208,9 @@ class ModelMetadata(BaseModel):
                 )
 
         # Sensor and feature models must specify ordered features
-        if self.modality in ("sensor", "feature") and (not self.ordered_features or len(self.ordered_features) == 0):
+        if self.modality in ("sensor", "feature") and (
+            not self.ordered_features or len(self.ordered_features) == 0
+        ):
             raise ValueError(
                 f"ordered_features cannot be empty for modality '{self.modality}'."
             )

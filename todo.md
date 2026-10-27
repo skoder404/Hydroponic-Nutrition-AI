@@ -946,9 +946,9 @@
 **Dependencies:** T4-019, T1-016
 **Acceptance Criteria:**
 
-- [ ] Feature availability table (server field vs model feature, units compared) is in the report
-- [ ] Variant has its own metadata, report and class list
-- [ ] Live adapter maps only to features the variant uses
+- [x] Feature availability table (server field vs model feature, units compared) is in the report
+- [x] Variant has its own metadata, report and class list
+- [x] Live adapter maps only to features the variant uses
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

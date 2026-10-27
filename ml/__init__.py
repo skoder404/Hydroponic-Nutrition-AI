@@ -1,4 +1,5 @@
 """Machine learning package for Hydroponic Nutrition AI."""
+
 from ml.labels import (
     ALL_IMAGE_CLASSES,
     IMAGE_CLASSES,
@@ -8,6 +9,7 @@ from ml.labels import (
     SPINACH_IMAGE_CLASSES,
     SPINACH_SENSOR_CLASSES,
     TOMATO_IMAGE_CLASSES,
+    TOMATO_LIVE_SENSOR_CLASSES,
     TOMATO_SENSOR_CLASSES,
     UnknownCropError,
     UnknownLabelError,
@@ -29,6 +31,7 @@ __all__ = [
     "SPINACH_IMAGE_CLASSES",
     "SPINACH_SENSOR_CLASSES",
     "TOMATO_IMAGE_CLASSES",
+    "TOMATO_LIVE_SENSOR_CLASSES",
     "TOMATO_SENSOR_CLASSES",
     "UnknownCropError",
     "UnknownLabelError",

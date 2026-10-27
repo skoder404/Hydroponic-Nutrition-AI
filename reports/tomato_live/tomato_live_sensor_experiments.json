@@ -1,0 +1,223 @@
+{
+  "crop": "tomato",
+  "variant": "live_compatible",
+  "feature_set": "live_compatible",
+  "features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm"
+  ],
+  "classes": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "excluded_classes": [
+    "N_Deficiency",
+    "P_Deficiency",
+    "K_Deficiency"
+  ],
+  "experimental": true,
+  "split_counts": {
+    "train": 20963,
+    "validation": 3761,
+    "test": 0
+  },
+  "feature_availability_table": [
+    {
+      "model_feature": "air_temperature_C",
+      "server_field": "temp_avg",
+      "server_unit": "\u00b0C",
+      "model_unit": "degC",
+      "conversion": "Direct 1:1 float (fallback: temperature1/temperature2)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 5 (~41.5 \u00b0C)."
+    },
+    {
+      "model_feature": "relative_humidity_percent",
+      "server_field": "humidity_avg",
+      "server_unit": "%",
+      "model_unit": "%",
+      "conversion": "Direct 1:1 float (fallback: humidity1/humidity2)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 5 (~34.7 %)."
+    },
+    {
+      "model_feature": "water_temperature_C",
+      "server_field": "None (unmetered)",
+      "server_unit": "N/A",
+      "model_unit": "degC",
+      "conversion": "Thermal proxy: 8.0 + 0.55 * air_temp",
+      "status": "Derived Proxy",
+      "notes": "Physical campus tank lacks immersion probe; modeled from ambient thermal equilibrium."
+    },
+    {
+      "model_feature": "ph",
+      "server_field": "ph",
+      "server_unit": "pH",
+      "model_unit": "pH",
+      "conversion": "Direct 1:1 float",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 1 (~7.66 pH)."
+    },
+    {
+      "model_feature": "ec_mS_cm",
+      "server_field": "ec",
+      "server_unit": "\u00b5S/cm",
+      "model_unit": "mS/cm",
+      "conversion": "Scaled: ec / 1000.0 (if raw > 10.0)",
+      "status": "Available",
+      "notes": "Verified live Modbus slave 6 (~36.8 \u00b5S/cm -> 0.0368 mS/cm)."
+    },
+    {
+      "model_feature": "nitrogen_mg_L",
+      "server_field": "nitrogen",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    },
+    {
+      "model_feature": "phosphorus_mg_L",
+      "server_field": "phosphorus",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    },
+    {
+      "model_feature": "potassium_mg_L",
+      "server_field": "potassium",
+      "server_unit": "mg/L",
+      "model_unit": "mg/L",
+      "conversion": "N/A \u2014 Excluded from live variant",
+      "status": "Missing / Disabled",
+      "notes": "Hardware sensor deleted in gateway config._deleted_keys (ADR 0008)."
+    }
+  ],
+  "model_summaries": [
+    {
+      "model_type": "random_forest",
+      "model_id": "tomato_live_sensor_random_forest_v1.0.0",
+      "cv_macro_f1": 0.9835,
+      "cv_std": 0.0022,
+      "val_macro_f1": 0.9829,
+      "val_accuracy": 0.9832,
+      "best_params": {
+        "class_weight": null,
+        "max_depth": null,
+        "min_samples_leaf": 1,
+        "n_estimators": 100
+      },
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+      "json_report": "reports\\tomato_live\\tomato_live_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\tomato_live\\tomato_live_sensor_random_forest_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "decision_tree",
+      "model_id": "tomato_live_sensor_decision_tree_v1.0.0",
+      "cv_macro_f1": 0.9774,
+      "cv_std": 0.0025,
+      "val_macro_f1": 0.9796,
+      "val_accuracy": 0.9798,
+      "best_params": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 1
+      },
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+      "json_report": "reports\\tomato_live\\tomato_live_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\tomato_live\\tomato_live_sensor_decision_tree_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "svm",
+      "model_id": "tomato_live_sensor_svm_v1.0.0",
+      "cv_macro_f1": 0.9497,
+      "cv_std": 0.0045,
+      "val_macro_f1": 0.9498,
+      "val_accuracy": 0.9508,
+      "best_params": {
+        "C": 2.5,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+      "json_report": "reports\\tomato_live\\tomato_live_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\tomato_live\\tomato_live_sensor_svm_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "knn",
+      "model_id": "tomato_live_sensor_knn_v1.0.0",
+      "cv_macro_f1": 0.8846,
+      "cv_std": 0.0062,
+      "val_macro_f1": 0.8916,
+      "val_accuracy": 0.8939,
+      "best_params": {
+        "n_neighbors": 5,
+        "weights": "distance"
+      },
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+      "json_report": "reports\\tomato_live\\tomato_live_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\tomato_live\\tomato_live_sensor_knn_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "logistic_regression",
+      "model_id": "tomato_live_sensor_logistic_regression_v1.0.0",
+      "cv_macro_f1": 0.8332,
+      "cv_std": 0.0074,
+      "val_macro_f1": 0.8379,
+      "val_accuracy": 0.8492,
+      "best_params": {
+        "C": 5.0,
+        "class_weight": "balanced"
+      },
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+      "json_report": "reports\\tomato_live\\tomato_live_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\tomato_live\\tomato_live_sensor_logistic_regression_v1.0.0_validation.md"
+    }
+  ],
+  "best_model": {
+    "model_type": "random_forest",
+    "model_id": "tomato_live_sensor_random_forest_v1.0.0",
+    "cv_macro_f1": 0.9835,
+    "cv_std": 0.0022,
+    "val_macro_f1": 0.9829,
+    "val_accuracy": 0.9832,
+    "best_params": {
+      "class_weight": null,
+      "max_depth": null,
+      "min_samples_leaf": 1,
+      "n_estimators": 100
+    },
+    "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\tomato_live_sensor_random_forest_v1.0.0.joblib",
+    "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\tomato_live\\v1.0.0\\metadata.json",
+    "json_report": "reports\\tomato_live\\tomato_live_sensor_random_forest_v1.0.0_validation.json",
+    "md_report": "reports\\tomato_live\\tomato_live_sensor_random_forest_v1.0.0_validation.md"
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "limitations": [
+    "Live-Compatible Variant: Trained exclusively on the 5 features confirmed available or proxy-derivable from the campus hardware gateway.",
+    "Excluded Deficiencies: Nitrogen, phosphorus, and potassium sensors are disabled/deleted on the campus gateway (ADR 0008). Therefore, N_Deficiency, P_Deficiency, and K_Deficiency classes are excluded from this variant.",
+    "Experimental Status: Models are marked experimental=true in ModelMetadata until direct live telemetry is validated across seasonal temperature variations.",
+    "Thermal Water Proxy: Reservoir water temperature is inferred via ambient thermal dynamics (8.0 + 0.55 * air_temp) in the absence of immersion hardware.",
+    "Zero-Leakage Protocol: Calendar-month group cross-validation guarantees zero temporal autocorrelation leakage."
+  ]
+}

@@ -12,6 +12,7 @@ from __future__ import annotations
 import fnmatch
 from collections.abc import Iterable
 from dataclasses import dataclass
+from typing import Final
 
 import pandas as pd
 
@@ -20,10 +21,8 @@ class DataLeakageError(ValueError):
     """Raised when one or more data leakage or blacklisted columns are detected in feature inputs."""
 
 
-
 class SchemaValidationError(ValueError):
     """Raised when feature inputs fail schema order, missing features, or physical bound validation."""
-
 
 
 @dataclass(frozen=True)
@@ -288,6 +287,13 @@ TOMATO_FEATURES: tuple[SensorFeature, ...] = (
 
 TOMATO_ORDERED_FEATURE_NAMES: tuple[str, ...] = tuple(f.name for f in TOMATO_FEATURES)
 
+# Live-compatible tomato sensor variant (T4-020):
+# Excludes N/P/K features because Modbus N/P/K hardware sensors are disabled/deleted (ADR 0008).
+TOMATO_LIVE_FEATURES: tuple[SensorFeature, ...] = TOMATO_FEATURES[:5]
+TOMATO_LIVE_ORDERED_FEATURE_NAMES: tuple[str, ...] = tuple(
+    f.name for f in TOMATO_LIVE_FEATURES
+)
+
 TOMATO_BLACKLIST_EXACT: frozenset[str] = frozenset(
     {
         "label",
@@ -358,6 +364,13 @@ CROP_SENSOR_SCHEMAS: dict[str, CropSensorSchema] = {
     ),
 }
 
+TOMATO_LIVE_SCHEMA: Final[CropSensorSchema] = CropSensorSchema(
+    crop="tomato_live",
+    features=TOMATO_LIVE_FEATURES,
+    blacklist_exact=TOMATO_BLACKLIST_EXACT,
+    blacklist_patterns=TOMATO_BLACKLIST_PATTERNS,
+)
+
 
 # ==============================================================================
 # Leakage and Schema Enforcement Functions
@@ -367,6 +380,8 @@ CROP_SENSOR_SCHEMAS: dict[str, CropSensorSchema] = {
 def get_sensor_schema(crop: str) -> CropSensorSchema:
     """Retrieve the sensor schema for the specified crop."""
     normalized_crop = crop.strip().lower()
+    if normalized_crop == "tomato_live":
+        return TOMATO_LIVE_SCHEMA
     if normalized_crop not in CROP_SENSOR_SCHEMAS:
         raise ValueError(
             f"Unknown crop '{crop}'. Valid crops are: {sorted(CROP_SENSOR_SCHEMAS.keys())}"
@@ -393,7 +408,9 @@ def find_blacklisted_columns(columns: Iterable[str], crop: str) -> list[str]:
     schema = get_sensor_schema(crop)
     violating: list[str] = []
     for col in columns:
-        if col in schema.blacklist_exact or any(fnmatch.fnmatch(col, pat) for pat in schema.blacklist_patterns):
+        if col in schema.blacklist_exact or any(
+            fnmatch.fnmatch(col, pat) for pat in schema.blacklist_patterns
+        ):
             violating.append(col)
     return sorted(violating)
 
@@ -528,4 +545,3 @@ def extract_feature_matrix(
         strict_order=True,
         check_bounds=check_bounds,
     )
-
