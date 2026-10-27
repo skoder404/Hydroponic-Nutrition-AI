@@ -1,0 +1,183 @@
+{
+  "crop": "lettuce",
+  "selected_at": "2026-10-27T11:53:49.739888+00:00",
+  "task_id": "T4-023",
+  "selection_metric": "validation_macro_f1",
+  "tie_break_hierarchy": [
+    "1. Primary: validation_macro_f1 (descending)",
+    "2. Tie-Break 1: validation_macro_recall (descending, ensures balanced stress coverage)",
+    "3. Tie-Break 2: validation_accuracy (descending)",
+    "4. Tie-Break 3: model parsimony and explainability (Decision Tree > LogReg > Random Forest > SVM > KNN)"
+  ],
+  "selected_model": {
+    "model_name": "lettuce_sensor_decision_tree_v1.0.0",
+    "model_family": "DecisionTreeClassifier",
+    "report_file": "reports\\lettuce\\lettuce_sensor_decision_tree_v1.0.0_validation.json",
+    "artifact_version": "1.0.0",
+    "metrics": {
+      "macro_f1": 0.746146,
+      "macro_recall": 0.759857,
+      "accuracy": 0.96,
+      "macro_precision": 0.739496
+    },
+    "hyperparameters": {
+      "criterion": "entropy",
+      "max_depth": 5,
+      "min_samples_leaf": 1,
+      "random_state": 42
+    },
+    "device_used": "cpu"
+  },
+  "tie_break_applied": true,
+  "tie_break_notes": "Validation macro-F1 tied at 0.7461 between 'lettuce_sensor_decision_tree_v1.0.0' (DecisionTreeClassifier) and 'lettuce_sensor_random_forest_v1.0.0' (RandomForestClassifier). Selection decided by secondary criteria: Recall (0.7599 vs 0.7599), Accuracy (0.9600 vs 0.9600), and model parsimony preference (rank 1 vs 3).",
+  "exceptions_to_macro_f1": null,
+  "runners_up": [
+    {
+      "rank": 2,
+      "model_name": "lettuce_sensor_random_forest_v1.0.0",
+      "model_family": "RandomForestClassifier",
+      "val_macro_f1": 0.746146,
+      "macro_f1_delta_from_selected": 0.0,
+      "val_accuracy": 0.96,
+      "val_macro_recall": 0.759857,
+      "val_macro_precision": 0.739496,
+      "report_file": "reports\\lettuce\\lettuce_sensor_random_forest_v1.0.0_validation.json",
+      "hyperparameters": {
+        "n_estimators": 100,
+        "max_depth": 4,
+        "min_samples_leaf": 1,
+        "criterion": "gini",
+        "class_weight": "balanced",
+        "random_state": 42
+      },
+      "unsupported_classes_count": 2,
+      "low_recall_classes_count": 1
+    },
+    {
+      "rank": 3,
+      "model_name": "lettuce_sensor_svm_v1.0.0",
+      "model_family": "SVC",
+      "val_macro_f1": 0.677103,
+      "macro_f1_delta_from_selected": -0.069043,
+      "val_accuracy": 0.904,
+      "val_macro_recall": 0.73607,
+      "val_macro_precision": 0.651845,
+      "report_file": "reports\\lettuce\\lettuce_sensor_svm_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 2.5,
+        "kernel": "rbf",
+        "gamma": "scale",
+        "probability": true,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 2,
+      "low_recall_classes_count": 1
+    },
+    {
+      "rank": 4,
+      "model_name": "lettuce_sensor_logistic_regression_v1.0.0",
+      "model_family": "LogisticRegression",
+      "val_macro_f1": 0.496733,
+      "macro_f1_delta_from_selected": -0.249413,
+      "val_accuracy": 0.656,
+      "val_macro_recall": 0.606191,
+      "val_macro_precision": 0.470126,
+      "report_file": "reports\\lettuce\\lettuce_sensor_logistic_regression_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 0.2,
+        "max_iter": 1000,
+        "random_state": 42,
+        "class_weight": "balanced"
+      },
+      "unsupported_classes_count": 2,
+      "low_recall_classes_count": 3
+    },
+    {
+      "rank": 5,
+      "model_name": "lettuce_sensor_knn_v1.0.0",
+      "model_family": "KNeighborsClassifier",
+      "val_macro_f1": 0.492119,
+      "macro_f1_delta_from_selected": -0.254027,
+      "val_accuracy": 0.736,
+      "val_macro_recall": 0.625733,
+      "val_macro_precision": 0.487951,
+      "report_file": "reports\\lettuce\\lettuce_sensor_knn_v1.0.0_validation.json",
+      "hyperparameters": {
+        "n_neighbors": 5,
+        "weights": "uniform"
+      },
+      "unsupported_classes_count": 2,
+      "low_recall_classes_count": 4
+    }
+  ],
+  "per_class_weaknesses": {
+    "summary": "Evaluation of 'lettuce_sensor_decision_tree_v1.0.0' on lettuce validation split identified 2 unsupported minority classes, 1 low-recall classes (<0.85), and 1 low-precision classes (<0.85).",
+    "selected_model_weaknesses": {
+      "unsupported_classes_in_val": [
+        "EC_Low",
+        "WaterTemp_Low"
+      ],
+      "low_recall_classes": [
+        {
+          "class": "Multiple_Stress",
+          "support": 31,
+          "precision": 1.0,
+          "recall": 0.8387,
+          "f1": 0.9123,
+          "hazard": "Compound ecological breakdown",
+          "failure_impact": "Misclassifying compound stress as single-stress leads to partial or counterproductive dosing intervention."
+        }
+      ],
+      "low_precision_classes": [
+        {
+          "class": "EC_High",
+          "support": 10,
+          "precision": 0.7143,
+          "recall": 1.0,
+          "f1": 0.8333,
+          "hazard": "Root scorch and osmotic stress",
+          "failure_impact": "False negative permits toxic salt build-up scorching root tips; false positive triggers unnecessary freshwater dilution, starving plants."
+        }
+      ],
+      "healthy_classes": [
+        "Humidity_Low",
+        "Normal",
+        "WaterTemp_High",
+        "pH_High",
+        "pH_Low"
+      ],
+      "diagnostic_notes": [
+        "Classes with 0 validation support in hold-out: ['EC_Low', 'WaterTemp_Low']. Generalization on these minority classes cannot be verified from validation data alone.",
+        "Classes with recall < 0.85: ['Multiple_Stress']. Risk of false negatives under stress conditions.",
+        "Classes with precision < 0.85: ['EC_High']. Risk of false positive nuisance alarms."
+      ]
+    },
+    "runners_up_weaknesses_summary": [
+      {
+        "rank": 2,
+        "model_name": "lettuce_sensor_random_forest_v1.0.0",
+        "low_recall_count": 1,
+        "unsupported_count": 2
+      },
+      {
+        "rank": 3,
+        "model_name": "lettuce_sensor_svm_v1.0.0",
+        "low_recall_count": 1,
+        "unsupported_count": 2
+      },
+      {
+        "rank": 4,
+        "model_name": "lettuce_sensor_logistic_regression_v1.0.0",
+        "low_recall_count": 3,
+        "unsupported_count": 2
+      },
+      {
+        "rank": 5,
+        "model_name": "lettuce_sensor_knn_v1.0.0",
+        "low_recall_count": 4,
+        "unsupported_count": 2
+      }
+    ]
+  },
+  "limits_and_safety_notes": "Model selection is based solely on validation split metrics. Rule-derived synthetic features and hold-out zero-support classes must be disclosed in UI. Test split evaluation must occur only in run-once final evaluation (T4-024)."
+}

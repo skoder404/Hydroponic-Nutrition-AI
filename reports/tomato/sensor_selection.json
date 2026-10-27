@@ -1,0 +1,161 @@
+{
+  "crop": "tomato",
+  "selected_at": "2026-10-27T11:53:49.773610+00:00",
+  "task_id": "T4-023",
+  "selection_metric": "validation_macro_f1",
+  "tie_break_hierarchy": [
+    "1. Primary: validation_macro_f1 (descending)",
+    "2. Tie-Break 1: validation_macro_recall (descending, ensures balanced stress coverage)",
+    "3. Tie-Break 2: validation_accuracy (descending)",
+    "4. Tie-Break 3: model parsimony and explainability (Decision Tree > LogReg > Random Forest > SVM > KNN)"
+  ],
+  "selected_model": {
+    "model_name": "tomato_sensor_random_forest_v1.0.0",
+    "model_family": "RandomForestClassifier",
+    "report_file": "reports\\tomato\\tomato_sensor_random_forest_v1.0.0_validation.json",
+    "artifact_version": "1.0.0",
+    "metrics": {
+      "macro_f1": 0.968912,
+      "macro_recall": 0.968902,
+      "accuracy": 0.9695,
+      "macro_precision": 0.970151
+    },
+    "hyperparameters": {
+      "n_estimators": 100,
+      "max_depth": null,
+      "min_samples_leaf": 1,
+      "criterion": "gini",
+      "class_weight": null,
+      "random_state": 42
+    },
+    "device_used": "cpu"
+  },
+  "tie_break_applied": false,
+  "tie_break_notes": "Selected strictly by highest validation macro-F1 score without tie.",
+  "exceptions_to_macro_f1": null,
+  "runners_up": [
+    {
+      "rank": 2,
+      "model_name": "tomato_sensor_decision_tree_v1.0.0",
+      "model_family": "DecisionTreeClassifier",
+      "val_macro_f1": 0.9573,
+      "macro_f1_delta_from_selected": -0.011612,
+      "val_accuracy": 0.957597,
+      "val_macro_recall": 0.957308,
+      "val_macro_precision": 0.957354,
+      "report_file": "reports\\tomato\\tomato_sensor_decision_tree_v1.0.0_validation.json",
+      "hyperparameters": {
+        "criterion": "gini",
+        "max_depth": null,
+        "min_samples_leaf": 1,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 0
+    },
+    {
+      "rank": 3,
+      "model_name": "tomato_sensor_svm_v1.0.0",
+      "model_family": "SVC",
+      "val_macro_f1": 0.918704,
+      "macro_f1_delta_from_selected": -0.050208,
+      "val_accuracy": 0.920402,
+      "val_macro_recall": 0.919289,
+      "val_macro_precision": 0.925466,
+      "report_file": "reports\\tomato\\tomato_sensor_svm_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 2.5,
+        "kernel": "rbf",
+        "gamma": 0.1,
+        "probability": true,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 1
+    },
+    {
+      "rank": 4,
+      "model_name": "tomato_sensor_logistic_regression_v1.0.0",
+      "model_family": "LogisticRegression",
+      "val_macro_f1": 0.858741,
+      "macro_f1_delta_from_selected": -0.110171,
+      "val_accuracy": 0.870932,
+      "val_macro_recall": 0.868407,
+      "val_macro_precision": 0.852377,
+      "report_file": "reports\\tomato\\tomato_sensor_logistic_regression_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 5.0,
+        "max_iter": 1000,
+        "random_state": 42,
+        "class_weight": "balanced"
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 2
+    },
+    {
+      "rank": 5,
+      "model_name": "tomato_sensor_knn_v1.0.0",
+      "model_family": "KNeighborsClassifier",
+      "val_macro_f1": 0.729475,
+      "macro_f1_delta_from_selected": -0.239437,
+      "val_accuracy": 0.735912,
+      "val_macro_recall": 0.733634,
+      "val_macro_precision": 0.736931,
+      "report_file": "reports\\tomato\\tomato_sensor_knn_v1.0.0_validation.json",
+      "hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 9
+    }
+  ],
+  "per_class_weaknesses": {
+    "summary": "Evaluation of 'tomato_sensor_random_forest_v1.0.0' on tomato validation split identified 0 unsupported minority classes, 0 low-recall classes (<0.85), and 0 low-precision classes (<0.85).",
+    "selected_model_weaknesses": {
+      "unsupported_classes_in_val": [],
+      "low_recall_classes": [],
+      "low_precision_classes": [],
+      "healthy_classes": [
+        "EC_High_Toxicity",
+        "EC_Low_Deficiency",
+        "Humidity_High_Mildew_Risk",
+        "Humidity_Low_Stress",
+        "K_Deficiency",
+        "N_Deficiency",
+        "Normal",
+        "P_Deficiency",
+        "Water_Temp_High",
+        "pH_Imbalance"
+      ],
+      "diagnostic_notes": []
+    },
+    "runners_up_weaknesses_summary": [
+      {
+        "rank": 2,
+        "model_name": "tomato_sensor_decision_tree_v1.0.0",
+        "low_recall_count": 0,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 3,
+        "model_name": "tomato_sensor_svm_v1.0.0",
+        "low_recall_count": 1,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 4,
+        "model_name": "tomato_sensor_logistic_regression_v1.0.0",
+        "low_recall_count": 2,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 5,
+        "model_name": "tomato_sensor_knn_v1.0.0",
+        "low_recall_count": 9,
+        "unsupported_count": 0
+      }
+    ]
+  },
+  "limits_and_safety_notes": "Model selection is based solely on validation split metrics. Rule-derived synthetic features and hold-out zero-support classes must be disclosed in UI. Test split evaluation must occur only in run-once final evaluation (T4-024)."
+}

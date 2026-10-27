@@ -1,0 +1,157 @@
+{
+  "crop": "spinach",
+  "selected_at": "2026-10-27T11:53:49.757338+00:00",
+  "task_id": "T4-023",
+  "selection_metric": "validation_macro_f1",
+  "tie_break_hierarchy": [
+    "1. Primary: validation_macro_f1 (descending)",
+    "2. Tie-Break 1: validation_macro_recall (descending, ensures balanced stress coverage)",
+    "3. Tie-Break 2: validation_accuracy (descending)",
+    "4. Tie-Break 3: model parsimony and explainability (Decision Tree > LogReg > Random Forest > SVM > KNN)"
+  ],
+  "selected_model": {
+    "model_name": "spinach_sensor_decision_tree_v1.0.0",
+    "model_family": "DecisionTreeClassifier",
+    "report_file": "reports\\spinach\\spinach_sensor_decision_tree_v1.0.0_validation.json",
+    "artifact_version": "1.0.0",
+    "metrics": {
+      "macro_f1": 1.0,
+      "macro_recall": 1.0,
+      "accuracy": 1.0,
+      "macro_precision": 1.0
+    },
+    "hyperparameters": {
+      "criterion": "gini",
+      "max_depth": 8,
+      "min_samples_leaf": 1,
+      "random_state": 42
+    },
+    "device_used": "cpu"
+  },
+  "tie_break_applied": true,
+  "tie_break_notes": "Validation macro-F1 tied at 1.0000 between 'spinach_sensor_decision_tree_v1.0.0' (DecisionTreeClassifier) and 'spinach_sensor_random_forest_v1.0.0' (RandomForestClassifier). Selection decided by secondary criteria: Recall (1.0000 vs 1.0000), Accuracy (1.0000 vs 1.0000), and model parsimony preference (rank 1 vs 3).",
+  "exceptions_to_macro_f1": null,
+  "runners_up": [
+    {
+      "rank": 2,
+      "model_name": "spinach_sensor_random_forest_v1.0.0",
+      "model_family": "RandomForestClassifier",
+      "val_macro_f1": 1.0,
+      "macro_f1_delta_from_selected": 0.0,
+      "val_accuracy": 1.0,
+      "val_macro_recall": 1.0,
+      "val_macro_precision": 1.0,
+      "report_file": "reports\\spinach\\spinach_sensor_random_forest_v1.0.0_validation.json",
+      "hyperparameters": {
+        "n_estimators": 25,
+        "max_depth": 6,
+        "min_samples_leaf": 1,
+        "criterion": "gini",
+        "class_weight": null,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 0
+    },
+    {
+      "rank": 3,
+      "model_name": "spinach_sensor_svm_v1.0.0",
+      "model_family": "SVC",
+      "val_macro_f1": 1.0,
+      "macro_f1_delta_from_selected": 0.0,
+      "val_accuracy": 1.0,
+      "val_macro_recall": 1.0,
+      "val_macro_precision": 1.0,
+      "report_file": "reports\\spinach\\spinach_sensor_svm_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 2.5,
+        "kernel": "rbf",
+        "gamma": 0.1,
+        "probability": true,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 0
+    },
+    {
+      "rank": 4,
+      "model_name": "spinach_sensor_knn_v1.0.0",
+      "model_family": "KNeighborsClassifier",
+      "val_macro_f1": 0.988269,
+      "macro_f1_delta_from_selected": -0.011731,
+      "val_accuracy": 0.987654,
+      "val_macro_recall": 0.989719,
+      "val_macro_precision": 0.987578,
+      "report_file": "reports\\spinach\\spinach_sensor_knn_v1.0.0_validation.json",
+      "hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 0
+    },
+    {
+      "rank": 5,
+      "model_name": "spinach_sensor_logistic_regression_v1.0.0",
+      "model_family": "LogisticRegression",
+      "val_macro_f1": 0.833176,
+      "macro_f1_delta_from_selected": -0.166824,
+      "val_accuracy": 0.808642,
+      "val_macro_recall": 0.833643,
+      "val_macro_precision": 0.834772,
+      "report_file": "reports\\spinach\\spinach_sensor_logistic_regression_v1.0.0_validation.json",
+      "hyperparameters": {
+        "C": 1.0,
+        "max_iter": 1000,
+        "random_state": 42
+      },
+      "unsupported_classes_count": 0,
+      "low_recall_classes_count": 2
+    }
+  ],
+  "per_class_weaknesses": {
+    "summary": "Evaluation of 'spinach_sensor_decision_tree_v1.0.0' on spinach validation split identified 0 unsupported minority classes, 0 low-recall classes (<0.85), and 0 low-precision classes (<0.85).",
+    "selected_model_weaknesses": {
+      "unsupported_classes_in_val": [],
+      "low_recall_classes": [],
+      "low_precision_classes": [],
+      "healthy_classes": [
+        "EC_High_Toxicity",
+        "EC_Low_Deficiency",
+        "Humidity_High_Mildew_Risk",
+        "Humidity_Low_Stress",
+        "Normal",
+        "Water_Temp_High",
+        "pH_Imbalance"
+      ],
+      "diagnostic_notes": []
+    },
+    "runners_up_weaknesses_summary": [
+      {
+        "rank": 2,
+        "model_name": "spinach_sensor_random_forest_v1.0.0",
+        "low_recall_count": 0,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 3,
+        "model_name": "spinach_sensor_svm_v1.0.0",
+        "low_recall_count": 0,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 4,
+        "model_name": "spinach_sensor_knn_v1.0.0",
+        "low_recall_count": 0,
+        "unsupported_count": 0
+      },
+      {
+        "rank": 5,
+        "model_name": "spinach_sensor_logistic_regression_v1.0.0",
+        "low_recall_count": 2,
+        "unsupported_count": 0
+      }
+    ]
+  },
+  "limits_and_safety_notes": "Model selection is based solely on validation split metrics. Rule-derived synthetic features and hold-out zero-support classes must be disclosed in UI. Test split evaluation must occur only in run-once final evaluation (T4-024)."
+}

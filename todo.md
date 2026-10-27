@@ -987,9 +987,9 @@
 **Dependencies:** T4-017, T4-018, T4-019, T4-022
 **Acceptance Criteria:**
 
-- [ ] Script fails if test metrics are supplied
-- [ ] Selection JSON lists runners-up
-- [ ] Per-class weaknesses are noted
+- [x] Script fails if test metrics are supplied
+- [x] Selection JSON lists runners-up
+- [x] Per-class weaknesses are noted
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML
