@@ -1,0 +1,268 @@
+{
+  "crop": "spinach",
+  "model_name": "spinach_sensor_logistic_regression_v1.0.0",
+  "model_family": "LogisticRegression",
+  "artifact_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "evaluation_date": "2026-10-27T08:17:39.578556+00:00",
+  "split_evaluated": "validation",
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "source_dataset_manifest": "processed_data/sensor/spinach/manifest.json",
+  "label_generation_method": "Rule-derived thresholds mapped from physical hydroponic solution bands",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "C": 1.0,
+    "max_iter": 1000,
+    "random_state": 42
+  },
+  "split_counts": {
+    "train": 958,
+    "validation": 162,
+    "test": 0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Humidity_Low_Stress": 146,
+      "EC_High_Toxicity": 139,
+      "Normal": 139,
+      "Water_Temp_High": 136,
+      "EC_Low_Deficiency": 136,
+      "Humidity_High_Mildew_Risk": 135,
+      "pH_Imbalance": 127
+    },
+    "validation": {
+      "pH_Imbalance": 33,
+      "Humidity_High_Mildew_Risk": 25,
+      "EC_Low_Deficiency": 24,
+      "Water_Temp_High": 24,
+      "Normal": 21,
+      "EC_High_Toxicity": 21,
+      "Humidity_Low_Stress": 14
+    }
+  },
+  "class_order": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "metrics": {
+    "accuracy": 0.808641975308642,
+    "macro_precision": 0.8347723704866562,
+    "macro_recall": 0.8336425479282622,
+    "macro_f1": 0.8331755443719169,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 21
+      },
+      "EC_Low_Deficiency": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 24
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 25
+      },
+      "Humidity_Low_Stress": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      },
+      "Normal": {
+        "precision": 0.3076923076923077,
+        "recall": 0.38095238095238093,
+        "f1": 0.3404255319148936,
+        "support": 21
+      },
+      "Water_Temp_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 24
+      },
+      "pH_Imbalance": {
+        "precision": 0.5357142857142857,
+        "recall": 0.45454545454545453,
+        "f1": 0.4918032786885246,
+        "support": 33
+      }
+    },
+    "confusion_matrix": [
+      [
+        21,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        24,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        13
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        24,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        18,
+        0,
+        15
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        21,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        24,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        8,
+        0,
+        13
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        24,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        18,
+        0,
+        15
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 162
+  },
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  },
+  "limitations": [
+    "Mixed Real and Synthetic Features: Greenhouse ambient air temperature (air_temperature_C) is 100% real observational data from commercial loggers. Relative humidity (relative_humidity_percent) is 85.7% real and 14.3% adjusted. Solution water temperature (water_temperature_C), pH (ph), and electrical conductivity (ec_mS_cm) are synthetic simulated features.",
+    "Rule-Derived Diagnostic Targets: Labels are mathematically generated from hard agronomic threshold bounds; models learn the threshold rules rather than independent plant biological responses.",
+    "Artificially Balanced Class Distribution: Each stress class contains exactly 200 samples (160 train+val, 40 test), whereas real hydroponic greenhouses exhibit severe skew toward Normal status (>95%).",
+    "Strict Zero-Leakage Protocol: 6-hour temporal block separation (bench | date | hour//6) prevents adjacent reading leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Non-Feature Columns: tds_ppm, label_id, humidity_source, sample_id, source_timestamp_EDT, and bench were strictly excluded from model feature inputs."
+  ]
+}

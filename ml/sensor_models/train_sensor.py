@@ -204,6 +204,7 @@ def train_sensor_model(
     n_neighbors: int = 5,
     weights: str = "uniform",
     max_iter: int = 1000,
+    limitations: Sequence[str] | None = None,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -440,10 +441,19 @@ def train_sensor_model(
         label_generation_method="Rule-derived thresholds mapped from physical hydroponic solution bands",
         model_family=family_name,
         hyperparameters=hyperparameters,
-        limitations=[
+        limitations=list(limitations)
+        if limitations is not None
+        else [
             "Sensor labels are rule-derived from physical thresholds; model learns rules rather than independent biology.",
             "Test split remained completely unread during training and model selection.",
             "Scaler was fit exclusively on the training split.",
+            *(
+                [
+                    "Features are mixed real and synthetic: air temperature is real greenhouse data, relative humidity is 85.7% real and 14.3% adjusted, while water temperature, pH, and EC are synthetic distributions."
+                ]
+                if clean_crop == "spinach"
+                else []
+            ),
         ],
         seeds={"seed": seed},
         device_used="cpu",

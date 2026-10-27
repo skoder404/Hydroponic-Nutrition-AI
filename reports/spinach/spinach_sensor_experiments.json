@@ -1,0 +1,215 @@
+{
+  "title": "Spinach Sensor Model Experiments Comparison Report",
+  "crop": "spinach",
+  "generated_at": "2026-10-27T08:17:39.580264+00:00",
+  "task_id": "T4-018",
+  "seed": 42,
+  "n_splits": 5,
+  "best_overall_model": "decision_tree",
+  "split_integrity": {
+    "train_rows": 958,
+    "val_rows": 162,
+    "test_rows": 280,
+    "total_rows": 1400,
+    "train_blocks": 77,
+    "val_blocks": 11,
+    "test_blocks": 22,
+    "total_blocks": 110,
+    "overlap_blocks": 0,
+    "overlap_sample_ids": 0,
+    "per_class_train_val": 160,
+    "per_class_test": 40,
+    "group_separation_verified": true
+  },
+  "authorized_features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm"
+  ],
+  "excluded_fields": {
+    "tds_ppm": "Derived/redundant with EC (EC * 700 + noise); high data leakage risk",
+    "label_id": "Direct integer encoding of target label (0-6); target leakage",
+    "humidity_source": "Dataset generation metadata flag ('real' vs 'adjusted'); provenance leakage",
+    "sample_id": "Arbitrary unique row identifier (S0001-S1400); non-generalizable",
+    "source_timestamp_EDT": "Logger timestamp metadata; leaks temporal sequence across holdouts",
+    "bench": "Greenhouse physical bench identifier; location metadata"
+  },
+  "models": [
+    {
+      "model_type": "decision_tree",
+      "best_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 1.0,
+      "cv_std_macro_f1": 0.0,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_decision_tree_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "random_forest",
+      "best_hyperparameters": {
+        "class_weight": null,
+        "max_depth": 6,
+        "min_samples_leaf": 1,
+        "n_estimators": 25
+      },
+      "cv_macro_f1": 1.0,
+      "cv_std_macro_f1": 0.0,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_random_forest_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "svm",
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.9805,
+      "cv_std_macro_f1": 0.0062,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_svm_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "knn",
+      "best_hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "cv_macro_f1": 0.9629,
+      "cv_std_macro_f1": 0.004,
+      "val_macro_f1": 0.9883,
+      "val_accuracy": 0.9877,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_knn_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "logistic_regression",
+      "best_hyperparameters": {
+        "C": 1.0,
+        "class_weight": null
+      },
+      "cv_macro_f1": 0.8508,
+      "cv_std_macro_f1": 0.0095,
+      "val_macro_f1": 0.8332,
+      "val_accuracy": 0.8086,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_logistic_regression_v1.0.0_validation.md"
+    }
+  ],
+  "ranked_models": [
+    {
+      "model_type": "decision_tree",
+      "best_hyperparameters": {
+        "criterion": "gini",
+        "max_depth": 8,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 1.0,
+      "cv_std_macro_f1": 0.0,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_decision_tree_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "random_forest",
+      "best_hyperparameters": {
+        "class_weight": null,
+        "max_depth": 6,
+        "min_samples_leaf": 1,
+        "n_estimators": 25
+      },
+      "cv_macro_f1": 1.0,
+      "cv_std_macro_f1": 0.0,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_random_forest_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "svm",
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.9805,
+      "cv_std_macro_f1": 0.0062,
+      "val_macro_f1": 1.0,
+      "val_accuracy": 1.0,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_svm_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "knn",
+      "best_hyperparameters": {
+        "n_neighbors": 9,
+        "weights": "distance"
+      },
+      "cv_macro_f1": 0.9629,
+      "cv_std_macro_f1": 0.004,
+      "val_macro_f1": 0.9883,
+      "val_accuracy": 0.9877,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_knn_v1.0.0_validation.md"
+    },
+    {
+      "model_type": "logistic_regression",
+      "best_hyperparameters": {
+        "C": 1.0,
+        "class_weight": null
+      },
+      "cv_macro_f1": 0.8508,
+      "cv_std_macro_f1": 0.0095,
+      "val_macro_f1": 0.8332,
+      "val_accuracy": 0.8086,
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\spinach_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\spinach\\v1.0.0\\metadata.json",
+      "json_report": "reports\\spinach\\spinach_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\spinach\\spinach_sensor_logistic_regression_v1.0.0_validation.md"
+    }
+  ],
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  },
+  "limitations": [
+    "Mixed Real and Synthetic Features: Greenhouse ambient air temperature (air_temperature_C) is 100% real observational data from commercial loggers. Relative humidity (relative_humidity_percent) is 85.7% real and 14.3% adjusted. Solution water temperature (water_temperature_C), pH (ph), and electrical conductivity (ec_mS_cm) are synthetic simulated features.",
+    "Rule-Derived Diagnostic Targets: Labels are mathematically generated from hard agronomic threshold bounds; models learn the threshold rules rather than independent plant biological responses.",
+    "Artificially Balanced Class Distribution: Each stress class contains exactly 200 samples (160 train+val, 40 test), whereas real hydroponic greenhouses exhibit severe skew toward Normal status (>95%).",
+    "Strict Zero-Leakage Protocol: 6-hour temporal block separation (bench | date | hour//6) prevents adjacent reading leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Non-Feature Columns: tds_ppm, label_id, humidity_source, sample_id, source_timestamp_EDT, and bench were strictly excluded from model feature inputs."
+  ]
+}

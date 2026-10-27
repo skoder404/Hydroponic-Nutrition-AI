@@ -920,9 +920,9 @@
 **Dependencies:** T4-015, T4-016
 **Acceptance Criteria:**
 
-- [ ] Report lists excluded fields
-- [ ] Group separation test passes
-- [ ] Limitations block states mixed real/synthetic features
+- [x] Report lists excluded fields
+- [x] Group separation test passes
+- [x] Limitations block states mixed real/synthetic features
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

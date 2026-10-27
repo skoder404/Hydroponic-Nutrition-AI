@@ -55,12 +55,24 @@ def resolve_groups(
 
     Priority:
     1. Explicit custom_groups parameter.
-    2. 'experiment' column (physical hydroponic batch/tank).
-    3. 'date' column (calendar day holdout).
-    4. 'day_index' column.
+    2. 'bench' + 'source_timestamp_EDT' (spinach 6-hour temporal block holdout).
+    3. 'experiment' column (physical hydroponic batch/tank).
+    4. 'date' column (calendar day holdout).
+    5. 'day_index' column.
     """
     if custom_groups is not None:
         return np.asarray(custom_groups)
+
+    if "bench" in df.columns and "source_timestamp_EDT" in df.columns:
+        ts = pd.to_datetime(df["source_timestamp_EDT"])
+        blocks = (
+            df["bench"].astype(str)
+            + "|"
+            + ts.dt.strftime("%Y-%m-%d")
+            + "|"
+            + (ts.dt.hour // 6).astype(str)
+        )
+        return blocks.to_numpy()
 
     for col in ["experiment", "date", "day_index"]:
         if col in df.columns:

@@ -1,0 +1,233 @@
+{
+  "crop": "spinach",
+  "model_family": "svm",
+  "config_version": "1.0.0",
+  "seed": 42,
+  "runtime_seconds": 6.39,
+  "n_splits": 5,
+  "n_candidates": 18,
+  "best_params": {
+    "C": 2.5,
+    "gamma": 0.1,
+    "kernel": "rbf"
+  },
+  "best_macro_f1": 0.9805,
+  "best_std_macro_f1": 0.0062,
+  "all_results": [
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9794,
+      "std_macro_f1": 0.0076,
+      "mean_accuracy": 0.9791,
+      "std_accuracy": 0.0094
+    },
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": "scale",
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8547,
+      "std_macro_f1": 0.0315,
+      "mean_accuracy": 0.8726,
+      "std_accuracy": 0.0187
+    },
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": 0.05,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9538,
+      "std_macro_f1": 0.0186,
+      "mean_accuracy": 0.954,
+      "std_accuracy": 0.0231
+    },
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": 0.05,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8547,
+      "std_macro_f1": 0.0315,
+      "mean_accuracy": 0.8726,
+      "std_accuracy": 0.0187
+    },
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9679,
+      "std_macro_f1": 0.0138,
+      "mean_accuracy": 0.9676,
+      "std_accuracy": 0.0167
+    },
+    {
+      "params": {
+        "C": 0.5,
+        "gamma": 0.1,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8547,
+      "std_macro_f1": 0.0315,
+      "mean_accuracy": 0.8726,
+      "std_accuracy": 0.0187
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9768,
+      "std_macro_f1": 0.0079,
+      "mean_accuracy": 0.977,
+      "std_accuracy": 0.0078
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": "scale",
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8511,
+      "std_macro_f1": 0.0302,
+      "mean_accuracy": 0.8684,
+      "std_accuracy": 0.0234
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": 0.05,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9571,
+      "std_macro_f1": 0.0183,
+      "mean_accuracy": 0.9572,
+      "std_accuracy": 0.0213
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": 0.05,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8511,
+      "std_macro_f1": 0.0302,
+      "mean_accuracy": 0.8684,
+      "std_accuracy": 0.0234
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9748,
+      "std_macro_f1": 0.0083,
+      "mean_accuracy": 0.9749,
+      "std_accuracy": 0.0096
+    },
+    {
+      "params": {
+        "C": 1.0,
+        "gamma": 0.1,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8511,
+      "std_macro_f1": 0.0302,
+      "mean_accuracy": 0.8684,
+      "std_accuracy": 0.0234
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9791,
+      "std_macro_f1": 0.0063,
+      "mean_accuracy": 0.9791,
+      "std_accuracy": 0.0057
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": "scale",
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8499,
+      "std_macro_f1": 0.0263,
+      "mean_accuracy": 0.8643,
+      "std_accuracy": 0.0256
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": 0.05,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9725,
+      "std_macro_f1": 0.0077,
+      "mean_accuracy": 0.9728,
+      "std_accuracy": 0.0077
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": 0.05,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8499,
+      "std_macro_f1": 0.0263,
+      "mean_accuracy": 0.8643,
+      "std_accuracy": 0.0256
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "rbf"
+      },
+      "mean_macro_f1": 0.9805,
+      "std_macro_f1": 0.0062,
+      "mean_accuracy": 0.9802,
+      "std_accuracy": 0.0061
+    },
+    {
+      "params": {
+        "C": 2.5,
+        "gamma": 0.1,
+        "kernel": "linear"
+      },
+      "mean_macro_f1": 0.8499,
+      "std_macro_f1": 0.0263,
+      "mean_accuracy": 0.8643,
+      "std_accuracy": 0.0256
+    }
+  ],
+  "search_space": {
+    "C": [
+      0.5,
+      1.0,
+      2.5
+    ],
+    "gamma": [
+      "scale",
+      0.05,
+      0.1
+    ],
+    "kernel": [
+      "rbf",
+      "linear"
+    ]
+  },
+  "completed_at": "2026-10-27T08:17:36.832782+00:00"
+}
