@@ -1046,9 +1046,9 @@
 **Dependencies:** T2-013
 **Acceptance Criteria:**
 
-- [ ] Notebook shows the wrong-channel result and the correct one
-- [ ] HSV hue range is explained
-- [ ] Self-check questions answered
+- [x] Notebook shows the wrong-channel result and the correct one
+- [x] HSV hue range is explained
+- [x] Self-check questions answered
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
