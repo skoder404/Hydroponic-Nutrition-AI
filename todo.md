@@ -838,9 +838,9 @@
 **Dependencies:** T4-011
 **Acceptance Criteria:**
 
-- [ ] Runs for lettuce end to end
-- [ ] Feature importances saved
-- [ ] Seeds recorded
+- [x] Runs for lettuce end to end
+- [x] Feature importances saved
+- [x] Seeds recorded
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

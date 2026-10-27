@@ -23,7 +23,7 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 
 | 8 | T4-007 | Cross-validation and class imbalance (oversampling inside folds) | `docs/learning/crossvalidation-and-class-imbalance-oversampling-inside.md` | [ ] | [ ] | [ ] | - | [x] | [ ] | [ ] | 2026-10-27 |
 | 9 | T4-011 | Decision tree hyperparameters, depth, and overfitting | `docs/learning/decision-tree-hyperparameters-depth-and-overfitting.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 10 | T4-012 | Random Forest: bagging, feature subsampling, variance reduction | `docs/learning/random-forest-bagging-feature-subsampling-variance.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 10 | T4-012 | Random Forest: bagging, feature subsampling, variance reduction | `docs/learning/random-forest-bagging-feature-subsampling-variance.md` | [ ] | [ ] | [ ] | - | [x] | [ ] | [ ] | 2026-10-27 |
 | 11 | T4-013 | SVM: margin, C, RBF kernel and gamma, why scaling matters | `docs/learning/svm-margin-c-rbf-kernel-and.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 12 | T4-014 | KNN and logistic regression baselines (distance, regularisation) | `docs/learning/knn-and-logistic-regression-baselines-distance.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 13 | T4-015 | Hyperparameter search with grouped CV and its pitfalls | `docs/learning/hyperparameter-search-with-grouped-cv-and.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |

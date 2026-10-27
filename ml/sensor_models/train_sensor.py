@@ -13,6 +13,7 @@ CLI for training crop sensor classification models:
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from collections.abc import Sequence
 from datetime import datetime, timezone
@@ -68,6 +69,8 @@ def get_classifier(
     max_depth: int | None = None,
     min_samples_leaf: int = 1,
     criterion: str = "gini",
+    n_estimators: int = 100,
+    class_weight: str | dict | None = None,
     **kwargs: Any,
 ) -> tuple[ClassifierMixin, bool, str, dict[str, Any]]:
     """Factory creating classifier, scaler requirement flag, family name, and hyperparameters."""
@@ -83,10 +86,11 @@ def get_classifier(
         return DecisionTreeClassifier(**params), False, "DecisionTreeClassifier", params
     elif norm_type in ("random_forest", "rf"):
         rf_params: dict[str, Any] = {
-            "n_estimators": 100,
+            "n_estimators": n_estimators,
             "max_depth": max_depth,
             "min_samples_leaf": min_samples_leaf,
             "criterion": criterion,
+            "class_weight": class_weight,
             "random_state": seed,
         }
         rf_params.update(kwargs)
@@ -141,6 +145,8 @@ def train_sensor_model(
     max_depth: int | None = None,
     min_samples_leaf: int = 1,
     criterion: str = "gini",
+    n_estimators: int = 100,
+    class_weight: str | dict | None = None,
 ) -> dict[str, Any]:
     """Execute the end-to-end sensor model training pipeline skeleton.
 
@@ -250,6 +256,8 @@ def train_sensor_model(
         max_depth=max_depth,
         min_samples_leaf=min_samples_leaf,
         criterion=criterion,
+        n_estimators=n_estimators,
+        class_weight=class_weight,
     )
     use_scaler = force_scale if force_scale is not None else needs_scaling
     pipeline = build_sensor_pipeline(clf, use_scaler=use_scaler)
@@ -340,6 +348,21 @@ def train_sensor_model(
         rules_path = artifact_path.parent / f"{model_name}_rules.txt"
         rules_path.write_text(rules_text, encoding="utf-8")
 
+    # Save feature importances if available (T4-012)
+    feature_importances: dict[str, float] | None = None
+    feature_importances_path: Path | None = None
+    if hasattr(pipeline.classifier, "feature_importances_"):
+        raw_importances = pipeline.classifier.feature_importances_
+        feature_importances = {
+            feat: float(imp) for feat, imp in zip(expected_features, raw_importances)
+        }
+        feature_importances_path = (
+            artifact_path.parent / f"{model_name}_feature_importances.json"
+        )
+        feature_importances_path.write_text(
+            json.dumps(feature_importances, indent=2), encoding="utf-8"
+        )
+
     # 9. Write evaluation report
     json_report, md_report = write_evaluation_report(
         crop=clean_crop,
@@ -376,6 +399,8 @@ def train_sensor_model(
         "val_accuracy": val_metrics["accuracy"],
         "scaler": pipeline.scaler,
         "rules_path": rules_path,
+        "feature_importances": feature_importances,
+        "feature_importances_path": feature_importances_path,
     }
 
 
@@ -423,6 +448,18 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=["gini", "entropy", "log_loss"],
         help="Split criterion",
     )
+    parser.add_argument(
+        "--n-estimators",
+        type=int,
+        default=100,
+        help="Number of trees in the forest",
+    )
+    parser.add_argument(
+        "--class-weight",
+        default=None,
+        choices=[None, "balanced", "balanced_subsample"],
+        help="Class weight strategy",
+    )
 
     args = parser.parse_args(argv)
 
@@ -440,6 +477,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             max_depth=args.max_depth,
             min_samples_leaf=args.min_samples_leaf,
             criterion=args.criterion,
+            n_estimators=args.n_estimators,
+            class_weight=args.class_weight,
         )
         print(f"[SUCCESS] Trained {args.crop} {args.model} v{args.version}")
         print(
