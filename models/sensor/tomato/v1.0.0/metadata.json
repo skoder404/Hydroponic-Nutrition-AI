@@ -1,0 +1,775 @@
+{
+  "model_id": "tomato_sensor_random_forest_v1.0.0",
+  "crop": "tomato",
+  "task": "classification",
+  "modality": "sensor",
+  "family": "RandomForestClassifier",
+  "artifact_version": "1.0.0",
+  "artifact_file": "sensor/tomato/v1.0.0/tomato_sensor_random_forest_v1.0.0.joblib",
+  "commit": "b6f1df1f87c2b3e8",
+  "training_date": "2026-10-27T12:20:19.785510+00:00",
+  "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": true,
+  "status": "promoted",
+  "classes": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "K_Deficiency",
+    "N_Deficiency",
+    "Normal",
+    "P_Deficiency",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "display_mapping": {
+    "EC_High_Toxicity": "unhealthy/EC_High_Toxicity",
+    "EC_Low_Deficiency": "unhealthy/EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk": "unhealthy/Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress": "unhealthy/Humidity_Low_Stress",
+    "K_Deficiency": "unhealthy/K_Deficiency",
+    "N_Deficiency": "unhealthy/N_Deficiency",
+    "Normal": "healthy",
+    "P_Deficiency": "unhealthy/P_Deficiency",
+    "Water_Temp_High": "unhealthy/Water_Temp_High",
+    "pH_Imbalance": "unhealthy/pH_Imbalance"
+  },
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "split_counts": {
+    "train": 29943,
+    "validation": 5377,
+    "test": 0
+  },
+  "ordered_features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm",
+    "nitrogen_mg_L",
+    "phosphorus_mg_L",
+    "potassium_mg_L"
+  ],
+  "feature_units": {
+    "air_temperature_C": "degC",
+    "relative_humidity_percent": "%",
+    "water_temperature_C": "degC",
+    "ph": "pH",
+    "ec_mS_cm": "mS/cm",
+    "nitrogen_mg_L": "mg/L",
+    "phosphorus_mg_L": "mg/L",
+    "potassium_mg_L": "mg/L"
+  },
+  "input_unit": "sensor_reading",
+  "image_size": null,
+  "image_normalization": null,
+  "channel_order": null,
+  "segmentation_config": null,
+  "feature_config": null,
+  "hyperparameters": {
+    "n_estimators": 100,
+    "max_depth": null,
+    "min_samples_leaf": 1,
+    "criterion": "gini",
+    "class_weight": null,
+    "random_state": 42
+  },
+  "confidence_settings": {
+    "uncertainty_threshold": 0.4,
+    "abstention_allowed": true
+  },
+  "expected_input_schema": {
+    "type": "object",
+    "required": [
+      "air_temperature_C",
+      "relative_humidity_percent",
+      "water_temperature_C",
+      "ph",
+      "ec_mS_cm",
+      "nitrogen_mg_L",
+      "phosphorus_mg_L",
+      "potassium_mg_L"
+    ]
+  },
+  "dependency_versions": {
+    "python": "3.13.5",
+    "scikit-learn": "1.6.1"
+  },
+  "validation_metrics": {
+    "accuracy": 0.9694997210340338,
+    "macro_precision": 0.9701508007450654,
+    "macro_recall": 0.9689021852780018,
+    "macro_f1": 0.9689119110982919,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 0.9468085106382979,
+        "recall": 1.0,
+        "f1": 0.9726775956284153,
+        "support": 534
+      },
+      "EC_Low_Deficiency": {
+        "precision": 0.9765166340508806,
+        "recall": 0.9596153846153846,
+        "f1": 0.967992240543162,
+        "support": 520
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 0.9545454545454546,
+        "recall": 0.9849906191369606,
+        "f1": 0.9695290858725761,
+        "support": 533
+      },
+      "Humidity_Low_Stress": {
+        "precision": 0.9620938628158845,
+        "recall": 0.987037037037037,
+        "f1": 0.9744058500914077,
+        "support": 540
+      },
+      "K_Deficiency": {
+        "precision": 0.969147005444646,
+        "recall": 0.985239852398524,
+        "f1": 0.9771271729185728,
+        "support": 542
+      },
+      "N_Deficiency": {
+        "precision": 0.9668508287292817,
+        "recall": 0.9615384615384616,
+        "f1": 0.9641873278236914,
+        "support": 546
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 549
+      },
+      "P_Deficiency": {
+        "precision": 0.9623352165725048,
+        "recall": 0.9678030303030303,
+        "f1": 0.9650613786591123,
+        "support": 528
+      },
+      "Water_Temp_High": {
+        "precision": 0.9654576856649395,
+        "recall": 0.978984238178634,
+        "f1": 0.9721739130434782,
+        "support": 571
+      },
+      "pH_Imbalance": {
+        "precision": 0.9977528089887641,
+        "recall": 0.8638132295719845,
+        "f1": 0.9259645464025026,
+        "support": 514
+      }
+    },
+    "confusion_matrix": [
+      [
+        534,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        499,
+        7,
+        2,
+        3,
+        1,
+        0,
+        5,
+        3,
+        0
+      ],
+      [
+        5,
+        0,
+        525,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        533,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        1,
+        534,
+        1,
+        0,
+        1,
+        2,
+        0
+      ],
+      [
+        4,
+        0,
+        5,
+        3,
+        4,
+        525,
+        0,
+        3,
+        1,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        549,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        1,
+        3,
+        2,
+        4,
+        0,
+        511,
+        3,
+        0
+      ],
+      [
+        4,
+        1,
+        2,
+        1,
+        1,
+        3,
+        0,
+        0,
+        559,
+        0
+      ],
+      [
+        7,
+        11,
+        9,
+        11,
+        5,
+        8,
+        0,
+        9,
+        10,
+        444
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        534,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        499,
+        7,
+        2,
+        3,
+        1,
+        0,
+        5,
+        3,
+        0
+      ],
+      [
+        5,
+        0,
+        525,
+        0,
+        1,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        533,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        2,
+        0,
+        1,
+        1,
+        534,
+        1,
+        0,
+        1,
+        2,
+        0
+      ],
+      [
+        4,
+        0,
+        5,
+        3,
+        4,
+        525,
+        0,
+        3,
+        1,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        549,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        1,
+        3,
+        2,
+        4,
+        0,
+        511,
+        3,
+        0
+      ],
+      [
+        4,
+        1,
+        2,
+        1,
+        1,
+        3,
+        0,
+        0,
+        559,
+        0
+      ],
+      [
+        7,
+        11,
+        9,
+        11,
+        5,
+        8,
+        0,
+        9,
+        10,
+        444
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 5377
+  },
+  "final_test_metrics": {
+    "accuracy": 0.9688561721404304,
+    "macro_precision": 0.9692423009250714,
+    "macro_recall": 0.9688561721404305,
+    "macro_f1": 0.9685106164606303,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 0.9585605234460196,
+        "recall": 0.9954699886749717,
+        "f1": 0.9766666666666667,
+        "support": 883
+      },
+      "EC_Low_Deficiency": {
+        "precision": 0.967479674796748,
+        "recall": 0.9433748584371461,
+        "f1": 0.9552752293577982,
+        "support": 883
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 0.9585152838427947,
+        "recall": 0.9943374858437146,
+        "f1": 0.9760978321289605,
+        "support": 883
+      },
+      "Humidity_Low_Stress": {
+        "precision": 0.966996699669967,
+        "recall": 0.9954699886749717,
+        "f1": 0.9810267857142857,
+        "support": 883
+      },
+      "K_Deficiency": {
+        "precision": 0.9551422319474836,
+        "recall": 0.9886749716874292,
+        "f1": 0.9716193656093489,
+        "support": 883
+      },
+      "N_Deficiency": {
+        "precision": 0.9590443686006825,
+        "recall": 0.9546998867497168,
+        "f1": 0.9568671963677639,
+        "support": 883
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 883
+      },
+      "P_Deficiency": {
+        "precision": 0.9771428571428571,
+        "recall": 0.9682899207248018,
+        "f1": 0.9726962457337884,
+        "support": 883
+      },
+      "Water_Temp_High": {
+        "precision": 0.9611542730299667,
+        "recall": 0.9807474518686297,
+        "f1": 0.9708520179372198,
+        "support": 883
+      },
+      "pH_Imbalance": {
+        "precision": 0.9883870967741936,
+        "recall": 0.8674971687429218,
+        "f1": 0.9240048250904704,
+        "support": 883
+      }
+    },
+    "confusion_matrix": [
+      [
+        879,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        833,
+        12,
+        4,
+        13,
+        12,
+        0,
+        4,
+        4,
+        1
+      ],
+      [
+        1,
+        0,
+        878,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        3
+      ],
+      [
+        2,
+        0,
+        0,
+        879,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        2,
+        3,
+        2,
+        873,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        7,
+        1,
+        8,
+        8,
+        7,
+        843,
+        0,
+        5,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        883,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        1,
+        2,
+        3,
+        5,
+        2,
+        0,
+        855,
+        5,
+        0
+      ],
+      [
+        1,
+        3,
+        3,
+        2,
+        1,
+        3,
+        0,
+        0,
+        866,
+        4
+      ],
+      [
+        16,
+        21,
+        10,
+        11,
+        13,
+        16,
+        0,
+        11,
+        19,
+        766
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        879,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        833,
+        12,
+        4,
+        13,
+        12,
+        0,
+        4,
+        4,
+        1
+      ],
+      [
+        1,
+        0,
+        878,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        3
+      ],
+      [
+        2,
+        0,
+        0,
+        879,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      [
+        1,
+        2,
+        3,
+        2,
+        873,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        7,
+        1,
+        8,
+        8,
+        7,
+        843,
+        0,
+        5,
+        4,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        883,
+        0,
+        0,
+        0
+      ],
+      [
+        10,
+        1,
+        2,
+        3,
+        5,
+        2,
+        0,
+        855,
+        5,
+        0
+      ],
+      [
+        1,
+        3,
+        3,
+        2,
+        1,
+        3,
+        0,
+        0,
+        866,
+        4
+      ],
+      [
+        16,
+        21,
+        10,
+        11,
+        13,
+        16,
+        0,
+        11,
+        19,
+        766
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "K_Deficiency",
+      "N_Deficiency",
+      "Normal",
+      "P_Deficiency",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 8830
+  }
+}

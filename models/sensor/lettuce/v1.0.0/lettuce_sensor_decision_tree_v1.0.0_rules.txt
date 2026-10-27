@@ -1,0 +1,37 @@
+|--- ec <= 2.50
+|   |--- humidity <= 50.00
+|   |   |--- water_temp <= 26.10
+|   |   |   |--- ph <= 5.45
+|   |   |   |   |--- class: Multiple_Stress
+|   |   |   |--- ph >  5.45
+|   |   |   |   |--- air_temp <= 30.73
+|   |   |   |   |   |--- class: Humidity_Low
+|   |   |   |   |--- air_temp >  30.73
+|   |   |   |   |   |--- class: Multiple_Stress
+|   |   |--- water_temp >  26.10
+|   |   |   |--- class: Multiple_Stress
+|   |--- humidity >  50.00
+|   |   |--- water_temp <= 26.05
+|   |   |   |--- ph <= 5.45
+|   |   |   |   |--- class: pH_Low
+|   |   |   |--- ph >  5.45
+|   |   |   |   |--- ph <= 7.05
+|   |   |   |   |   |--- class: Normal
+|   |   |   |   |--- ph >  7.05
+|   |   |   |   |   |--- class: pH_High
+|   |   |--- water_temp >  26.05
+|   |   |   |--- ec <= 1.20
+|   |   |   |   |--- class: Multiple_Stress
+|   |   |   |--- ec >  1.20
+|   |   |   |   |--- water_temp <= 26.15
+|   |   |   |   |   |--- class: Multiple_Stress
+|   |   |   |   |--- water_temp >  26.15
+|   |   |   |   |   |--- class: WaterTemp_High
+|--- ec >  2.50
+|   |--- ph <= 7.05
+|   |   |--- water_temp <= 17.70
+|   |   |   |--- class: Multiple_Stress
+|   |   |--- water_temp >  17.70
+|   |   |   |--- class: EC_High
+|   |--- ph >  7.05
+|   |   |--- class: Multiple_Stress

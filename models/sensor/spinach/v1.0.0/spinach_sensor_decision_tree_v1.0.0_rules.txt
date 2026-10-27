@@ -1,0 +1,22 @@
+|--- relative_humidity_percent <= 44.95
+|   |--- class: Humidity_Low_Stress
+|--- relative_humidity_percent >  44.95
+|   |--- ec_mS_cm <= 2.30
+|   |   |--- water_temperature_C <= 21.10
+|   |   |   |--- ec_mS_cm <= 1.79
+|   |   |   |   |--- class: EC_Low_Deficiency
+|   |   |   |--- ec_mS_cm >  1.79
+|   |   |   |   |--- relative_humidity_percent <= 73.31
+|   |   |   |   |   |--- ph <= 7.00
+|   |   |   |   |   |   |--- ph <= 5.99
+|   |   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |   |   |--- ph >  5.99
+|   |   |   |   |   |   |   |--- class: Normal
+|   |   |   |   |   |--- ph >  7.00
+|   |   |   |   |   |   |--- class: pH_Imbalance
+|   |   |   |   |--- relative_humidity_percent >  73.31
+|   |   |   |   |   |--- class: Humidity_High_Mildew_Risk
+|   |   |--- water_temperature_C >  21.10
+|   |   |   |--- class: Water_Temp_High
+|   |--- ec_mS_cm >  2.30
+|   |   |--- class: EC_High_Toxicity

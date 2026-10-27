@@ -1,0 +1,482 @@
+{
+  "model_id": "spinach_sensor_decision_tree_v1.0.0",
+  "crop": "spinach",
+  "task": "classification",
+  "modality": "sensor",
+  "family": "DecisionTreeClassifier",
+  "artifact_version": "1.0.0",
+  "artifact_file": "sensor/spinach/v1.0.0/spinach_sensor_decision_tree_v1.0.0.joblib",
+  "commit": "b6f1df1f87c2b3e8",
+  "training_date": "2026-10-27T12:20:10.824929+00:00",
+  "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": false,
+  "status": "promoted",
+  "classes": [
+    "EC_High_Toxicity",
+    "EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress",
+    "Normal",
+    "Water_Temp_High",
+    "pH_Imbalance"
+  ],
+  "display_mapping": {
+    "EC_High_Toxicity": "unhealthy/EC_High_Toxicity",
+    "EC_Low_Deficiency": "unhealthy/EC_Low_Deficiency",
+    "Humidity_High_Mildew_Risk": "unhealthy/Humidity_High_Mildew_Risk",
+    "Humidity_Low_Stress": "unhealthy/Humidity_Low_Stress",
+    "Normal": "healthy",
+    "Water_Temp_High": "unhealthy/Water_Temp_High",
+    "pH_Imbalance": "unhealthy/pH_Imbalance"
+  },
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "split_counts": {
+    "train": 958,
+    "validation": 162,
+    "test": 0
+  },
+  "ordered_features": [
+    "air_temperature_C",
+    "relative_humidity_percent",
+    "water_temperature_C",
+    "ph",
+    "ec_mS_cm"
+  ],
+  "feature_units": {
+    "air_temperature_C": "degC",
+    "relative_humidity_percent": "%",
+    "water_temperature_C": "degC",
+    "ph": "pH",
+    "ec_mS_cm": "mS/cm"
+  },
+  "input_unit": "sensor_reading",
+  "image_size": null,
+  "image_normalization": null,
+  "channel_order": null,
+  "segmentation_config": null,
+  "feature_config": null,
+  "hyperparameters": {
+    "criterion": "gini",
+    "max_depth": 8,
+    "min_samples_leaf": 1,
+    "random_state": 42
+  },
+  "confidence_settings": {
+    "uncertainty_threshold": 0.4,
+    "abstention_allowed": true
+  },
+  "expected_input_schema": {
+    "type": "object",
+    "required": [
+      "air_temperature_C",
+      "relative_humidity_percent",
+      "water_temperature_C",
+      "ph",
+      "ec_mS_cm"
+    ]
+  },
+  "dependency_versions": {
+    "python": "3.13.5",
+    "scikit-learn": "1.6.1"
+  },
+  "validation_metrics": {
+    "accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 21
+      },
+      "EC_Low_Deficiency": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 24
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 25
+      },
+      "Humidity_Low_Stress": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 14
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 21
+      },
+      "Water_Temp_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 24
+      },
+      "pH_Imbalance": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 33
+      }
+    },
+    "confusion_matrix": [
+      [
+        21,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        24,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        21,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        24,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        33
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        21,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        24,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        25,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        14,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        21,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        24,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        33
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 162
+  },
+  "final_test_metrics": {
+    "accuracy": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "macro_f1": 1.0,
+    "per_class": {
+      "EC_High_Toxicity": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "EC_Low_Deficiency": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "Humidity_High_Mildew_Risk": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "Humidity_Low_Stress": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "Water_Temp_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      },
+      "pH_Imbalance": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 40
+      }
+    },
+    "confusion_matrix": [
+      [
+        40,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        40,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        40,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        40,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        40,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        40,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        40
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        40,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        40,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        40,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        40,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        40,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        40,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        40
+      ]
+    ],
+    "labels": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "class_order": [
+      "EC_High_Toxicity",
+      "EC_Low_Deficiency",
+      "Humidity_High_Mildew_Risk",
+      "Humidity_Low_Stress",
+      "Normal",
+      "Water_Temp_High",
+      "pH_Imbalance"
+    ],
+    "total_samples": 280
+  }
+}

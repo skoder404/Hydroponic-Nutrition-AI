@@ -1,0 +1,662 @@
+{
+  "model_id": "lettuce_sensor_decision_tree_v1.0.0",
+  "crop": "lettuce",
+  "task": "classification",
+  "modality": "sensor",
+  "family": "DecisionTreeClassifier",
+  "artifact_version": "1.0.0",
+  "artifact_file": "sensor/lettuce/v1.0.0/lettuce_sensor_decision_tree_v1.0.0.joblib",
+  "commit": "b6f1df1f87c2b3e8",
+  "training_date": "2026-10-27T12:20:06.562655+00:00",
+  "dataset_manifest_hash": "c62bf6a127fce1c4efdfa88d752ad755a7201b2fba9eb73b306b9b1e92d6e3c5",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": false,
+  "status": "promoted",
+  "classes": [
+    "EC_High",
+    "EC_Low",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "WaterTemp_Low",
+    "pH_High",
+    "pH_Low"
+  ],
+  "display_mapping": {
+    "EC_High": "unhealthy/EC_High",
+    "EC_Low": "unhealthy/EC_Low",
+    "Humidity_Low": "unhealthy/Humidity_Low",
+    "Multiple_Stress": "unhealthy/Multiple_Stress",
+    "Normal": "healthy",
+    "WaterTemp_High": "unhealthy/WaterTemp_High",
+    "WaterTemp_Low": "unhealthy/WaterTemp_Low",
+    "pH_High": "unhealthy/pH_High",
+    "pH_Low": "unhealthy/pH_Low"
+  },
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "split_counts": {
+    "train": 1295,
+    "validation": 125,
+    "test": 0
+  },
+  "ordered_features": [
+    "ph",
+    "ec",
+    "water_temp",
+    "humidity",
+    "air_temp"
+  ],
+  "feature_units": {
+    "ph": "pH",
+    "ec": "mS/cm",
+    "water_temp": "degC",
+    "humidity": "%",
+    "air_temp": "degC"
+  },
+  "input_unit": "sensor_reading",
+  "image_size": null,
+  "image_normalization": null,
+  "channel_order": null,
+  "segmentation_config": null,
+  "feature_config": null,
+  "hyperparameters": {
+    "criterion": "entropy",
+    "max_depth": 5,
+    "min_samples_leaf": 1,
+    "random_state": 42
+  },
+  "confidence_settings": {
+    "uncertainty_threshold": 0.4,
+    "abstention_allowed": true
+  },
+  "expected_input_schema": {
+    "type": "object",
+    "required": [
+      "ph",
+      "ec",
+      "water_temp",
+      "humidity",
+      "air_temp"
+    ]
+  },
+  "dependency_versions": {
+    "python": "3.13.5",
+    "scikit-learn": "1.6.1"
+  },
+  "validation_metrics": {
+    "accuracy": 0.96,
+    "macro_precision": 0.7394957983193278,
+    "macro_recall": 0.7598566308243728,
+    "macro_f1": 0.7461456671982988,
+    "per_class": {
+      "EC_High": {
+        "precision": 0.7142857142857143,
+        "recall": 1.0,
+        "f1": 0.8333333333333334,
+        "support": 10
+      },
+      "EC_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "Humidity_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 11
+      },
+      "Multiple_Stress": {
+        "precision": 1.0,
+        "recall": 0.8387096774193549,
+        "f1": 0.9122807017543859,
+        "support": 31
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 55
+      },
+      "WaterTemp_High": {
+        "precision": 0.9411764705882353,
+        "recall": 1.0,
+        "f1": 0.9696969696969697,
+        "support": 16
+      },
+      "WaterTemp_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "pH_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 1
+      },
+      "pH_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 1
+      }
+    },
+    "confusion_matrix": [
+      [
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        11,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        26,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        55,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        11,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        0,
+        26,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        55,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "labels": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "class_order": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "total_samples": 125
+  },
+  "final_test_metrics": {
+    "accuracy": 0.9876543209876543,
+    "macro_precision": 0.7563492063492063,
+    "macro_recall": 0.7681159420289855,
+    "macro_f1": 0.7613312613312614,
+    "per_class": {
+      "EC_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 9
+      },
+      "EC_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "Humidity_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 16
+      },
+      "Multiple_Stress": {
+        "precision": 1.0,
+        "recall": 0.9130434782608695,
+        "f1": 0.9545454545454546,
+        "support": 23
+      },
+      "Normal": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 87
+      },
+      "WaterTemp_High": {
+        "precision": 0.95,
+        "recall": 1.0,
+        "f1": 0.9743589743589743,
+        "support": 19
+      },
+      "WaterTemp_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "pH_High": {
+        "precision": 0.8571428571428571,
+        "recall": 1.0,
+        "f1": 0.9230769230769231,
+        "support": 6
+      },
+      "pH_Low": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2
+      }
+    },
+    "confusion_matrix": [
+      [
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        21,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        87,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        16,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        21,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        87,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        19,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2
+      ]
+    ],
+    "labels": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "class_order": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "total_samples": 162
+  }
+}
