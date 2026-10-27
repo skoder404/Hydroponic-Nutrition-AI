@@ -57,6 +57,12 @@ export default function RootLayout({
               >
                 About
               </Link>
+              <Link
+                href="/demo"
+                className="rounded-md px-3 py-1.5 hover:bg-stone-100 hover:text-emerald-900 transition-colors text-emerald-800 font-semibold"
+              >
+                Design System
+              </Link>
             </nav>
           </div>
         </header>

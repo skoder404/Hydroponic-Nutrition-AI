@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colours matching DESIGN.md */
+  --bg: #FAF6EC;
+  --surface: #FFFFFF;
+  --sand: #EFE6D2;
+  --forest: #2F4A33;
+  --moss: #4C6B3C;
+  --sage: #8FA77A;
+  --clay: #A4502E;
+  --bark: #3E3022;
+  --stone: #665C4D;
+  --border: #D9CDB1;
+  --border-strong: #857A67;
+  --water: #2F6F7E;
+  --success: #2E6B3A;
+  --warning: #8A5A00;
+  --error: #A32A22;
+  --info: #2A5F8F;
+
+  /* Focus ring tokens */
+  --ring-color: #4C6B3C;
+  --ring-offset: #FAF6EC;
+
+  /* Typography tokens */
+  --font-serif: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Radii tokens */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* Shadow tokens */
+  --shadow-warm-sm: 0 1px 2px rgba(62, 48, 34, 0.08);
+  --shadow-warm-md: 0 1px 2px rgba(62, 48, 34, 0.08), 0 6px 16px rgba(62, 48, 34, 0.08);
+  --shadow-warm-lg: 0 4px 6px rgba(62, 48, 34, 0.08), 0 12px 24px rgba(62, 48, 34, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sand: var(--sand);
+  --color-forest: var(--forest);
+  --color-moss: var(--moss);
+  --color-sage: var(--sage);
+  --color-clay: var(--clay);
+  --color-bark: var(--bark);
+  --color-stone: var(--stone);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-water: var(--water);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  --shadow-warm-sm: var(--shadow-warm-sm);
+  --shadow-warm-md: var(--shadow-warm-md);
+  --shadow-warm-lg: var(--shadow-warm-lg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--bark);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--forest);
+  line-height: 1.2;
+}
+
+/* Reduced motion accessibility rule adhering to DESIGN.md */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Simulated reduced motion toggle class for interactive testing */
+.reduced-motion-active,
+.reduced-motion-active *,
+.reduced-motion-active *::before,
+.reduced-motion-active *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
 }

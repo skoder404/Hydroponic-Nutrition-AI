@@ -1716,9 +1716,9 @@
 **Dependencies:** T1-010
 **Acceptance Criteria:**
 
-- [ ] Token names match DESIGN.md
-- [ ] Each component shows default/hover/focus/disabled/loading states in a demo page
-- [ ] `prefers-reduced-motion` respected
+- [x] Token names match DESIGN.md
+- [x] Each component shows default/hover/focus/disabled/loading states in a demo page
+- [x] `prefers-reduced-motion` respected
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
