@@ -811,9 +811,9 @@
 **Dependencies:** T4-002, T2-019, T2-018, T4-006, T4-007, T4-009
 **Acceptance Criteria:**
 
-- [ ] Running with the test file temporarily made unreadable still succeeds
-- [ ] Leakage-blacklist columns cause a hard failure
-- [ ] Scaler is saved inside the artifact
+- [x] Running with the test file temporarily made unreadable still succeeds
+- [x] Leakage-blacklist columns cause a hard failure
+- [x] Scaler is saved inside the artifact
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
