@@ -1,0 +1,259 @@
+{
+  "title": "Lettuce Sensor Model Experiments Comparison Report",
+  "crop": "lettuce",
+  "generated_at": "2026-10-27T09:16:48.400217+00:00",
+  "task_id": "T4-017",
+  "seed": 42,
+  "n_splits": 5,
+  "best_overall_model": "decision_tree",
+  "split_integrity": {
+    "train_rows": 1295,
+    "val_rows": 125,
+    "test_rows": 162,
+    "train_days": 41,
+    "val_days": 12,
+    "test_days": 16,
+    "overlap_days": 0,
+    "group_separation_verified": true
+  },
+  "authorized_features": [
+    "ph",
+    "ec",
+    "water_temp",
+    "humidity",
+    "air_temp"
+  ],
+  "excluded_fields": {
+    "experiment": "Greenhouse experiment run identifier (EXP.1, EXP.2, EXP.3); grouping metadata",
+    "date": "Calendar date (YYYY-MM-DD); temporal holdout grouping metadata",
+    "day_index": "Day counter since transplanting; temporal sequence leakage",
+    "slot": "Reading time slot (10:00 vs 14:00); diurnal timing metadata",
+    "timestamp": "Combined timestamp string; sequence metadata",
+    "replicate": "Replicate bench tank identifier (R1-R3 x T1/T2); physical tank metadata",
+    "treatment": "Hydroponic treatment regime (T1 vs T2); experimental group metadata",
+    "tds": "Total dissolved solids; exact deterministic proxy for EC (ec * 500); redundancy leakage",
+    "co2": "Greenhouse CO2 concentration; hourly logger feature not in core 5-sensor telemetry",
+    "lux_meter": "Handheld light intensity; highly variable ambient metadata",
+    "hours_logged": "Daily logger uptime counter; experimental artifact",
+    "label": "Target classification label; ground truth target leakage",
+    "label_next": "Next-step forecast target label; future target leakage",
+    "ph_prev": "Previous reading pH; lag feature creating temporal autocorrelation leakage",
+    "ph_delta": "Change in pH since previous reading; derivative leakage across disjoint days",
+    "ph_roll3": "3-reading rolling mean pH; smoothed window leakage",
+    "ec_prev": "Previous reading EC; temporal lag feature",
+    "ec_delta": "Change in EC since previous reading; derivative leakage",
+    "ec_roll3": "3-reading rolling mean EC; smoothed window leakage",
+    "water_temp_prev": "Previous reading water temperature; temporal lag feature",
+    "water_temp_delta": "Change in water temperature; derivative leakage",
+    "water_temp_roll3": "3-reading rolling mean water temperature; smoothed window leakage",
+    "air_temp_day_mean": "Daily aggregate air temperature mean; temporal summary leakage",
+    "air_temp_day_min": "Daily aggregate air temperature min; temporal summary leakage",
+    "air_temp_day_max": "Daily aggregate air temperature max; temporal summary leakage",
+    "humidity_day_mean": "Daily aggregate humidity mean; temporal summary leakage",
+    "co2_day_mean": "Daily aggregate CO2 mean; temporal summary leakage"
+  },
+  "readme_baseline_comparison": {
+    "model": "Random Forest (200 trees, max_depth=8, min_samples_leaf=1)",
+    "grouped_5fold_cv_macro_f1": 0.837,
+    "grouped_5fold_cv_std": 0.075,
+    "single_heldout_accuracy": 0.994,
+    "single_heldout_macro_f1": 0.986,
+    "notes": "Single held-out split (every 4th day, 162 rows) was described as 'one favourable split'; expected performance is the grouped 5-fold CV score."
+  },
+  "models": [
+    {
+      "model_type": "decision_tree",
+      "best_hyperparameters": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 0.6074,
+      "cv_std_macro_f1": 0.0627,
+      "val_macro_f1": 0.7461,
+      "val_accuracy": 0.96,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_decision_tree_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "random_forest",
+      "best_hyperparameters": {
+        "class_weight": "balanced",
+        "max_depth": 4,
+        "min_samples_leaf": 1,
+        "n_estimators": 100
+      },
+      "cv_macro_f1": 0.6239,
+      "cv_std_macro_f1": 0.0501,
+      "val_macro_f1": 0.7461,
+      "val_accuracy": 0.96,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_random_forest_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "svm",
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.5261,
+      "cv_std_macro_f1": 0.0966,
+      "val_macro_f1": 0.6771,
+      "val_accuracy": 0.904,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_svm_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "knn",
+      "best_hyperparameters": {
+        "n_neighbors": 5,
+        "weights": "uniform"
+      },
+      "cv_macro_f1": 0.443,
+      "cv_std_macro_f1": 0.1159,
+      "val_macro_f1": 0.4921,
+      "val_accuracy": 0.736,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_knn_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "logistic_regression",
+      "best_hyperparameters": {
+        "C": 0.2,
+        "class_weight": "balanced"
+      },
+      "cv_macro_f1": 0.4226,
+      "cv_std_macro_f1": 0.0732,
+      "val_macro_f1": 0.4967,
+      "val_accuracy": 0.656,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_logistic_regression_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    }
+  ],
+  "ranked_models": [
+    {
+      "model_type": "decision_tree",
+      "best_hyperparameters": {
+        "criterion": "entropy",
+        "max_depth": 5,
+        "min_samples_leaf": 1
+      },
+      "cv_macro_f1": 0.6074,
+      "cv_std_macro_f1": 0.0627,
+      "val_macro_f1": 0.7461,
+      "val_accuracy": 0.96,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_decision_tree_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_decision_tree_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_decision_tree_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "random_forest",
+      "best_hyperparameters": {
+        "class_weight": "balanced",
+        "max_depth": 4,
+        "min_samples_leaf": 1,
+        "n_estimators": 100
+      },
+      "cv_macro_f1": 0.6239,
+      "cv_std_macro_f1": 0.0501,
+      "val_macro_f1": 0.7461,
+      "val_accuracy": 0.96,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_random_forest_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_random_forest_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_random_forest_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "svm",
+      "best_hyperparameters": {
+        "C": 2.5,
+        "gamma": "scale",
+        "kernel": "rbf"
+      },
+      "cv_macro_f1": 0.5261,
+      "cv_std_macro_f1": 0.0966,
+      "val_macro_f1": 0.6771,
+      "val_accuracy": 0.904,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_svm_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_svm_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_svm_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "logistic_regression",
+      "best_hyperparameters": {
+        "C": 0.2,
+        "class_weight": "balanced"
+      },
+      "cv_macro_f1": 0.4226,
+      "cv_std_macro_f1": 0.0732,
+      "val_macro_f1": 0.4967,
+      "val_accuracy": 0.656,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_logistic_regression_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_logistic_regression_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_logistic_regression_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    },
+    {
+      "model_type": "knn",
+      "best_hyperparameters": {
+        "n_neighbors": 5,
+        "weights": "uniform"
+      },
+      "cv_macro_f1": 0.443,
+      "cv_std_macro_f1": 0.1159,
+      "val_macro_f1": 0.4921,
+      "val_accuracy": 0.736,
+      "val_macro_precision": 0.0,
+      "val_macro_recall": 0.0,
+      "json_report": "reports\\lettuce\\lettuce_sensor_knn_v1.0.0_validation.json",
+      "md_report": "reports\\lettuce\\lettuce_sensor_knn_v1.0.0_validation.md",
+      "artifact_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\lettuce_sensor_knn_v1.0.0.joblib",
+      "metadata_path": "D:\\Hydroponic-Nutrition-AI\\models\\sensor\\lettuce\\v1.0.0\\metadata.json"
+    }
+  ],
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "limitations": [
+    "Rule-Derived Diagnostic Targets: Labels are generated mathematically from published physical action bands (pH 5.5-7.0, EC 1.2-2.5 mS/cm, water temp 18-26 C, humidity 50-80%, air temp 18-30 C). Models relearn the threshold geometry rather than independent biological plant health validated by agronomists.",
+    "Small Real Dataset Size: The physical dataset contains 726 real sensor readings (430 in train pool, 125 in validation, 162 in test). The 1,295-row train.csv is class-balanced via oversampling; all cross-validation and evaluation are performed strictly on un-oversampled real holdouts.",
+    "Dropped Low-Frequency Classes: 'EC_Low' (1 row) and 'WaterTemp_Low' (8 rows) were excluded from training and evaluation due to insufficient support to form valid cross-validation partitions.",
+    "Strict Zero-Leakage Protocol: Grouped 5-fold cross-validation by calendar day (41 disjoint experiment-days) prevents adjacent reading leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Features: Metadata (experiment, date, slot, replicate, treatment), raw timestamps, TDS (redundant with EC), CO2, Lux, and all temporal trend/rolling features were strictly excluded from model feature inputs.",
+    "Unpaired Modalities: The sensor dataset has no timestamp or environmental link to the image dataset (Kaggle Lettuce NPK); combinations are strictly rule-mediated."
+  ]
+}

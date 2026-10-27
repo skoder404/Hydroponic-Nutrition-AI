@@ -1,0 +1,360 @@
+{
+  "crop": "lettuce",
+  "model_name": "lettuce_sensor_svm_v1.0.0",
+  "model_family": "SVC",
+  "artifact_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "evaluation_date": "2026-10-27T09:16:45.326609+00:00",
+  "split_evaluated": "validation",
+  "split_protocol": "Preserved calendar day / group holdout (test.csv untouched)",
+  "source_dataset_manifest": "processed_data/sensor/lettuce/manifest.json",
+  "label_generation_method": "Rule-derived thresholds mapped from physical hydroponic solution bands",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "C": 2.5,
+    "kernel": "rbf",
+    "gamma": "scale",
+    "probability": true,
+    "random_state": 42
+  },
+  "split_counts": {
+    "train": 1295,
+    "validation": 125,
+    "test": 0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "EC_High": 185,
+      "Multiple_Stress": 185,
+      "pH_Low": 185,
+      "pH_High": 185,
+      "Humidity_Low": 185,
+      "Normal": 185,
+      "WaterTemp_High": 185
+    },
+    "validation": {
+      "Normal": 55,
+      "Multiple_Stress": 31,
+      "WaterTemp_High": 16,
+      "Humidity_Low": 11,
+      "EC_High": 10,
+      "pH_Low": 1,
+      "pH_High": 1
+    }
+  },
+  "class_order": [
+    "EC_High",
+    "EC_Low",
+    "Humidity_Low",
+    "Multiple_Stress",
+    "Normal",
+    "WaterTemp_High",
+    "WaterTemp_Low",
+    "pH_High",
+    "pH_Low"
+  ],
+  "metrics": {
+    "accuracy": 0.904,
+    "macro_precision": 0.6518452498844656,
+    "macro_recall": 0.7360703812316716,
+    "macro_f1": 0.67710312848431,
+    "per_class": {
+      "EC_High": {
+        "precision": 0.5882352941176471,
+        "recall": 1.0,
+        "f1": 0.7407407407407407,
+        "support": 10
+      },
+      "EC_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "Humidity_Low": {
+        "precision": 0.9090909090909091,
+        "recall": 0.9090909090909091,
+        "f1": 0.9090909090909091,
+        "support": 11
+      },
+      "Multiple_Stress": {
+        "precision": 1.0,
+        "recall": 0.8064516129032258,
+        "f1": 0.8928571428571429,
+        "support": 31
+      },
+      "Normal": {
+        "precision": 0.9803921568627451,
+        "recall": 0.9090909090909091,
+        "f1": 0.9433962264150944,
+        "support": 55
+      },
+      "WaterTemp_High": {
+        "precision": 0.8888888888888888,
+        "recall": 1.0,
+        "f1": 0.9411764705882353,
+        "support": 16
+      },
+      "WaterTemp_Low": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 0
+      },
+      "pH_High": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 1
+      },
+      "pH_Low": {
+        "precision": 0.5,
+        "recall": 1.0,
+        "f1": 0.6666666666666666,
+        "support": 1
+      }
+    },
+    "confusion_matrix": [
+      [
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        10,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        1,
+        25,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        0,
+        50,
+        1,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        10,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        10,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        4,
+        0,
+        1,
+        25,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        0,
+        50,
+        1,
+        0,
+        0,
+        1
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        16,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    ],
+    "labels": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "class_order": [
+      "EC_High",
+      "EC_Low",
+      "Humidity_Low",
+      "Multiple_Stress",
+      "Normal",
+      "WaterTemp_High",
+      "WaterTemp_Low",
+      "pH_High",
+      "pH_Low"
+    ],
+    "total_samples": 125
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "limitations": [
+    "Rule-Derived Diagnostic Targets: Labels are generated mathematically from published physical action bands (pH 5.5-7.0, EC 1.2-2.5 mS/cm, water temp 18-26 C, humidity 50-80%, air temp 18-30 C). Models relearn the threshold geometry rather than independent biological plant health validated by agronomists.",
+    "Small Real Dataset Size: The physical dataset contains 726 real sensor readings (430 in train pool, 125 in validation, 162 in test). The 1,295-row train.csv is class-balanced via oversampling; all cross-validation and evaluation are performed strictly on un-oversampled real holdouts.",
+    "Dropped Low-Frequency Classes: 'EC_Low' (1 row) and 'WaterTemp_Low' (8 rows) were excluded from training and evaluation due to insufficient support to form valid cross-validation partitions.",
+    "Strict Zero-Leakage Protocol: Grouped 5-fold cross-validation by calendar day (41 disjoint experiment-days) prevents adjacent reading leakage. Test split remained completely held-out and unread during training and hyperparameter search.",
+    "Excluded Features: Metadata (experiment, date, slot, replicate, treatment), raw timestamps, TDS (redundant with EC), CO2, Lux, and all temporal trend/rolling features were strictly excluded from model feature inputs.",
+    "Unpaired Modalities: The sensor dataset has no timestamp or environmental link to the image dataset (Kaggle Lettuce NPK); combinations are strictly rule-mediated."
+  ]
+}

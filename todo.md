@@ -907,9 +907,9 @@
 **Dependencies:** T4-015, T4-016
 **Acceptance Criteria:**
 
-- [ ] Report covers all five families with required metrics
-- [ ] No test metrics appear
-- [ ] Limitations block states rule-derived labels
+- [x] Report covers all five families with required metrics
+- [x] No test metrics appear
+- [x] Limitations block states rule-derived labels
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
