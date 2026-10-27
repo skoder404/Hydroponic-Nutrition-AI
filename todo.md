@@ -1153,9 +1153,9 @@
 **Dependencies:** T5-008
 **Acceptance Criteria:**
 
-- [ ] Empty, tiny, and whole-image masks are rejected
-- [ ] Thresholds are config values with a documented origin
-- [ ] Every verdict carries a reason string
+- [x] Empty, tiny, and whole-image masks are rejected
+- [x] Thresholds are config values with a documented origin
+- [x] Every verdict carries a reason string
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
