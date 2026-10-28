@@ -2007,9 +2007,9 @@
 **Dependencies:** T5-004, T5-005, T5-007
 **Acceptance Criteria:**
 
-- [ ] Each feature has at least one hand-computed expected value
-- [ ] Channel-order bug is caught by a test
-- [ ] Degenerate inputs raise typed errors
+- [x] Each feature has at least one hand-computed expected value
+- [x] Channel-order bug is caught by a test
+- [x] Degenerate inputs raise typed errors
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
