@@ -1,0 +1,240 @@
+rules_version: "v1.0.0"
+crop: "tomato"
+status: "advisory, unreviewed"
+disclaimer: "Recommendations are conservative advisory suggestions based on statistical correlations. They do not replace grower judgment, certified laboratory tests, or professional agronomic advice. No nutrient dosages or chemical amounts are provided."
+
+rules:
+  image:
+    Tomato_Healthy:
+      summary: "Tomato leaf exhibits vigorous deep green coloration, firm leaf margins, and absence of visible foliar pathogens."
+      checks:
+        - "Inspect lower and middle canopy leaves for hidden early lesions."
+        - "Check stem integrity and root system color."
+      actions:
+        - "Maintain current vegetative/fruiting fertigation regime and climate setpoints."
+      low_confidence_action:
+        - "Take an additional clear photograph in natural diffuse lighting to verify absence of foliar lesions."
+
+    Tomato_Bacterial_spot:
+      summary: "Foliar symptoms indicate potential bacterial spot (Xanthomonas), characterized by small dark water-soaked spots with yellow halos."
+      checks:
+        - "Inspect leaves, stems, and fruit calyxes for small dark spots."
+        - "Check for overhead sprinkler splashing or condensation dripping from greenhouse roof."
+      actions:
+        - "Avoid overhead wetting of foliage and prune affected lower canopy leaves with sanitized tools."
+        - "Improve cross-canopy ventilation to reduce foliar leaf wetness duration."
+      low_confidence_action:
+        - "Submit leaf samples to diagnostic plant pathology lab to confirm bacterial presence."
+
+    Tomato_Early_blight:
+      summary: "Symptoms resemble early blight (Alternaria solani), presenting concentric target-like rings surrounded by chlorotic yellow halos on older leaves."
+      checks:
+        - "Inspect lower leaves closest to root substrate for concentric ring lesions."
+        - "Check plant vigor and nitrogen status, as stressed plants are more susceptible."
+      actions:
+        - "Prune off heavily infected lower foliage and dispose outside the greenhouse."
+        - "Enhance air circulation around bottom canopy to keep foliage dry."
+      low_confidence_action:
+        - "Examine lesions with a magnifying loupe to inspect for characteristic concentric target pattern."
+
+    Tomato_Late_blight:
+      summary: "Aggressive water-soaked lesions and grayish-brown necrosis indicating potential late blight (Phytophthora infestans)."
+      checks:
+        - "Check stems and petioles for dark greasy-looking lesions."
+        - "Look for white fungal felt on the underside of lesions during humid morning periods."
+        - "Monitor recent periods of cool, wet weather or prolonged high humidity."
+      actions:
+        - "Immediately isolate affected plants to prevent catastrophic airborne spore spread."
+        - "Aggressively reduce humidity and raise ventilation air exchange."
+      low_confidence_action:
+        - "Seek immediate in-person plant pathologist verification given the rapid destructiveness of late blight."
+
+    Tomato_Leaf_Mold:
+      summary: "Foliar signs suggesting leaf mold (Passalora fulva), with pale green or yellowish spots on upper leaf surface and olive-brown mold underneath."
+      checks:
+        - "Turn over chlorotic leaves to check for olive-green or grayish velvety fungal patches."
+        - "Monitor relative humidity in dense inner canopy zones."
+      actions:
+        - "Increase greenhouse air movement and decrease nighttime relative humidity."
+        - "Thin dense sucker shoots and prune lower foliage to improve light and airflow."
+      low_confidence_action:
+        - "Inspect leaf undersides for characteristic velvety mold before applying fungal management controls."
+
+    Tomato_Powdery_Mildew:
+      summary: "White talcum-like powdery fungal patches visible on leaf surfaces, typical of powdery mildew."
+      checks:
+        - "Inspect both upper and lower leaf surfaces for powdery white powdery growth."
+        - "Check shaded canopy areas with reduced airflow."
+      actions:
+        - "Prune severely coated leaves to reduce inoculum pressure."
+        - "Improve horizontal airflow across the plant canopy."
+      low_confidence_action:
+        - "Inspect white residue under illumination to rule out dried pesticide or foliar fertilizer residue."
+
+    Tomato_Septoria_leaf_spot:
+      summary: "Numerous small circular spots with dark brown margins and gray or tan centers characteristic of Septoria lycopersici."
+      checks:
+        - "Look for tiny black fruiting bodies (pycnidia) inside the gray lesion centers."
+        - "Inspect lowest leaves where infection typically originates."
+      actions:
+        - "Strip infected lower foliage from the vine and sanitize pruning clippers."
+        - "Avoid touching wet plants during routine maintenance."
+      low_confidence_action:
+        - "Inspect spot centers with a handheld loupe for visible black pycnidia speckling."
+
+    Tomato_Spider_mites Two-spotted_spider_mite:
+      summary: "Fine yellow stippling on leaf surface and delicate webbing characteristic of two-spotted spider mites."
+      checks:
+        - "Turn over leaves with stippling and inspect under magnification for minute moving mites and spherical eggs."
+        - "Check for fine webbing across growing tips and leaf axils."
+        - "Monitor canopy temperature and humidity, as hot dry air accelerates mite reproduction."
+      actions:
+        - "Introduce predatory mite biological controls suitable for greenhouse temperature."
+        - "Mist canopy or adjust relative humidity upward to slow mite reproduction."
+      low_confidence_action:
+        - "Confirm presence of live mites or webbing using a hand lens before ordering biological controls."
+
+    Tomato_Target_Spot:
+      summary: "Brown circular lesions with subtle concentric rings (Corynespora cassiicola) affecting tomato foliage."
+      checks:
+        - "Examine lesions for dark brown centers that do not show the distinct yellow halo of early blight."
+        - "Inspect stems and petioles for dark sunken lesions."
+      actions:
+        - "Prune lower infected foliage and improve canopy airflow."
+        - "Sanitize growing benches and avoid overhead splashing."
+      low_confidence_action:
+        - "Consult diagnostic service to differentiate target spot from early blight or bacterial spot."
+
+    Tomato_Tomato_Yellow_Leaf_Curl_Virus:
+      summary: "Severe stunting, upward leaf curling, and prominent interveinal chlorosis suggesting TYLCV infection."
+      checks:
+        - "Check for presence of whitefly vectors (Bemisia tabaci) on leaf undersides."
+        - "Inspect apical growth for cupping, reduction in leaf size, and thick leathery texture."
+      actions:
+        - "Immediately rogue out and destroy infected plants; viral infections cannot be cured."
+        - "Deploy yellow sticky traps and implement strict whitefly vector exclusion."
+      low_confidence_action:
+        - "Perform a certified serological test (ELISA or PCR) before destroying mature crop rows."
+
+    Tomato_Tomato_mosaic_virus:
+      summary: "Light and dark green mosaic mottle, leaf distortion, or fern-like foliage suggesting Tomato mosaic virus (ToMV)."
+      checks:
+        - "Look for alternating dark green and yellow patches on young foliage."
+        - "Inspect for mechanical transmission vectors: dirty pruning knives, trellis twine, or worker clothing."
+      actions:
+        - "Isolate and discard symptomatic plants in sealed bags."
+        - "Implement thorough disinfection of pruning tools and wash hands before handling healthy plants."
+      low_confidence_action:
+        - "Perform molecular test strip confirmation to rule out non-viral physiological leaf strap or herbicide drift."
+
+  sensor:
+    Normal:
+      summary: "Hydroponic telemetry indicates balanced electrical conductivity, pH, and climate parameters for tomato cultivation."
+      checks:
+        - "Routinely cross-check sensor readings against calibration standards."
+        - "Inspect root zone oxygenation and irrigation dripper delivery."
+      actions:
+        - "Continue established environmental and nutrient management protocols."
+      low_confidence_action:
+        - "Confirm telemetry stability with secondary handheld measurements."
+
+    EC_High_Toxicity:
+      summary: "Electrical conductivity exceeds recommended vegetative/fruiting thresholds, creating osmotic stress and blossom-end rot risk."
+      checks:
+        - "Check reservoir level for water loss from high transpiration in warm climate."
+        - "Inspect root tips for brown necrotic discoloration."
+        - "Check calcium uptake, as high EC impairs calcium transport to fruit."
+      actions:
+        - "Add clean fresh water to dilute reservoir to target electrical conductivity."
+        - "Verify stock dosing pump calibration."
+      low_confidence_action:
+        - "Verify conductivity with a calibrated secondary meter before adding dilution water."
+
+    EC_Low_Deficiency:
+      summary: "Electrical conductivity is below optimal levels, indicating nutrient depletion during heavy fruiting demand."
+      checks:
+        - "Verify stock nutrient tank levels and injection pump operation."
+        - "Check root runoff EC to determine whether crop is consuming nutrients faster than delivered."
+      actions:
+        - "Replenish reservoir with balanced hydroponic nutrient formula appropriate for crop stage."
+        - "Verify fresh water float valve is not overflowing."
+      low_confidence_action:
+        - "Re-measure EC manually before dosing additional fertilizer."
+
+    Humidity_High_Mildew_Risk:
+      summary: "High relative humidity creates condensation risks, increasing susceptibility to Botrytis and leaf mold."
+      checks:
+        - "Inspect greenhouse dehumidification and roof vent control."
+        - "Look for moisture condensation on cold fruit surfaces and lower leaves."
+      actions:
+        - "Engage heating and venting cycle to purge humid greenhouse air."
+        - "Ensure horizontal airflow fans circulate air continuously throughout the canopy."
+      low_confidence_action:
+        - "Confirm hygrometer accuracy with an aspirated psychrometer."
+
+    Humidity_Low_Stress:
+      summary: "Low ambient humidity is driving excessive transpiration, risking water stress and calcium deficiency disorders."
+      checks:
+        - "Monitor plant tops for wilting or leaf cupping during mid-day."
+        - "Inspect grow room misting or evaporative cooling systems."
+      actions:
+        - "Increase ambient humidity toward optimal vapor pressure deficit target."
+        - "Ensure substrate hydration is maintained with sufficient irrigation cycles."
+      low_confidence_action:
+        - "Verify humidity sensor reading with a secondary hygrometer."
+
+    K_Deficiency:
+      summary: "Telemetry indicates depressed potassium availability, threatening fruit sizing and ripening quality."
+      checks:
+        - "Observe older leaves for marginal yellowing and necrosis."
+        - "Check fruit clusters for uneven ripening or blotchy coloration."
+      actions:
+        - "Replenish reservoir with potassium-balanced hydroponic formulation."
+        - "Check root temperature to ensure active nutrient uptake."
+      low_confidence_action:
+        - "Inspect plant tissue and verify sensor telemetry before adjusting potassium balance."
+
+    N_Deficiency:
+      summary: "Telemetry indicates low nitrogen levels, risking general vegetative stunting and loss of canopy vigor."
+      checks:
+        - "Inspect lower mature foliage for generalized pale green chlorosis."
+        - "Check vine growth rate at the apical growing tip."
+      actions:
+        - "Replenish reservoir with balanced nitrogen vegetative stock solution."
+        - "Verify irrigation dripper flow across all tomato grow slabs."
+      low_confidence_action:
+        - "Examine foliar color in person to verify nitrogen deficiency symptoms."
+
+    P_Deficiency:
+      summary: "Telemetry indicates inadequate phosphorus, which can impair root development and flower cluster set."
+      checks:
+        - "Inspect lower leaves and petioles for dark purplish or dull green tinting."
+        - "Check root zone temperature, as cold roots cannot absorb phosphorus efficiently."
+      actions:
+        - "Restore nutrient solution temperature to optimal range."
+        - "Replenish reservoir with balanced macro-element formulation."
+      low_confidence_action:
+        - "Verify solution pH is within optimal range, as high pH precipitates phosphorus."
+
+    Water_Temp_High:
+      summary: "Nutrient solution temperature exceeds safe limits, lowering dissolved oxygen and inviting root pathogens."
+      checks:
+        - "Inspect water chiller and shade reservoir tanks from radiant lamp heat."
+        - "Examine roots for Pythium browning or foul odor."
+      actions:
+        - "Cool nutrient solution to recommended hydroponic range."
+        - "Increase aeration pump output to maximize oxygenation."
+      low_confidence_action:
+        - "Verify solution temperature at multiple tank depths with an immersion thermometer."
+
+    pH_Imbalance:
+      summary: "Nutrient solution pH is outside the safe absorption window, threatening micronutrient lockout."
+      checks:
+        - "Calibrate pH sensor with standard buffer solutions."
+        - "Check acid/base auto-dosing pumps and tank volumes."
+        - "Examine young leaves for iron chlorosis or calcium deficiency."
+      actions:
+        - "Correct reservoir pH toward optimal range using approved buffer solutions."
+        - "Review makeup water alkalinity."
+      low_confidence_action:
+        - "Verify pH with a freshly calibrated handheld meter before adding chemical buffers."

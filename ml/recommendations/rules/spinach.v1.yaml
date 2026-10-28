@@ -1,0 +1,167 @@
+rules_version: "v1.0.0"
+crop: "spinach"
+status: "advisory, unreviewed"
+disclaimer: "Recommendations are conservative advisory suggestions based on statistical correlations. They do not replace grower judgment, certified laboratory tests, or professional agronomic advice. No nutrient dosages or chemical amounts are provided."
+
+rules:
+  image:
+    Spinach_Healthy:
+      summary: "Canopy shows vibrant green coloration, crisp leaf margins, and uniform foliar health."
+      checks:
+        - "Inspect canopy undersides for early fungal sporulation or hidden pest colonies."
+        - "Check root development in net cups for clean white root structure."
+      actions:
+        - "Maintain current environmental lighting and nutrient delivery parameters."
+      low_confidence_action:
+        - "Capture an additional image with clear leaf focus to confirm absent symptoms."
+
+    Spinach_Non fresh:
+      summary: "Leaves display loss of turgor pressure, wilting, or senescence."
+      checks:
+        - "Inspect root zone moisture and circulation pump delivery lines for clogging."
+        - "Check ambient vapor pressure deficit and air temperature in canopy."
+        - "Look for signs of stem rot or vascular collapse at the crown."
+      actions:
+        - "Restore adequate hydration and ensure roots are in continuous contact with aerated solution."
+        - "Reduce canopy heat load or dim grow lighting temporarily if wilting persists."
+      low_confidence_action:
+        - "Verify physical turgidity by hand inspection before altering environmental setpoints."
+
+    Spinach_anthracnose:
+      summary: "Visual lesion patterns consistent with fungal anthracnose spots on leaf surfaces."
+      checks:
+        - "Inspect foliage for small, water-soaked lesions that dry and become paper-thin or tan."
+        - "Check canopy relative humidity and foliar wetness duration."
+        - "Examine nearby plants for localized disease spread."
+      actions:
+        - "Carefully prune and remove infected foliage using sanitized shears."
+        - "Increase greenhouse air circulation and reduce canopy humidity to prevent spore germination."
+        - "Sanitize contact surfaces and irrigation bench trays."
+      low_confidence_action:
+        - "Submit symptomatic leaf sample to an agricultural extension plant clinic for microscopic fungal confirmation."
+
+    Spinach_bacterial spot:
+      summary: "Foliar appearance suggests bacterial leaf spot lesions, characterized by dark angular lesions."
+      checks:
+        - "Examine leaves for water-soaked, translucent or dark lesions bounded by veins."
+        - "Check for overhead water splash or condensation dripping onto canopy leaves."
+        - "Inspect crop for mechanical pruning abrasions that create entry wounds."
+      actions:
+        - "Eliminate overhead condensation drips and avoid handling wet plants."
+        - "Remove severely infected plants and dispose safely away from growing area."
+      low_confidence_action:
+        - "Consult a plant pathology laboratory to distinguish bacterial spot from fungal leaf spots."
+
+    Spinach_downy mildew:
+      summary: "Chlorotic leaf patches suggesting potential downy mildew infection on spinach foliage."
+      checks:
+        - "Inspect undersides of chlorotic leaf patches for purplish or grayish fungal felt/spores."
+        - "Monitor overnight relative humidity and dew-point depression."
+        - "Check greenhouse ventilation during temperature transitions."
+      actions:
+        - "Immediately decrease nighttime humidity and enhance horizontal airflow."
+        - "Isolate and discard affected plants to prevent airborne spore dissemination across the facility."
+      low_confidence_action:
+        - "Inspect underside of leaves under bright magnification for sporulating downy mildew mildew structures."
+
+    Spinach_pest damage:
+      summary: "Visual signs of insect or arthropod feeding damage (chewing holes, stippling, or leaf mining)."
+      checks:
+        - "Inspect leaf undersides and apical shoots for aphids, thrips, spider mites, or loopers."
+        - "Check yellow and blue sticky monitoring traps throughout the growing bay."
+        - "Examine stems and crowns for caterpillar frass."
+      actions:
+        - "Deploy physical sticky traps and biological control agents appropriate for the observed pest."
+        - "Prune heavily infested leaves and maintain perimeter insect netting."
+      low_confidence_action:
+        - "Search foliage thoroughly with a handheld loupe to identify the specific insect species before taking pest management measures."
+
+  sensor:
+    Normal:
+      summary: "Telemetry confirms environmental climate and nutrient solution are in optimal spinach vegetative ranges."
+      checks:
+        - "Maintain routine calibration schedule for pH and electrical conductivity meters."
+        - "Check water dissolved oxygen levels and root chamber aeration."
+      actions:
+        - "Continue standard monitoring and balanced nutrient maintenance."
+      low_confidence_action:
+        - "Confirm telemetry stability with manual probe measurements."
+
+    EC_High_Toxicity:
+      summary: "Electrical conductivity exceeds safe concentration levels for spinach, risking osmotic shock and leaf edge burn."
+      checks:
+        - "Check reservoir level for water loss from evaporation or rapid transpiration."
+        - "Inspect root system for dark or burnt root tips."
+        - "Calibrate EC sensor against fresh reference solution."
+      actions:
+        - "Dilute nutrient reservoir with clean fresh water until EC is within target range."
+        - "Review stock dosing injection ratio."
+      low_confidence_action:
+        - "Verify conductivity with a calibrated secondary handheld sensor before adding dilution water."
+
+    EC_Low_Deficiency:
+      summary: "Electrical conductivity is below target parameters, indicating inadequate nutrient concentration for vigorous spinach growth."
+      checks:
+        - "Inspect fertilizer injector pump operation and stock tank volume."
+        - "Check reservoir water replenishment float valve for sticking in open position."
+      actions:
+        - "Replenish nutrient reservoir with standard balanced hydroponic vegetative stock."
+        - "Verify automatic dosing system line pressure."
+      low_confidence_action:
+        - "Perform manual conductivity test of reservoir and drainage water before dosing fertilizer."
+
+    Humidity_High_Mildew_Risk:
+      summary: "Elevated relative humidity creates a high-risk microclimate for fungal spore germination and downy mildew."
+      checks:
+        - "Inspect grow room dehumidifier and exhaust ventilation fan operation."
+        - "Check canopy density and leaf-to-leaf contact impeding air passage."
+        - "Examine cold spots on facility roof where condensation forms and drips."
+      actions:
+        - "Activate dehumidifiers and increase ventilation exchange rate."
+        - "Improve plant spacing or horizontal circulation fans to maintain foliar dryness."
+      low_confidence_action:
+        - "Calibrate humidity hygrometer against psychrometer to rule out sensor condensation error."
+
+    Humidity_Low_Stress:
+      summary: "Dry atmospheric conditions are causing elevated vapor pressure deficit and moisture stress in spinach foliage."
+      checks:
+        - "Inspect canopy for temporary wilting and reduced stomatal conductance."
+        - "Check fogging or evaporative misting equipment status."
+      actions:
+        - "Increase ambient humidity toward optimal vegetative levels."
+        - "Ensure root channels maintain uninterrupted solution flow."
+      low_confidence_action:
+        - "Verify ambient humidity reading with an independent hygrometer."
+
+    Normal:
+      summary: "Telemetry indicates optimal parameters for hydroponic spinach cultivation."
+      checks:
+        - "Routinely verify sensor accuracy with buffer standards."
+      actions:
+        - "Maintain current environmental and fertigation settings."
+      low_confidence_action:
+        - "Cross-verify readings with handheld instrumentation."
+
+    Water_Temp_High:
+      summary: "Water temperature is elevated above the safe maximum for spinach, which is sensitive to warm root zones."
+      checks:
+        - "Inspect water chiller function and pump heat transfer to solution."
+        - "Check dissolved oxygen concentration, which decreases rapidly as water warms."
+        - "Inspect root zones for early browning or pythium symptoms."
+      actions:
+        - "Engage nutrient solution cooling to return water temperature to safe cool-season range."
+        - "Increase aeration pump delivery to sustain dissolved oxygen levels."
+      low_confidence_action:
+        - "Measure reservoir and gutter return temperature using a calibrated thermometer."
+
+    pH_Imbalance:
+      summary: "Solution pH is outside the optimal absorption range for spinach, threatening micronutrient availability."
+      checks:
+        - "Check pH electrode condition and clean mineral deposits from glass bulb."
+        - "Verify automated acid and base dosing pump reservoirs."
+        - "Look for visual signs of iron chlorosis in youngest leaf foliage."
+      actions:
+        - "Gradually correct reservoir pH toward target range using approved buffer solutions."
+        - "Inspect source water alkalinity."
+      low_confidence_action:
+        - "Test water pH with calibration buffer verified handheld meter before adding chemical buffers."

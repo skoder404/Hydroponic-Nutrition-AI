@@ -1594,9 +1594,9 @@
 **Dependencies:** T6-001, T2-016
 **Acceptance Criteria:**
 
-- [ ] Every class of every crop has a rule or an explicit 'insufficient information'
-- [ ] No rule text contains dosage numbers
-- [ ] Output cites which prediction/rule produced it
+- [x] Every class of every crop has a rule or an explicit 'insufficient information'
+- [x] No rule text contains dosage numbers
+- [x] Output cites which prediction/rule produced it
 
 **Estimated Effort:** 90 min
 **Assigned To:** Backend

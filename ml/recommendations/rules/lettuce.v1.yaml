@@ -1,0 +1,158 @@
+rules_version: "v1.0.0"
+crop: "lettuce"
+status: "advisory, unreviewed"
+disclaimer: "Recommendations are conservative advisory suggestions based on statistical correlations. They do not replace grower judgment, certified laboratory tests, or professional agronomic advice. No nutrient dosages or chemical amounts are provided."
+
+rules:
+  image:
+    Healthier:
+      summary: "Canopy displays healthy foliage coloration and leaf morphology without visible nutrient chlorosis."
+      checks:
+        - "Inspect underside of inner leaves for uniform color."
+        - "Check root tips for healthy white coloration."
+      actions:
+        - "Maintain current photoperiod, fertigation interval, and nutrient regime."
+      low_confidence_action:
+        - "Re-photograph the plant under balanced diffuse lighting to confirm visual health."
+
+    NitrogenDeficiency:
+      summary: "Visual symptoms indicate potential nitrogen deficiency, typically characterized by general chlorosis of older bottom leaves."
+      checks:
+        - "Inspect older, lower leaves for uniform pale-green or yellow chlorosis while newer growth remains slightly greener."
+        - "Verify electrical conductivity of reservoir solution against target baseline."
+        - "Check root health to rule out root rot or compromised uptake capacity."
+      actions:
+        - "Inspect fertigation line delivery and ensure nutrient reservoir is fresh."
+        - "Replenish nutrient reservoir with standard balanced vegetative formula."
+      low_confidence_action:
+        - "Inspect physical leaf tissue in person and verify root appearance before adjusting fertilizer."
+
+    PhosphorusDeficiency:
+      summary: "Visual symptoms suggest potential phosphorus deficiency, often presenting as stunted leaf growth and dull or purplish pigmentation on older foliage."
+      checks:
+        - "Inspect mature leaves for dark-green dull coloration or purplish-red tinting along veins and petioles."
+        - "Measure reservoir solution pH, as improper pH can precipitate phosphate ions."
+        - "Check root zone temperature, as cold solution impairs phosphorus absorption."
+      actions:
+        - "Restore reservoir pH to the recommended optimal band to eliminate nutrient lockout."
+        - "Warm reservoir if water temperature is depressed."
+      low_confidence_action:
+        - "Verify whether purplish leaf hue is an anthocyanin cultivar characteristic before taking corrective steps."
+
+    PotassiumDeficiency:
+      summary: "Visual symptoms indicate possible potassium deficiency, typically displaying marginal chlorosis and necrosis along older leaf edges."
+      checks:
+        - "Check leaf outer margins for localized yellowing progressing into brown necrotic scorch."
+        - "Inspect solution electrical conductivity and drainage EC to rule out salt accumulation."
+        - "Verify water delivery pressure and nozzle flow across all grow channels."
+      actions:
+        - "Flush channels with clean solution if salt buildup is detected at root level."
+        - "Refresh nutrient solution with balanced hydroponic macro-formula."
+      low_confidence_action:
+        - "Examine leaf edges under magnification to differentiate marginal scorch from mechanical abrasion or tip burn."
+
+  sensor:
+    Normal:
+      summary: "Sensor telemetry indicates balanced nutrient solution electrical conductivity, pH, and environmental parameters."
+      checks:
+        - "Verify probe sensor calibration against standard reference solutions routinely."
+        - "Ensure water circulation pumps and aeration stones are operating continuously."
+      actions:
+        - "Maintain standard monitoring schedule and environmental ventilation."
+      low_confidence_action:
+        - "Re-test sensor values with a secondary handheld meter to confirm stability."
+
+    EC_High:
+      summary: "Electrical conductivity is elevated above the optimal threshold, risking salt stress and marginal tip burn."
+      checks:
+        - "Check reservoir level to see if transpiration and evaporation have concentrated the salts."
+        - "Inspect calibrated EC sensor probe for organic film or mineral scaling."
+        - "Examine root tips for signs of salt-induced osmotic stress."
+      actions:
+        - "Top off reservoir with fresh dechlorinated water to reduce concentration."
+        - "Review stock fertilizer addition rates."
+      low_confidence_action:
+        - "Re-measure electrical conductivity using a calibrated handheld meter before adding dilution water."
+
+    EC_Low:
+      summary: "Electrical conductivity is below the recommended threshold, suggesting nutrient depletion in solution."
+      checks:
+        - "Verify automated dosing pump status and stock concentrate reservoir levels."
+        - "Confirm probe calibration against standard conductivity calibration solution."
+        - "Check crop growth stage and nutrient uptake rate."
+      actions:
+        - "Replenish reservoir with balanced stock nutrient solution according to crop stage."
+        - "Verify refill float valve is not malfunctioning and continuously adding excess water."
+      low_confidence_action:
+        - "Verify reservoir volume and conductivity manually before introducing additional stock nutrients."
+
+    Humidity_Low:
+      summary: "Relative humidity is depressed below target levels, increasing crop transpiration rate and risk of tip burn."
+      checks:
+        - "Inspect greenhouse or grow-tent exhaust fan speeds and air intake baffles."
+        - "Monitor leaf temperature to detect stomatal closure and moisture stress."
+        - "Check ultrasonic humidifier and evaporative cooling pad operation."
+      actions:
+        - "Adjust ventilation airflow or engage humidification misting to restore ambient humidity."
+        - "Ensure root zone hydration remains continuous during elevated transpiration demand."
+      low_confidence_action:
+        - "Verify humidity sensor placement and calibrate against an aspirated psychrometer."
+
+    Multiple_Stress:
+      summary: "Telemetry indicates concurrent deviation across multiple environmental and nutrient parameters."
+      checks:
+        - "Inspect all physical meters (pH, EC, water temperature, ambient air sensors) for system-wide failure."
+        - "Check main power supply, circulation loop pumps, and environmental HVAC controls."
+        - "Examine overall root system and canopy vigor."
+      actions:
+        - "Perform a comprehensive system check and prepare a complete reservoir solution reset if parameters cannot be stabilized."
+        - "Isolate any malfunctioning subsystem controllers immediately."
+      low_confidence_action:
+        - "Conduct manual spot checks of water and climate parameters before performing full reservoir dumps."
+
+    WaterTemp_High:
+      summary: "Nutrient solution water temperature is elevated above safe agronomic thresholds, reducing dissolved oxygen."
+      checks:
+        - "Inspect water chiller operation, coolant lines, and ventilation exhaust."
+        - "Check dissolved oxygen levels in reservoir if an oxygen probe is available."
+        - "Inspect root zones for signs of pythium root rot infection favored by warm water."
+      actions:
+        - "Engage active solution cooling or shield reservoir and plumbing lines from direct lighting heat."
+        - "Increase aeration airflow to maximize dissolved oxygen saturation."
+      low_confidence_action:
+        - "Verify water temperature using a calibrated immersion thermometer at multiple reservoir depths."
+
+    WaterTemp_Low:
+      summary: "Nutrient solution water temperature is depressed, slowing root metabolic activity and nutrient uptake."
+      checks:
+        - "Inspect submersible water heater status, thermostat setting, and power connection."
+        - "Observe plant roots for reduced water uptake and delayed foliar growth."
+      actions:
+        - "Engage or adjust reservoir heater to bring solution to optimal vegetative temperature range."
+        - "Insulate reservoir tank from cold facility flooring."
+      low_confidence_action:
+        - "Verify temperature reading with an independent immersion thermometer."
+
+    pH_High:
+      summary: "Solution pH is elevated above optimal range, creating risk of iron, phosphorus, and micronutrient lockout."
+      checks:
+        - "Calibrate pH glass electrode using standard buffer solutions."
+        - "Check pH dosing pump and acid reservoir levels."
+        - "Inspect solution for calcium phosphate cloudiness or precipitation."
+      actions:
+        - "Apply calibrated food-grade pH decreaser buffer until solution returns to optimal band."
+        - "Check makeup tap water alkalinity if unbuffered source water was introduced."
+      low_confidence_action:
+        - "Verify pH using a freshly calibrated two-point meter or chemical indicator drops before dosing acid."
+
+    pH_Low:
+      summary: "Solution pH is depressed below optimal range, creating risk of root damage and cation lockout."
+      checks:
+        - "Check for acidic ammonium nutrient accumulation or root exudate acidification."
+        - "Calibrate pH meter probe to rule out drift."
+        - "Inspect root zone for browning or localized acid burn."
+      actions:
+        - "Apply calibrated food-grade pH increaser buffer to elevate pH into optimal band."
+        - "Review ratio of nitrate versus ammonium nitrogen in fertilizer formula."
+      low_confidence_action:
+        - "Confirm acidic reading with secondary meter prior to introducing base buffer."
