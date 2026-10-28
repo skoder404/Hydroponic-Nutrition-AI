@@ -1781,9 +1781,9 @@
 **Dependencies:** T7-004, T7-003
 **Acceptance Criteria:**
 
-- [ ] Selecting a card routes to `/analyze?crop=`
-- [ ] Empty/error/loading behaviour matches DESIGN S1
-- [ ] Layout follows the 3/2+1/1 column rule
+- [x] Selecting a card routes to `/analyze?crop=`
+- [x] Empty/error/loading behaviour matches DESIGN S1
+- [x] Layout follows the 3/2+1/1 column rule
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
