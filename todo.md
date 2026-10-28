@@ -1568,9 +1568,9 @@
 **Dependencies:** T6-002, T5-010, T5-002, T3-002, T6-003, T5-033
 **Acceptance Criteria:**
 
-- [ ] Plant mode returns one result per valid leaf plus a count summary
-- [ ] Rejected leaves are listed with reasons, not dropped
-- [ ] No averaged or merged confidence appears in the response
+- [x] Plant mode returns one result per valid leaf plus a count summary
+- [x] Rejected leaves are listed with reasons, not dropped
+- [x] No averaged or merged confidence appears in the response
 
 **Estimated Effort:** 90 min
 **Assigned To:** Backend
