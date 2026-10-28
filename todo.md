@@ -1555,9 +1555,9 @@
 **Dependencies:** T6-004, T3-006
 **Acceptance Criteria:**
 
-- [ ] Valid request returns display label and limitations
-- [ ] Invalid unit returns 422 `INVALID_INPUT`
-- [ ] Response includes model version and timestamp
+- [x] Valid request returns display label and limitations
+- [x] Invalid unit returns 422 `INVALID_INPUT`
+- [x] Response includes model version and timestamp
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

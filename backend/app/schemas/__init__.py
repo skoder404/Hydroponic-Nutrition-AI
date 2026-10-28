@@ -4,6 +4,7 @@ from backend.app.schemas.prediction import (
     LeafPrediction,
     PredictionResponse,
     PredictionSummary,
+    PredictSensorRequest,
     RejectedLeaf,
 )
 from backend.app.schemas.recommendation import RecommendationRead
@@ -25,6 +26,7 @@ __all__ = [
     "HealthResponse",
     "LeafPrediction",
     "LettuceSensorRequest",
+    "PredictSensorRequest",
     "PredictionResponse",
     "PredictionSummary",
     "RecommendationRead",

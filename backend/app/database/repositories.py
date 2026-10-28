@@ -12,6 +12,7 @@ Conforms to TECH_RULES and PROJECT_OVERVIEW §21.1:
 from __future__ import annotations
 
 import uuid
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime, timezone, tzinfo
 from typing import Any, Generic, TypeVar
@@ -111,9 +112,9 @@ def create_record(
     observed_tz: str,
     source: str,
     notes: str | None = None,
-    predictions: list[dict[str, Any] | Prediction] | None = None,
-    inputs: list[dict[str, Any] | Input] | None = None,
-    recommendations: list[dict[str, Any] | Recommendation] | None = None,
+    predictions: Sequence[dict[str, Any] | Prediction] | None = None,
+    inputs: Sequence[dict[str, Any] | Input] | None = None,
+    recommendations: Sequence[dict[str, Any] | Recommendation] | None = None,
     record_id: uuid.UUID | None = None,
     raise_on_error: bool = True,
 ) -> SaveResult[AnalysisRecord]:

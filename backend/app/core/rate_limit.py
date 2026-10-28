@@ -91,6 +91,7 @@ class RateLimiter:
 
     STRICT_PATTERNS = (
         "/predict/image",
+        "/predict/sensor",
         "/analyze",
     )
 

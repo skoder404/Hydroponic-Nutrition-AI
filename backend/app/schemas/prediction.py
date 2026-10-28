@@ -9,7 +9,7 @@ Key invariants:
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -117,6 +117,49 @@ class PredictionSummary(BaseModel):
     )
 
 
+class PredictSensorRequest(BaseModel):
+    """Request payload for POST /predict/sensor."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    crop: str = Field(
+        ...,
+        description="Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')",
+        examples=["lettuce"],
+    )
+    readings: dict[str, Any] = Field(
+        ...,
+        description="Sensor readings dictionary (feature name -> float or {value: float, unit: str})",
+        examples=[
+            {
+                "ph": 6.2,
+                "ec": 1.6,
+                "water_temp": 20.0,
+                "humidity": 65.0,
+                "air_temp": 22.0,
+            }
+        ],
+    )
+    units: dict[str, str] | None = Field(
+        None,
+        description="Optional dictionary mapping sensor features to physical engineering units",
+        examples=[
+            {
+                "ph": "pH",
+                "ec": "mS/cm",
+                "water_temp": "degC",
+                "humidity": "%",
+                "air_temp": "degC",
+            }
+        ],
+    )
+    provenance: Literal["live", "manual", "imported"] = Field(
+        "manual",
+        description="Origin of telemetry (manual input, live device, or imported fixture)",
+        examples=["manual"],
+    )
+
+
 class PredictionResponse(BaseModel):
     """Comprehensive prediction response payload for sensor and image modalities.
 
@@ -202,7 +245,7 @@ class PredictionResponse(BaseModel):
 
     # Image-specific extension fields
     input_mode: Literal["single_leaf", "plant"] | None = Field(
-        None,
+        default=None,
         description="Image capture mode",
         examples=["plant"],
     )
@@ -215,7 +258,7 @@ class PredictionResponse(BaseModel):
         description="Candidate masks rejected during quality validation",
     )
     summary: PredictionSummary | None = Field(
-        None,
+        default=None,
         description="Summary counts across leaves (never averaged confidence)",
     )
 
