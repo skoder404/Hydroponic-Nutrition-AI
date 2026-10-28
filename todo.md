@@ -1259,9 +1259,9 @@
 **Dependencies:** T5-001
 **Acceptance Criteria:**
 
-- [ ] NumPy convolution matches `torch.nn.functional.conv2d` on a small example
-- [ ] Notebook visualises feature maps
-- [ ] Self-check questions answered
+- [x] NumPy convolution matches `torch.nn.functional.conv2d` on a small example
+- [x] Notebook visualises feature maps
+- [x] Self-check questions answered
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
