@@ -2251,9 +2251,9 @@
 **Dependencies:** T5-031
 **Acceptance Criteria:**
 
-- [ ] Calibration is fit on validation only
-- [ ] Before/after reliability plots saved
-- [ ] Decision recorded in an ADR
+- [x] Calibration is fit on validation only
+- [x] Before/after reliability plots saved
+- [x] Decision recorded in an ADR
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

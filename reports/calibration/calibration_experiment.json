@@ -1,0 +1,441 @@
+{
+  "task_id": "T10-003",
+  "description": "Probability calibration experiment on validation data",
+  "split_evaluated": "validation",
+  "decision": "RETAIN 'model score', REJECT 'calibrated probability'",
+  "image_model": {
+    "modality": "image",
+    "crop": "lettuce",
+    "model_family": "EfficientNetB0",
+    "sample_count": 128,
+    "split_evaluated": "validation",
+    "calibration_method": "temperature_scaling",
+    "optimal_temperature": 0.844298292677331,
+    "pre_scaling_ece": 0.048591036349534975,
+    "post_scaling_ece": 0.056731204967945814,
+    "pre_scaling_mce": 0.42815327644348145,
+    "post_scaling_mce": 0.4124162793159485,
+    "pre_bins": [
+      {
+        "bin": 0,
+        "range": [
+          0.0,
+          0.1
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.05
+      },
+      {
+        "bin": 1,
+        "range": [
+          0.1,
+          0.2
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.15
+      },
+      {
+        "bin": 2,
+        "range": [
+          0.2,
+          0.3
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.25
+      },
+      {
+        "bin": 3,
+        "range": [
+          0.3,
+          0.4
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.35
+      },
+      {
+        "bin": 4,
+        "range": [
+          0.4,
+          0.5
+        ],
+        "count": 7,
+        "accuracy": 0.8571,
+        "confidence": 0.4358
+      },
+      {
+        "bin": 5,
+        "range": [
+          0.5,
+          0.6
+        ],
+        "count": 1,
+        "accuracy": 1.0,
+        "confidence": 0.5718
+      },
+      {
+        "bin": 6,
+        "range": [
+          0.6,
+          0.7
+        ],
+        "count": 6,
+        "accuracy": 0.6667,
+        "confidence": 0.6429
+      },
+      {
+        "bin": 7,
+        "range": [
+          0.7,
+          0.8
+        ],
+        "count": 5,
+        "accuracy": 0.6,
+        "confidence": 0.7708
+      },
+      {
+        "bin": 8,
+        "range": [
+          0.8,
+          0.9
+        ],
+        "count": 14,
+        "accuracy": 0.8571,
+        "confidence": 0.8487
+      },
+      {
+        "bin": 9,
+        "range": [
+          0.9,
+          1.0
+        ],
+        "count": 95,
+        "accuracy": 1.0,
+        "confidence": 0.9818
+      }
+    ],
+    "post_bins": [
+      {
+        "bin": 0,
+        "range": [
+          0.0,
+          0.1
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.05
+      },
+      {
+        "bin": 1,
+        "range": [
+          0.1,
+          0.2
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.15
+      },
+      {
+        "bin": 2,
+        "range": [
+          0.2,
+          0.3
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.25
+      },
+      {
+        "bin": 3,
+        "range": [
+          0.3,
+          0.4
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.35
+      },
+      {
+        "bin": 4,
+        "range": [
+          0.4,
+          0.5
+        ],
+        "count": 7,
+        "accuracy": 0.8571,
+        "confidence": 0.4661
+      },
+      {
+        "bin": 5,
+        "range": [
+          0.5,
+          0.6
+        ],
+        "count": 1,
+        "accuracy": 1.0,
+        "confidence": 0.5876
+      },
+      {
+        "bin": 6,
+        "range": [
+          0.6,
+          0.7
+        ],
+        "count": 6,
+        "accuracy": 0.6667,
+        "confidence": 0.6829
+      },
+      {
+        "bin": 7,
+        "range": [
+          0.7,
+          0.8
+        ],
+        "count": 1,
+        "accuracy": 1.0,
+        "confidence": 0.7833
+      },
+      {
+        "bin": 8,
+        "range": [
+          0.8,
+          0.9
+        ],
+        "count": 12,
+        "accuracy": 0.6667,
+        "confidence": 0.8693
+      },
+      {
+        "bin": 9,
+        "range": [
+          0.9,
+          1.0
+        ],
+        "count": 101,
+        "accuracy": 1.0,
+        "confidence": 0.9865
+      }
+    ]
+  },
+  "sensor_model": {
+    "modality": "sensor",
+    "crop": "lettuce",
+    "model_family": "DecisionTreeClassifier",
+    "sample_count": 124,
+    "split_evaluated": "validation",
+    "calibration_method": "platt_and_isotonic",
+    "pre_scaling_ece": 0.9193548387096774,
+    "platt_ece": 0.7971814532089032,
+    "isotonic_ece": 1.3877787807814457e-17,
+    "pre_scaling_mce": 0.9193548387096774,
+    "platt_mce": 0.9283918454720794,
+    "isotonic_mce": 1.3877787807814457e-17,
+    "pre_bins": [
+      {
+        "bin": 0,
+        "range": [
+          0.0,
+          0.1
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.05
+      },
+      {
+        "bin": 1,
+        "range": [
+          0.1,
+          0.2
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.15
+      },
+      {
+        "bin": 2,
+        "range": [
+          0.2,
+          0.3
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.25
+      },
+      {
+        "bin": 3,
+        "range": [
+          0.3,
+          0.4
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.35
+      },
+      {
+        "bin": 4,
+        "range": [
+          0.4,
+          0.5
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.45
+      },
+      {
+        "bin": 5,
+        "range": [
+          0.5,
+          0.6
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.55
+      },
+      {
+        "bin": 6,
+        "range": [
+          0.6,
+          0.7
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.65
+      },
+      {
+        "bin": 7,
+        "range": [
+          0.7,
+          0.8
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.75
+      },
+      {
+        "bin": 8,
+        "range": [
+          0.8,
+          0.9
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.85
+      },
+      {
+        "bin": 9,
+        "range": [
+          0.9,
+          1.0
+        ],
+        "count": 124,
+        "accuracy": 0.0806,
+        "confidence": 1.0
+      }
+    ],
+    "platt_bins": [
+      {
+        "bin": 0,
+        "range": [
+          0.0,
+          0.1
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.05
+      },
+      {
+        "bin": 1,
+        "range": [
+          0.1,
+          0.2
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.15
+      },
+      {
+        "bin": 2,
+        "range": [
+          0.2,
+          0.3
+        ],
+        "count": 2,
+        "accuracy": 0.0,
+        "confidence": 0.2782
+      },
+      {
+        "bin": 3,
+        "range": [
+          0.3,
+          0.4
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.35
+      },
+      {
+        "bin": 4,
+        "range": [
+          0.4,
+          0.5
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.45
+      },
+      {
+        "bin": 5,
+        "range": [
+          0.5,
+          0.6
+        ],
+        "count": 14,
+        "accuracy": 0.7143,
+        "confidence": 0.5629
+      },
+      {
+        "bin": 6,
+        "range": [
+          0.6,
+          0.7
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.65
+      },
+      {
+        "bin": 7,
+        "range": [
+          0.7,
+          0.8
+        ],
+        "count": 28,
+        "accuracy": 0.0,
+        "confidence": 0.7822
+      },
+      {
+        "bin": 8,
+        "range": [
+          0.8,
+          0.9
+        ],
+        "count": 0,
+        "accuracy": 0.0,
+        "confidence": 0.85
+      },
+      {
+        "bin": 9,
+        "range": [
+          0.9,
+          1.0
+        ],
+        "count": 80,
+        "accuracy": 0.0,
+        "confidence": 0.9284
+      }
+    ]
+  }
+}
