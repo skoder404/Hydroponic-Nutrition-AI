@@ -71,6 +71,10 @@ class ZeroPerimeterError(FeatureExtractionError):
     """Raised when leaf contour perimeter is zero, non-positive, or cannot be computed."""
 
 
+class DegenerateContourError(FeatureExtractionError):
+    """Raised when leaf contour is degenerate (e.g. zero convex hull area, colinear points)."""
+
+
 # ==============================================================================
 # Single Image Loader
 # ==============================================================================

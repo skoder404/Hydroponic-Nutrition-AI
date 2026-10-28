@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from ml.features.common import (
     DEFAULT_FEATURE_SCHEMA_VERSION,
+    DegenerateContourError,
     DimensionMismatchError,
     EmptyMaskError,
     FeatureExtractionError,
@@ -44,6 +45,13 @@ from ml.features.spinach import (
     compute_hsv_ratio,
     extract_spinach_features,
 )
+from ml.features.tomato import (
+    DEFAULT_TOMATO_CONFIG,
+    TOMATO_FEATURE_NAMES,
+    TomatoFeatureConfig,
+    compute_shape_descriptors,
+    extract_tomato_features,
+)
 
 __all__ = [
     "DEFAULT_ANGLES",
@@ -53,8 +61,11 @@ __all__ = [
     "DEFAULT_LEVELS",
     "DEFAULT_LOG_BASE",
     "DEFAULT_SPINACH_CONFIG",
+    "DEFAULT_TOMATO_CONFIG",
     "LETTUCE_FEATURE_NAMES",
     "SPINACH_FEATURE_NAMES",
+    "TOMATO_FEATURE_NAMES",
+    "DegenerateContourError",
     "DimensionMismatchError",
     "EmptyMaskError",
     "FeatureExtractionError",
@@ -63,6 +74,7 @@ __all__ = [
     "LettuceFeatureConfig",
     "NonFiniteFeatureError",
     "SpinachFeatureConfig",
+    "TomatoFeatureConfig",
     "ZeroPerimeterError",
     "assert_finite_features",
     "compute_contour_compactness",
@@ -73,9 +85,11 @@ __all__ = [
     "compute_glcm_entropy",
     "compute_hsv_ratio",
     "compute_mean_hue_and_saturation",
+    "compute_shape_descriptors",
     "extract_glcm_features",
     "extract_lettuce_features",
     "extract_spinach_features",
+    "extract_tomato_features",
     "load_image",
     "quantize_gray",
     "select_masked_pixels",

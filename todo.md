@@ -1126,9 +1126,9 @@
 **Dependencies:** T5-006
 **Acceptance Criteria:**
 
-- [ ] Feature list equals the ADR decision
-- [ ] Definitions are written in metadata
-- [ ] Degenerate contour (zero hull area) raises an error
+- [x] Feature list equals the ADR decision
+- [x] Definitions are written in metadata
+- [x] Degenerate contour (zero hull area) raises an error
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
