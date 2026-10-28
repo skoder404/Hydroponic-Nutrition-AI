@@ -182,6 +182,21 @@ export class ApiClient {
   }
 
   /**
+   * Build complete URL for downloading history CSV with current filters applied.
+   */
+  getHistoryExportUrl(params: HistoryQueryParams = {}): string {
+    const query = new URLSearchParams();
+    if (params.crop) query.set("crop", params.crop);
+    if (params.mode) query.set("mode", params.mode);
+    if (params.source) query.set("source", params.source);
+    if (params.start_date) query.set("start_date", params.start_date);
+    if (params.end_date) query.set("end_date", params.end_date);
+
+    const qs = query.toString();
+    return `${this.baseUrl}/history/export${qs ? `?${qs}` : ""}`;
+  }
+
+  /**
    * Fetch a single historical record by ID.
    */
   async getRecord(recordId: string): Promise<RecordRead> {

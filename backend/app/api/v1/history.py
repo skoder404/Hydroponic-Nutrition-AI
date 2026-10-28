@@ -8,6 +8,8 @@ Endpoints:
 
 from __future__ import annotations
 
+import csv
+import io
 import logging
 import uuid
 from datetime import datetime, timezone
@@ -246,6 +248,129 @@ def get_history_records(
 
     response.headers["X-Total-Count"] = str(total_count)
     return [record_to_schema(rec) for rec in records]
+
+
+def sanitize_csv_cell(value: Any) -> str:
+    """Neutralise CSV injection formula trigger characters (=, +, -, @, \\t, \\r)."""
+    if value is None:
+        return ""
+    val_str = str(value)
+    if val_str and val_str[0] in ("=", "+", "-", "@", "\t", "\r"):
+        return f"'{val_str}"
+    return val_str
+
+
+@router.get(
+    "/history/export",
+    summary="Export historical analysis records to CSV",
+)
+def export_history_records(
+    crop: str | None = Query(None, description="Filter by crop cultivar"),
+    modality: str | None = Query(None, description="Filter by modality/mode"),
+    mode: str | None = Query(None, description="Alias filter for modality/mode"),
+    source: str | None = Query(None, description="Filter by source provenance"),
+    date: str | None = Query(None, description="Filter by date string (YYYY-MM-DD)"),
+    start_date: str | None = Query(None, description="Filter start date ISO"),
+    end_date: str | None = Query(None, description="Filter end date ISO"),
+    db: Session = Depends(get_db),
+) -> Response:
+    """Export filtered history records as a secure CSV file with timezone-aware timestamps."""
+    filter_mode = modality or mode
+
+    start_dt: datetime | None = None
+    end_dt: datetime | None = None
+
+    if date:
+        try:
+            parsed_date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
+            start_dt = parsed_date
+            end_dt = parsed_date.replace(hour=23, minute=59, second=59, microsecond=999999)
+        except ValueError:
+            pass
+
+    if start_date:
+        try:
+            start_dt = datetime.fromisoformat(start_date.replace("Z", "+00:00"))
+        except ValueError:
+            pass
+
+    if end_date:
+        try:
+            end_dt = datetime.fromisoformat(end_date.replace("Z", "+00:00"))
+        except ValueError:
+            pass
+
+    try:
+        records, _ = list_records(
+            db,
+            limit=1000,
+            offset=0,
+            crop=crop,
+            source=source,
+            mode=filter_mode,
+            start_time=start_dt,
+            end_time=end_dt,
+            eager_load=True,
+        )
+    except SQLAlchemyError as exc:
+        logger.error(f"Failed to query history records for export: {exc}")
+        raise PersistenceFailedError(
+            f"Database query failed: {exc}. Export could not be generated."
+        ) from exc
+
+    output = io.StringIO()
+    writer = csv.writer(output, quoting=csv.QUOTE_MINIMAL)
+
+    headers = [
+        "id",
+        "observed_at",
+        "observed_tz",
+        "crop",
+        "mode",
+        "source",
+        "result",
+        "predicted_class",
+        "confidence",
+        "uncertain",
+        "model_id",
+        "model_version",
+        "notes",
+    ]
+    writer.writerow(headers)
+
+    for rec in records:
+        schema = record_to_schema(rec)
+        main_pred = schema.predictions[0] if schema.predictions else None
+
+        dt = schema.observed_at
+        tz_name = schema.observed_tz or "UTC"
+        ts_with_tz = f"{dt.isoformat()} ({tz_name})"
+
+        row = [
+            sanitize_csv_cell(schema.id),
+            sanitize_csv_cell(ts_with_tz),
+            sanitize_csv_cell(tz_name),
+            sanitize_csv_cell(schema.crop),
+            sanitize_csv_cell(schema.mode),
+            sanitize_csv_cell(schema.source),
+            sanitize_csv_cell(main_pred.display_label if main_pred else "Complete"),
+            sanitize_csv_cell(main_pred.predicted_class if main_pred else "N/A"),
+            sanitize_csv_cell(f"{main_pred.confidence:.4f}" if main_pred and main_pred.confidence is not None else ""),
+            sanitize_csv_cell(str(main_pred.uncertain) if main_pred else "False"),
+            sanitize_csv_cell(main_pred.model_id if main_pred else "N/A"),
+            sanitize_csv_cell(main_pred.model_version if main_pred else "v1.0.0"),
+            sanitize_csv_cell(schema.notes or ""),
+        ]
+        writer.writerow(row)
+
+    csv_content = output.getvalue()
+    return Response(
+        content=csv_content,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="history_export.csv"',
+        },
+    )
 
 
 @router.get(

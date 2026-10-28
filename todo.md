@@ -2278,9 +2278,9 @@
 **Dependencies:** T7-016, T6-010
 **Acceptance Criteria:**
 
-- [ ] Cells starting with = + - @ are neutralised
-- [ ] Export respects filters
-- [ ] Timestamps include timezone
+- [x] Cells starting with = + - @ are neutralised
+- [x] Export respects filters
+- [x] Timestamps include timezone
 
 **Estimated Effort:** 45 min
 **Assigned To:** Full-stack

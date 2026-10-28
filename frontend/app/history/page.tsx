@@ -100,24 +100,51 @@ export default function HistoryPage() {
             </p>
           </div>
 
-          <Link href="/analyze">
-            <Button variant="primary" size="sm">
-              <svg
-                className="w-4 h-4 mr-1.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-              New Inspection
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <a
+              href={apiClient.getHistoryExportUrl(filters)}
+              download="history_export.csv"
+              className="inline-flex"
+              aria-label="Export filtered inspection history to CSV file"
+            >
+              <Button variant="secondary" size="sm" type="button">
+                <svg
+                  className="w-4 h-4 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Export CSV
+              </Button>
+            </a>
+
+            <Link href="/analyze">
+              <Button variant="primary" size="sm">
+                <svg
+                  className="w-4 h-4 mr-1.5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+                New Inspection
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
 
