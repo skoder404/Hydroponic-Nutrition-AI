@@ -60,7 +60,8 @@ Mathematical Formulation and Default Conventions (Overview §16.4)
      All returned features pass through `assert_finite_features` ensuring no NaN/Inf.
 """
 
-from typing import Dict, Optional, Sequence, Tuple, Union
+from collections.abc import Sequence
+
 import numpy as np
 from skimage.color import rgb2gray
 from skimage.feature import graycomatrix, graycoprops
@@ -73,8 +74,8 @@ from ml.features.common import (
 
 # Canonical configuration constants
 DEFAULT_LEVELS: int = 32
-DEFAULT_DISTANCES: Tuple[int, ...] = (1,)
-DEFAULT_ANGLES: Tuple[float, ...] = (0.0, np.pi / 4.0, np.pi / 2.0, 3.0 * np.pi / 4.0)
+DEFAULT_DISTANCES: tuple[int, ...] = (1,)
+DEFAULT_ANGLES: tuple[float, ...] = (0.0, np.pi / 4.0, np.pi / 2.0, 3.0 * np.pi / 4.0)
 DEFAULT_LOG_BASE: float = 2.0
 DEFAULT_SYMMETRIC: bool = True
 DEFAULT_NORMED: bool = True
@@ -95,7 +96,9 @@ def to_grayscale(image: np.ndarray) -> np.ndarray:
         2D float64 grayscale array with values in [0.0, 1.0].
     """
     if not isinstance(image, np.ndarray):
-        raise TypeError(f"Expected image to be a numpy ndarray, got {type(image).__name__}")
+        raise TypeError(
+            f"Expected image to be a numpy ndarray, got {type(image).__name__}"
+        )
 
     if image.ndim == 2:
         if np.issubdtype(image.dtype, np.floating):
@@ -176,7 +179,9 @@ def compute_glcm(
         4D GLCM array of shape (levels, levels, len(distances), len(angles)).
     """
     if image.ndim != 2:
-        raise DimensionMismatchError(f"GLCM computation requires 2D array, got shape {image.shape}")
+        raise DimensionMismatchError(
+            f"GLCM computation requires 2D array, got shape {image.shape}"
+        )
 
     # Ensure integer array within [0, levels - 1]
     img_uint8 = np.clip(image, 0, levels - 1).astype(np.uint8)
@@ -255,12 +260,12 @@ def compute_glcm_entropy(glcm: np.ndarray, log_base: float = DEFAULT_LOG_BASE) -
 
 def extract_glcm_features(
     image: np.ndarray,
-    mask: Optional[np.ndarray] = None,
+    mask: np.ndarray | None = None,
     levels: int = DEFAULT_LEVELS,
     distances: Sequence[int] = DEFAULT_DISTANCES,
     angles: Sequence[float] = DEFAULT_ANGLES,
     log_base: float = DEFAULT_LOG_BASE,
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """Extract GLCM contrast and entropy texture features.
 
     Parameters
@@ -289,15 +294,21 @@ def extract_glcm_features(
     # Validate mask if provided
     if mask is not None:
         if not isinstance(mask, np.ndarray):
-            raise TypeError(f"Expected mask to be a numpy ndarray, got {type(mask).__name__}")
+            raise TypeError(
+                f"Expected mask to be a numpy ndarray, got {type(mask).__name__}"
+            )
         if mask.shape[:2] != image.shape[:2]:
             raise DimensionMismatchError(
                 f"Mask shape {mask.shape[:2]} does not match image shape {image.shape[:2]}"
             )
 
-        binary_mask = mask.astype(bool) if mask.ndim == 2 else mask[:, :, 0].astype(bool)
+        binary_mask = (
+            mask.astype(bool) if mask.ndim == 2 else mask[:, :, 0].astype(bool)
+        )
         if not np.any(binary_mask):
-            raise EmptyMaskError("Provided mask is completely empty (no foreground pixels).")
+            raise EmptyMaskError(
+                "Provided mask is completely empty (no foreground pixels)."
+            )
 
         # Crop image to foreground bounding box
         rows, cols = np.where(binary_mask)

@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 from collections.abc import Mapping, Sequence
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -42,7 +42,9 @@ class NonFiniteFeatureError(FeatureExtractionError):
     error and must NEVER be silently imputed with 0.
     """
 
-    def __init__(self, feature_name: str, value: float, message: str | None = None) -> None:
+    def __init__(
+        self, feature_name: str, value: float, message: str | None = None
+    ) -> None:
         self.feature_name = feature_name
         self.value = value
         msg = (
@@ -63,6 +65,10 @@ class EmptyMaskError(FeatureExtractionError):
 
 class DimensionMismatchError(FeatureExtractionError):
     """Raised when image and segmentation mask spatial dimensions do not match."""
+
+
+class ZeroPerimeterError(FeatureExtractionError):
+    """Raised when leaf contour perimeter is zero, non-positive, or cannot be computed."""
 
 
 # ==============================================================================
@@ -141,7 +147,9 @@ def load_image(
 
         bgr = cv2.imread(str(path), cv2.IMREAD_COLOR)
         if bgr is None:
-            raise ImageLoadError(f"Failed to read image file from: '{path}' (unsupported or corrupt format).")
+            raise ImageLoadError(
+                f"Failed to read image file from: '{path}' (unsupported or corrupt format)."
+            )
         # OpenCV reads as BGR -> convert explicitly to RGB
         img_rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
@@ -152,7 +160,9 @@ def load_image(
     if target_size is not None:
         w, h = target_size
         if w <= 0 or h <= 0:
-            raise ImageLoadError(f"Invalid target_size: {target_size}. Dimensions must be positive.")
+            raise ImageLoadError(
+                f"Invalid target_size: {target_size}. Dimensions must be positive."
+            )
         img_rgb = cv2.resize(img_rgb, (w, h), interpolation=cv2.INTER_LINEAR)
 
     return img_rgb
@@ -186,7 +196,9 @@ def select_masked_pixels(
         EmptyMaskError: If the mask contains 0 positive foreground pixels.
     """
     if image.ndim != 3 or image.shape[2] != 3:
-        raise ImageLoadError(f"Expected 3-channel RGB image (H, W, 3), got shape {image.shape}")
+        raise ImageLoadError(
+            f"Expected 3-channel RGB image (H, W, 3), got shape {image.shape}"
+        )
 
     if mask is None:
         if return_flat:
@@ -253,9 +265,15 @@ def assert_finite_features(
                 )
     else:
         values = list(features)
-        names = list(feature_names) if feature_names is not None else [f"feature_{i}" for i in range(len(values))]
+        names = (
+            list(feature_names)
+            if feature_names is not None
+            else [f"feature_{i}" for i in range(len(values))]
+        )
         if len(names) != len(values):
-            raise ValueError(f"Length mismatch: {len(names)} names vs {len(values)} values.")
+            raise ValueError(
+                f"Length mismatch: {len(names)} names vs {len(values)} values."
+            )
 
         for name, val in zip(names, values):
             if val is None or np.isnan(val) or np.isinf(val):
@@ -293,7 +311,9 @@ class FeatureVector:
     def __post_init__(self) -> None:
         # 1. Enforce non-empty schema version
         if not self.schema_version or not str(self.schema_version).strip():
-            raise ValueError("FeatureVector requires a non-empty schema_version string.")
+            raise ValueError(
+                "FeatureVector requires a non-empty schema_version string."
+            )
 
         # 2. Check length consistency
         if len(self.values) != len(self.feature_names):

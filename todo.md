@@ -1087,9 +1087,9 @@
 **Dependencies:** T5-003, T2-016
 **Acceptance Criteria:**
 
-- [ ] Order and names match Overview §16.1
-- [ ] Zero perimeter produces an explicit error
-- [ ] HSV thresholds are stored in config, not hard-coded
+- [x] Order and names match Overview §16.1
+- [x] Zero perimeter produces an explicit error
+- [x] HSV thresholds are stored in config, not hard-coded
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

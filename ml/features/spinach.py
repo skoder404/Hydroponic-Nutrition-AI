@@ -34,8 +34,8 @@ Design Decisions & Contracts (T5-005)
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
-from typing import Dict, List, Optional, Tuple, Union
+from dataclasses import asdict, dataclass
+
 import cv2
 import numpy as np
 
@@ -43,7 +43,6 @@ from ml.features.common import (
     DEFAULT_FEATURE_SCHEMA_VERSION,
     DimensionMismatchError,
     EmptyMaskError,
-    FeatureExtractionError,
     FeatureVector,
     assert_finite_features,
     select_masked_pixels,
@@ -58,7 +57,7 @@ from ml.features.glcm import (
 )
 
 # Canonical 6-feature ordering defined in Overview §16.2
-SPINACH_FEATURE_NAMES: Tuple[str, ...] = (
+SPINACH_FEATURE_NAMES: tuple[str, ...] = (
     "exg_mean",
     "exr_mean",
     "yellow_pixel_ratio",
@@ -99,11 +98,11 @@ class SpinachFeatureConfig:
 
     # GLCM settings
     glcm_levels: int = DEFAULT_LEVELS
-    glcm_distances: Tuple[int, ...] = DEFAULT_DISTANCES
-    glcm_angles: Tuple[float, ...] = DEFAULT_ANGLES
+    glcm_distances: tuple[int, ...] = DEFAULT_DISTANCES
+    glcm_angles: tuple[float, ...] = DEFAULT_ANGLES
     glcm_log_base: float = DEFAULT_LOG_BASE
 
-    def to_dict(self) -> Dict[str, Union[str, float, int, list]]:
+    def to_dict(self) -> dict[str, str | float | int | list]:
         """Serialize configuration to a JSON-compatible dictionary."""
         d = asdict(self)
         d["glcm_angles"] = list(self.glcm_angles)
@@ -199,9 +198,9 @@ def compute_excess_red(rgb_pixels: np.ndarray) -> np.ndarray:
 
 def compute_hsv_ratio(
     rgb_pixels: np.ndarray,
-    hue_range: Tuple[float, float],
-    sat_range: Tuple[float, float],
-    val_range: Tuple[float, float],
+    hue_range: tuple[float, float],
+    sat_range: tuple[float, float],
+    val_range: tuple[float, float],
 ) -> float:
     """Compute the fraction of foreground pixels falling within specified HSV bounds.
 
@@ -257,7 +256,7 @@ def compute_hsv_ratio(
 def extract_spinach_features(
     image: np.ndarray,
     mask: np.ndarray,
-    config: Optional[SpinachFeatureConfig] = None,
+    config: SpinachFeatureConfig | None = None,
 ) -> FeatureVector:
     """Extract standardized 6-feature vector from a spinach leaf image and mask.
 
@@ -304,7 +303,9 @@ def extract_spinach_features(
         raise TypeError(f"Expected mask to be np.ndarray, got {type(mask).__name__}")
 
     if image.ndim != 3 or image.shape[2] != 3:
-        raise DimensionMismatchError(f"Expected RGB image of shape (H, W, 3), got {image.shape}")
+        raise DimensionMismatchError(
+            f"Expected RGB image of shape (H, W, 3), got {image.shape}"
+        )
 
     h, w = image.shape[:2]
     mask_2d = mask if mask.ndim == 2 else mask[:, :, 0]
