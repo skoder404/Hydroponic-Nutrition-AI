@@ -1,0 +1,52 @@
+{
+  "model_id": "tomato_custom_cnn",
+  "crop": "tomato",
+  "modality": "image",
+  "family": "CustomCNN",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/tomato/custom_cnn/v1.0.0/model.pt",
+  "commit": "71325dc44550312eb51f0bf08f43dd3c1de25e3d",
+  "input_type": "leaf image as provided",
+  "classes": [
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_Healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Powdery_Mildew",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites Two-spotted_spider_mite",
+    "Tomato_Target_Spot",
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus"
+  ],
+  "num_classes": 11,
+  "num_parameters": 458027,
+  "target_device": "cuda:0",
+  "device_actually_used": "cuda:0",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 10,
+  "val_macro_f1": 0.8714,
+  "val_accuracy": 0.8723,
+  "split_counts": {
+    "train": 23496,
+    "val": 5034
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 3,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T14:29:45.760091+00:00",
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

@@ -18,9 +18,11 @@ from typing import Any, Final
 
 import pandas as pd
 import torch
-from PIL import Image
+from PIL import Image, ImageFile
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 from ml.labels import IMAGE_CLASSES
 
@@ -337,9 +339,13 @@ class CropLeafDataset(Dataset):
         sample = self.samples[idx]
         img_path = sample["image_path"]
 
-        # Open and load image, falling back gracefully to synthetic placeholder if asset missing in CI
+        # Open and load image, falling back gracefully to synthetic placeholder if asset missing in CI or corrupted
         if img_path.exists():
-            img = Image.open(img_path).convert("RGB")
+            try:
+                img = Image.open(img_path).convert("RGB")
+            except Exception as e:
+                LOGGER.warning("Could not open/load image %s (%s); substituting fallback placeholder", img_path, e)
+                img = Image.new("RGB", self.image_size, color=(128, 128, 128))
         else:
             img = Image.new("RGB", self.image_size, color=(128, 128, 128))
 

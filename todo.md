@@ -1380,9 +1380,9 @@
 **Dependencies:** T5-024
 **Acceptance Criteria:**
 
-- [ ] Validation report with per-class F1 for all 11 classes
-- [ ] Class support shown
-- [ ] Input type recorded
+- [x] Validation report with per-class F1 for all 11 classes
+- [x] Class support shown
+- [x] Input type recorded
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
