@@ -1314,9 +1314,9 @@
 **Dependencies:** T5-020
 **Acceptance Criteria:**
 
-- [ ] Full hyperparameter configuration saved with the run
-- [ ] Report uses the validation split only
-- [ ] Device actually used is recorded
+- [x] Full hyperparameter configuration saved with the run
+- [x] Report uses the validation split only
+- [x] Device actually used is recorded
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

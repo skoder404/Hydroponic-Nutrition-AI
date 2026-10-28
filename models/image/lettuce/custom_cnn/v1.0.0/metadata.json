@@ -1,0 +1,44 @@
+{
+  "model_id": "lettuce_custom_cnn",
+  "crop": "lettuce",
+  "modality": "image",
+  "family": "CustomCNN",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/lettuce/custom_cnn/v1.0.0/model.pt",
+  "commit": "8b0bc03629dbc9217b2183807ea52cf3d941c7c0",
+  "classes": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "num_classes": 4,
+  "num_parameters": 456228,
+  "target_device": "cuda:0",
+  "device_actually_used": "cuda:0",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 17,
+  "val_macro_f1": 0.7045,
+  "val_accuracy": 0.8047,
+  "split_counts": {
+    "train": 703,
+    "val": 128
+  },
+  "hyperparameters": {
+    "batch_size": 32,
+    "initial_lr": 0.001,
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T11:14:31.301780+00:00",
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

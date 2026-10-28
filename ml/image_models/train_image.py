@@ -456,12 +456,25 @@ def train_image_model(
     with open(metadata_file, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2)
 
+    # Compute class distribution per split for report
+    train_class_counts: dict[str, int] = {}
+    val_class_counts: dict[str, int] = {}
+    if hasattr(train_loader.dataset, "samples"):
+        for s in train_loader.dataset.samples:  # type: ignore[union-attr]
+            lbl = s.get("label", "unknown")
+            train_class_counts[lbl] = train_class_counts.get(lbl, 0) + 1
+    if hasattr(val_loader.dataset, "samples"):
+        for s in val_loader.dataset.samples:  # type: ignore[union-attr]
+            lbl = s.get("label", "unknown")
+            val_class_counts[lbl] = val_class_counts.get(lbl, 0) + 1
+
     # Section 18.2 Evaluation Report
     report_dir = config.report_dir or (PROJECT_ROOT / f"reports/{crop}")
     report_dir.mkdir(parents=True, exist_ok=True)
 
     limitations = [
         f"Model trained and evaluated on isolated {crop} leaf images using holdout validation split.",
+        f"Crop labels are inherited from whole-plant annotations; leaf-level variance may exist.",
         f"Verified compute hardware: target={target_device_str}, actually_used={device_actually_used}.",
         "Evaluated strictly on the validation partition; test holdout remains untouched.",
     ]
@@ -478,8 +491,8 @@ def train_image_model(
         dataset_manifest=f"processed_data/features/{crop}",
         split_protocol="Stratified split; train and validation isolated",
         split_counts={"train": len(train_loader.dataset), "validation": len(val_loader.dataset), "test": 0},  # type: ignore[arg-type]
-        class_counts_per_split={"train": {}, "validation": {}},
-        label_generation_method="Leaf crop instance diagnosis",
+        class_counts_per_split={"train": train_class_counts, "validation": val_class_counts},
+        label_generation_method="Leaf crop instance diagnosis; crop labels inherited from whole-plant labels",
         hyperparameters=asdict(config) if hasattr(config, "__dataclass_fields__") else {},
         limitations=limitations,
         output_dir=report_dir,
