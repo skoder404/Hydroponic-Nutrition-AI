@@ -26,7 +26,7 @@ def test_health_endpoint_contract():
     assert data["db"] == "unknown"
     assert data["registry"] == "unknown"
 
-    expected_device = get_device_manager().get_device_str()
+    expected_device = get_device_manager().get_device_actually_used()
     assert data["device"] == expected_device
 
     # Check header

@@ -46,7 +46,7 @@ def verify_health_endpoint() -> tuple[bool, str]:
     if data["registry"] != "unknown":
         return False, f"Expected registry='unknown', got {data['registry']}"
 
-    expected_device = get_device_manager().get_device_str()
+    expected_device = get_device_manager().get_device_actually_used()
     if data["device"] != expected_device:
         return False, f"Expected device='{expected_device}', got '{data['device']}'"
 

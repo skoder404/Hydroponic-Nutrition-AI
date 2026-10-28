@@ -1060,9 +1060,9 @@
 **Dependencies:** T5-001, T1-002
 **Acceptance Criteria:**
 
-- [ ] Loader documents channel order
-- [ ] NaN/Inf raises a typed error
-- [ ] Schema version is attached to every vector
+- [x] Loader documents channel order
+- [x] NaN/Inf raises a typed error
+- [x] Schema version is attached to every vector
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML
