@@ -1,0 +1,470 @@
+{
+  "total_source_images": 580,
+  "total_valid_crops": 987,
+  "crops_per_image_mean": 1.7,
+  "zero_crop_count": 90,
+  "zero_crop_images": [
+    {
+      "source_image_id": "Healthier_0004",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0004.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0012",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0012.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0015",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0015.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0018",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0018.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0024",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0024.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0027",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0027.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0051",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0051.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0053",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0053.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0054",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0054.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0058",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0058.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0059",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0059.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0063",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0063.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0068",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0068.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0073",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0073.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0078",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0078.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0079",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0079.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0083",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0083.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0085",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0085.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0091",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0091.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0097",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0097.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0101",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0101.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0106",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0106.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0111",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0111.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0135",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0135.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0148",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0148.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0150",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0150.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0158",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0158.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0162",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0162.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0186",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0186.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0212",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0212.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0232",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0232.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0238",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0238.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0240",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0240.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0245",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0245.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0249",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0249.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0253",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0253.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0261",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0261.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0265",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0265.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0268",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0268.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0274",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0274.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0275",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0275.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0277",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0277.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0278",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0278.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0287",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0287.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0289",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0289.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0292",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0292.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0304",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0304.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0329",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0329.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0010",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0010.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0011",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0011.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0012",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0012.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0013",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0013.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0022",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0022.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0029",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0029.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0031",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0031.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0040",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0040.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0045",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0045.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0051",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0051.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0053",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0053.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PhosphorusDeficiency_0007",
+      "image_path": "image_data/Lettuce_Images/PhosphorusDeficiency/PhosphorusDeficiency_0007.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PotassiumDeficiency_0024",
+      "image_path": "image_data/Lettuce_Images/PotassiumDeficiency/PotassiumDeficiency_0024.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PotassiumDeficiency_0036",
+      "image_path": "image_data/Lettuce_Images/PotassiumDeficiency/PotassiumDeficiency_0036.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PotassiumDeficiency_0038",
+      "image_path": "image_data/Lettuce_Images/PotassiumDeficiency/PotassiumDeficiency_0038.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0021",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0021.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0213",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0213.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0220",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0220.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0229",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0229.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0233",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0233.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0236",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0236.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0248",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0248.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0260",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0260.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0291",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0291.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0302",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0302.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0001",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0001.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0034",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0034.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0042",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0042.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PotassiumDeficiency_0021",
+      "image_path": "image_data/Lettuce_Images/PotassiumDeficiency/PotassiumDeficiency_0021.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PotassiumDeficiency_0039",
+      "image_path": "image_data/Lettuce_Images/PotassiumDeficiency/PotassiumDeficiency_0039.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0007",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0007.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0074",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0074.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0141",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0141.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0217",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0217.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0222",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0222.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0288",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0288.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "Healthier_0320",
+      "image_path": "image_data/Lettuce_Images/Healthier/Healthier_0320.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0044",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0044.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0056",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0056.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "NitrogenDeficiency_0057",
+      "image_path": "image_data/Lettuce_Images/NitrogenDeficiency/NitrogenDeficiency_0057.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PhosphorusDeficiency_0025",
+      "image_path": "image_data/Lettuce_Images/PhosphorusDeficiency/PhosphorusDeficiency_0025.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    },
+    {
+      "source_image_id": "PhosphorusDeficiency_0057",
+      "image_path": "image_data/Lettuce_Images/PhosphorusDeficiency/PhosphorusDeficiency_0057.jpg",
+      "reason": "All candidate proposals rejected by mask validator"
+    }
+  ],
+  "crops_per_class": {
+    "Healthier": 475,
+    "PhosphorusDeficiency": 250,
+    "PotassiumDeficiency": 180,
+    "NitrogenDeficiency": 82
+  },
+  "crops_per_split": {
+    "train": 703,
+    "test": 156,
+    "val": 128
+  },
+  "elapsed_seconds": 554.34
+}

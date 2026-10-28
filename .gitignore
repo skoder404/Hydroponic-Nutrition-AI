@@ -19,6 +19,7 @@ cloud_server/
 uploads/
 masks/
 outputs/
+processed_data/lettuce_leaf_crops/crops/
 
 # ------------------------------------------------------------------------------
 # Python & Virtual Environments

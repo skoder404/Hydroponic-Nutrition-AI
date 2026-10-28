@@ -1193,9 +1193,9 @@
 **Dependencies:** T5-010, T5-011, T2-015
 **Acceptance Criteria:**
 
-- [ ] Every crop has exactly one `source_image_id` and the same split and class as that image
-- [ ] Manual review of 30 crops per class has a recorded inconsistency rate
-- [ ] Source images with no valid crop are counted and listed
+- [x] Every crop has exactly one `source_image_id` and the same split and class as that image
+- [x] Manual review of 30 crops per class has a recorded inconsistency rate
+- [x] Source images with no valid crop are counted and listed
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
