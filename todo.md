@@ -1859,9 +1859,9 @@
 **Dependencies:** T7-011, T7-005
 **Acceptance Criteria:**
 
-- [ ] Each leaf shows its own confidence tier
-- [ ] Rejected leaves are listed as not assessed with reasons
-- [ ] Segmentation failure is shown as an input failure, not a disease
+- [x] Each leaf shows its own confidence tier
+- [x] Rejected leaves are listed as not assessed with reasons
+- [x] Segmentation failure is shown as an input failure, not a disease
 
 **Estimated Effort:** 90 min
 **Assigned To:** Frontend

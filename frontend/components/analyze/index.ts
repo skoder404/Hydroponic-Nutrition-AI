@@ -20,3 +20,10 @@ export type {
   ProvenanceSource,
 } from "./SensorForm";
 
+export { LeafCard } from "./LeafCard";
+export type { LeafCardProps } from "./LeafCard";
+
+export { ImageResultPanel } from "./ImageResultPanel";
+export type { ImageResultPanelProps, RejectedLeaf } from "./ImageResultPanel";
+
+
