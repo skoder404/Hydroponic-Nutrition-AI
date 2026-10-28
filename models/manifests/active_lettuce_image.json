@@ -1,0 +1,11 @@
+{
+  "crop": "lettuce",
+  "modality": "image",
+  "active_version": "1.0.0",
+  "active_metadata_path": "image/lettuce/v1.0.0/metadata.json",
+  "active_artifact_path": "image/lettuce/efficientnet_b0/v1.0.0/model.pt",
+  "previous_version": "1.0.0",
+  "previous_metadata_path": "image/lettuce/v1.0.0/metadata.json",
+  "previous_artifact_path": "image/lettuce/v1.0.0/model.pt",
+  "promoted_at": "2026-10-28T18:52:29.509275+00:00"
+}

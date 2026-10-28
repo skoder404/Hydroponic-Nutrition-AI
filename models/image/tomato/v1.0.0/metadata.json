@@ -1,0 +1,136 @@
+{
+  "model_id": "tomato_image_efficientnet_b0_v1.0.0",
+  "crop": "tomato",
+  "task": "classification",
+  "modality": "image",
+  "family": "EfficientNetB0",
+  "artifact_version": "1.0.0",
+  "artifact_file": "image/tomato/efficientnet_b0/v1.0.0/model.pt",
+  "commit": "91d9a7d43bb1120b9522f081cc9478522ec55cfa",
+  "training_date": "2026-10-28T17:11:43.089180+00:00",
+  "dataset_manifest_hash": "6acdc217900fcaae53da0b37b734bb2093bf509be12cca251e29667f9ee05351",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": false,
+  "status": "promoted",
+  "classes": [
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_Healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Powdery_Mildew",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites Two-spotted_spider_mite",
+    "Tomato_Target_Spot",
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus"
+  ],
+  "display_mapping": {
+    "Tomato_Bacterial_spot": "unhealthy/Tomato_Bacterial_spot",
+    "Tomato_Early_blight": "unhealthy/Tomato_Early_blight",
+    "Tomato_Healthy": "healthy",
+    "Tomato_Late_blight": "unhealthy/Tomato_Late_blight",
+    "Tomato_Leaf_Mold": "unhealthy/Tomato_Leaf_Mold",
+    "Tomato_Powdery_Mildew": "unhealthy/Tomato_Powdery_Mildew",
+    "Tomato_Septoria_leaf_spot": "unhealthy/Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites Two-spotted_spider_mite": "unhealthy/Tomato_Spider_mites Two-spotted_spider_mite",
+    "Tomato_Target_Spot": "unhealthy/Tomato_Target_Spot",
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus": "unhealthy/Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus": "unhealthy/Tomato_Tomato_mosaic_virus"
+  },
+  "split_protocol": "Stratified 70/15/15 image split, duplicate groups kept together",
+  "split_counts": {
+    "train": 23496,
+    "validation": 5034,
+    "test": 5034
+  },
+  "ordered_features": null,
+  "feature_units": null,
+  "feature_set": null,
+  "input_unit": "leaf",
+  "image_size": [
+    224,
+    224
+  ],
+  "image_normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "channel_order": "RGB",
+  "segmentation_config": {
+    "method": "sam2.1",
+    "model_checkpoint": "sam2.1_hiera_tiny.pt",
+    "mask_threshold": 0.5,
+    "min_leaf_area_pixels": 500
+  },
+  "feature_config": null,
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 2,
+    "unfreeze_mode": "top_blocks",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "confidence_settings": {
+    "uncertainty_thresholds": {
+      "high": 0.881,
+      "moderate": 0.543,
+      "uncertain": 0.543,
+      "split_evaluated": "validation",
+      "sample_count": 5034,
+      "method": "empirical_validation_percentile_acc_bounded"
+    },
+    "temperature_scaling": {
+      "fitted_temperature": 0.706,
+      "pre_scaling_ece": 0.0695,
+      "post_scaling_ece": 0.0106,
+      "validation_samples": 5034,
+      "optimization_split": "validation"
+    },
+    "score_semantics": "Raw softmax confidence is an uncalibrated heuristic score and must not be interpreted as an objective Bayesian probability of ground truth. In particular, whole-canopy plant stress labels are inherited down to individual leaves, so an individual leaf with high visual health might still carry an inherited stress label. In production, scores at or above the high threshold represent strong alignment with validation distribution; scores below the moderate threshold trigger the 'uncertain / manual inspection recommended' status chip.",
+    "threshold_high": 0.881,
+    "threshold_moderate": 0.543,
+    "threshold_uncertain": 0.543
+  },
+  "expected_input_schema": {
+    "type": "tensor",
+    "dtype": "float32",
+    "shape": [
+      null,
+      3,
+      224,
+      224
+    ],
+    "channel_order": "RGB",
+    "normalized": true
+  },
+  "dependency_versions": {
+    "python": "3.14.0",
+    "torch": "2.14.1+cpu",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "validation_metrics": {
+    "macro_f1": 0.8748,
+    "accuracy": 0.8715
+  },
+  "final_test_metrics": {
+    "macro_f1": 0.869609,
+    "accuracy": 0.868097,
+    "macro_precision": 0.871468,
+    "macro_recall": 0.871503
+  }
+}

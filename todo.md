@@ -1472,9 +1472,9 @@
 **Dependencies:** T5-032, T4-009
 **Acceptance Criteria:**
 
-- [ ] Registry validation passes
-- [ ] Missing combinations are listed in `models/manifests/COVERAGE.md`
-- [ ] Rollback tested
+- [x] Registry validation passes
+- [x] Missing combinations are listed in `models/manifests/COVERAGE.md`
+- [x] Rollback tested
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML

@@ -1,0 +1,126 @@
+{
+  "model_id": "spinach_image_efficientnet_b0_v1.0.0",
+  "crop": "spinach",
+  "task": "classification",
+  "modality": "image",
+  "family": "EfficientNetB0",
+  "artifact_version": "1.0.0",
+  "artifact_file": "image/spinach/efficientnet_b0/v1.0.0/model.pt",
+  "commit": "060a6ebf8c4c05135af052832eb99739d570d0f9",
+  "training_date": "2026-10-28T16:31:58.863839+00:00",
+  "dataset_manifest_hash": "b43b89d408ea7e4a33580d215d1ff2e3440b6d7765f989715798f520bedc7700",
+  "rule_version": "1.0.0",
+  "preprocessing_version": "1.0.0",
+  "experimental": false,
+  "status": "promoted",
+  "classes": [
+    "Spinach_Healthy",
+    "Spinach_Non fresh",
+    "Spinach_anthracnose",
+    "Spinach_bacterial spot",
+    "Spinach_downy mildew",
+    "Spinach_pest damage"
+  ],
+  "display_mapping": {
+    "Spinach_Healthy": "healthy",
+    "Spinach_Non fresh": "unhealthy/Spinach_Non fresh",
+    "Spinach_anthracnose": "unhealthy/Spinach_anthracnose",
+    "Spinach_bacterial spot": "unhealthy/Spinach_bacterial spot",
+    "Spinach_downy mildew": "unhealthy/Spinach_downy mildew",
+    "Spinach_pest damage": "unhealthy/Spinach_pest damage"
+  },
+  "split_protocol": "Stratified 70/15/15 image split, duplicate groups kept together",
+  "split_counts": {
+    "train": 12812,
+    "validation": 2745,
+    "test": 2745
+  },
+  "ordered_features": null,
+  "feature_units": null,
+  "feature_set": null,
+  "input_unit": "leaf",
+  "image_size": [
+    224,
+    224
+  ],
+  "image_normalization": {
+    "mean": [
+      0.485,
+      0.456,
+      0.406
+    ],
+    "std": [
+      0.229,
+      0.224,
+      0.225
+    ]
+  },
+  "channel_order": "RGB",
+  "segmentation_config": {
+    "method": "sam2.1",
+    "model_checkpoint": "sam2.1_hiera_tiny.pt",
+    "mask_threshold": 0.5,
+    "min_leaf_area_pixels": 500
+  },
+  "feature_config": null,
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 2,
+    "unfreeze_mode": "top_blocks",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "confidence_settings": {
+    "uncertainty_thresholds": {
+      "high": 0.7,
+      "moderate": 0.476,
+      "uncertain": 0.476,
+      "split_evaluated": "validation",
+      "sample_count": 2745,
+      "method": "empirical_validation_percentile_acc_bounded"
+    },
+    "temperature_scaling": {
+      "fitted_temperature": 0.901,
+      "pre_scaling_ece": 0.0288,
+      "post_scaling_ece": 0.0286,
+      "validation_samples": 2745,
+      "optimization_split": "validation"
+    },
+    "score_semantics": "Raw softmax confidence is an uncalibrated heuristic score and must not be interpreted as an objective Bayesian probability of ground truth. In particular, whole-canopy plant stress labels are inherited down to individual leaves, so an individual leaf with high visual health might still carry an inherited stress label. In production, scores at or above the high threshold represent strong alignment with validation distribution; scores below the moderate threshold trigger the 'uncertain / manual inspection recommended' status chip.",
+    "threshold_high": 0.7,
+    "threshold_moderate": 0.476,
+    "threshold_uncertain": 0.476
+  },
+  "expected_input_schema": {
+    "type": "tensor",
+    "dtype": "float32",
+    "shape": [
+      null,
+      3,
+      224,
+      224
+    ],
+    "channel_order": "RGB",
+    "normalized": true
+  },
+  "dependency_versions": {
+    "python": "3.14.0",
+    "torch": "2.14.1+cpu",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3"
+  },
+  "validation_metrics": {
+    "macro_f1": 0.7256,
+    "accuracy": 0.7089
+  },
+  "final_test_metrics": {
+    "macro_f1": 0.721154,
+    "accuracy": 0.696175,
+    "macro_precision": 0.760503,
+    "macro_recall": 0.695151
+  }
+}

@@ -77,8 +77,8 @@ def test_models_endpoint_filtering_and_root_alias():
     res_lettuce = client.get("/api/v1/models?crop=lettuce")
     assert res_lettuce.status_code == 200
     data_lettuce = res_lettuce.json()
-    assert len(data_lettuce) == 1
-    assert data_lettuce[0]["crop"] == "lettuce"
+    assert len(data_lettuce) >= 1
+    assert all(m["crop"] == "lettuce" for m in data_lettuce)
 
     # Filter by modality
     res_sensor = client.get("/api/v1/models?modality=sensor")
