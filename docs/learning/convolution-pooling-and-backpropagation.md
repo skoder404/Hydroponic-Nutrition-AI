@@ -231,8 +231,14 @@ class LeafFeatureBlock(nn.Module):
 
 - **Educational Notebook:** [`notebooks/05_conv_from_scratch.ipynb`](file:///d:/Hydroponic-Nutrition-AI/notebooks/05_conv_from_scratch.ipynb)
 - **Foundation Model Backbone:** SAM 2.1 Hiera Vision Transformer uses hierarchical windowed attention and convolutional patch embeddings.
+- **Custom CNN Architecture Module (T5-019):** [`ml/image_models/custom_cnn.py`](file:///d:/Hydroponic-Nutrition-AI/ml/image_models/custom_cnn.py)
+  - **Feature Extractor:** Four sequential convolutional blocks `ConvBlock` with channel depths $(32 \to 64 \to 128 \to 256)$, each composed of `Conv2d(kernel_size=3, padding=1, bias=False) -> BatchNorm2d -> ReLU(inplace=True) -> MaxPool2d(2, 2)`.
+  - **Spatial Aggregation:** `nn.AdaptiveAvgPool2d((1, 1))` pooling down from $(256, 14, 14)$ to $(256, 1, 1)$, making the backbone input-resolution agnostic and preventing dense weight explosion.
+  - **Classifier Head:** `Flatten -> Linear(256 -> 256) -> BatchNorm1d(256) -> ReLU -> Dropout(p=0.3) -> Linear(256 -> num_classes)`.
+  - **Class Dimensionality:** Output layer units equal each crop's canonical class count (lettuce: 4 classes, spinach: 6 classes, tomato: 11 classes).
+  - **Total Parameters:** Approximately $440\text{k}$ parameters ($438\text{k}$ feature extractor $+ \approx 67\text{k}$ classifier head), ideal for CPU and lightweight campus hardware inference without CUDA OOM risks.
 - **Verification Script:** [`scripts/verify_conv_notebook.py`](file:///d:/Hydroponic-Nutrition-AI/scripts/verify_conv_notebook.py)
-- **Unit Tests:** [`tests/unit/test_conv_notebook.py`](file:///d:/Hydroponic-Nutrition-AI/tests/unit/test_conv_notebook.py)
+- **Unit Tests:** [`tests/unit/test_conv_notebook.py`](file:///d:/Hydroponic-Nutrition-AI/tests/unit/test_conv_notebook.py) and [`tests/unit/test_custom_cnn.py`](file:///d:/Hydroponic-Nutrition-AI/tests/unit/test_custom_cnn.py)
 
 ---
 

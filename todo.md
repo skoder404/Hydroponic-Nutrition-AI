@@ -1287,9 +1287,9 @@
 **Dependencies:** T5-017, T2-016
 **Acceptance Criteria:**
 
-- [ ] Forward pass works on a dummy batch for each crop's class count
-- [ ] Parameter count logged
-- [ ] Architecture is described in the concept note
+- [x] Forward pass works on a dummy batch for each crop's class count
+- [x] Parameter count logged
+- [x] Architecture is described in the concept note
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
