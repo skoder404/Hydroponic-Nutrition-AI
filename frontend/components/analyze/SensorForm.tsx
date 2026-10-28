@@ -537,3 +537,4 @@ export const SensorForm: React.FC<SensorFormProps> = ({
     </Card>
   );
 };
+

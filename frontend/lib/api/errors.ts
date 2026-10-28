@@ -99,3 +99,4 @@ export function isNetworkError(error: unknown): error is NetworkError {
 export function isTimeoutError(error: unknown): error is TimeoutError {
   return error instanceof TimeoutError;
 }
+

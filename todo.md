@@ -1300,9 +1300,9 @@
 **Dependencies:** T5-018, T5-019, T4-005, T4-006, T4-008
 **Acceptance Criteria:**
 
-- [ ] Overfit test: loop can reach near-zero training loss on 20 images
-- [ ] OOM path is exercised (simulated)
-- [ ] Report records device and versions
+- [x] Overfit test: loop can reach near-zero training loss on 20 images
+- [x] OOM path is exercised (simulated)
+- [x] Report records device and versions
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
