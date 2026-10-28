@@ -1073,9 +1073,9 @@
 **Dependencies:** T5-002
 **Acceptance Criteria:**
 
-- [ ] Flags and log base are documented in the module docstring
-- [ ] Constant-colour image does not crash or yield NaN
-- [ ] Output matches a hand-computed 4x4 example
+- [x] Flags and log base are documented in the module docstring
+- [x] Constant-colour image does not crash or yield NaN
+- [x] Output matches a hand-computed 4x4 example
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
