@@ -1,0 +1,79 @@
+{
+  "crop": "tomato",
+  "task": "image_classification",
+  "selected_at": "2026-10-28T17:35:00.000000+00:00",
+  "task_id": "T5-030",
+  "selection_metric": "validation_macro_f1",
+  "split_manifest_sha256": "8ecad33c13ca2c78d1a93afe874121e84dd020fb28aa042ffca50bcaa3d43d6e",
+  "split_manifest_sha256_lf": "6acdc217900fcaae53da0b37b734bb2093bf509be12cca251e29667f9ee05351",
+  "selected_model": {
+    "model_name": "tomato_efficientnet_b0_v1.0.0",
+    "model_family": "EfficientNetB0",
+    "report_file": "reports/tomato/tomato_efficientnet_b0_v1.0.0_validation.json",
+    "artifact_file": "models/image/tomato/efficientnet_b0/v1.0.0/model.pt",
+    "metadata_file": "models/image/tomato/efficientnet_b0/v1.0.0/metadata.json",
+    "parameter_count": 4021639,
+    "input_mode": "individual_leaf_crop",
+    "metrics": {
+      "macro_f1": 0.8748319900930143,
+      "accuracy": 0.8714739769566945,
+      "macro_precision": 0.8758037511862269,
+      "macro_recall": 0.8754234067768071
+    },
+    "per_class_f1": {
+      "Tomato_Bacterial_spot": 0.8688212927756654,
+      "Tomato_Early_blight": 0.8156312625250501,
+      "Tomato_Healthy": 0.9149277688603531,
+      "Tomato_Late_blight": 0.8320413436692506,
+      "Tomato_Leaf_Mold": 0.8389760528488852,
+      "Tomato_Powdery_Mildew": 0.8337595907928389,
+      "Tomato_Septoria_leaf_spot": 0.8062730627306273,
+      "Tomato_Spider_mites Two-spotted_spider_mite": 0.9223880597014925,
+      "Tomato_Target_Spot": 0.8757763975155279,
+      "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 0.9633375474083439,
+      "Tomato_Tomato_mosaic_virus": 0.9512195121951219
+    }
+  },
+  "candidates": [
+    {
+      "rank": 1,
+      "model_name": "tomato_efficientnet_b0_v1.0.0",
+      "model_family": "EfficientNetB0",
+      "val_macro_f1": 0.8748319900930143,
+      "val_accuracy": 0.8714739769566945,
+      "parameter_count": 4021639,
+      "input_mode": "individual_leaf_crop",
+      "report_file": "reports/tomato/tomato_efficientnet_b0_v1.0.0_validation.json"
+    },
+    {
+      "rank": 2,
+      "model_name": "tomato_custom_cnn_v1.0.0",
+      "model_family": "CustomCNN",
+      "val_macro_f1": 0.8713941790980969,
+      "val_accuracy": 0.8722685736988478,
+      "parameter_count": 458027,
+      "input_mode": "individual_leaf_crop",
+      "report_file": "reports/tomato/tomato_custom_cnn_v1.0.0_validation.json"
+    },
+    {
+      "rank": 3,
+      "model_name": "tomato_feature_random_forest_v1.0.0",
+      "model_family": "RandomForest",
+      "val_macro_f1": 0.434575979963509,
+      "val_accuracy": 0.4519268970997219,
+      "parameter_count": 100,
+      "input_mode": "individual_leaf_crop_features",
+      "report_file": "reports/tomato/tomato_feature_random_forest_v1.0.0_validation.json"
+    },
+    {
+      "rank": 4,
+      "model_name": "tomato_feature_svm_v1.0.0",
+      "model_family": "SVM",
+      "val_macro_f1": 0.4271202757623074,
+      "val_accuracy": 0.4384187524831148,
+      "parameter_count": 2752,
+      "input_mode": "individual_leaf_crop_features",
+      "report_file": "reports/tomato/tomato_feature_svm_v1.0.0_validation.json"
+    }
+  ]
+}

@@ -1432,9 +1432,9 @@
 **Dependencies:** T5-027, T5-016, T5-028
 **Acceptance Criteria:**
 
-- [ ] Same split manifest hash for all models
-- [ ] Table includes macro-F1 and per-class F1
-- [ ] Leaf-level input confirmed for every family
+- [x] Same split manifest hash for all models
+- [x] Table includes macro-F1 and per-class F1
+- [x] Leaf-level input confirmed for every family
 
 **Estimated Effort:** 45 min
 **Assigned To:** ML
