@@ -92,5 +92,14 @@
     "post_scaling_ece": 0.0106,
     "validation_samples": 5034,
     "optimization_split": "validation"
-  }
+  },
+  "test_metrics": {
+    "macro_f1": 0.869609,
+    "accuracy": 0.868097,
+    "macro_precision": 0.871468,
+    "macro_recall": 0.871503
+  },
+  "test_evaluation_date": "2026-10-28T18:15:31.510178+00:00",
+  "test_sample_count": 5034,
+  "test_split_file": "processed_data/splits/image_splits_tomato.csv"
 }

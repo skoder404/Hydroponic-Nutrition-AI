@@ -1,0 +1,241 @@
+{
+  "crop": "spinach",
+  "model_name": "spinach_efficientnet_b0_v1.0.0",
+  "model_family": "EfficientNetB0",
+  "artifact_version": "v1.0.0",
+  "preprocessing_version": "0.1.0",
+  "evaluation_date": "2026-10-28T18:12:34.572545+00:00",
+  "split_evaluated": "test",
+  "split_protocol": "Stratified split; train, validation, and test partitions isolated",
+  "source_dataset_manifest": "processed_data/splits/image_splits_spinach.csv",
+  "label_generation_method": "Individual leaf photography diagnosis",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 2,
+    "unfreeze_mode": "top_blocks",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "split_counts": {
+    "train": 12812,
+    "validation": 2745,
+    "test": 2745
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Spinach_Healthy": 5053,
+      "Spinach_Non fresh": 431,
+      "Spinach_anthracnose": 548,
+      "Spinach_bacterial spot": 3196,
+      "Spinach_downy mildew": 1237,
+      "Spinach_pest damage": 2347
+    },
+    "validation": {
+      "Spinach_Healthy": 1083,
+      "Spinach_Non fresh": 92,
+      "Spinach_anthracnose": 117,
+      "Spinach_bacterial spot": 685,
+      "Spinach_downy mildew": 265,
+      "Spinach_pest damage": 503
+    },
+    "test": {
+      "Spinach_Healthy": 1082,
+      "Spinach_Non fresh": 93,
+      "Spinach_anthracnose": 118,
+      "Spinach_bacterial spot": 684,
+      "Spinach_downy mildew": 265,
+      "Spinach_pest damage": 503
+    }
+  },
+  "class_order": [
+    "Spinach_Healthy",
+    "Spinach_Non fresh",
+    "Spinach_anthracnose",
+    "Spinach_bacterial spot",
+    "Spinach_downy mildew",
+    "Spinach_pest damage"
+  ],
+  "metrics": {
+    "accuracy": 0.6961748633879782,
+    "macro_precision": 0.760502726745587,
+    "macro_recall": 0.6951514554632108,
+    "macro_f1": 0.7211543660219412,
+    "per_class": {
+      "Spinach_Healthy": {
+        "precision": 0.7484076433121019,
+        "recall": 0.8687615526802218,
+        "f1": 0.8041060735671514,
+        "support": 1082
+      },
+      "Spinach_Non fresh": {
+        "precision": 1.0,
+        "recall": 0.967741935483871,
+        "f1": 0.9836065573770492,
+        "support": 93
+      },
+      "Spinach_anthracnose": {
+        "precision": 0.9090909090909091,
+        "recall": 0.6779661016949152,
+        "f1": 0.7766990291262136,
+        "support": 118
+      },
+      "Spinach_bacterial spot": {
+        "precision": 0.5789473684210527,
+        "recall": 0.6111111111111112,
+        "f1": 0.5945945945945946,
+        "support": 684
+      },
+      "Spinach_downy mildew": {
+        "precision": 0.7162162162162162,
+        "recall": 0.6,
+        "f1": 0.6529774127310062,
+        "support": 265
+      },
+      "Spinach_pest damage": {
+        "precision": 0.6103542234332425,
+        "recall": 0.44532803180914515,
+        "f1": 0.5149425287356322,
+        "support": 503
+      }
+    },
+    "confusion_matrix": [
+      [
+        940,
+        0,
+        5,
+        96,
+        9,
+        32
+      ],
+      [
+        1,
+        90,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        12,
+        0,
+        80,
+        13,
+        6,
+        7
+      ],
+      [
+        163,
+        0,
+        2,
+        418,
+        27,
+        74
+      ],
+      [
+        26,
+        0,
+        1,
+        49,
+        159,
+        30
+      ],
+      [
+        114,
+        0,
+        0,
+        144,
+        21,
+        224
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        940,
+        0,
+        5,
+        96,
+        9,
+        32
+      ],
+      [
+        1,
+        90,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        12,
+        0,
+        80,
+        13,
+        6,
+        7
+      ],
+      [
+        163,
+        0,
+        2,
+        418,
+        27,
+        74
+      ],
+      [
+        26,
+        0,
+        1,
+        49,
+        159,
+        30
+      ],
+      [
+        114,
+        0,
+        0,
+        144,
+        21,
+        224
+      ]
+    ],
+    "labels": [
+      "Spinach_Healthy",
+      "Spinach_Non fresh",
+      "Spinach_anthracnose",
+      "Spinach_bacterial spot",
+      "Spinach_downy mildew",
+      "Spinach_pest damage"
+    ],
+    "class_order": [
+      "Spinach_Healthy",
+      "Spinach_Non fresh",
+      "Spinach_anthracnose",
+      "Spinach_bacterial spot",
+      "Spinach_downy mildew",
+      "Spinach_pest damage"
+    ],
+    "total_samples": 2745
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "limitations": [
+    "Final Test Evaluation: Evaluated strictly on the preserved held-out test partition after all model selection decisions were finalized.",
+    "Strict Zero Leakage: Test partition remained unread during transfer learning fine-tuning, hyperparameter exploration, and temperature calibration.",
+    "Inherited Plant-Level Target Labels: Ground-truth target annotations represent whole-plant or specimen pathology; individual leaf crops inherit these labels which can introduce label noise for unaffected leaves on stressed plants.",
+    "Un-oversampled Test Evaluation: The test split contains the untouched natural class distribution without synthetic oversampling or artificial balancing.",
+    "Leaf Photography Dataset: Evaluated on 2,745 leaf images across 6 target pathology and freshness classes."
+  ]
+}

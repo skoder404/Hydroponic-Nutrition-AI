@@ -1,0 +1,169 @@
+{
+  "crop": "lettuce",
+  "model_name": "lettuce_efficientnet_b0_v1.0.0",
+  "model_family": "EfficientNetB0",
+  "artifact_version": "v1.0.0",
+  "preprocessing_version": "0.1.0",
+  "evaluation_date": "2026-10-28T18:10:51.068525+00:00",
+  "split_evaluated": "test",
+  "split_protocol": "Stratified split; train, validation, and test partitions isolated",
+  "source_dataset_manifest": "processed_data/splits/image_splits_lettuce.csv",
+  "label_generation_method": "Leaf crop instance diagnosis; crop labels inherited from whole-plant labels",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "batch_size": 32,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 3,
+    "unfreeze_mode": "all",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "split_counts": {
+    "train": 703,
+    "validation": 128,
+    "test": 156
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Healthier": 332,
+      "NitrogenDeficiency": 59,
+      "PhosphorusDeficiency": 194,
+      "PotassiumDeficiency": 118
+    },
+    "validation": {
+      "Healthier": 63,
+      "NitrogenDeficiency": 10,
+      "PhosphorusDeficiency": 33,
+      "PotassiumDeficiency": 22
+    },
+    "test": {
+      "Healthier": 80,
+      "NitrogenDeficiency": 13,
+      "PhosphorusDeficiency": 23,
+      "PotassiumDeficiency": 40
+    }
+  },
+  "class_order": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "metrics": {
+    "accuracy": 0.8974358974358975,
+    "macro_precision": 0.8607503607503607,
+    "macro_recall": 0.8382211538461539,
+    "macro_f1": 0.8356029976312995,
+    "per_class": {
+      "Healthier": {
+        "precision": 1.0,
+        "recall": 0.9875,
+        "f1": 0.9937106918238994,
+        "support": 80
+      },
+      "NitrogenDeficiency": {
+        "precision": 0.8888888888888888,
+        "recall": 0.6153846153846154,
+        "f1": 0.7272727272727273,
+        "support": 13
+      },
+      "PhosphorusDeficiency": {
+        "precision": 0.696969696969697,
+        "recall": 1.0,
+        "f1": 0.8214285714285714,
+        "support": 23
+      },
+      "PotassiumDeficiency": {
+        "precision": 0.8571428571428571,
+        "recall": 0.75,
+        "f1": 0.8,
+        "support": 40
+      }
+    },
+    "confusion_matrix": [
+      [
+        79,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        0,
+        5
+      ],
+      [
+        0,
+        0,
+        23,
+        0
+      ],
+      [
+        0,
+        0,
+        10,
+        30
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        79,
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        0,
+        5
+      ],
+      [
+        0,
+        0,
+        23,
+        0
+      ],
+      [
+        0,
+        0,
+        10,
+        30
+      ]
+    ],
+    "labels": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "class_order": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "total_samples": 156
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "limitations": [
+    "Final Test Evaluation: Evaluated strictly on the preserved held-out test partition after all model selection decisions were finalized.",
+    "Strict Zero Leakage: Test partition remained unread during transfer learning fine-tuning, hyperparameter exploration, and temperature calibration.",
+    "Inherited Plant-Level Target Labels: Ground-truth target annotations represent whole-plant or specimen pathology; individual leaf crops inherit these labels which can introduce label noise for unaffected leaves on stressed plants.",
+    "Un-oversampled Test Evaluation: The test split contains the untouched natural class distribution without synthetic oversampling or artificial balancing.",
+    "Leaf Crops Instance Diagnosis: Evaluated on 156 segmented individual leaf crops isolated from whole-plant canopy photographs."
+  ]
+}

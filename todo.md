@@ -1459,9 +1459,9 @@
 **Dependencies:** T5-031, T4-024
 **Acceptance Criteria:**
 
-- [ ] Log entry is written for each evaluated model
-- [ ] Re-run without `--force` refuses
-- [ ] Reports label metrics as test results with split named
+- [x] Log entry is written for each evaluated model
+- [x] Re-run without `--force` refuses
+- [x] Reports label metrics as test results with split named
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

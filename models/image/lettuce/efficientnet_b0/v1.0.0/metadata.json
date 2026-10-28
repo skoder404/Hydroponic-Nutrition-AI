@@ -85,5 +85,14 @@
     "post_scaling_ece": 0.1109,
     "validation_samples": 128,
     "optimization_split": "validation"
-  }
+  },
+  "test_metrics": {
+    "macro_f1": 0.835603,
+    "accuracy": 0.897436,
+    "macro_precision": 0.86075,
+    "macro_recall": 0.838221
+  },
+  "test_evaluation_date": "2026-10-28T18:10:51.118536+00:00",
+  "test_sample_count": 156,
+  "test_split_file": "processed_data/splits/image_splits_lettuce.csv"
 }

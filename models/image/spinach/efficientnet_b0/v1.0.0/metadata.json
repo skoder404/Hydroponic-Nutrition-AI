@@ -87,5 +87,14 @@
     "post_scaling_ece": 0.0286,
     "validation_samples": 2745,
     "optimization_split": "validation"
-  }
+  },
+  "test_metrics": {
+    "macro_f1": 0.721154,
+    "accuracy": 0.696175,
+    "macro_precision": 0.760503,
+    "macro_recall": 0.695151
+  },
+  "test_evaluation_date": "2026-10-28T18:12:34.574260+00:00",
+  "test_sample_count": 2745,
+  "test_split_file": "processed_data/splits/image_splits_spinach.csv"
 }
