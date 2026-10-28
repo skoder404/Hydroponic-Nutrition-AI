@@ -59,3 +59,4 @@ All 90 zero-crop images are tracked with individual image identifiers and failur
    At deployment time, the system must not rely on a single leaf crop. Whole-plant diagnosis requires **Multiple Instance Learning (MIL) pooling** across all segmented leaves (as documented in `docs/learning/weak-labels-and-instancelevel-perleaf-prediction.md`), prioritizing high-confidence deficiency symptoms when detected on mature leaves.
 3. **Data Split Invariant:**
    All 987 leaf crops strictly inherited the split assignment of their parent image (`train`: 703, `val`: 128, `test`: 156), guaranteeing zero data leakage across partitions.
+

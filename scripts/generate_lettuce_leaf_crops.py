@@ -189,3 +189,4 @@ if __name__ == "__main__":
 
     summary = generate_crops(max_images=args.max_images, overwrite=args.overwrite, force_cpu=args.cpu)
     print(json.dumps(summary, indent=2))
+

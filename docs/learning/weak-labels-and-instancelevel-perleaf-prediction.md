@@ -78,3 +78,4 @@ To overcome weak label noise during diagnosis, the inference service adopts **Mu
 
 - **Supervised Training Ceiling:** Because roughly 15–25% of leaves from deficient plants exhibit normal green morphology, pure leaf-level classification accuracy on weakly-labeled datasets has a theoretical Bayes error floor.
 - **Documentation Obligation:** Any deployment of leaf-level models trained on whole-plant manifests must state weak labeling as an explicit design limitation in the model card (`docs/models/` and Section 18.2 comparison reports).
+
