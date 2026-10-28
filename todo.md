@@ -2111,9 +2111,9 @@
 **Dependencies:** T7-021, T7-015, T7-009
 **Acceptance Criteria:**
 
-- [ ] Four flows pass headless
-- [ ] Tests use the stub model and mock adapter
-- [ ] Failures capture screenshots
+- [x] Four flows pass headless
+- [x] Tests use the stub model and mock adapter
+- [x] Failures capture screenshots
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA

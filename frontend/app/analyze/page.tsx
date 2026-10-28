@@ -62,6 +62,7 @@ export default function AnalyzePage() {
 
   // Analysis Outcome State
   const [imagePrediction, setImagePrediction] = useState<PredictionResponse | null>(null);
+  const [segmentationError, setSegmentationError] = useState<string | null>(null);
   const [sensorPrediction, setSensorPrediction] = useState<PredictionResponse | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResponse | null>(null);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
@@ -130,22 +131,40 @@ export default function AnalyzePage() {
       await new Promise((resolve) => setTimeout(resolve, 450));
       if (controller.signal.aborted) return;
 
+      // Check if image triggers simulated segmentation failure
+      const isSegFail = Boolean(
+        selectedFile &&
+          (selectedFile.name.toLowerCase().includes("seg_fail") ||
+            selectedFile.name.toLowerCase().includes("fail"))
+      );
+
+      // Check if input triggers low-confidence / uncertain tier
+      const isSimulatedUncertain = Boolean(
+        (selectedFile && selectedFile.name.toLowerCase().includes("uncertain")) ||
+          (sensorValues.ph !== undefined && (sensorValues.ph < 5.0 || sensorValues.ph > 8.0))
+      );
+
       // Step 3: Classifying
       setCurrentStep("classifying");
       await new Promise((resolve) => setTimeout(resolve, 500));
       if (controller.signal.aborted) return;
 
-      // Mock or Live predictions based on mode
-      if (analysisMode === "image" || analysisMode === "both") {
+      if (isSegFail) {
+        setSegmentationError(
+          "No distinct plant leaves could be isolated from this image. This is strictly an image processing / input failure (e.g. lighting, blur, or framing), NOT a plant disease or nutrient deficiency diagnosis."
+        );
+        setImagePrediction(null);
+      } else if (analysisMode === "image" || analysisMode === "both") {
+        setSegmentationError(null);
         setImagePrediction({
           crop: selectedCrop,
           modality: "image",
           model_name: `${selectedCrop}_custom_cnn`,
           model_version: "v1.0.0",
           predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-          display_label: "Healthy Foliage",
-          confidence: 0.912,
-          is_uncertain: false,
+          display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+          confidence: isSimulatedUncertain ? 0.52 : 0.912,
+          is_uncertain: isSimulatedUncertain,
           inference_time_ms: 184,
           evidence: {},
           leaf_count: 3,
@@ -154,25 +173,25 @@ export default function AnalyzePage() {
               leaf_id: "leaf_01",
               contour_area: 14200,
               predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: "Healthy Foliage",
-              confidence: 0.942,
-              is_uncertain: false,
+              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+              confidence: isSimulatedUncertain ? 0.48 : 0.942,
+              is_uncertain: isSimulatedUncertain,
             },
             {
               leaf_id: "leaf_02",
               contour_area: 12850,
               predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: "Healthy Foliage",
-              confidence: 0.884,
-              is_uncertain: false,
+              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+              confidence: isSimulatedUncertain ? 0.54 : 0.884,
+              is_uncertain: isSimulatedUncertain,
             },
             {
               leaf_id: "leaf_03",
               contour_area: 9100,
               predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: "Healthy Foliage",
-              confidence: 0.909,
-              is_uncertain: false,
+              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+              confidence: isSimulatedUncertain ? 0.51 : 0.909,
+              is_uncertain: isSimulatedUncertain,
             },
           ],
           rejected_leaves: [
@@ -183,6 +202,7 @@ export default function AnalyzePage() {
           ],
         });
       } else {
+        setSegmentationError(null);
         setImagePrediction(null);
       }
 
@@ -257,6 +277,7 @@ export default function AnalyzePage() {
   const handleReset = () => {
     setAnalysisComplete(false);
     setImagePrediction(null);
+    setSegmentationError(null);
     setSensorPrediction(null);
     setRecommendation(null);
   };
@@ -333,11 +354,17 @@ export default function AnalyzePage() {
           {/* Dual Panel or Single Modality Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Image Panel or NotAssessedNote */}
-            {analysisMode !== "sensor" && imagePrediction ? (
+            {analysisMode !== "sensor" && (imagePrediction || segmentationError) ? (
               <ImageResultPanel
                 prediction={imagePrediction}
                 imageUrl={imagePreviewUrl}
                 source={sourceProvenance === "campus_live" ? "campus_camera" : "upload"}
+                segmentationFailed={Boolean(segmentationError)}
+                segmentationFailureReason={segmentationError}
+                onRetry={() => {
+                  setSegmentationError(null);
+                  handleExecuteAnalysis();
+                }}
               />
             ) : analysisMode === "sensor" ? (
               <NotAssessedNote missingModality="image" crop={selectedCrop} />
