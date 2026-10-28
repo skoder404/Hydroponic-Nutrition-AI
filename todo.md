@@ -1100,9 +1100,9 @@
 **Dependencies:** T5-003, T2-016
 **Acceptance Criteria:**
 
-- [ ] Order matches Overview §16.2
-- [ ] Denominator is documented and stored in metadata
-- [ ] Empty mask raises an error
+- [x] Order matches Overview §16.2
+- [x] Denominator is documented and stored in metadata
+- [x] Empty mask raises an error
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
