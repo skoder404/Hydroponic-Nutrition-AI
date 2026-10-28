@@ -11,3 +11,12 @@ export type { InputMode, InputModeToggleProps } from "./InputModeToggle";
 
 export { InputHelpDrawer } from "./InputHelpDrawer";
 export type { InputHelpDrawerProps } from "./InputHelpDrawer";
+
+export { SensorForm, CROP_SENSOR_SCHEMAS } from "./SensorForm";
+export type {
+  SensorFormProps,
+  SensorFieldDef,
+  SupportedCrop,
+  ProvenanceSource,
+} from "./SensorForm";
+

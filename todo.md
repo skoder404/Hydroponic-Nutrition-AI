@@ -1807,9 +1807,9 @@
 **Dependencies:** T7-001, T7-005
 **Acceptance Criteria:**
 
-- [ ] Empty field is sent as missing, not 0
-- [ ] Field order and names match the backend schema
-- [ ] Error messages name the unit
+- [x] Empty field is sent as missing, not 0
+- [x] Field order and names match the backend schema
+- [x] Error messages name the unit
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
