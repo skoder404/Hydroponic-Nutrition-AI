@@ -1911,9 +1911,9 @@
 **Dependencies:** T7-005, T7-001, T6-010
 **Acceptance Criteria:**
 
-- [ ] Source chip 'Live' appears only for records flagged live
-- [ ] Empty/error/loading states match DESIGN S4
-- [ ] Table scrolls inside its own container on small screens
+- [x] Source chip 'Live' appears only for records flagged live
+- [x] Empty/error/loading states match DESIGN S4
+- [x] Table scrolls inside its own container on small screens
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend

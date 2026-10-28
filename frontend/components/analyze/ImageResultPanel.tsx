@@ -463,3 +463,4 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
     </div>
   );
 };
+

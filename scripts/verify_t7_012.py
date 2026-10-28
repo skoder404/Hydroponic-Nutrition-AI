@@ -81,3 +81,4 @@ def test_t7_012_image_result_panel() -> None:
 
 if __name__ == "__main__":
     test_t7_012_image_result_panel()
+

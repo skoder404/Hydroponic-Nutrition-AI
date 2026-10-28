@@ -153,6 +153,7 @@ export interface RecordCreate {
 export interface RecordRead extends RecordCreate {
   id: string;
   created_at: string;
+  historical?: boolean;
 }
 
 export interface HistoryQueryParams {
