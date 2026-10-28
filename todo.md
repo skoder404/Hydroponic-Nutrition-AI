@@ -1937,9 +1937,9 @@
 **Dependencies:** T7-005, T7-001, T6-002
 **Acceptance Criteria:**
 
-- [ ] Experimental models are labelled
-- [ ] Limitations list matches Overview §28
-- [ ] Empty state explains no promoted models
+- [x] Experimental models are labelled
+- [x] Limitations list matches Overview §28
+- [x] Empty state explains no promoted models
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend

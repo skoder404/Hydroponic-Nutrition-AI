@@ -145,9 +145,13 @@ export class ApiClient {
     if (params?.modality) query.set("modality", params.modality);
 
     const qs = query.toString();
-    return this.request<{ models: ModelSummary[]; count: number }>(
+    const raw = await this.request<ModelSummary[] | { models: ModelSummary[]; count: number }>(
       `/models${qs ? `?${qs}` : ""}`
     );
+    if (Array.isArray(raw)) {
+      return { models: raw, count: raw.length };
+    }
+    return raw;
   }
 
   /**
