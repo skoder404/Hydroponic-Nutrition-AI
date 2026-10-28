@@ -282,6 +282,8 @@ def build_spinach_features(
         "counts_per_split": counts_per_split,
         "counts_per_class": df_all["class"].value_counts().to_dict(),
         "failed_images_count": len(failed_images),
+        "failed_images": failed_images,
+        "extraction_config": DEFAULT_TOMATO_CONFIG.to_dict(),
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     with open(metadata_path, "w", encoding="utf-8") as f:
@@ -293,8 +295,11 @@ def build_tomato_features(
     output_dir: Path,
     overwrite: bool = False,
     max_samples: int | None = None,
+    num_workers: int = 8,
 ) -> dict[str, Any]:
-    """Extract features for tomato leaf images."""
+    """Extract features for tomato leaf images using multi-threaded batch processing."""
+    from concurrent.futures import ThreadPoolExecutor
+
     split_manifest = PROJECT_ROOT / "processed_data/splits/image_splits_tomato.csv"
     if not split_manifest.exists():
         raise FileNotFoundError(f"Tomato split manifest not found at {split_manifest}")
@@ -316,11 +321,10 @@ def build_tomato_features(
     if max_samples is not None:
         df_manifest = df_manifest.head(max_samples)
 
-    LOGGER.info(f"Building tomato features for {len(df_manifest)} images...")
-    records: list[dict[str, Any]] = []
-    failed_images: list[dict[str, str]] = []
+    LOGGER.info(f"Building tomato features for {len(df_manifest)} images using {num_workers} threads...")
 
-    for idx, row in tqdm(df_manifest.iterrows(), total=len(df_manifest), desc="Extracting tomato features"):
+    def process_tomato_image(row_tuple: tuple[int, Any]) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+        _, row = row_tuple
         rel_img_path = row["image_path"]
         full_path = PROJECT_ROOT / rel_img_path
         img_id = Path(rel_img_path).stem
@@ -328,15 +332,18 @@ def build_tomato_features(
         img_split = row["split"]
 
         if not full_path.exists():
-            failed_images.append({"image_id": img_id, "reason": "File missing"})
-            continue
+            return None, {"image_id": img_id, "reason": "File missing"}
 
         bgr = cv2.imread(str(full_path))
         if bgr is None:
-            failed_images.append({"image_id": img_id, "reason": "Unreadable image file"})
-            continue
+            return None, {"image_id": img_id, "reason": "Unreadable image file"}
 
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+        h, w = rgb.shape[:2]
+        if max(h, w) > 512:
+            scale = 512.0 / max(h, w)
+            rgb = cv2.resize(rgb, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
+
         h, w = rgb.shape[:2]
         r, g, b = rgb[:, :, 0].astype(float), rgb[:, :, 1].astype(float), rgb[:, :, 2].astype(float)
         exg = 2.0 * g - r - b
@@ -355,9 +362,27 @@ def build_tomato_features(
             feat_map = fv.to_dict()
             for fname in TOMATO_FEATURE_NAMES:
                 row_dict[fname] = feat_map[fname]
-            records.append(row_dict)
+            return row_dict, None
         except Exception as e:
-            failed_images.append({"image_id": img_id, "reason": str(e)})
+            return None, {"image_id": img_id, "reason": str(e)}
+
+    records: list[dict[str, Any]] = []
+    failed_images: list[dict[str, str]] = []
+
+    with ThreadPoolExecutor(max_workers=num_workers) as executor:
+        results = list(
+            tqdm(
+                executor.map(process_tomato_image, df_manifest.iterrows()),
+                total=len(df_manifest),
+                desc="Extracting tomato features",
+            )
+        )
+
+    for rec, fail in results:
+        if rec is not None:
+            records.append(rec)
+        if fail is not None:
+            failed_images.append(fail)
 
     df_all = pd.DataFrame(records)
     for fname in TOMATO_FEATURE_NAMES:
@@ -379,6 +404,8 @@ def build_tomato_features(
         "counts_per_split": counts_per_split,
         "counts_per_class": df_all["class"].value_counts().to_dict(),
         "failed_images_count": len(failed_images),
+        "failed_images": failed_images,
+        "extraction_config": DEFAULT_TOMATO_CONFIG.to_dict(),
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     with open(metadata_path, "w", encoding="utf-8") as f:

@@ -1,0 +1,72 @@
+{
+  "model_id": "tomato_feature_svm",
+  "crop": "tomato",
+  "modality": "feature",
+  "family": "SVM",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/tomato/svm/v1.0.0/model.joblib",
+  "commit": "af5232e95465447285d3cfb825f3d248a3a3dcff",
+  "classes": [
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_Healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Powdery_Mildew",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites Two-spotted_spider_mite",
+    "Tomato_Target_Spot",
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus"
+  ],
+  "feature_schema_version": "1.0.0",
+  "feature_order": [
+    "glcm_contrast",
+    "glcm_entropy",
+    "bounding_aspect_ratio",
+    "solidity"
+  ],
+  "num_features": 4,
+  "split_counts": {
+    "train": 23495,
+    "val": 5034
+  },
+  "class_support_validation": {
+    "Tomato_Healthy": 602,
+    "Tomato_Late_blight": 592,
+    "Tomato_Leaf_Mold": 584,
+    "Tomato_Septoria_leaf_spot": 544,
+    "Tomato_Bacterial_spot": 538,
+    "Tomato_Early_blight": 509,
+    "Tomato_Tomato_mosaic_virus": 411,
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 395,
+    "Tomato_Target_Spot": 343,
+    "Tomato_Spider_mites Two-spotted_spider_mite": 328,
+    "Tomato_Powdery_Mildew": 188
+  },
+  "excluded_images_count": 1,
+  "excluded_images": [
+    {
+      "image_id": "HL_(336)",
+      "reason": "Unreadable image file"
+    }
+  ],
+  "hyperparameters": {
+    "C": 2.0,
+    "gamma": "scale",
+    "kernel": "rbf",
+    "class_weight": "balanced",
+    "probability": true,
+    "random_state": 42
+  },
+  "val_macro_f1": 0.4271,
+  "val_accuracy": 0.4384,
+  "training_date": "2026-10-28T09:00:14.618919+00:00",
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "crop": "tomato",
+  "schema_version": "1.0.0",
+  "feature_names": [
+    "glcm_contrast",
+    "glcm_entropy",
+    "bounding_aspect_ratio",
+    "solidity"
+  ],
+  "total_images": 33563,
+  "counts_per_split": {
+    "train": 23495,
+    "val": 5034,
+    "test": 5034
+  },
+  "counts_per_class": {
+    "Tomato_Healthy": 4013,
+    "Tomato_Late_blight": 3945,
+    "Tomato_Leaf_Mold": 3893,
+    "Tomato_Septoria_leaf_spot": 3628,
+    "Tomato_Bacterial_spot": 3590,
+    "Tomato_Early_blight": 3393,
+    "Tomato_Tomato_mosaic_virus": 2737,
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus": 2634,
+    "Tomato_Target_Spot": 2287,
+    "Tomato_Spider_mites Two-spotted_spider_mite": 2187,
+    "Tomato_Powdery_Mildew": 1256
+  },
+  "failed_images_count": 1,
+  "failed_images": [
+    {
+      "image_id": "HL_(336)",
+      "reason": "Unreadable image file"
+    }
+  ],
+  "extraction_config": {
+    "schema_version": "1.0.0",
+    "glcm_levels": 32,
+    "glcm_distances": [
+      1
+    ],
+    "glcm_angles": [
+      0.0,
+      0.7853981633974483,
+      1.5707963267948966,
+      2.356194490192345
+    ],
+    "glcm_log_base": 2.0,
+    "aspect_ratio_definition": "Bounding box width divided by height (w / h) via cv2.boundingRect",
+    "solidity_definition": "Contour area divided by convex hull area (contour_area / hull_area)",
+    "crop": "tomato",
+    "feature_names": [
+      "glcm_contrast",
+      "glcm_entropy",
+      "bounding_aspect_ratio",
+      "solidity"
+    ],
+    "droop_angle_decision": "REMOVED per ADR 0007",
+    "definitions": {
+      "bounding_aspect_ratio": "Bounding box width divided by height (w / h) via cv2.boundingRect",
+      "solidity": "Contour area divided by convex hull area (contour_area / hull_area)",
+      "glcm_contrast": "Mean GLCM contrast across 4 angles (32 levels, d=1)",
+      "glcm_entropy": "Mean base-2 GLCM entropy across 4 angles (32 levels, d=1)"
+    }
+  },
+  "created_at": "2026-10-28T08:53:39.742594+00:00"
+}

@@ -123,10 +123,17 @@ def train_and_evaluate_classifier(
     hyperparameters: dict[str, Any] | None = None,
     output_model_dir: Path | None = None,
     reports_dir: Path | None = None,
+    feature_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Train classifier on train partition and evaluate exclusively on validation partition."""
     if hyperparameters is None:
         hyperparameters = {}
+    if feature_metadata is None:
+        feature_metadata = {}
+
+    schema_version = feature_metadata.get("schema_version", "1.0.0")
+    failed_images_count = feature_metadata.get("failed_images_count", 0)
+    failed_images = feature_metadata.get("failed_images", [])
 
     target_col = "class"
     X_train = train_df[feature_names].to_numpy(dtype=np.float64)
@@ -213,6 +220,7 @@ def train_and_evaluate_classifier(
         "artifact_file": str(artifact_path.relative_to(PROJECT_ROOT).as_posix()),
         "commit": get_current_git_commit(),
         "classes": classes,
+        "feature_schema_version": schema_version,
         "feature_order": feature_names,
         "num_features": len(feature_names),
         "split_counts": {
@@ -220,6 +228,8 @@ def train_and_evaluate_classifier(
             "val": len(val_df),
         },
         "class_support_validation": val_class_counts,
+        "excluded_images_count": failed_images_count,
+        "excluded_images": failed_images,
         "hyperparameters": clf_params,
         "val_macro_f1": round(float(val_macro_f1), 4),
         "val_accuracy": round(float(val_accuracy), 4),
@@ -236,11 +246,29 @@ def train_and_evaluate_classifier(
         reports_dir = PROJECT_ROOT / f"reports/{crop}"
     reports_dir.mkdir(parents=True, exist_ok=True)
 
-    limitations = [
-        "Features are extracted from segmented lettuce leaf crops derived from whole-plant imagery.",
-        "Ground truth labels inherit the whole-plant condition (weak labels); an estimated 15.8% of leaf crops on deficient plants present normal green morphology.",
-        "Model performance is evaluated exclusively on the validation holdout split; test.csv remains untouched.",
-    ]
+    if crop == "tomato":
+        limitations = [
+            "Features are extracted according to ADR 0007 (schema_version 1.0.0) with droop_angle formally removed, retaining 4 defensible texture and shape features (glcm_contrast, glcm_entropy, bounding_aspect_ratio, solidity).",
+            f"Out of dataset manifests, exactly {failed_images_count} unreadable source image ({', '.join(x['image_id'] for x in failed_images) if failed_images else 'none'}) was excluded during feature extraction.",
+            "Model performance is evaluated exclusively on the validation holdout split (val.csv, 5,034 instances); test.csv remains strictly untouched.",
+        ]
+        split_protocol = "Stratified split across 11 disease and health conditions (PlantVillage tomato corpus); train/val strictly isolated"
+        label_generation = "Pathological/phytopathological expert visual diagnosis per leaf image"
+    elif crop == "lettuce":
+        limitations = [
+            "Features are extracted from segmented lettuce leaf crops derived from whole-plant imagery.",
+            "Ground truth labels inherit the whole-plant condition (weak labels); an estimated 15.8% of leaf crops on deficient plants present normal green morphology.",
+            "Model performance is evaluated exclusively on the validation holdout split; test.csv remains untouched.",
+        ]
+        split_protocol = "Stratified split inherited from parent plant images; train/val isolated"
+        label_generation = "Whole-plant agronomic condition inherited by individual leaf crops (weak label)"
+    else:
+        limitations = [
+            f"Features are extracted using {crop} canonical feature schema {schema_version}.",
+            "Model performance is evaluated exclusively on the validation holdout split; test.csv remains untouched.",
+        ]
+        split_protocol = f"Stratified split for {crop}; train/val isolated"
+        label_generation = "Direct per-image pathology diagnosis"
 
     write_evaluation_report(
         crop=crop,
@@ -250,13 +278,13 @@ def train_and_evaluate_classifier(
         split_evaluated="validation",
         metrics=serializable_metrics,
         dataset_manifest=f"processed_data/features/{crop}",
-        split_protocol="Stratified split inherited from parent plant images; train/val isolated",
+        split_protocol=split_protocol,
         split_counts={"train": len(train_df), "validation": len(val_df), "test": 0},
         class_counts_per_split={
             "train": train_class_counts,
             "validation": val_class_counts,
         },
-        label_generation_method="Whole-plant agronomic condition inherited by individual leaf crops (weak label)",
+        label_generation_method=label_generation,
         hyperparameters=clf_params,
         limitations=limitations,
         output_dir=reports_dir,
@@ -277,11 +305,18 @@ def write_comparison_report(
     crop: str,
     results: list[dict[str, Any]],
     reports_dir: Path | None = None,
+    feature_metadata: dict[str, Any] | None = None,
 ) -> Path:
     """Generate comparative markdown and JSON report across evaluated models."""
     if reports_dir is None:
         reports_dir = PROJECT_ROOT / f"reports/{crop}"
     reports_dir.mkdir(parents=True, exist_ok=True)
+    if feature_metadata is None:
+        feature_metadata = {}
+
+    schema_version = feature_metadata.get("schema_version", "1.0.0")
+    failed_images_count = feature_metadata.get("failed_images_count", 0)
+    failed_images = feature_metadata.get("failed_images", [])
 
     # Find best model by validation macro-F1
     best_res = max(results, key=lambda r: r["val_macro_f1"])
@@ -289,6 +324,9 @@ def write_comparison_report(
     comp_data = {
         "crop": crop,
         "evaluation_split": "validation",
+        "schema_version": schema_version,
+        "excluded_images_count": failed_images_count,
+        "excluded_images": failed_images,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "best_model": {
             "family": best_res["model_family"],
@@ -319,6 +357,8 @@ def write_comparison_report(
         "",
         "> **Split Evaluated:** `validation` (strictly isolated from test holdout)  ",
         f"> **Generated:** `{comp_data['generated_at']}`  ",
+        f"> **Feature Schema Version:** `{schema_version}`  ",
+        f"> **Excluded Images Count:** `{failed_images_count}`  ",
         f"> **Selected Champion Model:** `{best_res['model_family']}` (Val Macro-F1: `{best_res['val_macro_f1']:.4f}`)  ",
         "",
         "## 1. Model Family Comparison Table",
@@ -371,13 +411,22 @@ def write_comparison_report(
         md_lines.append("```")
         md_lines.append("")
 
-    md_lines.extend([
-        "## 4. Limitations & Weak Label Note",
-        "",
-        "- Training and validation features were extracted from individual leaf crops generated by SAM 2.1 from whole-plant images (`image_data/Lettuce_Images/`).",
-        "- Because whole-plant nutrient deficiencies manifest gradually across the canopy, roughly 15.8% of leaf crops on deficient plants present normal green morphology (documented in `reports/analysis/crop_label_review.md`).",
-        "- Test holdout partition (`test.csv`) was strictly never evaluated during training or model selection.",
-    ])
+    if crop == "tomato":
+        md_lines.extend([
+            "## 4. Limitations & ADR 0007 Schema Compliance",
+            "",
+            "- **Feature Schema Version:** Conforms to ADR 0007 (`schema_version: 1.0.0`) with 4 features (`glcm_contrast`, `glcm_entropy`, `bounding_aspect_ratio`, `solidity`). The candidate `droop_angle` was formally removed due to lack of gravity/stem reference in detached leaf imagery.",
+            f"- **Excluded Images:** Exactly {failed_images_count} corrupt/unreadable source image ({', '.join(x['image_id'] for x in failed_images) if failed_images else 'none'}) was excluded during feature extraction (`failed_images_count: {failed_images_count}`).",
+            "- **Validation Holdout Only:** Model selection and metrics are reported exclusively on the validation partition (`val.csv`, 5,034 instances). The test holdout partition (`test.csv`, 5,034 instances) was strictly never evaluated.",
+        ])
+    else:
+        md_lines.extend([
+            "## 4. Limitations & Weak Label Note",
+            "",
+            "- Training and validation features were extracted from individual leaf crops generated by SAM 2.1 from whole-plant images (`image_data/Lettuce_Images/`).",
+            "- Because whole-plant nutrient deficiencies manifest gradually across the canopy, roughly 15.8% of leaf crops on deficient plants present normal green morphology (documented in `reports/analysis/crop_label_review.md`).",
+            "- Test holdout partition (`test.csv`) was strictly never evaluated during training or model selection.",
+        ])
 
     md_path = reports_dir / f"{crop}_feature_experiments.md"
     md_path.write_text("\n".join(md_lines), encoding="utf-8")
@@ -391,7 +440,7 @@ def main() -> int:
     parser.add_argument("--families", nargs="+", default=["random_forest", "svm"], help="Model families to train")
     args = parser.parse_args()
 
-    train_df, val_df, feature_names, _ = load_feature_splits(args.crop)
+    train_df, val_df, feature_names, feature_metadata = load_feature_splits(args.crop)
 
     results = []
     for fam in args.families:
@@ -402,10 +451,11 @@ def main() -> int:
             train_df=train_df,
             val_df=val_df,
             feature_names=feature_names,
+            feature_metadata=feature_metadata,
         )
         results.append(res)
 
-    write_comparison_report(args.crop, results)
+    write_comparison_report(args.crop, results, feature_metadata=feature_metadata)
     LOGGER.info("Training and comparative reporting complete!")
     return 0
 

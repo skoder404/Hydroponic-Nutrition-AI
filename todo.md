@@ -1246,9 +1246,9 @@
 **Dependencies:** T5-014
 **Acceptance Criteria:**
 
-- [ ] Report written with per-class metrics
-- [ ] Feature schema version matches the ADR
-- [ ] Excluded images are counted
+- [x] Report written with per-class metrics
+- [x] Feature schema version matches the ADR
+- [x] Excluded images are counted
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
