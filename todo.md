@@ -1755,9 +1755,9 @@
 **Dependencies:** T7-001, T7-003, T1-009
 **Acceptance Criteria:**
 
-- [ ] Keyboard navigation reaches all links
-- [ ] Banner appears when the API is down
-- [ ] Disclaimer text avoids 'diagnosis' wording
+- [x] Keyboard navigation reaches all links
+- [x] Banner appears when the API is down
+- [x] Disclaimer text avoids 'diagnosis' wording
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend

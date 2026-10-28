@@ -12,3 +12,7 @@ export type { BadgeProps, BadgeVariant } from "./Badge";
 
 export { Toast } from "./Toast";
 export type { ToastProps, ToastVariant } from "./Toast";
+
+export { HealthBanner } from "./HealthBanner";
+export type { HealthBannerProps } from "./HealthBanner";
+
