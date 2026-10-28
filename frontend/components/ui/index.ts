@@ -16,3 +16,14 @@ export type { ToastProps, ToastVariant } from "./Toast";
 export { HealthBanner } from "./HealthBanner";
 export type { HealthBannerProps } from "./HealthBanner";
 
+export { ConfidenceMeter, getConfidenceTier } from "./ConfidenceMeter";
+export type {
+  ConfidenceMeterProps,
+  ConfidenceTier,
+  ConfidenceThresholds,
+} from "./ConfidenceMeter";
+
+export { UncertaintyBadge } from "./UncertaintyBadge";
+export type { UncertaintyBadgeProps } from "./UncertaintyBadge";
+
+

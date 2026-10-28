@@ -1846,9 +1846,9 @@
 **Dependencies:** T7-001
 **Acceptance Criteria:**
 
-- [ ] Uncertain tier is visually lighter than higher-confidence tier
-- [ ] No tier relies on colour alone
-- [ ] Tier thresholds come from the API, not constants
+- [x] Uncertain tier is visually lighter than higher-confidence tier
+- [x] No tier relies on colour alone
+- [x] Tier thresholds come from the API, not constants
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
