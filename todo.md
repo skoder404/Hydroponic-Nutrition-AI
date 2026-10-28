@@ -2020,9 +2020,9 @@
 **Dependencies:** T5-003, T5-009, T5-010
 **Acceptance Criteria:**
 
-- [ ] GLCM config is asserted not just run
-- [ ] All mask verdict branches covered
-- [ ] Tests are deterministic
+- [x] GLCM config is asserted not just run
+- [x] All mask verdict branches covered
+- [x] Tests are deterministic
 
 **Estimated Effort:** 60 min
 **Assigned To:** QA
