@@ -1273,9 +1273,9 @@
 **Dependencies:** T2-015, T2-019, T5-012
 **Acceptance Criteria:**
 
-- [ ] Validation/test transforms contain no random operations
-- [ ] Normalisation constants are saved in metadata
-- [ ] Dataset refuses to mix leaf sources from different crops
+- [x] Validation/test transforms contain no random operations
+- [x] Normalisation constants are saved in metadata
+- [x] Dataset refuses to mix leaf sources from different crops
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
