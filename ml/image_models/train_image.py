@@ -291,6 +291,15 @@ def train_image_model(
                 epoch_loss += loss.item() * inputs.size(0)
                 train_samples += inputs.size(0)
 
+                if epoch_step % 50 == 0:
+                    LOGGER.info(
+                        "  [Epoch %02d] Step %03d/%d - Step Loss: %.4f",
+                        epoch,
+                        epoch_step,
+                        len(train_loader),
+                        loss.item(),
+                    )
+
             except BaseException as exc:
                 if is_oom_exception(exc):
                     oom_events_caught += 1
@@ -418,6 +427,12 @@ def train_image_model(
 
     software_versions = get_default_software_versions()
 
+    input_type = (
+        "leaf crop from segmentation (source_map.csv)"
+        if crop == "lettuce"
+        else "leaf image as provided"
+    )
+
     metadata = {
         "model_id": f"{crop}_custom_cnn",
         "crop": crop,
@@ -426,6 +441,7 @@ def train_image_model(
         "artifact_version": artifact_version,
         "artifact_file": str(checkpoint_file.relative_to(PROJECT_ROOT).as_posix()),
         "commit": get_git_commit_hash(),
+        "input_type": input_type,
         "classes": classes,
         "num_classes": num_classes,
         "num_parameters": model.count_parameters(),
@@ -461,20 +477,27 @@ def train_image_model(
     val_class_counts: dict[str, int] = {}
     if hasattr(train_loader.dataset, "samples"):
         for s in train_loader.dataset.samples:  # type: ignore[union-attr]
-            lbl = s.get("label", "unknown")
+            lbl = s.get("class_name") or classes[s.get("label", 0)]
             train_class_counts[lbl] = train_class_counts.get(lbl, 0) + 1
     if hasattr(val_loader.dataset, "samples"):
         for s in val_loader.dataset.samples:  # type: ignore[union-attr]
-            lbl = s.get("label", "unknown")
+            lbl = s.get("class_name") or classes[s.get("label", 0)]
             val_class_counts[lbl] = val_class_counts.get(lbl, 0) + 1
 
     # Section 18.2 Evaluation Report
     report_dir = config.report_dir or (PROJECT_ROOT / f"reports/{crop}")
     report_dir.mkdir(parents=True, exist_ok=True)
 
+    if crop == "lettuce":
+        label_method = "Leaf crop instance diagnosis; crop labels inherited from whole-plant labels"
+        crop_limitation = "Crop labels are inherited from whole-plant annotations; leaf-level variance may exist."
+    else:
+        label_method = "Leaf images as provided with team diagnosis labels"
+        crop_limitation = f"Input type: leaf image as provided for {crop}."
+
     limitations = [
         f"Model trained and evaluated on isolated {crop} leaf images using holdout validation split.",
-        f"Crop labels are inherited from whole-plant annotations; leaf-level variance may exist.",
+        crop_limitation,
         f"Verified compute hardware: target={target_device_str}, actually_used={device_actually_used}.",
         "Evaluated strictly on the validation partition; test holdout remains untouched.",
     ]
@@ -492,7 +515,7 @@ def train_image_model(
         split_protocol="Stratified split; train and validation isolated",
         split_counts={"train": len(train_loader.dataset), "validation": len(val_loader.dataset), "test": 0},  # type: ignore[arg-type]
         class_counts_per_split={"train": train_class_counts, "validation": val_class_counts},
-        label_generation_method="Leaf crop instance diagnosis; crop labels inherited from whole-plant labels",
+        label_generation_method=label_method,
         hyperparameters=asdict(config) if hasattr(config, "__dataclass_fields__") else {},
         limitations=limitations,
         output_dir=report_dir,
@@ -578,6 +601,7 @@ def main() -> int:
     parser.add_argument("--crop", default="lettuce", choices=["lettuce", "spinach", "tomato"], help="Crop to train")
     parser.add_argument("--epochs", type=int, default=15, help="Number of epochs")
     parser.add_argument("--batch-size", type=int, default=32, help="Mini-batch size")
+    parser.add_argument("--num-workers", type=int, default=2, help="DataLoader workers")
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
     parser.add_argument("--patience", type=int, default=5, help="Early stopping patience")
     parser.add_argument("--force-cpu", action="store_true", help="Force execution on CPU")
@@ -594,6 +618,7 @@ def main() -> int:
         crop=args.crop,
         epochs=args.epochs,
         batch_size=args.batch_size,
+        num_workers=args.num_workers,
         lr=args.lr,
         early_stopping_patience=args.patience,
         force_cpu=args.force_cpu,

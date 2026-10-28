@@ -1,0 +1,47 @@
+{
+  "model_id": "spinach_custom_cnn",
+  "crop": "spinach",
+  "modality": "image",
+  "family": "CustomCNN",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/spinach/custom_cnn/v1.0.0/model.pt",
+  "commit": "8cc9925afc19bd815f52080870e993bb7e8cd810",
+  "input_type": "leaf image as provided",
+  "classes": [
+    "Spinach_Healthy",
+    "Spinach_Non fresh",
+    "Spinach_anthracnose",
+    "Spinach_bacterial spot",
+    "Spinach_downy mildew",
+    "Spinach_pest damage"
+  ],
+  "num_classes": 6,
+  "num_parameters": 456742,
+  "target_device": "cuda:0",
+  "device_actually_used": "cuda:0",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 3,
+  "val_macro_f1": 0.6567,
+  "val_accuracy": 0.6459,
+  "split_counts": {
+    "train": 12812,
+    "val": 2745
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 3,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T13:53:34.597924+00:00",
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

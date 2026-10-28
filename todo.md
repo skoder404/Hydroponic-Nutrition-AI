@@ -1354,9 +1354,9 @@
 **Dependencies:** T5-021
 **Acceptance Criteria:**
 
-- [ ] Validation report produced with per-class metrics
-- [ ] Input type (leaf image as provided) recorded in metadata
-- [ ] Device actually used recorded
+- [x] Validation report produced with per-class metrics
+- [x] Input type (leaf image as provided) recorded in metadata
+- [x] Device actually used recorded
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
