@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Literal
 from uuid import UUID, uuid4
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 from backend.app.schemas.prediction import PredictionResponse
 from backend.app.schemas.recommendation import RecommendationRead
@@ -30,6 +30,8 @@ RULES_DIR = Path(__file__).resolve().parent / "rules"
 
 class RuleProvider:
     """Deterministic rule-based recommendation provider implementing Overview §20."""
+
+    provider_name: str = "rules"
 
     def __init__(self, rules_dir: Path | str | None = None) -> None:
         self.rules_dir = Path(rules_dir).resolve() if rules_dir else RULES_DIR
@@ -48,7 +50,11 @@ class RuleProvider:
                 data = yaml.safe_load(yaml_file.read_text(encoding="utf-8"))
                 if isinstance(data, dict):
                     self._rules_cache[crop_name] = data
-                    logger.info("Loaded recommendation rules for '%s' (v%s)", crop_name, data.get("rules_version"))
+                    logger.info(
+                        "Loaded recommendation rules for '%s' (v%s)",
+                        crop_name,
+                        data.get("rules_version"),
+                    )
             except Exception as exc:
                 logger.error("Failed to load rules YAML from '%s': %s", yaml_file, exc)
 
@@ -92,7 +98,9 @@ class RuleProvider:
             RecommendationRead conforming to TECH_RULES error envelope and database schema.
         """
         clean_crop = crop.strip().lower()
-        clean_modality = "image" if modality in ("image", "image_features") else "sensor"
+        clean_modality = (
+            "image" if modality in ("image", "image_features") else "sensor"
+        )
         crop_rules = self.get_crop_rules(clean_crop)
 
         # 1. Check for missing or unsupported crop rules
@@ -145,11 +153,15 @@ class RuleProvider:
             actions = list(
                 rule.get(
                     "low_confidence_action",
-                    ["Verify environmental and solution readings before adjusting cultivation setpoints."],
+                    [
+                        "Verify environmental and solution readings before adjusting cultivation setpoints."
+                    ],
                 )
             )
         else:
-            summary = str(rule.get("summary", f"Condition '{predicted_class}' detected."))
+            summary = str(
+                rule.get("summary", f"Condition '{predicted_class}' detected.")
+            )
             checks = list(rule.get("checks", []))
             actions = list(rule.get("actions", []))
 

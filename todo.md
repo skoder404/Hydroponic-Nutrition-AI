@@ -1607,9 +1607,9 @@
 **Dependencies:** T6-008
 **Acceptance Criteria:**
 
-- [ ] Service works with no Gemini configured
-- [ ] Output includes `source: rules`
-- [ ] Provider can be swapped by config
+- [x] Service works with no Gemini configured
+- [x] Output includes `source: rules`
+- [x] Provider can be swapped by config
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

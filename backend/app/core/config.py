@@ -48,6 +48,12 @@ class Settings(BaseSettings):
         default="gemini-1.5-flash", description="Gemini model name"
     )
 
+    # Recommendation Provider Selection (T6-009)
+    recommendation_provider: str = Field(
+        default="rules",
+        description="Active recommendation provider: 'rules' or 'gemini'",
+    )
+
     # Local Storage and Registry Paths
     model_registry_path: str = Field(
         default="models/manifests", description="Path to model manifests"
