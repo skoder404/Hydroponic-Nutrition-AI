@@ -30,7 +30,6 @@ import argparse
 import json
 import logging
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -44,30 +43,29 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ml.features.common import (
+from ml.features.common import (  # noqa: E402
     DEFAULT_FEATURE_SCHEMA_VERSION,
     FeatureExtractionError,
-    assert_finite_features,
 )
-from ml.features.lettuce import (
+from ml.features.lettuce import (  # noqa: E402
     DEFAULT_LETTUCE_CONFIG,
     LETTUCE_FEATURE_NAMES,
     extract_lettuce_features,
 )
-from ml.features.spinach import (
+from ml.features.spinach import (  # noqa: E402
     DEFAULT_SPINACH_CONFIG,
     SPINACH_FEATURE_NAMES,
     extract_spinach_features,
 )
-from ml.features.tomato import (
+from ml.features.tomato import (  # noqa: E402
     DEFAULT_TOMATO_CONFIG,
     TOMATO_FEATURE_NAMES,
     extract_tomato_features,
 )
-from ml.segmentation.leaf_extraction import LeafExtractionConfig, extract_leaves
-from ml.segmentation.sam2_segmenter import SAM2Segmenter
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 LOGGER = logging.getLogger("build_features")
 
 CROP_FEATURE_NAMES = {
@@ -95,8 +93,12 @@ def build_lettuce_features(
     test_path = output_dir / "test.csv"
     metadata_path = output_dir / "metadata.json"
 
-    if (train_path.exists() or val_path.exists() or test_path.exists()) and not overwrite:
-        LOGGER.info(f"Lettuce features already exist in {output_dir}. Refusing to overwrite without --overwrite.")
+    if (
+        train_path.exists() or val_path.exists() or test_path.exists()
+    ) and not overwrite:
+        LOGGER.info(
+            f"Lettuce features already exist in {output_dir}. Refusing to overwrite without --overwrite."
+        )
         if metadata_path.exists():
             with open(metadata_path, "r", encoding="utf-8") as f:
                 return json.load(f)
@@ -110,7 +112,9 @@ def build_lettuce_features(
     records: list[dict[str, Any]] = []
     failed_crops: list[dict[str, str]] = []
 
-    for idx, row in tqdm(df_source.iterrows(), total=len(df_source), desc="Extracting lettuce features"):
+    for idx, row in tqdm(
+        df_source.iterrows(), total=len(df_source), desc="Extracting lettuce features"
+    ):
         crop_id = row["crop_id"]
         crop_rel_path = row["crop_path"]
         crop_full_path = PROJECT_ROOT / crop_rel_path
@@ -148,7 +152,9 @@ def build_lettuce_features(
         except FeatureExtractionError as fee:
             failed_crops.append({"crop_id": crop_id, "reason": str(fee)})
         except Exception as e:
-            failed_crops.append({"crop_id": crop_id, "reason": f"Unexpected error: {e}"})
+            failed_crops.append(
+                {"crop_id": crop_id, "reason": f"Unexpected error: {e}"}
+            )
 
     df_all = pd.DataFrame(records)
     if df_all.empty:
@@ -160,7 +166,11 @@ def build_lettuce_features(
         assert not np.isinf(df_all[fname]).any(), f"Inf detected in feature {fname}"
 
     # Partition and save CSVs
-    feature_cols = ["image_id", "source_image_id", "class"] + list(LETTUCE_FEATURE_NAMES) + ["split"]
+    feature_cols = (
+        ["image_id", "source_image_id", "class"]
+        + list(LETTUCE_FEATURE_NAMES)
+        + ["split"]
+    )
     counts_per_split = {}
     for split_name in ("train", "val", "test"):
         sub_df = df_all[df_all["split"] == split_name][feature_cols]
@@ -192,9 +202,11 @@ def build_spinach_features(
     output_dir: Path,
     overwrite: bool = False,
     max_samples: int | None = None,
-    segmenter: SAM2Segmenter | None = None,
+    num_workers: int = 8,
 ) -> dict[str, Any]:
-    """Extract features for spinach leaf images."""
+    """Extract features for spinach leaf images using multi-threaded batch processing."""
+    from concurrent.futures import ThreadPoolExecutor
+
     split_manifest = PROJECT_ROOT / "processed_data/splits/image_splits_spinach.csv"
     if not split_manifest.exists():
         raise FileNotFoundError(f"Spinach split manifest not found at {split_manifest}")
@@ -205,8 +217,12 @@ def build_spinach_features(
     test_path = output_dir / "test.csv"
     metadata_path = output_dir / "metadata.json"
 
-    if (train_path.exists() or val_path.exists() or test_path.exists()) and not overwrite:
-        LOGGER.info(f"Spinach features already exist in {output_dir}. Refusing to overwrite without --overwrite.")
+    if (
+        train_path.exists() or val_path.exists() or test_path.exists()
+    ) and not overwrite:
+        LOGGER.info(
+            f"Spinach features already exist in {output_dir}. Refusing to overwrite without --overwrite."
+        )
         if metadata_path.exists():
             with open(metadata_path, "r", encoding="utf-8") as f:
                 return json.load(f)
@@ -216,11 +232,14 @@ def build_spinach_features(
     if max_samples is not None:
         df_manifest = df_manifest.head(max_samples)
 
-    LOGGER.info(f"Building spinach features for {len(df_manifest)} images...")
-    records: list[dict[str, Any]] = []
-    failed_images: list[dict[str, str]] = []
+    LOGGER.info(
+        f"Building spinach features for {len(df_manifest)} images using {num_workers} threads..."
+    )
 
-    for idx, row in tqdm(df_manifest.iterrows(), total=len(df_manifest), desc="Extracting spinach features"):
+    def process_spinach_image(
+        row_tuple: tuple[int, Any],
+    ) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+        _, row = row_tuple
         rel_img_path = row["image_path"]
         full_path = PROJECT_ROOT / rel_img_path
         img_id = Path(rel_img_path).stem
@@ -228,25 +247,33 @@ def build_spinach_features(
         img_split = row["split"]
 
         if not full_path.exists():
-            failed_images.append({"image_id": img_id, "reason": "File missing"})
-            continue
+            return None, {"image_id": img_id, "reason": "File missing"}
 
         bgr = cv2.imread(str(full_path))
         if bgr is None:
-            failed_images.append({"image_id": img_id, "reason": "Unreadable image file"})
-            continue
+            return None, {"image_id": img_id, "reason": "Unreadable image file"}
 
         rgb = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
-        # Fast color-based vegetation segmentation for leaf-level benchmark
-        # (excess green > 0 and non-black background)
         h, w = rgb.shape[:2]
-        r, g, b = rgb[:, :, 0].astype(float), rgb[:, :, 1].astype(float), rgb[:, :, 2].astype(float)
+        if max(h, w) > 512:
+            scale = 512.0 / max(h, w)
+            rgb = cv2.resize(
+                rgb, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA
+            )
+
+        h, w = rgb.shape[:2]
+        r, g, b = (
+            rgb[:, :, 0].astype(float),
+            rgb[:, :, 1].astype(float),
+            rgb[:, :, 2].astype(float),
+        )
         exg = 2.0 * g - r - b
         mask = (exg > 5.0) & ((r + g + b) > 30.0)
         if not mask.any():
-            # Fallback to center bounding box mask
-            mask = np.zeros((h, w), dtype=bool)
-            mask[int(h * 0.1) : int(h * 0.9), int(w * 0.1) : int(w * 0.9)] = True
+            return None, {
+                "image_id": img_id,
+                "reason": "Masking failed: no vegetation pixels detected",
+            }
 
         try:
             fv = extract_spinach_features(rgb, mask, config=DEFAULT_SPINACH_CONFIG)
@@ -258,9 +285,27 @@ def build_spinach_features(
             feat_map = fv.to_dict()
             for fname in SPINACH_FEATURE_NAMES:
                 row_dict[fname] = feat_map[fname]
-            records.append(row_dict)
+            return row_dict, None
         except Exception as e:
-            failed_images.append({"image_id": img_id, "reason": str(e)})
+            return None, {"image_id": img_id, "reason": str(e)}
+
+    records: list[dict[str, Any]] = []
+    failed_images: list[dict[str, str]] = []
+
+    with ThreadPoolExecutor(max_workers=num_workers) as executor:
+        results = list(
+            tqdm(
+                executor.map(process_spinach_image, df_manifest.iterrows()),
+                total=len(df_manifest),
+                desc="Extracting spinach features",
+            )
+        )
+
+    for rec, failed in results:
+        if rec is not None:
+            records.append(rec)
+        if failed is not None:
+            failed_images.append(failed)
 
     df_all = pd.DataFrame(records)
     for fname in SPINACH_FEATURE_NAMES:
@@ -283,7 +328,12 @@ def build_spinach_features(
         "counts_per_class": df_all["class"].value_counts().to_dict(),
         "failed_images_count": len(failed_images),
         "failed_images": failed_images,
-        "extraction_config": DEFAULT_TOMATO_CONFIG.to_dict(),
+        "extraction_config": DEFAULT_SPINACH_CONFIG.to_dict(),
+        "mask_config": {
+            "algorithm": "excess_green_thresholding",
+            "exg_threshold": 5.0,
+            "min_intensity": 30.0,
+        },
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     with open(metadata_path, "w", encoding="utf-8") as f:
@@ -310,8 +360,12 @@ def build_tomato_features(
     test_path = output_dir / "test.csv"
     metadata_path = output_dir / "metadata.json"
 
-    if (train_path.exists() or val_path.exists() or test_path.exists()) and not overwrite:
-        LOGGER.info(f"Tomato features already exist in {output_dir}. Refusing to overwrite without --overwrite.")
+    if (
+        train_path.exists() or val_path.exists() or test_path.exists()
+    ) and not overwrite:
+        LOGGER.info(
+            f"Tomato features already exist in {output_dir}. Refusing to overwrite without --overwrite."
+        )
         if metadata_path.exists():
             with open(metadata_path, "r", encoding="utf-8") as f:
                 return json.load(f)
@@ -321,9 +375,13 @@ def build_tomato_features(
     if max_samples is not None:
         df_manifest = df_manifest.head(max_samples)
 
-    LOGGER.info(f"Building tomato features for {len(df_manifest)} images using {num_workers} threads...")
+    LOGGER.info(
+        f"Building tomato features for {len(df_manifest)} images using {num_workers} threads..."
+    )
 
-    def process_tomato_image(row_tuple: tuple[int, Any]) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
+    def process_tomato_image(
+        row_tuple: tuple[int, Any],
+    ) -> tuple[dict[str, Any] | None, dict[str, str] | None]:
         _, row = row_tuple
         rel_img_path = row["image_path"]
         full_path = PROJECT_ROOT / rel_img_path
@@ -342,10 +400,16 @@ def build_tomato_features(
         h, w = rgb.shape[:2]
         if max(h, w) > 512:
             scale = 512.0 / max(h, w)
-            rgb = cv2.resize(rgb, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA)
+            rgb = cv2.resize(
+                rgb, (int(w * scale), int(h * scale)), interpolation=cv2.INTER_AREA
+            )
 
         h, w = rgb.shape[:2]
-        r, g, b = rgb[:, :, 0].astype(float), rgb[:, :, 1].astype(float), rgb[:, :, 2].astype(float)
+        r, g, b = (
+            rgb[:, :, 0].astype(float),
+            rgb[:, :, 1].astype(float),
+            rgb[:, :, 2].astype(float),
+        )
         exg = 2.0 * g - r - b
         mask = (exg > 0.0) & ((r + g + b) > 20.0)
         if not mask.any():
@@ -414,10 +478,25 @@ def build_tomato_features(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Build feature datasets from split manifests (T5-013)")
-    parser.add_argument("crop", choices=["lettuce", "spinach", "tomato", "all"], help="Crop dataset to extract features for")
-    parser.add_argument("--overwrite", action="store_true", help="Force overwrite existing feature datasets")
-    parser.add_argument("--max-samples", type=int, default=None, help="Limit number of samples for rapid debugging")
+    parser = argparse.ArgumentParser(
+        description="Build feature datasets from split manifests (T5-013)"
+    )
+    parser.add_argument(
+        "crop",
+        choices=["lettuce", "spinach", "tomato", "all"],
+        help="Crop dataset to extract features for",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Force overwrite existing feature datasets",
+    )
+    parser.add_argument(
+        "--max-samples",
+        type=int,
+        default=None,
+        help="Limit number of samples for rapid debugging",
+    )
     args = parser.parse_args()
 
     crops = ["lettuce", "spinach", "tomato"] if args.crop == "all" else [args.crop]
@@ -426,11 +505,17 @@ def main() -> int:
         out_dir = PROJECT_ROOT / f"processed_data/features/{c}"
         LOGGER.info(f"Processing features for crop: {c}")
         if c == "lettuce":
-            summary = build_lettuce_features(out_dir, overwrite=args.overwrite, max_samples=args.max_samples)
+            summary = build_lettuce_features(
+                out_dir, overwrite=args.overwrite, max_samples=args.max_samples
+            )
         elif c == "spinach":
-            summary = build_spinach_features(out_dir, overwrite=args.overwrite, max_samples=args.max_samples)
+            summary = build_spinach_features(
+                out_dir, overwrite=args.overwrite, max_samples=args.max_samples
+            )
         elif c == "tomato":
-            summary = build_tomato_features(out_dir, overwrite=args.overwrite, max_samples=args.max_samples)
+            summary = build_tomato_features(
+                out_dir, overwrite=args.overwrite, max_samples=args.max_samples
+            )
         print(json.dumps(summary, indent=2))
 
     return 0

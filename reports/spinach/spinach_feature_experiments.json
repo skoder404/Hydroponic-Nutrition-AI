@@ -1,0 +1,205 @@
+{
+  "crop": "spinach",
+  "evaluation_split": "validation",
+  "schema_version": "1.0.0",
+  "excluded_images_count": 0,
+  "excluded_images": [],
+  "generated_at": "2026-10-28T10:48:44.445519+00:00",
+  "best_model": {
+    "family": "RandomForest",
+    "val_macro_f1": 0.5243,
+    "val_accuracy": 0.51
+  },
+  "models": [
+    {
+      "family": "RandomForest",
+      "val_macro_f1": 0.5243,
+      "val_accuracy": 0.51,
+      "macro_precision": 0.5004,
+      "macro_recall": 0.6302,
+      "per_class": {
+        "Spinach_Healthy": {
+          "precision": 0.7419804741980475,
+          "recall": 0.49122807017543857,
+          "f1": 0.5911111111111111,
+          "support": 1083
+        },
+        "Spinach_Non fresh": {
+          "precision": 0.647887323943662,
+          "recall": 1.0,
+          "f1": 0.7863247863247863,
+          "support": 92
+        },
+        "Spinach_anthracnose": {
+          "precision": 0.21558441558441557,
+          "recall": 0.7094017094017094,
+          "f1": 0.33067729083665337,
+          "support": 117
+        },
+        "Spinach_bacterial spot": {
+          "precision": 0.44613259668508287,
+          "recall": 0.47153284671532847,
+          "f1": 0.45848119233498935,
+          "support": 685
+        },
+        "Spinach_downy mildew": {
+          "precision": 0.48267898383371827,
+          "recall": 0.7886792452830189,
+          "f1": 0.5988538681948424,
+          "support": 265
+        },
+        "Spinach_pest damage": {
+          "precision": 0.4680232558139535,
+          "recall": 0.32007952286282304,
+          "f1": 0.38016528925619836,
+          "support": 503
+        }
+      },
+      "confusion_matrix": [
+        [
+          532,
+          4,
+          112,
+          242,
+          86,
+          107
+        ],
+        [
+          0,
+          92,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          83,
+          19,
+          3,
+          6
+        ],
+        [
+          92,
+          30,
+          106,
+          323,
+          75,
+          59
+        ],
+        [
+          8,
+          2,
+          13,
+          22,
+          209,
+          11
+        ],
+        [
+          79,
+          14,
+          71,
+          118,
+          60,
+          161
+        ]
+      ]
+    },
+    {
+      "family": "SVM",
+      "val_macro_f1": 0.4718,
+      "val_accuracy": 0.4732,
+      "macro_precision": 0.4488,
+      "macro_recall": 0.5928,
+      "per_class": {
+        "Spinach_Healthy": {
+          "precision": 0.6806083650190115,
+          "recall": 0.49584487534626037,
+          "f1": 0.5737179487179487,
+          "support": 1083
+        },
+        "Spinach_Non fresh": {
+          "precision": 0.5170454545454546,
+          "recall": 0.9891304347826086,
+          "f1": 0.6791044776119403,
+          "support": 92
+        },
+        "Spinach_anthracnose": {
+          "precision": 0.17155756207674944,
+          "recall": 0.6495726495726496,
+          "f1": 0.2714285714285714,
+          "support": 117
+        },
+        "Spinach_bacterial spot": {
+          "precision": 0.4678030303030303,
+          "recall": 0.3605839416058394,
+          "f1": 0.40725474031327286,
+          "support": 685
+        },
+        "Spinach_downy mildew": {
+          "precision": 0.44325481798715205,
+          "recall": 0.7811320754716982,
+          "f1": 0.5655737704918032,
+          "support": 265
+        },
+        "Spinach_pest damage": {
+          "precision": 0.41228070175438597,
+          "recall": 0.2803180914512923,
+          "f1": 0.3337278106508876,
+          "support": 503
+        }
+      },
+      "confusion_matrix": [
+        [
+          537,
+          20,
+          154,
+          169,
+          97,
+          106
+        ],
+        [
+          1,
+          91,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          12,
+          1,
+          76,
+          12,
+          6,
+          10
+        ],
+        [
+          139,
+          35,
+          110,
+          247,
+          78,
+          76
+        ],
+        [
+          6,
+          3,
+          19,
+          21,
+          207,
+          9
+        ],
+        [
+          94,
+          26,
+          84,
+          79,
+          79,
+          141
+        ]
+      ]
+    }
+  ]
+}

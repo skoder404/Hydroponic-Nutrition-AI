@@ -21,7 +21,7 @@ from typing import Any
 import joblib
 import numpy as np
 import pandas as pd
-from sklearn.base import BaseEstimator, ClassifierMixin
+from sklearn.base import BaseEstimator
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -31,13 +31,21 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from ml.evaluation.metrics import calculate_metrics, to_serializable_metrics
-from ml.evaluation.report import get_default_software_versions, write_evaluation_report
-from ml.features.lettuce import LETTUCE_FEATURE_NAMES
-from ml.features.spinach import SPINACH_FEATURE_NAMES
-from ml.features.tomato import TOMATO_FEATURE_NAMES
+from ml.evaluation.metrics import (  # noqa: E402
+    calculate_metrics,
+    to_serializable_metrics,
+)
+from ml.evaluation.report import (  # noqa: E402
+    get_default_software_versions,
+    write_evaluation_report,
+)
+from ml.features.lettuce import LETTUCE_FEATURE_NAMES  # noqa: E402
+from ml.features.spinach import SPINACH_FEATURE_NAMES  # noqa: E402
+from ml.features.tomato import TOMATO_FEATURE_NAMES  # noqa: E402
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 LOGGER = logging.getLogger("train_features")
 
 CROP_FEATURE_NAMES: dict[str, tuple[str, ...]] = {
@@ -179,7 +187,6 @@ def train_and_evaluate_classifier(
 
     # Predict on validation partition exclusively
     val_preds = pipeline.predict(X_val)
-    val_probs = pipeline.predict_proba(X_val)
 
     # Calculate Section 18.2 metrics (including per-class support and confusion matrix)
     metrics_result = calculate_metrics(
@@ -197,10 +204,12 @@ def train_and_evaluate_classifier(
 
     # Save model artifact and metadata
     artifact_version = "v1.0.0"
-    model_name = f"{crop}_feature_{model_family.lower()}_{artifact_version}"
 
     if output_model_dir is None:
-        output_model_dir = PROJECT_ROOT / f"models/image/{crop}/{model_family.lower()}/{artifact_version}"
+        output_model_dir = (
+            PROJECT_ROOT
+            / f"models/image/{crop}/{model_family.lower()}/{artifact_version}"
+        )
     output_model_dir.mkdir(parents=True, exist_ok=True)
 
     artifact_path = output_model_dir / "model.joblib"
@@ -228,6 +237,9 @@ def train_and_evaluate_classifier(
             "val": len(val_df),
         },
         "class_support_validation": val_class_counts,
+        "segmentation_config": feature_metadata.get("mask_config")
+        or feature_metadata.get("segmentation_config", {}),
+        "mask_config": feature_metadata.get("mask_config", {}),
         "excluded_images_count": failed_images_count,
         "excluded_images": failed_images,
         "hyperparameters": clf_params,
@@ -253,14 +265,29 @@ def train_and_evaluate_classifier(
             "Model performance is evaluated exclusively on the validation holdout split (val.csv, 5,034 instances); test.csv remains strictly untouched.",
         ]
         split_protocol = "Stratified split across 11 disease and health conditions (PlantVillage tomato corpus); train/val strictly isolated"
-        label_generation = "Pathological/phytopathological expert visual diagnosis per leaf image"
+        label_generation = (
+            "Pathological/phytopathological expert visual diagnosis per leaf image"
+        )
+    elif crop == "spinach":
+        mask_cfg = feature_metadata.get("mask_config", {})
+        limitations = [
+            "Features are extracted according to canonical spinach 6-feature schema (schema_version 1.0.0): exg_mean, exr_mean, yellow_pixel_ratio, brown_pixel_ratio, relative_leaf_area, glcm_contrast.",
+            f"Segmentation/masking was performed via Excess Green thresholding (mask_config: {mask_cfg}). Exactly {failed_images_count} leaves failed masking and were excluded from training/evaluation.",
+            f"Model performance is evaluated exclusively on the validation holdout split (val.csv, {len(val_df)} instances); test.csv remains strictly untouched.",
+        ]
+        split_protocol = "Stratified split across 6 spinach pathological and health conditions; train/val strictly isolated"
+        label_generation = (
+            "Phytopathological disease and health classification per spinach leaf image"
+        )
     elif crop == "lettuce":
         limitations = [
             "Features are extracted from segmented lettuce leaf crops derived from whole-plant imagery.",
             "Ground truth labels inherit the whole-plant condition (weak labels); an estimated 15.8% of leaf crops on deficient plants present normal green morphology.",
             "Model performance is evaluated exclusively on the validation holdout split; test.csv remains untouched.",
         ]
-        split_protocol = "Stratified split inherited from parent plant images; train/val isolated"
+        split_protocol = (
+            "Stratified split inherited from parent plant images; train/val isolated"
+        )
         label_generation = "Whole-plant agronomic condition inherited by individual leaf crops (weak label)"
     else:
         limitations = [
@@ -374,22 +401,28 @@ def write_comparison_report(
         prec = r["metrics"]["macro_precision"]
         rec = r["metrics"]["macro_recall"]
         status = "**CHAMPION**" if fam == best_res["model_family"] else "Candidate"
-        md_lines.append(f"| **{fam}** | **{f1:.4f}** | {acc:.4f} | {prec:.4f} | {rec:.4f} | {status} |")
+        md_lines.append(
+            f"| **{fam}** | **{f1:.4f}** | {acc:.4f} | {prec:.4f} | {rec:.4f} | {status} |"
+        )
 
-    md_lines.extend([
-        "",
-        "## 2. Per-Class Metrics & Support (Validation Partition)",
-        "",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "## 2. Per-Class Metrics & Support (Validation Partition)",
+            "",
+        ]
+    )
 
     for r in results:
         fam = r["model_family"]
-        md_lines.extend([
-            f"### {fam} Per-Class Performance",
-            "",
-            "| Class | Precision | Recall | F1-Score | Support (Validation Instances) |",
-            "| :--- | :---: | :---: | :---: | :---: |",
-        ])
+        md_lines.extend(
+            [
+                f"### {fam} Per-Class Performance",
+                "",
+                "| Class | Precision | Recall | F1-Score | Support (Validation Instances) |",
+                "| :--- | :---: | :---: | :---: | :---: |",
+            ]
+        )
         per_class = r["metrics"]["per_class"]
         for cls_name, p_metrics in per_class.items():
             md_lines.append(
@@ -398,10 +431,12 @@ def write_comparison_report(
             )
         md_lines.append("")
 
-    md_lines.extend([
-        "## 3. Confusion Matrices",
-        "",
-    ])
+    md_lines.extend(
+        [
+            "## 3. Confusion Matrices",
+            "",
+        ]
+    )
 
     for r in results:
         fam = r["model_family"]
@@ -412,21 +447,37 @@ def write_comparison_report(
         md_lines.append("")
 
     if crop == "tomato":
-        md_lines.extend([
-            "## 4. Limitations & ADR 0007 Schema Compliance",
-            "",
-            "- **Feature Schema Version:** Conforms to ADR 0007 (`schema_version: 1.0.0`) with 4 features (`glcm_contrast`, `glcm_entropy`, `bounding_aspect_ratio`, `solidity`). The candidate `droop_angle` was formally removed due to lack of gravity/stem reference in detached leaf imagery.",
-            f"- **Excluded Images:** Exactly {failed_images_count} corrupt/unreadable source image ({', '.join(x['image_id'] for x in failed_images) if failed_images else 'none'}) was excluded during feature extraction (`failed_images_count: {failed_images_count}`).",
-            "- **Validation Holdout Only:** Model selection and metrics are reported exclusively on the validation partition (`val.csv`, 5,034 instances). The test holdout partition (`test.csv`, 5,034 instances) was strictly never evaluated.",
-        ])
+        md_lines.extend(
+            [
+                "## 4. Limitations & ADR 0007 Schema Compliance",
+                "",
+                "- **Feature Schema Version:** Conforms to ADR 0007 (`schema_version: 1.0.0`) with 4 features (`glcm_contrast`, `glcm_entropy`, `bounding_aspect_ratio`, `solidity`). The candidate `droop_angle` was formally removed due to lack of gravity/stem reference in detached leaf imagery.",
+                f"- **Excluded Images:** Exactly {failed_images_count} corrupt/unreadable source image ({', '.join(x['image_id'] for x in failed_images) if failed_images else 'none'}) was excluded during feature extraction (`failed_images_count: {failed_images_count}`).",
+                "- **Validation Holdout Only:** Model selection and metrics are reported exclusively on the validation partition (`val.csv`, 5,034 instances). The test holdout partition (`test.csv`, 5,034 instances) was strictly never evaluated.",
+            ]
+        )
+    elif crop == "spinach":
+        mask_cfg = feature_metadata.get("mask_config", {})
+        md_lines.extend(
+            [
+                "## 4. Limitations & Segmentation Mask Note",
+                "",
+                "- **Feature Schema Version:** Canonical 6-feature schema (`schema_version: 1.0.0`) comprising `exg_mean`, `exr_mean`, `yellow_pixel_ratio`, `brown_pixel_ratio`, `relative_leaf_area`, `glcm_contrast`.",
+                f"- **Leaf Mask / Segmentation:** Foreground vegetation segmented using Excess Green thresholding with configuration: `{json.dumps(mask_cfg)}`.",
+                f"- **Excluded Images:** Exactly {failed_images_count} leaf image(s) failed segmentation masking and were excluded from dataset and model training (`excluded_images_count: {failed_images_count}`).",
+                "- **Validation Holdout Only:** Model selection and metrics are reported exclusively on the validation partition (`val.csv`, 2,745 instances). The test holdout partition (`test.csv`, 2,745 instances) was strictly never evaluated.",
+            ]
+        )
     else:
-        md_lines.extend([
-            "## 4. Limitations & Weak Label Note",
-            "",
-            "- Training and validation features were extracted from individual leaf crops generated by SAM 2.1 from whole-plant images (`image_data/Lettuce_Images/`).",
-            "- Because whole-plant nutrient deficiencies manifest gradually across the canopy, roughly 15.8% of leaf crops on deficient plants present normal green morphology (documented in `reports/analysis/crop_label_review.md`).",
-            "- Test holdout partition (`test.csv`) was strictly never evaluated during training or model selection.",
-        ])
+        md_lines.extend(
+            [
+                "## 4. Limitations & Weak Label Note",
+                "",
+                "- Training and validation features were extracted from individual leaf crops generated by SAM 2.1 from whole-plant images (`image_data/Lettuce_Images/`).",
+                "- Because whole-plant nutrient deficiencies manifest gradually across the canopy, roughly 15.8% of leaf crops on deficient plants present normal green morphology (documented in `reports/analysis/crop_label_review.md`).",
+                "- Test holdout partition (`test.csv`) was strictly never evaluated during training or model selection.",
+            ]
+        )
 
     md_path = reports_dir / f"{crop}_feature_experiments.md"
     md_path.write_text("\n".join(md_lines), encoding="utf-8")
@@ -435,9 +486,21 @@ def write_comparison_report(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Train and evaluate leaf feature classifiers (T5-014)")
-    parser.add_argument("--crop", default="lettuce", choices=["lettuce", "spinach", "tomato"], help="Crop to train on")
-    parser.add_argument("--families", nargs="+", default=["random_forest", "svm"], help="Model families to train")
+    parser = argparse.ArgumentParser(
+        description="Train and evaluate leaf feature classifiers (T5-014)"
+    )
+    parser.add_argument(
+        "--crop",
+        default="lettuce",
+        choices=["lettuce", "spinach", "tomato"],
+        help="Crop to train on",
+    )
+    parser.add_argument(
+        "--families",
+        nargs="+",
+        default=["random_forest", "svm"],
+        help="Model families to train",
+    )
     args = parser.parse_args()
 
     train_df, val_df, feature_names, feature_metadata = load_feature_splits(args.crop)

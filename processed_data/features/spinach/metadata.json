@@ -1,0 +1,70 @@
+{
+  "crop": "spinach",
+  "schema_version": "1.0.0",
+  "feature_names": [
+    "exg_mean",
+    "exr_mean",
+    "yellow_pixel_ratio",
+    "brown_pixel_ratio",
+    "relative_leaf_area",
+    "glcm_contrast"
+  ],
+  "total_images": 18302,
+  "counts_per_split": {
+    "train": 12812,
+    "val": 2745,
+    "test": 2745
+  },
+  "counts_per_class": {
+    "Spinach_Healthy": 7218,
+    "Spinach_bacterial spot": 4565,
+    "Spinach_pest damage": 3353,
+    "Spinach_downy mildew": 1767,
+    "Spinach_anthracnose": 783,
+    "Spinach_Non fresh": 616
+  },
+  "failed_images_count": 0,
+  "failed_images": [],
+  "extraction_config": {
+    "schema_version": "1.0.0",
+    "relative_leaf_area_denominator": "total_image_pixels (H * W)",
+    "yellow_hue_min": 18.0,
+    "yellow_hue_max": 38.0,
+    "yellow_sat_min": 40.0,
+    "yellow_sat_max": 255.0,
+    "yellow_val_min": 50.0,
+    "yellow_val_max": 255.0,
+    "brown_hue_min": 5.0,
+    "brown_hue_max": 22.0,
+    "brown_sat_min": 30.0,
+    "brown_sat_max": 255.0,
+    "brown_val_min": 20.0,
+    "brown_val_max": 160.0,
+    "glcm_levels": 32,
+    "glcm_distances": [
+      1
+    ],
+    "glcm_angles": [
+      0.0,
+      0.7853981633974483,
+      1.5707963267948966,
+      2.356194490192345
+    ],
+    "glcm_log_base": 2.0,
+    "crop": "spinach",
+    "feature_names": [
+      "exg_mean",
+      "exr_mean",
+      "yellow_pixel_ratio",
+      "brown_pixel_ratio",
+      "relative_leaf_area",
+      "glcm_contrast"
+    ]
+  },
+  "mask_config": {
+    "algorithm": "excess_green_thresholding",
+    "exg_threshold": 5.0,
+    "min_intensity": 30.0
+  },
+  "created_at": "2026-10-28T10:47:23.156110+00:00"
+}

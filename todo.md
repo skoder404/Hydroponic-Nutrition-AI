@@ -1233,9 +1233,9 @@
 **Dependencies:** T5-014
 **Acceptance Criteria:**
 
-- [ ] Report written with per-class metrics
-- [ ] Mask/segmentation config is stored with the model
-- [ ] Leaves that fail masking are excluded and counted in the report
+- [x] Report written with per-class metrics
+- [x] Mask/segmentation config is stored with the model
+- [x] Leaves that fail masking are excluded and counted in the report
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

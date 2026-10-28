@@ -16,7 +16,7 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
         args: [--maxkb=1024]
-        exclude: '^models/sensor/'
+        exclude: '^(models/|processed_data/)'
       - id: check-merge-conflict
 
   # Local hooks (use system-installed tools — no slow virtualenv download)
