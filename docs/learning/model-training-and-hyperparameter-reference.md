@@ -218,3 +218,4 @@ Before training, raw leaves or segmented SAM2 leaf masks are converted into low-
   - `class_weight`: `"balanced"`
 - **Why Classical Features Were Defeated in Comparison**:
   - Handcrafted color/texture descriptors achieved only $\approx 43\% - 52\%$ Macro-F1 across crops because subtle visual symptoms (e.g. initial chlorosis vs natural leaf maturity) overlap heavily in basic ExG/GLCM space, whereas deep convolutional hierarchies learn fine-grained spatial lesion patterns.
+
