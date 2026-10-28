@@ -1180,9 +1180,9 @@
 **Dependencies:** T5-010, T2-015
 **Acceptance Criteria:**
 
-- [ ] At least 60 reviewed images with verdicts recorded
-- [ ] Failure modes are listed
-- [ ] Threshold changes reference the review
+- [x] At least 60 reviewed images with verdicts recorded
+- [x] Failure modes are listed
+- [x] Threshold changes reference the review
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
