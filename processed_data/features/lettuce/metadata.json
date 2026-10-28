@@ -1,0 +1,53 @@
+{
+  "crop": "lettuce",
+  "schema_version": "1.0.0",
+  "feature_names": [
+    "exg_mean",
+    "exr_mean",
+    "yellow_pixel_ratio",
+    "brown_pixel_ratio",
+    "mean_hue",
+    "mean_saturation",
+    "contour_compactness"
+  ],
+  "total_crops": 987,
+  "counts_per_split": {
+    "train": 703,
+    "val": 128,
+    "test": 156
+  },
+  "counts_per_class": {
+    "Healthier": 475,
+    "PhosphorusDeficiency": 250,
+    "PotassiumDeficiency": 180,
+    "NitrogenDeficiency": 82
+  },
+  "failed_crops_count": 0,
+  "failed_crops": [],
+  "extraction_config": {
+    "schema_version": "1.0.0",
+    "yellow_hue_min": 18.0,
+    "yellow_hue_max": 38.0,
+    "yellow_sat_min": 40.0,
+    "yellow_sat_max": 255.0,
+    "yellow_val_min": 50.0,
+    "yellow_val_max": 255.0,
+    "brown_hue_min": 5.0,
+    "brown_hue_max": 22.0,
+    "brown_sat_min": 30.0,
+    "brown_sat_max": 255.0,
+    "brown_val_min": 20.0,
+    "brown_val_max": 160.0,
+    "crop": "lettuce",
+    "feature_names": [
+      "exg_mean",
+      "exr_mean",
+      "yellow_pixel_ratio",
+      "brown_pixel_ratio",
+      "mean_hue",
+      "mean_saturation",
+      "contour_compactness"
+    ]
+  },
+  "created_at": "2026-10-28T08:34:40.066638+00:00"
+}

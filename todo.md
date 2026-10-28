@@ -1207,9 +1207,9 @@
 **Dependencies:** T5-004, T5-005, T5-007, T5-009, T5-012, T2-015, T2-020, T2-019
 **Acceptance Criteria:**
 
-- [ ] Row counts per split match the manifest (or the difference is explained)
-- [ ] No NaN/Inf rows are written
-- [ ] Re-running without the flag does not overwrite
+- [x] Row counts per split match the manifest (or the difference is explained)
+- [x] No NaN/Inf rows are written
+- [x] Re-running without the flag does not overwrite
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
