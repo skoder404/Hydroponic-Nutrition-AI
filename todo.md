@@ -1620,9 +1620,9 @@
 **Dependencies:** T2-022, T2-023, T6-001
 **Acceptance Criteria:**
 
-- [ ] Round trip preserves observed time and source
-- [ ] Limit is capped at 100
-- [ ] Simulated DB outage returns 'not saved'
+- [x] Round trip preserves observed time and source
+- [x] Limit is capped at 100
+- [x] Simulated DB outage returns 'not saved'
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend

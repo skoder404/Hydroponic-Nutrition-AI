@@ -229,6 +229,24 @@ class RateLimitExceededError(AppException):
         )
 
 
+class NotFoundError(AppException):
+    """Raised when a requested entity is not found (HTTP 404)."""
+
+    def __init__(
+        self,
+        message: str = "Requested resource not found.",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="NOT_FOUND",
+            message=message,
+            status_code=404,
+            details=details,
+            retryable=False,
+        )
+
+
+
 # ------------------------------------------------------------------------------
 # FastAPI Exception Handlers
 # ------------------------------------------------------------------------------

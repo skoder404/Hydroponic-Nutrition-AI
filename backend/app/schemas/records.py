@@ -59,6 +59,14 @@ class RecordCreate(BaseModel):
         description="Raw or normalized input payload reference",
         examples=[{"ph": 6.2, "ec_ms_cm": 1.4, "water_temp_c": 21.5}],
     )
+    predictions: list[PredictionResponse] | None = Field(
+        None,
+        description="Optional list of prediction responses to associate atomically",
+    )
+    recommendation: RecommendationRead | None = Field(
+        None,
+        description="Optional agronomic recommendation to associate atomically",
+    )
 
 
 class RecordRead(BaseModel):
@@ -106,4 +114,9 @@ class RecordRead(BaseModel):
     recommendation: RecommendationRead | None = Field(
         None,
         description="Associated agronomic recommendation if available",
+    )
+    historical: bool = Field(
+        default=True,
+        description="Flag indicating that this record is historical (persisted observation)",
+        examples=[True],
     )
