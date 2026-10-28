@@ -77,3 +77,4 @@ def test_tomato_comparison_candidates_and_leaf_input() -> None:
     # Ensure rank ordering by val_macro_f1 descending
     f1s = [c["val_macro_f1"] for c in candidates]
     assert f1s == sorted(f1s, reverse=True)
+
