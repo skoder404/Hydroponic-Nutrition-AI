@@ -75,3 +75,4 @@ All promoted models adhere to the canonical schema defined in `ml.registry.metad
 - **Audit Logging:** Final test evaluations logged immutably in `reports/final_eval_log.jsonl`.
 - **Schema Compatibility:** Checked at startup by `backend.app.services.model_service.ModelRegistryService`.
 - **Promotion / Rollback:** Executed strictly via CLI (`scripts/promote_model.py`) maintaining audit trails in `models/manifests/active_<crop>_<modality>.json`.
+

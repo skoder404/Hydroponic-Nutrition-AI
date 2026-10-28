@@ -227,3 +227,4 @@ def test_unknown_crop_rejected():
             input_mode="plant",
         )
     assert "Unsupported crop" in str(exc_info.value)
+

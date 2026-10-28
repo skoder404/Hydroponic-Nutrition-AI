@@ -429,3 +429,4 @@ def reset_image_service() -> None:
     """Reset global ImageService singleton (for testing)."""
     global _IMAGE_SERVICE
     _IMAGE_SERVICE = None
+
