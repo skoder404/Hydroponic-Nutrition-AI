@@ -1,0 +1,130 @@
+{
+  "crop": "lettuce",
+  "evaluation_split": "validation",
+  "generated_at": "2026-10-28T08:43:14.702665+00:00",
+  "best_model": {
+    "family": "RandomForest",
+    "val_macro_f1": 0.493,
+    "val_accuracy": 0.6094
+  },
+  "models": [
+    {
+      "family": "RandomForest",
+      "val_macro_f1": 0.493,
+      "val_accuracy": 0.6094,
+      "macro_precision": 0.5106,
+      "macro_recall": 0.4901,
+      "per_class": {
+        "Healthier": {
+          "precision": 0.8679245283018868,
+          "recall": 0.7301587301587301,
+          "f1": 0.7931034482758621,
+          "support": 63
+        },
+        "NitrogenDeficiency": {
+          "precision": 0.08695652173913043,
+          "recall": 0.2,
+          "f1": 0.12121212121212122,
+          "support": 10
+        },
+        "PhosphorusDeficiency": {
+          "precision": 0.6875,
+          "recall": 0.6666666666666666,
+          "f1": 0.676923076923077,
+          "support": 33
+        },
+        "PotassiumDeficiency": {
+          "precision": 0.4,
+          "recall": 0.36363636363636365,
+          "f1": 0.38095238095238093,
+          "support": 22
+        }
+      },
+      "confusion_matrix": [
+        [
+          46,
+          12,
+          2,
+          3
+        ],
+        [
+          3,
+          2,
+          1,
+          4
+        ],
+        [
+          3,
+          3,
+          22,
+          5
+        ],
+        [
+          1,
+          6,
+          7,
+          8
+        ]
+      ]
+    },
+    {
+      "family": "SVM",
+      "val_macro_f1": 0.484,
+      "val_accuracy": 0.5156,
+      "macro_precision": 0.5428,
+      "macro_recall": 0.5071,
+      "per_class": {
+        "Healthier": {
+          "precision": 0.8378378378378378,
+          "recall": 0.49206349206349204,
+          "f1": 0.62,
+          "support": 63
+        },
+        "NitrogenDeficiency": {
+          "precision": 0.10256410256410256,
+          "recall": 0.4,
+          "f1": 0.16326530612244897,
+          "support": 10
+        },
+        "PhosphorusDeficiency": {
+          "precision": 0.782608695652174,
+          "recall": 0.5454545454545454,
+          "f1": 0.6428571428571429,
+          "support": 33
+        },
+        "PotassiumDeficiency": {
+          "precision": 0.4482758620689655,
+          "recall": 0.5909090909090909,
+          "f1": 0.5098039215686274,
+          "support": 22
+        }
+      },
+      "confusion_matrix": [
+        [
+          31,
+          25,
+          2,
+          5
+        ],
+        [
+          3,
+          4,
+          0,
+          3
+        ],
+        [
+          2,
+          5,
+          18,
+          8
+        ],
+        [
+          1,
+          5,
+          3,
+          13
+        ]
+      ]
+    }
+  ]
+}

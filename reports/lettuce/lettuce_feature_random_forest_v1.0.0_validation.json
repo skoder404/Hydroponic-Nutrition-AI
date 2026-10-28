@@ -1,0 +1,158 @@
+{
+  "crop": "lettuce",
+  "model_name": "lettuce_feature_random_forest_v1.0.0",
+  "model_family": "RandomForest",
+  "artifact_version": "v1.0.0",
+  "preprocessing_version": "0.1.0",
+  "evaluation_date": "2026-10-28T08:43:14.545673+00:00",
+  "split_evaluated": "validation",
+  "split_protocol": "Stratified split inherited from parent plant images; train/val isolated",
+  "source_dataset_manifest": "processed_data/features/lettuce",
+  "label_generation_method": "Whole-plant agronomic condition inherited by individual leaf crops (weak label)",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "n_estimators": 150,
+    "max_depth": 8,
+    "min_samples_split": 3,
+    "min_samples_leaf": 2,
+    "class_weight": "balanced",
+    "random_state": 42
+  },
+  "split_counts": {
+    "train": 703,
+    "validation": 128,
+    "test": 0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Healthier": 332,
+      "PhosphorusDeficiency": 194,
+      "PotassiumDeficiency": 118,
+      "NitrogenDeficiency": 59
+    },
+    "validation": {
+      "Healthier": 63,
+      "PhosphorusDeficiency": 33,
+      "PotassiumDeficiency": 22,
+      "NitrogenDeficiency": 10
+    }
+  },
+  "class_order": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "metrics": {
+    "accuracy": 0.609375,
+    "macro_precision": 0.5105952625102543,
+    "macro_recall": 0.49011544011544017,
+    "macro_f1": 0.49304775684086033,
+    "per_class": {
+      "Healthier": {
+        "precision": 0.8679245283018868,
+        "recall": 0.7301587301587301,
+        "f1": 0.7931034482758621,
+        "support": 63
+      },
+      "NitrogenDeficiency": {
+        "precision": 0.08695652173913043,
+        "recall": 0.2,
+        "f1": 0.12121212121212122,
+        "support": 10
+      },
+      "PhosphorusDeficiency": {
+        "precision": 0.6875,
+        "recall": 0.6666666666666666,
+        "f1": 0.676923076923077,
+        "support": 33
+      },
+      "PotassiumDeficiency": {
+        "precision": 0.4,
+        "recall": 0.36363636363636365,
+        "f1": 0.38095238095238093,
+        "support": 22
+      }
+    },
+    "confusion_matrix": [
+      [
+        46,
+        12,
+        2,
+        3
+      ],
+      [
+        3,
+        2,
+        1,
+        4
+      ],
+      [
+        3,
+        3,
+        22,
+        5
+      ],
+      [
+        1,
+        6,
+        7,
+        8
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        46,
+        12,
+        2,
+        3
+      ],
+      [
+        3,
+        2,
+        1,
+        4
+      ],
+      [
+        3,
+        3,
+        22,
+        5
+      ],
+      [
+        1,
+        6,
+        7,
+        8
+      ]
+    ],
+    "labels": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "class_order": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "total_samples": 128
+  },
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  },
+  "limitations": [
+    "Features are extracted from segmented lettuce leaf crops derived from whole-plant imagery.",
+    "Ground truth labels inherit the whole-plant condition (weak labels); an estimated 15.8% of leaf crops on deficient plants present normal green morphology.",
+    "Model performance is evaluated exclusively on the validation holdout split; test.csv remains untouched."
+  ]
+}

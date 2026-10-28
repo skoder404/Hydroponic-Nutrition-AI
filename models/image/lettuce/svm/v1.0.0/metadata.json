@@ -1,0 +1,53 @@
+{
+  "model_id": "lettuce_feature_svm",
+  "crop": "lettuce",
+  "modality": "feature",
+  "family": "SVM",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/lettuce/svm/v1.0.0/model.joblib",
+  "commit": "f719fdeecc9eace5ecf25ac24ba34dfb05fe5199",
+  "classes": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "feature_order": [
+    "exg_mean",
+    "exr_mean",
+    "yellow_pixel_ratio",
+    "brown_pixel_ratio",
+    "mean_hue",
+    "mean_saturation",
+    "contour_compactness"
+  ],
+  "num_features": 7,
+  "split_counts": {
+    "train": 703,
+    "val": 128
+  },
+  "class_support_validation": {
+    "Healthier": 63,
+    "PhosphorusDeficiency": 33,
+    "PotassiumDeficiency": 22,
+    "NitrogenDeficiency": 10
+  },
+  "hyperparameters": {
+    "C": 2.0,
+    "gamma": "scale",
+    "kernel": "rbf",
+    "class_weight": "balanced",
+    "probability": true,
+    "random_state": 42
+  },
+  "val_macro_f1": 0.484,
+  "val_accuracy": 0.5156,
+  "training_date": "2026-10-28T08:43:14.699841+00:00",
+  "software_versions": {
+    "python": "3.13.5",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.7.1+cu118"
+  }
+}

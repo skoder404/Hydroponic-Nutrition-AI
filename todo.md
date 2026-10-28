@@ -1220,9 +1220,9 @@
 **Dependencies:** T5-013, T4-015
 **Acceptance Criteria:**
 
-- [ ] Validation-only report written
-- [ ] Feature order saved in metadata
-- [ ] Class support shown
+- [x] Validation-only report written
+- [x] Feature order saved in metadata
+- [x] Class support shown
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
