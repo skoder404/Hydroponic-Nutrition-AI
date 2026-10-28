@@ -1768,9 +1768,9 @@
 **Dependencies:** T6-016, T1-010
 **Acceptance Criteria:**
 
-- [ ] Error envelope becomes a typed object
-- [ ] Types match the OpenAPI snapshot
-- [ ] Network failure is distinguishable from API error
+- [x] Error envelope becomes a typed object
+- [x] Types match the OpenAPI snapshot
+- [x] Network failure is distinguishable from API error
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
