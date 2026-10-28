@@ -124,3 +124,4 @@ In `scripts/derive_uncertainty_thresholds.py`:
 - Pre-scaling ECE and post-scaling ECE are computed and verified.
 - Thresholds are stored directly in each model's `metadata.json` under `uncertainty_thresholds` and `score_semantics`.
 - Visual reliability diagrams are generated and saved to `reports/calibration/`.
+

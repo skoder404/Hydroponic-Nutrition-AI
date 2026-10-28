@@ -64,3 +64,4 @@ def test_metadata_contains_score_semantics_and_thresholds() -> None:
         ts = meta["temperature_scaling"]
         assert ts["optimization_split"] == "validation"
         assert ts["fitted_temperature"] > 0.0
+
