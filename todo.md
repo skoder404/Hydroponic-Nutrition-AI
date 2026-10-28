@@ -2072,9 +2072,9 @@
 **Dependencies:** T6-010
 **Acceptance Criteria:**
 
-- [ ] Timezone survives round trip
-- [ ] Limit above 100 is capped
-- [ ] Old record is not marked live
+- [x] Timezone survives round trip
+- [x] Limit above 100 is capped
+- [x] Old record is not marked live
 
 **Estimated Effort:** 45 min
 **Assigned To:** QA
