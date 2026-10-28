@@ -155,3 +155,4 @@ export const UncertaintyBadge: React.FC<UncertaintyBadgeProps> = ({
     </span>
   );
 };
+

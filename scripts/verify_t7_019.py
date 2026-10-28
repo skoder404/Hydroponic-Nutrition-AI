@@ -70,3 +70,4 @@ if __name__ == "__main__":
     if verify_t7_019():
         sys.exit(0)
     sys.exit(1)
+

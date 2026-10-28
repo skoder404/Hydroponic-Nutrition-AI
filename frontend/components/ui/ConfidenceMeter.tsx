@@ -238,3 +238,4 @@ export const ConfidenceMeter: React.FC<ConfidenceMeterProps> = ({
     </div>
   );
 };
+
