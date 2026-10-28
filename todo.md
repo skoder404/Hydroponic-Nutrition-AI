@@ -1341,9 +1341,9 @@
 **Dependencies:** T5-022, T5-021
 **Acceptance Criteria:**
 
-- [ ] Both stages' settings are logged
-- [ ] Same split manifest hash as the CNN run
-- [ ] Validation report produced
+- [x] Both stages' settings are logged
+- [x] Same split manifest hash as the CNN run
+- [x] Validation report produced
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML

@@ -1,0 +1,73 @@
+{
+  "model_id": "lettuce_efficientnet_b0",
+  "crop": "lettuce",
+  "modality": "image",
+  "family": "EfficientNetB0",
+  "architecture": "efficientnet_b0",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/lettuce/efficientnet_b0/v1.0.0/model.pt",
+  "commit": "fdec79a735d02437f019690dacea35a9e2188a09",
+  "input_type": "leaf crop from segmentation (source_map.csv)",
+  "classes": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "num_classes": 4,
+  "num_parameters": 4012672,
+  "target_device": "cpu",
+  "device_actually_used": "cpu",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 4,
+  "val_macro_f1": 0.9119,
+  "val_accuracy": 0.9453,
+  "split_counts": {
+    "train": 703,
+    "val": 128
+  },
+  "split_manifest_path": "processed_data/lettuce_leaf_crops/source_map.csv",
+  "split_manifest_hash": "5d9c1be1d4c7338c60a3f56ccf66b803bfe7333eb8d4330d5b55d6dc51c33f52",
+  "stages": {
+    "stage_1_frozen_backbone": {
+      "name": "Frozen Backbone",
+      "active_epochs": "1-2",
+      "lr": 0.001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 5124,
+      "frozen_parameters": 4007548
+    },
+    "stage_2_finetuning": {
+      "name": "Fine-Tuning",
+      "unfreeze_epoch": 3,
+      "unfreeze_mode": "all",
+      "lr": 0.0001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 4012672,
+      "frozen_parameters": 0
+    }
+  },
+  "hyperparameters": {
+    "batch_size": 32,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 3,
+    "unfreeze_mode": "all",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T15:44:47.399270+00:00",
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "weights_identifier": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+}

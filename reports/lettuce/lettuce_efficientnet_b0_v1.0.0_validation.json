@@ -1,0 +1,177 @@
+{
+  "crop": "lettuce",
+  "model_name": "lettuce_efficientnet_b0_v1.0.0",
+  "model_family": "EfficientNetB0",
+  "artifact_version": "v1.0.0",
+  "preprocessing_version": "0.1.0",
+  "evaluation_date": "2026-10-28T15:44:47.400434+00:00",
+  "split_evaluated": "validation",
+  "split_protocol": "Stratified split; train and validation isolated",
+  "source_dataset_manifest": "processed_data/features/lettuce",
+  "label_generation_method": "Leaf crop instance diagnosis; crop labels inherited from whole-plant labels",
+  "device_used": "cpu",
+  "seeds": {
+    "seed": 42
+  },
+  "hyperparameters": {
+    "crop": "lettuce",
+    "model_family": "efficientnet_b0",
+    "model_name": null,
+    "batch_size": 32,
+    "epochs": 5,
+    "lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 3,
+    "unfreeze_mode": "all",
+    "num_unfrozen_blocks": 2,
+    "weights": "DEFAULT",
+    "dropout_rate": 0.2,
+    "fc_dim": null,
+    "weight_decay": 0.0001,
+    "optimizer_name": "adamw",
+    "early_stopping_patience": 5,
+    "early_stopping_min_delta": 0.0001,
+    "seed": 42,
+    "num_workers": 0,
+    "force_cpu": false,
+    "simulate_oom": false,
+    "output_dir": null,
+    "report_dir": null
+  },
+  "split_counts": {
+    "train": 703,
+    "validation": 128,
+    "test": 0
+  },
+  "class_counts_per_split": {
+    "train": {
+      "Healthier": 332,
+      "NitrogenDeficiency": 59,
+      "PhosphorusDeficiency": 194,
+      "PotassiumDeficiency": 118
+    },
+    "validation": {
+      "Healthier": 63,
+      "NitrogenDeficiency": 10,
+      "PhosphorusDeficiency": 33,
+      "PotassiumDeficiency": 22
+    }
+  },
+  "class_order": [
+    "Healthier",
+    "NitrogenDeficiency",
+    "PhosphorusDeficiency",
+    "PotassiumDeficiency"
+  ],
+  "metrics": {
+    "accuracy": 0.9453125,
+    "macro_precision": 0.8957627118644068,
+    "macro_recall": 0.9437950937950937,
+    "macro_f1": 0.9118909645444148,
+    "per_class": {
+      "Healthier": {
+        "precision": 0.9830508474576272,
+        "recall": 0.9206349206349206,
+        "f1": 0.9508196721311475,
+        "support": 63
+      },
+      "NitrogenDeficiency": {
+        "precision": 0.6,
+        "recall": 0.9,
+        "f1": 0.72,
+        "support": 10
+      },
+      "PhosphorusDeficiency": {
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 33
+      },
+      "PotassiumDeficiency": {
+        "precision": 1.0,
+        "recall": 0.9545454545454546,
+        "f1": 0.9767441860465116,
+        "support": 22
+      }
+    },
+    "confusion_matrix": [
+      [
+        58,
+        5,
+        0,
+        0
+      ],
+      [
+        1,
+        9,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        33,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        21
+      ]
+    ],
+    "confusion_matrix_list": [
+      [
+        58,
+        5,
+        0,
+        0
+      ],
+      [
+        1,
+        9,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        33,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        21
+      ]
+    ],
+    "labels": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "class_order": [
+      "Healthier",
+      "NitrogenDeficiency",
+      "PhosphorusDeficiency",
+      "PotassiumDeficiency"
+    ],
+    "total_samples": 128
+  },
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "limitations": [
+    "Model trained and evaluated on isolated lettuce leaf images using holdout validation split.",
+    "Crop labels are inherited from whole-plant annotations; leaf-level variance may exist.",
+    "Verified compute hardware: target=cpu, actually_used=cpu.",
+    "Split manifest SHA256: 5d9c1be1d4c7338c60a3f56ccf66b803bfe7333eb8d4330d5b55d6dc51c33f52.",
+    "Evaluated strictly on the validation partition; test holdout remains untouched."
+  ]
+}

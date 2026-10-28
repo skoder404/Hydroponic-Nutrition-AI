@@ -13,10 +13,8 @@ Adheres to TECH_RULES and Canonical Overview §18.1, §18.2:
 from __future__ import annotations
 
 import argparse
-import gc
 import json
 import logging
-import os
 import random
 import subprocess
 import sys
@@ -34,24 +32,27 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from backend.app.core.device_manager import (
+from backend.app.core.device_manager import (  # noqa: E402
     DeviceManager,
     SimulatedCudaOOMError,
     is_oom_exception,
 )
-from ml.evaluation.metrics import calculate_metrics, to_serializable_metrics
-from ml.evaluation.report import get_default_software_versions, write_evaluation_report
-from ml.image_models.custom_cnn import CustomCNN
-from ml.image_models.data import (
-    DEFAULT_IMAGE_SIZE,
-    DEFAULT_MEAN,
-    DEFAULT_STD,
+from ml.evaluation.metrics import calculate_metrics, to_serializable_metrics  # noqa: E402
+from ml.evaluation.report import get_default_software_versions, write_evaluation_report  # noqa: E402
+from ml.image_models.custom_cnn import CustomCNN  # noqa: E402
+from ml.image_models.data import (  # noqa: E402
     CropLeafDataset,
     create_dataloaders,
 )
-from ml.labels import IMAGE_CLASSES
+from ml.image_models.efficientnet import (  # noqa: E402
+    FreezeScheduleConfig,
+    build_efficientnet_b0,
+)
+from ml.labels import IMAGE_CLASSES  # noqa: E402
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 LOGGER = logging.getLogger("train_image")
 
 
@@ -81,6 +82,14 @@ def get_git_commit_hash() -> str:
         return "UNKNOWN_COMMIT"
 
 
+def get_parameter_counts(model: nn.Module) -> dict[str, int]:
+    """Count total, trainable, and frozen parameters for any PyTorch module."""
+    total = sum(p.numel() for p in model.parameters())
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    frozen = total - trainable
+    return {"total": total, "trainable": trainable, "frozen": frozen}
+
+
 @dataclass
 class TrainingConfig:
     """Structured configuration for image model training."""
@@ -91,6 +100,13 @@ class TrainingConfig:
     batch_size: int = 32
     epochs: int = 25
     lr: float = 1e-3
+    finetune_lr: float = 1e-4
+    unfreeze_at_epoch: int = 3
+    unfreeze_mode: str = "all"
+    num_unfrozen_blocks: int = 2
+    weights: str = "DEFAULT"
+    dropout_rate: float = 0.2
+    fc_dim: int | None = None
     weight_decay: float = 1e-4
     optimizer_name: str = "adamw"
     early_stopping_patience: int = 5
@@ -143,8 +159,12 @@ def create_optimizer(
     if opt_lower == "adam":
         return optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
     if opt_lower == "sgd":
-        return optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=weight_decay)
-    raise ValueError(f"Unsupported optimizer: '{optimizer_name}'. Expected 'adamw', 'adam', or 'sgd'.")
+        return optim.SGD(
+            model.parameters(), lr=lr, momentum=0.9, weight_decay=weight_decay
+        )
+    raise ValueError(
+        f"Unsupported optimizer: '{optimizer_name}'. Expected 'adamw', 'adam', or 'sgd'."
+    )
 
 
 def evaluate_validation(
@@ -215,9 +235,55 @@ def train_image_model(
     oom_events_caught = 0
     fallback_triggered = False
 
-    # Instantiate Custom CNN architecture
-    model = CustomCNN(crop=crop)
+    # Instantiate architecture: CustomCNN or EfficientNetB0
+    model_family_norm = config.model_family.lower().strip()
+    is_efficientnet = model_family_norm in (
+        "efficientnet_b0",
+        "efficientnet",
+        "efficientnetb0",
+    )
+
+    if is_efficientnet:
+        family_display = "EfficientNetB0"
+        family_slug = "efficientnet_b0"
+        freeze_sched = FreezeScheduleConfig(
+            initial_freeze=True,
+            unfreeze_at_epoch=config.unfreeze_at_epoch,
+            unfreeze_mode=config.unfreeze_mode,  # type: ignore[arg-type]
+            num_unfrozen_blocks=config.num_unfrozen_blocks,
+        )
+        model = build_efficientnet_b0(
+            crop=crop,
+            weights=config.weights,
+            dropout_rate=config.dropout_rate,
+            fc_dim=config.fc_dim,
+            freeze_schedule=freeze_sched,
+        )
+    else:
+        family_display = "CustomCNN"
+        family_slug = "custom_cnn"
+        model = CustomCNN(crop=crop)
+
     model.to(current_device)
+
+    # Initial parameter counts and stage 1 logging
+    stage1_counts = get_parameter_counts(model)
+    LOGGER.info(
+        "=== Stage 1 Configuration (Frozen Backbone) ===\n"
+        "  Architecture: %s\n"
+        "  Active Epochs: 1 to %s\n"
+        "  Initial LR: %.6f\n"
+        "  Optimizer: %s (weight_decay=%.6f)\n"
+        "  Trainable Parameters: %d | Frozen Parameters: %d | Total: %d",
+        family_display,
+        (config.unfreeze_at_epoch - 1) if is_efficientnet else config.epochs,
+        config.lr,
+        config.optimizer_name,
+        config.weight_decay,
+        stage1_counts["trainable"],
+        stage1_counts["frozen"],
+        stage1_counts["total"],
+    )
 
     criterion = nn.CrossEntropyLoss()
     optimizer = create_optimizer(
@@ -242,6 +308,20 @@ def train_image_model(
         seed=config.seed,
     )
 
+    # Compute manifest path and sha256
+    split_manifest_path = getattr(train_loader.dataset, "manifest_path", None)
+    split_manifest_hash: str | None = None
+    if split_manifest_path and Path(split_manifest_path).exists():
+        import hashlib
+
+        with open(split_manifest_path, "rb") as mf:
+            split_manifest_hash = hashlib.sha256(mf.read()).hexdigest()
+        LOGGER.info(
+            "Split manifest: %s (SHA256: %s)",
+            split_manifest_path,
+            split_manifest_hash,
+        )
+
     best_val_macro_f1 = -float("inf")
     best_checkpoint_state: dict[str, Any] = {}
     best_metrics: dict[str, Any] = {}
@@ -250,6 +330,35 @@ def train_image_model(
     history: list[dict[str, Any]] = []
 
     for epoch in range(1, config.epochs + 1):
+        # Step freeze-then-unfreeze schedule for transfer learning
+        if hasattr(model, "step_schedule"):
+            unfrozen = model.step_schedule(epoch)
+            if unfrozen:
+                stage2_counts = get_parameter_counts(model)
+                LOGGER.info(
+                    "=== Transition to Stage 2 (Fine-Tuning) triggered at Epoch %d ===\n"
+                    "  Unfreeze Mode: %s\n"
+                    "  Fine-Tuning LR: %.6f\n"
+                    "  Optimizer: %s (reconfigured for all trainable parameters)\n"
+                    "  Trainable Parameters: %d | Frozen Parameters: %d | Total: %d",
+                    epoch,
+                    config.unfreeze_mode,
+                    config.finetune_lr,
+                    config.optimizer_name,
+                    stage2_counts["trainable"],
+                    stage2_counts["frozen"],
+                    stage2_counts["total"],
+                )
+                optimizer = create_optimizer(
+                    model=model,
+                    optimizer_name=config.optimizer_name,
+                    lr=config.finetune_lr,
+                    weight_decay=config.weight_decay,
+                )
+                scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+                    optimizer, mode="max", factor=0.5, patience=2
+                )
+
         model.train()
         epoch_loss = 0.0
         train_samples = 0
@@ -261,17 +370,21 @@ def train_image_model(
                 batch = next(train_iter)
             except StopIteration:
                 break
-            except Exception as e:
-                # Intercept runtime errors
-                raise e
 
             inputs, targets = batch
             epoch_step += 1
 
             try:
                 # Simulated OOM check for testing acceptance criteria
-                if config.simulate_oom and epoch == 1 and epoch_step == 2 and not fallback_triggered:
-                    raise SimulatedCudaOOMError("Simulated CUDA Out-Of-Memory triggered for testing.")
+                if (
+                    config.simulate_oom
+                    and epoch == 1
+                    and epoch_step == 2
+                    and not fallback_triggered
+                ):
+                    raise SimulatedCudaOOMError(
+                        "Simulated CUDA Out-Of-Memory triggered for testing."
+                    )
 
                 inputs = inputs.to(current_device)
                 targets = targets.to(current_device)
@@ -314,7 +427,10 @@ def train_image_model(
                     # OOM Ladder Step 1: Halve batch size if batch_size > 4
                     if current_batch_size > 4 and not fallback_triggered:
                         current_batch_size = max(4, current_batch_size // 2)
-                        LOGGER.info("Halved batch size to %d; recreating DataLoaders...", current_batch_size)
+                        LOGGER.info(
+                            "Halved batch size to %d; recreating DataLoaders...",
+                            current_batch_size,
+                        )
                         train_loader, val_loader, _ = create_dataloaders(
                             crop=crop,
                             batch_size=current_batch_size,
@@ -325,7 +441,9 @@ def train_image_model(
                         continue
 
                     # OOM Ladder Step 2: Fallback to CPU
-                    LOGGER.warning("OOM persists or batch size minimal. Falling back to CPU...")
+                    LOGGER.warning(
+                        "OOM persists or batch size minimal. Falling back to CPU..."
+                    )
                     fallback_triggered = True
                     current_device_str = "cpu"
                     current_device = torch.device("cpu")
@@ -341,7 +459,7 @@ def train_image_model(
                     train_iter = iter(train_loader)
                     continue
 
-                raise exc
+                raise
 
         mean_train_loss = epoch_loss / max(1, train_samples)
 
@@ -391,14 +509,16 @@ def train_image_model(
                 early_stopping.patience,
             )
 
-        history.append({
-            "epoch": epoch,
-            "train_loss": round(mean_train_loss, 4),
-            "val_loss": round(val_loss, 4),
-            "val_macro_f1": round(val_macro_f1, 4),
-            "val_accuracy": round(val_accuracy, 4),
-            "lr": optimizer.param_groups[0]["lr"],
-        })
+        history.append(
+            {
+                "epoch": epoch,
+                "train_loss": round(mean_train_loss, 4),
+                "val_loss": round(val_loss, 4),
+                "val_macro_f1": round(val_macro_f1, 4),
+                "val_accuracy": round(val_accuracy, 4),
+                "lr": optimizer.param_groups[0]["lr"],
+            }
+        )
 
         if early_stopping.should_stop:
             LOGGER.info(
@@ -412,16 +532,21 @@ def train_image_model(
     # Save artifacts and model metadata
     device_actually_used = device_manager.get_device_actually_used()
     artifact_version = "v1.0.0"
-    model_name = config.model_name or f"{crop}_custom_cnn_{artifact_version}"
+    model_name = config.model_name or f"{crop}_{family_slug}_{artifact_version}"
 
-    output_dir = config.output_dir or (PROJECT_ROOT / f"models/image/{crop}/custom_cnn/{artifact_version}")
+    output_dir = config.output_dir or (
+        PROJECT_ROOT / f"models/image/{crop}/{family_slug}/{artifact_version}"
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
 
     checkpoint_file = output_dir / "model.pt"
     if best_checkpoint_state:
         torch.save(best_checkpoint_state, checkpoint_file)
     else:
-        torch.save({"model_state_dict": model.state_dict(), "classes": classes}, checkpoint_file)
+        torch.save(
+            {"model_state_dict": model.state_dict(), "classes": classes},
+            checkpoint_file,
+        )
 
     LOGGER.info("Saved trained checkpoint to %s", checkpoint_file)
 
@@ -433,32 +558,81 @@ def train_image_model(
         else "leaf image as provided"
     )
 
+    final_counts = get_parameter_counts(model)
+    if is_efficientnet:
+        stages_info = {
+            "stage_1_frozen_backbone": {
+                "name": "Frozen Backbone",
+                "active_epochs": f"1-{config.unfreeze_at_epoch - 1}",
+                "lr": config.lr,
+                "optimizer": config.optimizer_name,
+                "weight_decay": config.weight_decay,
+                "trainable_parameters": stage1_counts["trainable"],
+                "frozen_parameters": stage1_counts["frozen"],
+            },
+            "stage_2_finetuning": {
+                "name": "Fine-Tuning",
+                "unfreeze_epoch": config.unfreeze_at_epoch,
+                "unfreeze_mode": config.unfreeze_mode,
+                "lr": config.finetune_lr,
+                "optimizer": config.optimizer_name,
+                "weight_decay": config.weight_decay,
+                "trainable_parameters": final_counts["trainable"],
+                "frozen_parameters": final_counts["frozen"],
+            },
+        }
+    else:
+        stages_info = {
+            "stage_1": {
+                "name": "Single Stage Training",
+                "active_epochs": f"1-{config.epochs}",
+                "lr": config.lr,
+                "optimizer": config.optimizer_name,
+                "weight_decay": config.weight_decay,
+                "trainable_parameters": stage1_counts["trainable"],
+                "frozen_parameters": stage1_counts["frozen"],
+            }
+        }
+
     metadata = {
-        "model_id": f"{crop}_custom_cnn",
+        "model_id": f"{crop}_{family_slug}",
         "crop": crop,
         "modality": "image",
-        "family": "CustomCNN",
+        "family": family_display,
+        "architecture": "efficientnet_b0" if is_efficientnet else "custom_cnn",
         "artifact_version": artifact_version,
         "artifact_file": str(checkpoint_file.relative_to(PROJECT_ROOT).as_posix()),
         "commit": get_git_commit_hash(),
         "input_type": input_type,
         "classes": classes,
         "num_classes": num_classes,
-        "num_parameters": model.count_parameters(),
+        "num_parameters": final_counts["total"],
         "target_device": target_device_str,
         "device_actually_used": device_actually_used,
         "oom_events_caught": oom_events_caught,
         "fallback_triggered": fallback_triggered,
         "best_epoch": best_epoch,
-        "val_macro_f1": round(float(best_val_macro_f1 if best_val_macro_f1 > -float("inf") else 0.0), 4),
+        "val_macro_f1": round(
+            float(best_val_macro_f1 if best_val_macro_f1 > -float("inf") else 0.0), 4
+        ),
         "val_accuracy": round(float(best_metrics.get("accuracy", 0.0)), 4),
         "split_counts": {
             "train": len(train_loader.dataset),  # type: ignore[arg-type]
             "val": len(val_loader.dataset),  # type: ignore[arg-type]
         },
+        "split_manifest_path": (
+            str(Path(split_manifest_path).relative_to(PROJECT_ROOT).as_posix())
+            if split_manifest_path
+            else None
+        ),
+        "split_manifest_hash": split_manifest_hash,
+        "stages": stages_info,
         "hyperparameters": {
             "batch_size": config.batch_size,
             "initial_lr": config.lr,
+            "finetune_lr": config.finetune_lr,
+            "unfreeze_at_epoch": config.unfreeze_at_epoch,
+            "unfreeze_mode": config.unfreeze_mode,
             "weight_decay": config.weight_decay,
             "optimizer": config.optimizer_name,
             "early_stopping_patience": config.early_stopping_patience,
@@ -467,6 +641,8 @@ def train_image_model(
         "training_date": datetime.now(timezone.utc).isoformat(),
         "software_versions": software_versions,
     }
+    if is_efficientnet and hasattr(model, "weights_identifier"):
+        metadata["weights_identifier"] = model.weights_identifier
 
     metadata_file = output_dir / "metadata.json"
     with open(metadata_file, "w", encoding="utf-8") as f:
@@ -499,24 +675,36 @@ def train_image_model(
         f"Model trained and evaluated on isolated {crop} leaf images using holdout validation split.",
         crop_limitation,
         f"Verified compute hardware: target={target_device_str}, actually_used={device_actually_used}.",
+        f"Split manifest SHA256: {split_manifest_hash or 'N/A'}.",
         "Evaluated strictly on the validation partition; test holdout remains untouched.",
     ]
 
     write_evaluation_report(
         crop=crop,
         model_name=model_name,
-        model_family="CustomCNN",
+        model_family=family_display,
         artifact_version=artifact_version,
         split_evaluated="validation",
-        metrics=best_metrics if best_metrics else to_serializable_metrics(
+        metrics=best_metrics
+        if best_metrics
+        else to_serializable_metrics(
             calculate_metrics(y_true=classes, y_pred=classes, labels=classes)
         ),
         dataset_manifest=f"processed_data/features/{crop}",
         split_protocol="Stratified split; train and validation isolated",
-        split_counts={"train": len(train_loader.dataset), "validation": len(val_loader.dataset), "test": 0},  # type: ignore[arg-type]
-        class_counts_per_split={"train": train_class_counts, "validation": val_class_counts},
+        split_counts={
+            "train": len(train_loader.dataset),
+            "validation": len(val_loader.dataset),
+            "test": 0,
+        },  # type: ignore[arg-type]
+        class_counts_per_split={
+            "train": train_class_counts,
+            "validation": val_class_counts,
+        },
         label_generation_method=label_method,
-        hyperparameters=asdict(config) if hasattr(config, "__dataclass_fields__") else {},
+        hyperparameters=asdict(config)
+        if hasattr(config, "__dataclass_fields__")
+        else {},
         limitations=limitations,
         output_dir=report_dir,
     )
@@ -540,9 +728,9 @@ def run_overfit_test(
     """Execute overfit test on 20 samples to verify gradient flow and convergence (Acceptance Criterion 1)."""
     set_reproducible_seeds(42)
     device = torch.device("cpu")
-    classes = list(IMAGE_CLASSES[crop])
-
-    LOGGER.info("Starting overfit test on %d images for crop '%s'...", num_samples, crop)
+    LOGGER.info(
+        "Starting overfit test on %d images for crop '%s'...", num_samples, crop
+    )
 
     # Create dataset and take 20 samples
     dataset = CropLeafDataset(crop=crop, split="train")
@@ -590,23 +778,70 @@ def run_overfit_test(
             )
             break
 
-    LOGGER.info("Overfit test completed: final_loss=%.5f, final_acc=%.4f", final_loss, final_acc)
+    LOGGER.info(
+        "Overfit test completed: final_loss=%.5f, final_acc=%.4f", final_loss, final_acc
+    )
     assert final_loss < 0.15, f"Overfit test failed: loss {final_loss} >= 0.15"
     assert final_acc >= 0.90, f"Overfit test failed: acc {final_acc} < 0.90"
-    return {"final_loss": final_loss, "final_accuracy": final_acc, "num_samples": num_samples}
+    return {
+        "final_loss": final_loss,
+        "final_accuracy": final_acc,
+        "num_samples": num_samples,
+    }
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Train image classification models (T5-020)")
-    parser.add_argument("--crop", default="lettuce", choices=["lettuce", "spinach", "tomato"], help="Crop to train")
+    parser = argparse.ArgumentParser(
+        description="Train image classification models (T5-020, T5-023)"
+    )
+    parser.add_argument(
+        "--crop",
+        default="lettuce",
+        choices=["lettuce", "spinach", "tomato"],
+        help="Crop to train",
+    )
+    parser.add_argument(
+        "--model-family",
+        default="custom_cnn",
+        choices=["custom_cnn", "efficientnet_b0"],
+        help="Model architecture family",
+    )
     parser.add_argument("--epochs", type=int, default=15, help="Number of epochs")
     parser.add_argument("--batch-size", type=int, default=32, help="Mini-batch size")
     parser.add_argument("--num-workers", type=int, default=2, help="DataLoader workers")
-    parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate")
-    parser.add_argument("--patience", type=int, default=5, help="Early stopping patience")
-    parser.add_argument("--force-cpu", action="store_true", help="Force execution on CPU")
-    parser.add_argument("--overfit-test", action="store_true", help="Run overfit test on 20 samples")
-    parser.add_argument("--simulate-oom", action="store_true", help="Simulate CUDA OOM error")
+    parser.add_argument(
+        "--lr", type=float, default=1e-3, help="Learning rate (Stage 1)"
+    )
+    parser.add_argument(
+        "--finetune-lr",
+        type=float,
+        default=1e-4,
+        help="Fine-tuning learning rate (Stage 2)",
+    )
+    parser.add_argument(
+        "--unfreeze-at-epoch",
+        type=int,
+        default=3,
+        help="Epoch to transition to Stage 2 unfreezing",
+    )
+    parser.add_argument(
+        "--unfreeze-mode",
+        default="all",
+        choices=["all", "top_blocks", "none"],
+        help="Backbone unfreeze strategy",
+    )
+    parser.add_argument(
+        "--patience", type=int, default=5, help="Early stopping patience"
+    )
+    parser.add_argument(
+        "--force-cpu", action="store_true", help="Force execution on CPU"
+    )
+    parser.add_argument(
+        "--overfit-test", action="store_true", help="Run overfit test on 20 samples"
+    )
+    parser.add_argument(
+        "--simulate-oom", action="store_true", help="Simulate CUDA OOM error"
+    )
     args = parser.parse_args()
 
     if args.overfit_test:
@@ -616,16 +851,25 @@ def main() -> int:
 
     config = TrainingConfig(
         crop=args.crop,
+        model_family=args.model_family,
         epochs=args.epochs,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         lr=args.lr,
+        finetune_lr=args.finetune_lr,
+        unfreeze_at_epoch=args.unfreeze_at_epoch,
+        unfreeze_mode=args.unfreeze_mode,
         early_stopping_patience=args.patience,
         force_cpu=args.force_cpu,
         simulate_oom=args.simulate_oom,
     )
     result = train_image_model(config)
-    print("Training result:", result["model_name"], "Device:", result["device_actually_used"])
+    print(
+        "Training result:",
+        result["model_name"],
+        "Device:",
+        result["device_actually_used"],
+    )
     return 0
 
 
