@@ -1166,9 +1166,9 @@
 **Dependencies:** T5-009, T5-008
 **Acceptance Criteria:**
 
-- [ ] Returns leaves plus a `rejected[]` list with reasons
-- [ ] Overlapping duplicate masks are merged or removed (rule documented)
-- [ ] Same function is used in training-data creation and inference
+- [x] Returns leaves plus a `rejected[]` list with reasons
+- [x] Overlapping duplicate masks are merged or removed (rule documented)
+- [x] Same function is used in training-data creation and inference
 
 **Estimated Effort:** 90 min
 **Assigned To:** ML
