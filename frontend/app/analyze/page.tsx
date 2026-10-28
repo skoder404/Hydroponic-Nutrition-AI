@@ -261,13 +261,19 @@ export default function AnalyzePage() {
     setRecommendation(null);
   };
 
+  const [mountedAt, setMountedAt] = useState<string>("");
+
+  useEffect(() => {
+    setMountedAt(new Date().toISOString());
+  }, []);
+
   // Build record create payload for SaveRecordButton
   const recordCreatePayload: RecordCreate = {
     crop: selectedCrop,
     mode: analysisMode,
     source: sourceProvenance === "campus_live" ? "live" : "manual",
-    observed_at: new Date().toISOString(),
-    observed_tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
+    observed_at: mountedAt || "2026-10-28T00:00:00.000Z",
+    observed_tz: typeof window !== "undefined" ? (Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC") : "UTC",
     inputs: {
       ...sensorValues,
       ...(selectedFile ? { file_name: selectedFile.name } : {}),

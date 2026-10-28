@@ -10,7 +10,7 @@ import { UncertaintyBadge } from "../../../components/ui/UncertaintyBadge";
 import { apiClient } from "../../../lib/api/client";
 import { RecordRead } from "../../../lib/api/types";
 
-export default function RecordDetailPage() {
+function RecordDetailContent() {
   const params = useParams();
   const recordId = params?.id as string;
 
@@ -369,5 +369,20 @@ export default function RecordDetailPage() {
         </Card>
       )}
     </div>
+  );
+}
+
+export default function RecordDetailPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="p-8 text-center text-sm text-[var(--stone)] flex items-center justify-center space-x-2">
+          <div className="w-4 h-4 border-2 border-[var(--leaf)] border-t-transparent rounded-full animate-spin" />
+          <span>Loading record...</span>
+        </div>
+      }
+    >
+      <RecordDetailContent />
+    </React.Suspense>
   );
 }
