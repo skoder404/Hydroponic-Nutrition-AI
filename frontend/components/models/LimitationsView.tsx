@@ -117,3 +117,4 @@ export const LimitationsView: React.FC = () => {
     </div>
   );
 };
+

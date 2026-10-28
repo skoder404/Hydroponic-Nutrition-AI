@@ -6,3 +6,4 @@ export type { HistoryCardProps } from "./HistoryCard";
 
 export { HistoryTable } from "./HistoryTable";
 export type { HistoryTableProps } from "./HistoryTable";
+

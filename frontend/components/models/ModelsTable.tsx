@@ -190,3 +190,4 @@ export const ModelsTable: React.FC<ModelsTableProps> = ({
     </div>
   );
 };
+

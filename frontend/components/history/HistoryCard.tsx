@@ -120,3 +120,4 @@ export const HistoryCard: React.FC<HistoryCardProps> = ({ record, className = ""
     </Card>
   );
 };
+

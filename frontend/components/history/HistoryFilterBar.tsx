@@ -178,3 +178,4 @@ export const HistoryFilterBar: React.FC<HistoryFilterBarProps> = ({
     </div>
   );
 };
+

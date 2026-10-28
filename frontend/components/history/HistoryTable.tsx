@@ -169,3 +169,4 @@ export const HistoryTable: React.FC<HistoryTableProps> = ({ records, className =
     </div>
   );
 };
+
