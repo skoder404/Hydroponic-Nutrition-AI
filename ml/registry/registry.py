@@ -53,7 +53,7 @@ class ModelRegistry:
     """Manages versioned model artifacts, metadata, explicit promotion, and rollback."""
 
     def __init__(self, root_dir: Path | str | None = None) -> None:
-        self.root_dir = Path(root_dir).resolve() if root_dir else get_trusted_model_root()
+        self.root_dir = get_trusted_model_root(root_dir)
         self.manifests_dir = self.root_dir / "manifests"
         self.manifests_dir.mkdir(parents=True, exist_ok=True)
 

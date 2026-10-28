@@ -1516,9 +1516,9 @@
 **Dependencies:** T4-025, T4-009, T6-001
 **Acceptance Criteria:**
 
-- [ ] Removing one artifact breaks only that crop
-- [ ] Incompatible feature list is reported as `SCHEMA_MISMATCH`
-- [ ] `/health` reflects registry state
+- [x] Removing one artifact breaks only that crop
+- [x] Incompatible feature list is reported as `SCHEMA_MISMATCH`
+- [x] `/health` reflects registry state
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend

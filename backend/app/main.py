@@ -110,7 +110,10 @@ class RequestIdMiddleware(BaseHTTPMiddleware):
         return response
 
 
-def create_app(configure_logging: bool = True) -> FastAPI:
+def create_app(
+    configure_logging: bool = True,
+    model_registry_root: str | None = None,
+) -> FastAPI:
     """Factory creating and configuring the FastAPI application instance."""
     settings = get_settings()
 
@@ -147,12 +150,24 @@ def create_app(configure_logging: bool = True) -> FastAPI:
 
     # Route mounting
     app.include_router(api_v1_router, prefix="/api/v1")
+    app.include_router(api_v1_router)
 
     # Unified error envelope handlers
     register_error_handlers(app)
 
+    # Startup hook: initialize and load promoted models (T6-002)
+    from backend.app.services.model_service import get_model_registry_service
+
+    model_service = get_model_registry_service(model_registry_root)
+    model_service.load_promoted_models()
+    app.state.model_registry_service = model_service
+
     logger.info(
-        "FastAPI application initialized successfully", extra={"event": "app_startup"}
+        "FastAPI application initialized successfully",
+        extra={
+            "event": "app_startup",
+            "registry_health": model_service.get_health_status(),
+        },
     )
     return app
 

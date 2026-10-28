@@ -24,7 +24,7 @@ def test_health_endpoint_contract():
     data = response.json()
     assert data["status"] == "ok"
     assert data["db"] == "unknown"
-    assert data["registry"] == "unknown"
+    assert data["registry"] in ("ok", "unknown")
 
     expected_device = get_device_manager().get_device_actually_used()
     assert data["device"] == expected_device

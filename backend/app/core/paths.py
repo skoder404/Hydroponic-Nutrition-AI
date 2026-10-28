@@ -20,13 +20,12 @@ def get_trusted_model_root(configured_path: str | Path | None = None) -> Path:
     to encompass image, sensor, and manifest artifacts.
     """
     if configured_path is not None:
-        target = Path(configured_path)
+        reg = Path(configured_path)
     else:
         settings = get_settings()
         reg = Path(settings.model_registry_path)
-        # If pointing to models/manifests, trusted root covers the parent models/ directory
-        target = reg.parent if reg.name in ("manifests", "manifest") else reg
 
+    target = reg.parent if reg.name in ("manifests", "manifest") else reg
     return target.resolve()
 
 
