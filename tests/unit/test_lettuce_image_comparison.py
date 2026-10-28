@@ -42,3 +42,4 @@ def test_t5_028_leaf_level_input_all_families():
     assert len(data["candidates"]) == 4
     for candidate in data["candidates"]:
         assert "leaf" in candidate["input_mode"].lower()
+

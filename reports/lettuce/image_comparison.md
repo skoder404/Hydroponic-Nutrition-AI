@@ -91,3 +91,4 @@ Validation split class distribution ($N=128$):
 ## 6. Selection Recommendation
 
 Promote **`lettuce_efficientnet_b0_v1.0.0`** as the active production model for the lettuce leaf image classification pipeline.
+
