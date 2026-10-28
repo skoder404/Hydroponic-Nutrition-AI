@@ -1542,9 +1542,9 @@
 **Dependencies:** T6-002, T3-003
 **Acceptance Criteria:**
 
-- [ ] Out-of-order JSON keys still map to the correct feature order
-- [ ] Missing field is rejected
-- [ ] Tomato result carries `experimental=true`
+- [x] Out-of-order JSON keys still map to the correct feature order
+- [x] Missing field is rejected
+- [x] Tomato result carries `experimental=true`
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
