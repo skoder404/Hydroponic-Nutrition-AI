@@ -831,6 +831,12 @@ def main() -> int:
         help="Backbone unfreeze strategy",
     )
     parser.add_argument(
+        "--num-unfrozen-blocks",
+        type=int,
+        default=2,
+        help="Number of top blocks to unfreeze when unfreeze-mode is top_blocks",
+    )
+    parser.add_argument(
         "--patience", type=int, default=5, help="Early stopping patience"
     )
     parser.add_argument(
@@ -859,6 +865,7 @@ def main() -> int:
         finetune_lr=args.finetune_lr,
         unfreeze_at_epoch=args.unfreeze_at_epoch,
         unfreeze_mode=args.unfreeze_mode,
+        num_unfrozen_blocks=args.num_unfrozen_blocks,
         early_stopping_patience=args.patience,
         force_cpu=args.force_cpu,
         simulate_oom=args.simulate_oom,

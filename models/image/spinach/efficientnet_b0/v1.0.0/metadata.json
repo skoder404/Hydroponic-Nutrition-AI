@@ -1,0 +1,75 @@
+{
+  "model_id": "spinach_efficientnet_b0",
+  "crop": "spinach",
+  "modality": "image",
+  "family": "EfficientNetB0",
+  "architecture": "efficientnet_b0",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/spinach/efficientnet_b0/v1.0.0/model.pt",
+  "commit": "060a6ebf8c4c05135af052832eb99739d570d0f9",
+  "input_type": "leaf image as provided",
+  "classes": [
+    "Spinach_Healthy",
+    "Spinach_Non fresh",
+    "Spinach_anthracnose",
+    "Spinach_bacterial spot",
+    "Spinach_downy mildew",
+    "Spinach_pest damage"
+  ],
+  "num_classes": 6,
+  "num_parameters": 4015234,
+  "target_device": "cpu",
+  "device_actually_used": "cpu",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 3,
+  "val_macro_f1": 0.7256,
+  "val_accuracy": 0.7089,
+  "split_counts": {
+    "train": 12812,
+    "val": 2745
+  },
+  "split_manifest_path": "processed_data/splits/image_splits_spinach.csv",
+  "split_manifest_hash": "4c271d42de9b12de59b32ac5bb2ba4cb47821d7fc8dc9eebbc50cc41ad494f68",
+  "stages": {
+    "stage_1_frozen_backbone": {
+      "name": "Frozen Backbone",
+      "active_epochs": "1-1",
+      "lr": 0.001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 7686,
+      "frozen_parameters": 4007548
+    },
+    "stage_2_finetuning": {
+      "name": "Fine-Tuning",
+      "unfreeze_epoch": 2,
+      "unfreeze_mode": "top_blocks",
+      "lr": 0.0001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 1137078,
+      "frozen_parameters": 2878156
+    }
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 2,
+    "unfreeze_mode": "top_blocks",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T16:31:58.863839+00:00",
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "weights_identifier": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+}
