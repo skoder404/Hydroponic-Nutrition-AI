@@ -1113,9 +1113,9 @@
 **Dependencies:** T1-001, T5-003
 **Acceptance Criteria:**
 
-- [ ] Decision is written with evidence
-- [ ] Impact list of datasets/models to regenerate is included
-- [ ] Both members agree in the commit review
+- [x] Decision is written with evidence
+- [x] Impact list of datasets/models to regenerate is included
+- [x] Both members agree in the commit review
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
