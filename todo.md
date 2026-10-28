@@ -2033,9 +2033,9 @@
 **Dependencies:** T5-031, T6-008, T4-009, T4-005, T4-007, T4-016
 **Acceptance Criteria:**
 
-- [ ] Boundary values for each documented threshold are tested
-- [ ] Promote/rollback tested
-- [ ] Group overlap in CV raises
+- [x] Boundary values for each documented threshold are tested
+- [x] Promote/rollback tested
+- [x] Group overlap in CV raises
 
 **Estimated Effort:** 60 min
 **Assigned To:** QA
