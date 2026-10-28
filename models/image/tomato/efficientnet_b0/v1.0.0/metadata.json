@@ -1,0 +1,80 @@
+{
+  "model_id": "tomato_efficientnet_b0",
+  "crop": "tomato",
+  "modality": "image",
+  "family": "EfficientNetB0",
+  "architecture": "efficientnet_b0",
+  "artifact_version": "v1.0.0",
+  "artifact_file": "models/image/tomato/efficientnet_b0/v1.0.0/model.pt",
+  "commit": "91d9a7d43bb1120b9522f081cc9478522ec55cfa",
+  "input_type": "leaf image as provided",
+  "classes": [
+    "Tomato_Bacterial_spot",
+    "Tomato_Early_blight",
+    "Tomato_Healthy",
+    "Tomato_Late_blight",
+    "Tomato_Leaf_Mold",
+    "Tomato_Powdery_Mildew",
+    "Tomato_Septoria_leaf_spot",
+    "Tomato_Spider_mites Two-spotted_spider_mite",
+    "Tomato_Target_Spot",
+    "Tomato_Tomato_Yellow_Leaf_Curl_Virus",
+    "Tomato_Tomato_mosaic_virus"
+  ],
+  "num_classes": 11,
+  "num_parameters": 4021639,
+  "target_device": "cpu",
+  "device_actually_used": "cpu",
+  "oom_events_caught": 0,
+  "fallback_triggered": false,
+  "best_epoch": 2,
+  "val_macro_f1": 0.8748,
+  "val_accuracy": 0.8715,
+  "split_counts": {
+    "train": 23496,
+    "val": 5034
+  },
+  "split_manifest_path": "processed_data/splits/image_splits_tomato.csv",
+  "split_manifest_hash": "8ecad33c13ca2c78d1a93afe874121e84dd020fb28aa042ffca50bcaa3d43d6e",
+  "stages": {
+    "stage_1_frozen_backbone": {
+      "name": "Frozen Backbone",
+      "active_epochs": "1-1",
+      "lr": 0.001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 14091,
+      "frozen_parameters": 4007548
+    },
+    "stage_2_finetuning": {
+      "name": "Fine-Tuning",
+      "unfreeze_epoch": 2,
+      "unfreeze_mode": "top_blocks",
+      "lr": 0.0001,
+      "optimizer": "adamw",
+      "weight_decay": 0.0001,
+      "trainable_parameters": 1143483,
+      "frozen_parameters": 2878156
+    }
+  },
+  "hyperparameters": {
+    "batch_size": 64,
+    "initial_lr": 0.001,
+    "finetune_lr": 0.0001,
+    "unfreeze_at_epoch": 2,
+    "unfreeze_mode": "top_blocks",
+    "weight_decay": 0.0001,
+    "optimizer": "adamw",
+    "early_stopping_patience": 5,
+    "seed": 42
+  },
+  "training_date": "2026-10-28T17:11:43.089180+00:00",
+  "software_versions": {
+    "python": "3.14.0",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "scikit-learn": "1.9.1",
+    "numpy": "2.5.3",
+    "torch": "2.14.1+cpu"
+  },
+  "weights_identifier": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+}
