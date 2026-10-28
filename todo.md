@@ -1327,9 +1327,9 @@
 **Dependencies:** T5-020
 **Acceptance Criteria:**
 
-- [ ] Head output size matches class count
-- [ ] Freeze/unfreeze schedule is configurable and logged
-- [ ] Weights identifier saved in metadata
+- [x] Head output size matches class count
+- [x] Freeze/unfreeze schedule is configurable and logged
+- [x] Weights identifier saved in metadata
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML
