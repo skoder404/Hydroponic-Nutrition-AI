@@ -21,12 +21,12 @@ export interface LiveSensorItem {
   isStale: boolean;
 }
 
-export default function LiveMonitorPage() {
+function LiveMonitorContent() {
   const { prefersReducedMotion } = useMotion();
 
   // Connection & Poll State
   const [isConnected, setIsConnected] = useState<boolean>(true);
-  const [lastSuccessTime, setLastSuccessTime] = useState<Date | null>(new Date());
+  const [lastSuccessTime, setLastSuccessTime] = useState<Date | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPolling, setIsPolling] = useState<boolean>(false);
 
@@ -38,7 +38,7 @@ export default function LiveMonitorPage() {
       value: 6.18,
       unit: "pH",
       normalBand: [5.5, 6.5],
-      observedAt: new Date(),
+      observedAt: new Date(0),
       isStale: false,
     },
     {
@@ -47,7 +47,7 @@ export default function LiveMonitorPage() {
       value: 1.64,
       unit: "mS/cm",
       normalBand: [1.2, 2.2],
-      observedAt: new Date(),
+      observedAt: new Date(0),
       isStale: false,
     },
     {
@@ -56,7 +56,7 @@ export default function LiveMonitorPage() {
       value: 20.8,
       unit: "°C",
       normalBand: [18.0, 24.0],
-      observedAt: new Date(),
+      observedAt: new Date(0),
       isStale: false,
     },
     {
@@ -65,7 +65,7 @@ export default function LiveMonitorPage() {
       value: 64.2,
       unit: "%",
       normalBand: [50.0, 75.0],
-      observedAt: new Date(),
+      observedAt: new Date(0),
       isStale: false,
     },
     {
@@ -74,7 +74,7 @@ export default function LiveMonitorPage() {
       value: 23.4,
       unit: "°C",
       normalBand: [18.0, 28.0],
-      observedAt: new Date(),
+      observedAt: new Date(0),
       isStale: false,
     },
     {
@@ -83,15 +83,27 @@ export default function LiveMonitorPage() {
       value: 7.2,
       unit: "mg/L",
       normalBand: [6.0, 9.0],
-      observedAt: new Date(Date.now() - 75000), // Stale (> 45s)
+      observedAt: new Date(0), // Stale (> 45s)
       isStale: true,
     },
   ]);
 
   // Camera Frame State
-  const [cameraCaptureTime, setCameraCaptureTime] = useState<Date>(new Date());
+  const [cameraCaptureTime, setCameraCaptureTime] = useState<Date | null>(null);
   const [hasNewData, setHasNewData] = useState<boolean>(false);
   const [liveAnnouncement, setLiveAnnouncement] = useState<string>("");
+
+  useEffect(() => {
+    const now = new Date();
+    setLastSuccessTime(now);
+    setCameraCaptureTime(now);
+    setSensors((prev) =>
+      prev.map((s) => ({
+        ...s,
+        observedAt: s.isStale ? new Date(now.getTime() - 75000) : now,
+      }))
+    );
+  }, []);
 
   // Polling function
   const pollLiveData = useCallback(async () => {
@@ -407,7 +419,7 @@ export default function LiveMonitorPage() {
                   Live Camera Feed Active (Bay 1 Canopy)
                 </span>
                 <span className="font-mono text-[11px]">
-                  Frame captured: {cameraCaptureTime.toLocaleTimeString()}
+                  Frame captured: {cameraCaptureTime ? cameraCaptureTime.toLocaleTimeString() : "--:--:--"}
                 </span>
               </div>
             </div>
@@ -427,5 +439,20 @@ export default function LiveMonitorPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LiveMonitorPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="p-8 text-center text-sm text-[var(--stone)] flex items-center justify-center space-x-2">
+          <div className="w-4 h-4 border-2 border-[var(--leaf)] border-t-transparent rounded-full animate-spin" />
+          <span>Loading live monitor...</span>
+        </div>
+      }
+    >
+      <LiveMonitorContent />
+    </React.Suspense>
   );
 }
