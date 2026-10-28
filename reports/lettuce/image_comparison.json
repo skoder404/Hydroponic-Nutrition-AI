@@ -1,0 +1,71 @@
+{
+  "crop": "lettuce",
+  "task": "image_classification",
+  "selected_at": "2026-10-28T16:16:00.000000+00:00",
+  "task_id": "T5-028",
+  "selection_metric": "validation_macro_f1",
+  "split_manifest_sha256": "5d9c1be1d4c7338c60a3f56ccf66b803bfe7333eb8d4330d5b55d6dc51c33f52",
+  "selected_model": {
+    "model_name": "lettuce_efficientnet_b0_v1.0.0",
+    "model_family": "EfficientNetB0",
+    "report_file": "reports/lettuce/lettuce_efficientnet_b0_v1.0.0_validation.json",
+    "artifact_file": "models/image/lettuce/efficientnet_b0/v1.0.0/model.pt",
+    "metadata_file": "models/image/lettuce/efficientnet_b0/v1.0.0/metadata.json",
+    "parameter_count": 4012672,
+    "input_mode": "individual_leaf_crop",
+    "metrics": {
+      "macro_f1": 0.911891,
+      "accuracy": 0.945312,
+      "macro_precision": 0.895788,
+      "macro_recall": 0.943797
+    },
+    "per_class_f1": {
+      "Healthier": 0.95082,
+      "NitrogenDeficiency": 0.72,
+      "PhosphorusDeficiency": 1.0,
+      "PotassiumDeficiency": 0.976744
+    }
+  },
+  "candidates": [
+    {
+      "rank": 1,
+      "model_name": "lettuce_efficientnet_b0_v1.0.0",
+      "model_family": "EfficientNetB0",
+      "val_macro_f1": 0.911891,
+      "val_accuracy": 0.945312,
+      "parameter_count": 4012672,
+      "input_mode": "individual_leaf_crop",
+      "report_file": "reports/lettuce/lettuce_efficientnet_b0_v1.0.0_validation.json"
+    },
+    {
+      "rank": 2,
+      "model_name": "lettuce_custom_cnn_v1.0.0",
+      "model_family": "CustomCNN",
+      "val_macro_f1": 0.704506,
+      "val_accuracy": 0.804688,
+      "parameter_count": 456228,
+      "input_mode": "individual_leaf_crop",
+      "report_file": "reports/lettuce/lettuce_custom_cnn_v1.0.0_validation.json"
+    },
+    {
+      "rank": 3,
+      "model_name": "lettuce_feature_random_forest_v1.0.0",
+      "model_family": "RandomForest",
+      "val_macro_f1": 0.493048,
+      "val_accuracy": 0.609375,
+      "parameter_count": 20050,
+      "input_mode": "individual_leaf_crop_features",
+      "report_file": "reports/lettuce/lettuce_feature_random_forest_v1.0.0_validation.json"
+    },
+    {
+      "rank": 4,
+      "model_name": "lettuce_feature_svm_v1.0.0",
+      "model_family": "SVM",
+      "val_macro_f1": 0.483982,
+      "val_accuracy": 0.515625,
+      "parameter_count": 497,
+      "input_mode": "individual_leaf_crop_features",
+      "report_file": "reports/lettuce/lettuce_feature_svm_v1.0.0_validation.json"
+    }
+  ]
+}
