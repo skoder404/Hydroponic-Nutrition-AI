@@ -1729,9 +1729,9 @@
 **Dependencies:** T7-001
 **Acceptance Criteria:**
 
-- [ ] Text pairs are at least 4.5:1 and UI components at least 3:1
-- [ ] Updated hex values are reflected in DESIGN.md
-- [ ] Results table is saved in `docs/design/contrast.md`
+- [x] Text pairs are at least 4.5:1 and UI components at least 3:1
+- [x] Updated hex values are reflected in DESIGN.md
+- [x] Results table is saved in `docs/design/contrast.md`
 
 **Estimated Effort:** 30 min
 **Assigned To:** Frontend

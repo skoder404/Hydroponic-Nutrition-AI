@@ -194,9 +194,10 @@ Plain-language stepper and glossary (confidence, macro-F1, rule-derived label, s
 | `--forest` | `#2F4A33` | Primary buttons, headings, nav | 9.06:1 (white text on forest 9.78:1) |
 | `--moss` | `#4C6B3C` | Secondary accent, links | 5.60:1 (white on moss 6.04:1) |
 | `--sage` | `#8FA77A` | **Decorative only** (illustrations, fills) | 2.44:1, never text |
-| `--clay` | `#A4502E` | Warm accent, secondary CTA | 5.17:1 (white on clay 5.58:1) |
+| `--clay` | `#A24E2D` | Warm accent, secondary CTA | 5.31:1 (on sand 4.62:1, white on clay 5.73:1) |
 | `--bark` | `#3E3022` | Body text | 11.79:1 |
 | `--stone` | `#665C4D` | Secondary text | 6.08:1 (on sand 5.28:1) |
+
 | `--border` | `#D9CDB1` | Decorative dividers | 1.46:1, decorative only |
 | `--border-strong` | `#857A67` | Input/focus-adjacent borders | 3.91:1 (UI component ≥ 3:1) |
 | `--water` | `#2F6F7E` | Sensor/water accents | 5.26:1 |
