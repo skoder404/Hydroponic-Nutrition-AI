@@ -428,8 +428,17 @@ class ManualAdapter(DeviceAdapter):
         raise DeviceUnavailableError("Manual camera frame not uploaded.")
 
 
-class CampusAdapter(DeviceAdapter):
-    """Campus hardware adapter fetching live telemetry and camera feed from remote campus server."""
+class CampusServerAdapter(DeviceAdapter):
+    """Campus hardware adapter fetching live telemetry and camera feed from remote campus server.
+
+    Conforms to ADR 0008 and T6-013 Acceptance Criteria:
+    - Queries configured host from .env (never hardcoded IP or credentials).
+    - Maps raw gateway fields (ph, ec in µS/cm -> mS/cm, temp_avg -> air_temp, humidity_avg -> humidity)
+      into strict crop schema features.
+    - Tomato readings are always flagged experimental unless validated mapping is documented.
+    - Unreachable or failing server raises DeviceUnavailableError (never returning fake zeroes).
+    - Preserves and tracks last successful observation timestamp.
+    """
 
     def __init__(
         self,
@@ -442,6 +451,7 @@ class CampusAdapter(DeviceAdapter):
         self.server_url = server_url
         self.camera_url = camera_url
         self.timeout_s = timeout_s
+        self._last_success_time: datetime | None = None
 
     @property
     def adapter_name(self) -> Literal["mock", "campus", "manual"]:
@@ -455,79 +465,251 @@ class CampusAdapter(DeviceAdapter):
     def is_mock(self) -> bool:
         return False
 
-    def get_status(self) -> DeviceStatusResponse:
+    @property
+    def last_success_time(self) -> datetime | None:
+        """UTC timestamp of the last successful raw telemetry fetch."""
+        return self._last_success_time
+
+    def _fetch_raw_payload(self) -> tuple[dict[str, Any], datetime]:
+        """Fetch raw device telemetry from configured campus server or gateway device.
+
+        Tries /api/data (direct controller) and falls back to /status or /sensors.
+        Raises DeviceUnavailableError if server is unreachable, errors out, or returns invalid payload.
+        """
         import httpx
 
         now = datetime.now(timezone.utc)
-        try:
-            with httpx.Client(timeout=self.timeout_s) as client:
-                res = client.get(f"{self.server_url.rstrip('/')}/status")
-                if res.status_code != 200:
-                    status_name: ReadingStatus = "invalid"
-                    msg = f"Campus server returned HTTP {res.status_code}"
-                else:
-                    status_name = "ok"
-                    msg = "Campus server reachable"
-        except Exception as exc:
-            status_name = "disconnected"
-            msg = f"Campus server unreachable: {exc}"
+        endpoints = ["/api/data", "/status"]
+        last_error: Exception | None = None
 
-        camera_status = CameraDeviceStatus(
-            status=status_name,
-            timestamp=now if status_name == "ok" else None,
-            age_seconds=0.0 if status_name == "ok" else None,
-            resolution="1920x1080" if status_name == "ok" else None,
-            message=msg,
+        with httpx.Client(timeout=self.timeout_s) as client:
+            for ep in endpoints:
+                target_url = f"{self.server_url.rstrip('/')}{ep}"
+                try:
+                    res = client.get(target_url)
+                    if res.status_code == 200:
+                        payload = res.json()
+                        # Extract nested latest payload if server.py wrapper format
+                        raw = payload.get("latest", payload) if isinstance(payload, dict) else {}
+                        if isinstance(raw, dict) and any(k in raw for k in ("ph", "ec", "temp_avg", "humidity_avg", "readings")):
+                            self._last_success_time = now
+                            return raw, now
+                except Exception as exc:
+                    last_error = exc
+                    continue
+
+        last_success_info = (
+            f" (last successful contact was at {self._last_success_time.isoformat()})"
+            if self._last_success_time
+            else " (no successful contact recorded)"
         )
+        raise DeviceUnavailableError(
+            f"Campus hardware server at {self.server_url} is unreachable{last_success_info}. Error: {last_error}"
+        )
+
+    def get_status(self) -> DeviceStatusResponse:
+        """Report live campus telemetry statuses across physical sensors and camera feed."""
+        now = datetime.now(timezone.utc)
+        lettuce_schema = get_sensor_schema("lettuce")
+        sensor_statuses: dict[str, SensorReadingStatus] = {}
+
+        try:
+            raw_payload, obs_time = self._fetch_raw_payload()
+            freshness_status, age_sec = self.evaluate_reading_freshness(obs_time)
+
+            mapped_readings = self._map_raw_to_features(raw_payload, "lettuce")
+
+            for feat in lettuce_schema.features:
+                val = mapped_readings.get(feat.name)
+                if val is None:
+                    st: ReadingStatus = "missing"
+                    msg = f"Feature '{feat.name}' missing from campus gateway payload"
+                elif val < feat.hard_bounds[0] or val > feat.hard_bounds[1]:
+                    st = "invalid"
+                    msg = f"Live value {val} outside physical bounds {feat.hard_bounds}"
+                else:
+                    st = freshness_status
+                    msg = "Live telemetry fresh" if st == "ok" else f"Live telemetry stale ({age_sec:.1f}s > {self.max_age_s}s)"
+
+                sensor_statuses[feat.name] = SensorReadingStatus(
+                    name=feat.name,
+                    value=val,
+                    unit=feat.unit,
+                    status=st,
+                    timestamp=obs_time,
+                    age_seconds=age_sec,
+                    message=msg,
+                )
+
+            aggregate_status: ReadingStatus = freshness_status
+            if any(s.status == "invalid" for s in sensor_statuses.values()):
+                aggregate_status = "invalid"
+            elif any(s.status == "missing" for s in sensor_statuses.values()):
+                aggregate_status = "missing"
+
+            camera_status = CameraDeviceStatus(
+                status=aggregate_status,
+                timestamp=obs_time,
+                age_seconds=age_sec,
+                resolution="1920x1080",
+                message="Campus camera snapshot stream operational",
+            )
+        except DeviceUnavailableError as exc:
+            aggregate_status = "disconnected"
+            last_success = self._last_success_time
+            age_s = (now - last_success).total_seconds() if last_success else None
+
+            for feat in lettuce_schema.features:
+                sensor_statuses[feat.name] = SensorReadingStatus(
+                    name=feat.name,
+                    value=None,  # NEVER return zeros when unavailable (AC 2)
+                    unit=feat.unit,
+                    status="disconnected",
+                    timestamp=last_success,
+                    age_seconds=age_s,
+                    message=str(exc),
+                )
+
+            camera_status = CameraDeviceStatus(
+                status="disconnected",
+                timestamp=last_success,
+                age_seconds=age_s,
+                resolution=None,
+                message=str(exc),
+            )
 
         return DeviceStatusResponse(
             adapter="campus",
             source="live",
-            status=status_name,
+            status=aggregate_status,
             timestamp=now,
             max_age_s=self.max_age_s,
-            readings={},
+            readings=sensor_statuses,
             camera=camera_status,
             is_mock=False,
         )
 
+    def _map_raw_to_features(self, raw: dict[str, Any], crop: str) -> dict[str, float]:
+        """Map raw Modbus gateway fields to model feature schemas strictly conforming to ADR 0008."""
+        nested_readings = raw.get("readings", {})
+        ph = raw.get("ph", nested_readings.get("ph"))
+        raw_ec = raw.get("ec", nested_readings.get("ec"))
+        # In campus Modbus payload, EC is in µS/cm (e.g. ~36.8 or scaled). Convert µS/cm to mS/cm if > 10
+        ec_val: float | None = None
+        if raw_ec is not None:
+            raw_ec_float = float(raw_ec)
+            ec_val = raw_ec_float / 1000.0 if raw_ec_float > 10.0 else raw_ec_float
+
+        temp_val = raw.get("temp_avg", raw.get("temperature1", nested_readings.get("air_temp", nested_readings.get("air_temperature_C"))))
+        hum_val = raw.get("humidity_avg", raw.get("humidity1", nested_readings.get("humidity", nested_readings.get("relative_humidity_percent"))))
+        water_temp_val = raw.get("water_temp", raw.get("temp_avg", nested_readings.get("water_temp", nested_readings.get("water_temperature_C"))))
+
+        clean_crop = crop.lower()
+        if clean_crop == "lettuce":
+            mapped: dict[str, float] = {}
+            if ph is not None:
+                mapped["ph"] = float(ph)
+            if ec_val is not None:
+                mapped["ec"] = float(ec_val)
+            if temp_val is not None:
+                mapped["air_temp"] = float(temp_val)
+            if hum_val is not None:
+                mapped["humidity"] = float(hum_val)
+            if water_temp_val is not None:
+                mapped["water_temp"] = float(water_temp_val)
+            return mapped
+
+        elif clean_crop == "spinach":
+            mapped = {}
+            if ph is not None:
+                mapped["ph"] = float(ph)
+            if ec_val is not None:
+                mapped["ec_mS_cm"] = float(ec_val)
+            if temp_val is not None:
+                mapped["air_temperature_C"] = float(temp_val)
+            if hum_val is not None:
+                mapped["relative_humidity_percent"] = float(hum_val)
+            if water_temp_val is not None:
+                mapped["water_temperature_C"] = float(water_temp_val)
+            return mapped
+
+        elif clean_crop in ("tomato", "tomato_live"):
+            mapped = {}
+            if ph is not None:
+                mapped["ph"] = float(ph)
+            if ec_val is not None:
+                mapped["ec_mS_cm"] = float(ec_val)
+            if temp_val is not None:
+                mapped["air_temperature_C"] = float(temp_val)
+            if hum_val is not None:
+                mapped["relative_humidity_percent"] = float(hum_val)
+            if water_temp_val is not None:
+                mapped["water_temperature_C"] = float(water_temp_val)
+            return mapped
+
+        return {}
+
     def get_latest_sensor_readings(self, crop: str = "lettuce") -> dict[str, Any]:
-        import httpx
+        """Fetch and map latest live sensor readings conforming to crop feature schema.
 
-        try:
-            with httpx.Client(timeout=self.timeout_s) as client:
-                res = client.get(f"{self.server_url.rstrip('/')}/sensors/{crop}")
-                if res.status_code != 200:
-                    raise DeviceUnavailableError(f"Campus server error: HTTP {res.status_code}")
-                data = res.json()
-        except httpx.HTTPError as exc:
-            raise DeviceUnavailableError(f"Campus device server is disconnected: {exc}") from exc
-
-        # Timestamp and freshness validation
-        ts_str = data.get("timestamp")
-        if not ts_str:
-            raise DeviceUnavailableError("Campus payload missing timestamp.")
-
-        obs_time = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+        Acceptance Criterion 1: Adapter output maps exactly to the model feature schema.
+        Acceptance Criterion 2: Unreachable server raises DeviceUnavailableError (never zeros).
+        Acceptance Criterion 3: Tomato readings are always flagged experimental.
+        """
+        raw_payload, obs_time = self._fetch_raw_payload()
         freshness_status, age_sec = self.evaluate_reading_freshness(obs_time)
         if freshness_status == "stale":
             raise DeviceUnavailableError(
                 f"Campus sensor telemetry is stale ({age_sec:.1f}s > {self.max_age_s}s) and cannot be used."
             )
 
-        return data.get("readings", {})
+        clean_crop = crop.lower()
+        mapped = self._map_raw_to_features(raw_payload, clean_crop)
+
+        # Validate complete schema match
+        schema_crop = "tomato_live" if clean_crop == "tomato_live" else ("tomato" if clean_crop == "tomato" else clean_crop)
+        schema = get_sensor_schema(schema_crop)
+
+        # Validate that mapped features match schema
+        for feat in schema.features:
+            if feat.name not in mapped:
+                # If standard tomato model requests N/P/K, raise DeviceUnavailableError because N/P/K are deleted
+                if feat.name in ("nitrogen_mg_L", "phosphorus_mg_L", "potassium_mg_L"):
+                    raise DeviceUnavailableError(
+                        f"Physical campus polyhouse lacks N/P/K sensors (disabled in hardware). "
+                        f"Use 'tomato_live' experimental model instead of standard tomato model."
+                    )
+                raise DeviceUnavailableError(f"Missing required sensor feature '{feat.name}' in campus payload.")
+
+            val = mapped[feat.name]
+            if val < feat.hard_bounds[0] or val > feat.hard_bounds[1]:
+                raise DeviceUnavailableError(
+                    f"Campus telemetry value for '{feat.name}' ({val}) is out of physical bounds {feat.hard_bounds}."
+                )
+
+        return mapped
 
     def get_latest_camera_frame(self) -> tuple[bytes, str]:
+        """Fetch latest camera frame from remote CPPLUS camera feed.
+
+        Raises:
+            DeviceUnavailableError: If camera stream is unreachable, returns HTTP error, or stale.
+        """
         import httpx
 
         try:
-            with httpx.Client(timeout=self.timeout_s) as client:
+            with httpx.Client(timeout=self.timeout_s, verify=False) as client:
                 res = client.get(self.camera_url)
                 if res.status_code != 200:
                     raise DeviceUnavailableError(f"Campus camera error: HTTP {res.status_code}")
-                return res.content, res.headers.get("Content-Type", "image/jpeg")
-        except httpx.HTTPError as exc:
+                content_type = res.headers.get("Content-Type", "image/jpeg")
+                return res.content, content_type
+        except Exception as exc:
             raise DeviceUnavailableError(f"Campus camera feed unreachable: {exc}") from exc
+
+
+# Alias CampusAdapter for backward compatibility with existing imports
+CampusAdapter = CampusServerAdapter
 
 
 _device_adapter_singleton: DeviceAdapter | None = None

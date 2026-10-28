@@ -99,6 +99,30 @@ class DeviceStatusResponse(BaseModel):
     )
 
 
+class LatestSensorsResponse(BaseModel):
+    """Latest mapped sensor telemetry payload from GET /api/v1/device/sensors/latest."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    crop: str = Field(..., description="Crop cultivar to which features were mapped", examples=["lettuce"])
+    source: Literal["mock", "manual", "live"] = Field(..., description="Telemetry source provenance")
+    timestamp: datetime = Field(..., description="Observation capture timestamp in UTC")
+    readings: dict[str, float] = Field(
+        ...,
+        description="Validated feature dictionary strictly conforming to crop model schema",
+        examples=[{"ph": 6.2, "ec": 1.4, "water_temp": 20.5, "humidity": 65.0, "air_temp": 22.0}],
+    )
+    is_mock: bool = Field(..., description="True if telemetry is simulated/mock fixture")
+    experimental: bool = Field(
+        False,
+        description="Flag indicating if telemetry is experimental (e.g. tomato_live without N/P/K)",
+    )
+    warnings: list[str] = Field(
+        default_factory=list,
+        description="Operational warnings (e.g. ambient temperature extremes, hardware drift)",
+    )
+
+
 class ManualReadingSubmission(BaseModel):
     """Payload for submitting operator manual sensor measurements."""
 

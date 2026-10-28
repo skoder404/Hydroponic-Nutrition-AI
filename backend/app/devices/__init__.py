@@ -2,6 +2,7 @@
 
 from backend.app.devices.adapter import (
     CampusAdapter,
+    CampusServerAdapter,
     DeviceAdapter,
     ManualAdapter,
     MockAdapter,
@@ -14,6 +15,7 @@ __all__ = [
     "MockAdapter",
     "ManualAdapter",
     "CampusAdapter",
+    "CampusServerAdapter",
     "get_device_adapter",
     "reset_device_adapter",
 ]

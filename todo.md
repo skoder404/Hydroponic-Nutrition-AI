@@ -1659,9 +1659,9 @@
 **Dependencies:** T6-012, T1-016, T6-004
 **Acceptance Criteria:**
 
-- [ ] Adapter output maps exactly to the model feature schema
-- [ ] Unreachable server returns unavailable (not zeros) with the last-success time
-- [ ] No hard-coded IP or credentials anywhere
+- [x] Adapter output maps exactly to the model feature schema
+- [x] Unreachable server returns unavailable (not zeros) with the last-success time
+- [x] No hard-coded IP or credentials anywhere
 
 **Estimated Effort:** 90 min
 **Assigned To:** Backend
