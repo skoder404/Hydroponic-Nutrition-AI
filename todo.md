@@ -1646,9 +1646,9 @@
 **Dependencies:** T3-003, T6-003, T1-016
 **Acceptance Criteria:**
 
-- [ ] Stale payload is reported stale and never used
-- [ ] Mock data is never labelled live
-- [ ] Manual entry works with `DEVICE_ADAPTER=manual`
+- [x] Stale payload is reported stale and never used
+- [x] Mock data is never labelled live
+- [x] Manual entry works with `DEVICE_ADAPTER=manual`
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
