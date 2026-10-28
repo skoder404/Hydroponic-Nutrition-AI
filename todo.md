@@ -1794,9 +1794,9 @@
 **Dependencies:** T7-001
 **Acceptance Criteria:**
 
-- [ ] Wrong file type shows a specific message
-- [ ] Works with keyboard only
-- [ ] Mobile camera capture attribute is set
+- [x] Wrong file type shows a specific message
+- [x] Works with keyboard only
+- [x] Mobile camera capture attribute is set
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
