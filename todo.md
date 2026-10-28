@@ -1950,9 +1950,9 @@
 **Dependencies:** T7-004
 **Acceptance Criteria:**
 
-- [ ] Glossary entries are consistent with concept notes
-- [ ] Page is keyboard accessible
-- [ ] No claims of diagnosis or guaranteed accuracy
+- [x] Glossary entries are consistent with concept notes
+- [x] Page is keyboard accessible
+- [x] No claims of diagnosis or guaranteed accuracy
 
 **Estimated Effort:** 30 min
 **Assigned To:** Frontend
