@@ -1445,9 +1445,9 @@
 **Dependencies:** T5-028, T5-029, T5-030
 **Acceptance Criteria:**
 
-- [ ] Thresholds are computed from validation only
-- [ ] Metadata states score semantics
-- [ ] Reliability plot saved
+- [x] Thresholds are computed from validation only
+- [x] Metadata states score semantics
+- [x] Reliability plot saved
 
 **Estimated Effort:** 60 min
 **Assigned To:** ML

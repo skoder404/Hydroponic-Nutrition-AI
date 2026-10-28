@@ -37,7 +37,7 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 | 22 | T5-018 | Data augmentation (training only) and input normalisation | `docs/learning/data-augmentation-training-only-and-input.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 23 | T5-020 | Optimisers, learning rate, and early stopping on validation macro-F1 | `docs/learning/optimisers-learning-rate-and-early-stopping.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 24 | T5-022 | Transfer learning and fine-tuning (EfficientNetB0) | `docs/learning/transfer-learning-and-finetuning-efficientnetb0.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 25 | T5-031 | Softmax confidence, calibration, and uncertainty thresholds | `docs/learning/softmax-confidence-calibration-and-uncertainty-thresholds.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 25 | T5-031 | Softmax confidence, calibration, and uncertainty thresholds | `docs/learning/softmax-confidence-calibration-and-uncertainty-thresholds.md` | [x] | [x] | [x] | 2026-10-28 | [x] | [x] | [x] | 2026-10-28 |
 | 26 | T10-003 | Probability calibration (temperature scaling, reliability diagrams) | `docs/learning/probability-calibration-temperature-scaling-reliability-diagrams.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 
 ---

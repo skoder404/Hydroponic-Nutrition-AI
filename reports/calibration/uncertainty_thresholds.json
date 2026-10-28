@@ -1,0 +1,59 @@
+{
+  "task_id": "T5-031",
+  "description": "Per-leaf uncertainty thresholds derived from validation predictions",
+  "split_evaluated": "validation",
+  "score_semantics": "Raw softmax confidence is an uncalibrated heuristic score and must not be interpreted as an objective Bayesian probability of ground truth. In particular, whole-canopy plant stress labels are inherited down to individual leaves, so an individual leaf with high visual health might still carry an inherited stress label. In production, scores at or above the high threshold represent strong alignment with validation distribution; scores below the moderate threshold trigger the 'uncertain / manual inspection recommended' status chip.",
+  "plots_saved": [
+    "reports/calibration/reliability_plots_combined.png",
+    "reports/calibration/reliability_plot_lettuce.png",
+    "reports/calibration/reliability_plot_spinach.png",
+    "reports/calibration/reliability_plot_tomato.png"
+  ],
+  "crops": {
+    "lettuce": {
+      "sample_count": 128,
+      "raw_accuracy": 0.6875,
+      "fitted_temperature": 1.46,
+      "pre_scaling_ece": 0.179,
+      "post_scaling_ece": 0.1109,
+      "thresholds": {
+        "high": 0.788,
+        "moderate": 0.487,
+        "uncertain": 0.487,
+        "split_evaluated": "validation",
+        "sample_count": 128,
+        "method": "empirical_validation_percentile_acc_bounded"
+      }
+    },
+    "spinach": {
+      "sample_count": 2745,
+      "raw_accuracy": 0.7081967213114754,
+      "fitted_temperature": 0.901,
+      "pre_scaling_ece": 0.0288,
+      "post_scaling_ece": 0.0286,
+      "thresholds": {
+        "high": 0.7,
+        "moderate": 0.476,
+        "uncertain": 0.476,
+        "split_evaluated": "validation",
+        "sample_count": 2745,
+        "method": "empirical_validation_percentile_acc_bounded"
+      }
+    },
+    "tomato": {
+      "sample_count": 5034,
+      "raw_accuracy": 0.8700834326579261,
+      "fitted_temperature": 0.706,
+      "pre_scaling_ece": 0.0695,
+      "post_scaling_ece": 0.0106,
+      "thresholds": {
+        "high": 0.881,
+        "moderate": 0.543,
+        "uncertain": 0.543,
+        "split_evaluated": "validation",
+        "sample_count": 5034,
+        "method": "empirical_validation_percentile_acc_bounded"
+      }
+    }
+  }
+}

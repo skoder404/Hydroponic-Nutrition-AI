@@ -71,5 +71,21 @@
     "numpy": "2.5.3",
     "torch": "2.14.1+cpu"
   },
-  "weights_identifier": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+  "weights_identifier": "EfficientNet_B0_Weights.IMAGENET1K_V1",
+  "uncertainty_thresholds": {
+    "high": 0.7,
+    "moderate": 0.476,
+    "uncertain": 0.476,
+    "split_evaluated": "validation",
+    "sample_count": 2745,
+    "method": "empirical_validation_percentile_acc_bounded"
+  },
+  "score_semantics": "Raw softmax confidence is an uncalibrated heuristic score and must not be interpreted as an objective Bayesian probability of ground truth. In particular, whole-canopy plant stress labels are inherited down to individual leaves, so an individual leaf with high visual health might still carry an inherited stress label. In production, scores at or above the high threshold represent strong alignment with validation distribution; scores below the moderate threshold trigger the 'uncertain / manual inspection recommended' status chip.",
+  "temperature_scaling": {
+    "fitted_temperature": 0.901,
+    "pre_scaling_ece": 0.0288,
+    "post_scaling_ece": 0.0286,
+    "validation_samples": 2745,
+    "optimization_split": "validation"
+  }
 }
