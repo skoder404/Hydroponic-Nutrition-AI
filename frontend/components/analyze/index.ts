@@ -26,4 +26,23 @@ export type { LeafCardProps } from "./LeafCard";
 export { ImageResultPanel } from "./ImageResultPanel";
 export type { ImageResultPanelProps, RejectedLeaf } from "./ImageResultPanel";
 
+export { SensorResultPanel } from "./SensorResultPanel";
+export type { SensorResultPanelProps, EvidenceRow } from "./SensorResultPanel";
+
+export { RecommendationCard } from "./RecommendationCard";
+export type { RecommendationCardProps } from "./RecommendationCard";
+
+export { NotAssessedNote } from "./NotAssessedNote";
+export type { NotAssessedNoteProps } from "./NotAssessedNote";
+
+export { SaveRecordButton } from "./SaveRecordButton";
+export type { SaveRecordButtonProps } from "./SaveRecordButton";
+
+export { VineProgressIndicator } from "./VineProgressIndicator";
+export type { VineProgressIndicatorProps, AnalysisStep } from "./VineProgressIndicator";
+
+
+
+
+
 

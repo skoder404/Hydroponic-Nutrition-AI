@@ -25,9 +25,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       "active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none disabled:active:scale-100 cursor-pointer disabled:cursor-not-allowed";
 
     const sizeStyles = {
-      sm: "text-xs px-3 py-1.5 rounded-[var(--radius-md)] gap-1.5",
-      md: "text-sm px-4 py-2 rounded-[var(--radius-md)] gap-2",
-      lg: "text-base px-6 py-3 rounded-[var(--radius-md)] gap-2.5",
+      sm: "min-h-[44px] min-w-[44px] text-xs px-3.5 py-2 rounded-[var(--radius-md)] gap-1.5",
+      md: "min-h-[44px] min-w-[44px] text-sm px-4 py-2.5 rounded-[var(--radius-md)] gap-2",
+      lg: "min-h-[48px] min-w-[44px] text-base px-6 py-3 rounded-[var(--radius-md)] gap-2.5",
     }[size];
 
     const variantStyles = {

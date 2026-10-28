@@ -1820,9 +1820,9 @@
 **Dependencies:** T7-007, T7-008, T6-011, T6-014, T7-003
 **Acceptance Criteria:**
 
-- [ ] Analyze is disabled until required inputs validate
-- [ ] Cancel aborts the request
-- [ ] Device-unavailable message offers manual entry
+- [x] Analyze is disabled until required inputs validate
+- [x] Cancel aborts the request
+- [x] Device-unavailable message offers manual entry
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
@@ -1833,9 +1833,9 @@
 **Dependencies:** T7-005, T7-003, T6-013
 **Acceptance Criteria:**
 
-- [ ] Server unreachable shows last-success time and Retry
-- [ ] Stale values are labelled stale
-- [ ] New data triggers a pulse and an aria-live announcement; reduced motion shows text only
+- [x] Server unreachable shows last-success time and Retry
+- [x] Stale values are labelled stale
+- [x] New data triggers a pulse and an aria-live announcement; reduced motion shows text only
 
 **Estimated Effort:** 90 min
 **Assigned To:** Frontend
@@ -1872,9 +1872,9 @@
 **Dependencies:** T7-011, T7-005
 **Acceptance Criteria:**
 
-- [ ] Tomato shows the experimental banner
-- [ ] Evidence rows show reading, unit, and reference band
-- [ ] Label is described as rule-derived
+- [x] Tomato shows the experimental banner
+- [x] Evidence rows show reading, unit, and reference band
+- [x] Label is described as rule-derived
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
@@ -1885,9 +1885,9 @@
 **Dependencies:** T7-012, T7-013
 **Acceptance Criteria:**
 
-- [ ] Source chip reflects `source` from the API
-- [ ] 'Not assessed' appears when one modality is missing
-- [ ] No combined score is shown anywhere
+- [x] Source chip reflects `source` from the API
+- [x] 'Not assessed' appears when one modality is missing
+- [x] No combined score is shown anywhere
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
@@ -1898,9 +1898,9 @@
 **Dependencies:** T7-014, T6-010
 **Acceptance Criteria:**
 
-- [ ] Failed save never shows success
-- [ ] Double-click does not create two records
-- [ ] Toast announces via aria-live
+- [x] Failed save never shows success
+- [x] Double-click does not create two records
+- [x] Toast announces via aria-live
 
 **Estimated Effort:** 30 min
 **Assigned To:** Frontend
@@ -1924,9 +1924,9 @@
 **Dependencies:** T7-016
 **Acceptance Criteria:**
 
-- [ ] Missing image shows metadata only
-- [ ] Timestamps display with timezone
-- [ ] Not-found state works
+- [x] Missing image shows metadata only
+- [x] Timestamps display with timezone
+- [x] Not-found state works
 
 **Estimated Effort:** 45 min
 **Assigned To:** Frontend
@@ -1963,9 +1963,9 @@
 **Dependencies:** T7-006, T7-009, T7-010, T7-015, T7-017, T7-018, T7-019
 **Acceptance Criteria:**
 
-- [ ] Checklist per screen/state/breakpoint saved in `docs/design/state_audit.md`
-- [ ] No horizontal body scroll
-- [ ] Touch targets are at least 44 px
+- [x] Checklist per screen/state/breakpoint saved in `docs/design/state_audit.md`
+- [x] No horizontal body scroll
+- [x] Touch targets are at least 44 px
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
@@ -1976,9 +1976,9 @@
 **Dependencies:** T7-020, T7-002
 **Acceptance Criteria:**
 
-- [ ] Zero critical automated violations on all routes
-- [ ] Main flow works with keyboard only
-- [ ] Remaining issues are logged
+- [x] Zero critical automated violations on all routes
+- [x] Main flow works with keyboard only
+- [x] Remaining issues are logged
 
 **Estimated Effort:** 60 min
 **Assigned To:** Frontend
