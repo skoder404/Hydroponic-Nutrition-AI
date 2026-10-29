@@ -4,7 +4,10 @@ import logging
 
 from fastapi import APIRouter
 
+from sqlalchemy import text
+
 from backend.app.core.device import get_device_manager
+from backend.app.database.session import get_engine
 from backend.app.schemas.health import HealthResponse
 from backend.app.services.model_service import get_model_registry_service
 
@@ -21,17 +24,27 @@ async def get_health() -> HealthResponse:
     model_service = get_model_registry_service()
     registry_status = model_service.get_health_status()
 
-    # Overall service status is ok when registry is ok, otherwise degraded
-    overall_status = "ok" if registry_status == "ok" else "degraded"
+    # Active database connectivity verification
+    db_status = "connected"
+    try:
+        engine = get_engine()
+        with engine.connect() as conn:
+            conn.execute(text("SELECT 1"))
+    except Exception as exc:
+        logger.warning("Database connectivity check failed: %s", exc)
+        db_status = "unavailable"
+
+    # Overall service status is ok when registry is ok and db is connected, otherwise degraded
+    overall_status = "ok" if registry_status == "ok" and db_status == "connected" else "degraded"
 
     logger.info(
         "Health check requested",
-        extra={"device": active_device, "registry": registry_status, "overall": overall_status},
+        extra={"device": active_device, "registry": registry_status, "db": db_status, "overall": overall_status},
     )
 
     return HealthResponse(
         status=overall_status,
         device=active_device,
-        db="unknown",
+        db=db_status,
         registry=registry_status,
     )

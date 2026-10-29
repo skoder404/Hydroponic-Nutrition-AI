@@ -248,13 +248,12 @@ export const SensorForm: React.FC<SensorFormProps> = ({
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   // Sync form values when crop switches or when external initialValues (e.g. campus telemetry) load
-  const lastInitialRef = useRef<string>("");
+  const lastInitialRef = useRef<string>(JSON.stringify(initialValues || {}));
   const lastCropRef = useRef<SupportedCrop>(crop);
   useEffect(() => {
-    const serializedInit = JSON.stringify(initialValues || {}) + ":" + crop;
-    if (serializedInit !== lastInitialRef.current) {
-      lastInitialRef.current = serializedInit;
+    if (crop !== lastCropRef.current) {
       lastCropRef.current = crop;
+      lastInitialRef.current = JSON.stringify(initialValues || {});
       const newValues: Record<string, string> = {};
       for (const f of fields) {
         const val = initialValues?.[f.name];
@@ -263,8 +262,38 @@ export const SensorForm: React.FC<SensorFormProps> = ({
       setValues(newValues);
       setErrors({});
       setWarnings({});
+      return;
     }
-  }, [crop, fields, initialValues]);
+
+    if (!initialValues) return;
+    const serializedInit = JSON.stringify(initialValues);
+    if (serializedInit === lastInitialRef.current) return;
+
+    // Check if initialValues actually differs from current values to prevent feedback loops
+    let isDifferent = false;
+    for (const f of fields) {
+      const initVal = initialValues[f.name];
+      const curStr = values[f.name];
+      if (initVal !== undefined && initVal !== null) {
+        if (curStr === undefined || curStr === "" || Number(curStr) !== Number(initVal)) {
+          isDifferent = true;
+          break;
+        }
+      }
+    }
+
+    if (isDifferent) {
+      lastInitialRef.current = serializedInit;
+      const newValues: Record<string, string> = {};
+      for (const f of fields) {
+        const val = initialValues[f.name];
+        newValues[f.name] = val !== undefined && val !== null ? String(val) : "";
+      }
+      setValues(newValues);
+      setErrors({});
+      setWarnings({});
+    }
+  }, [crop, fields, initialValues, values]);
 
   const handleFillDefaults = () => {
     const defs: Record<string, string> = {};

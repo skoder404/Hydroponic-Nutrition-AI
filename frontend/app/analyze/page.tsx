@@ -69,6 +69,9 @@ export default function AnalyzePage() {
   const [inputMode, setInputMode] = useState<InputMode | null>("single_leaf");
 
   // Sensor Inputs synchronized to crop schema
+  const [initialSensorValues, setInitialSensorValues] = useState<Record<string, number | undefined>>(
+    DEFAULT_CROP_SENSOR_VALUES.lettuce
+  );
   const [sensorValues, setSensorValues] = useState<Record<string, number | undefined>>(
     DEFAULT_CROP_SENSOR_VALUES.lettuce
   );
@@ -114,6 +117,7 @@ export default function AnalyzePage() {
                 for (const [k, v] of Object.entries(sensorData.readings)) {
                   if (typeof v === "number") liveMap[k] = v;
                 }
+                setInitialSensorValues(liveMap);
                 setSensorValues(liveMap);
                 setSensorValid(true);
               }
@@ -128,6 +132,7 @@ export default function AnalyzePage() {
                   }
                 }
                 if (Object.keys(liveVals).length > 0) {
+                  setInitialSensorValues((prev) => ({ ...prev, ...liveVals }));
                   setSensorValues((prev) => ({ ...prev, ...liveVals }));
                   setSensorValid(true);
                 }
@@ -172,6 +177,7 @@ export default function AnalyzePage() {
   // Synchronize default sensor values when selectedCrop changes in manual mode
   useEffect(() => {
     if (sourceProvenance === "manual") {
+      setInitialSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
       setSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
       setSensorValid(true);
     }
@@ -186,7 +192,7 @@ export default function AnalyzePage() {
       }
       return readings;
     });
-    setSensorValid(isValid);
+    setSensorValid((prev) => (prev === isValid ? prev : isValid));
   }, []);
 
   // Validation Check: Acceptance Criterion 1: Analyze is disabled until required inputs validate
@@ -700,11 +706,7 @@ export default function AnalyzePage() {
 
                 <SensorForm
                   crop={selectedCrop}
-                  initialValues={
-                    sourceProvenance === "campus_live" && Object.keys(sensorValues).length > 0
-                      ? sensorValues
-                      : DEFAULT_CROP_SENSOR_VALUES[selectedCrop]
-                  }
+                  initialValues={initialSensorValues}
                   onChange={handleSensorChange}
                   onSubmit={(readings: Record<string, number>) => {
                     setSensorValues(readings);
