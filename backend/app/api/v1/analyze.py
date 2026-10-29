@@ -19,6 +19,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
 
+from backend.app.core.config import get_settings
 from backend.app.core.errors import (
     AppException,
     DeviceUnavailableError,

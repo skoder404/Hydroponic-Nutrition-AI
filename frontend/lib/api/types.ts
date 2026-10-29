@@ -130,11 +130,32 @@ export interface RecommendationResponse {
 // =============================================================================
 
 export interface DeviceStatusResponse {
-  adapter: "mock" | "manual" | "campus_server" | string;
-  connected: boolean;
-  available_sensors: string[];
-  camera_available: boolean;
+  adapter: "mock" | "manual" | "campus_server" | "campus" | string;
+  source?: string;
+  status: "ok" | "stale" | "disconnected" | "unavailable" | string;
+  connected?: boolean;
+  timestamp?: string;
+  max_age_s?: number;
+  available_sensors?: string[];
+  camera_available?: boolean;
   last_reading_utc?: string | null;
+  readings?: Record<string, {
+    name: string;
+    value: number;
+    unit: string;
+    status: string;
+    timestamp?: string;
+    age_seconds?: number;
+    message?: string;
+  }>;
+  camera?: {
+    status: string;
+    timestamp?: string;
+    resolution?: string;
+    message?: string;
+    age_seconds?: number;
+  };
+  is_mock?: boolean;
 }
 
 // =============================================================================

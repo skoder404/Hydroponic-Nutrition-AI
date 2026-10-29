@@ -98,7 +98,25 @@ export default function AnalyzePage() {
         .getDeviceStatus()
         .then((status) => {
           setDeviceStatus(status);
-          setDeviceError(!status.connected);
+          const isConnected =
+            status.status === "ok" ||
+            status.connected === true ||
+            Boolean(status.readings && Object.keys(status.readings).length > 0);
+          setDeviceError(!isConnected);
+
+          // If live telemetry is available, automatically populate form!
+          if (isConnected && status.readings) {
+            const liveVals: Record<string, number> = {};
+            for (const [k, v] of Object.entries(status.readings)) {
+              if (v && typeof v.value === "number") {
+                liveVals[k] = v.value;
+              }
+            }
+            if (Object.keys(liveVals).length > 0) {
+              setSensorValues((prev) => ({ ...prev, ...liveVals }));
+              setSensorValid(true);
+            }
+          }
         })
         .catch(() => {
           setDeviceError(true);
@@ -207,11 +225,11 @@ export default function AnalyzePage() {
         apiResult = await apiClient.analyze(formData);
       } catch (err: unknown) {
         if (controller.signal.aborted) return;
-        console.error("Backend API dispatch failed:", err);
         const errMsg =
           err instanceof Error
             ? err.message
             : "Diagnostic pipeline failed to connect to backend server. Please verify backend is running on port 8000.";
+        console.warn("Backend API dispatch failed:", errMsg);
         setSegmentationError(errMsg);
         setImagePrediction(null);
         setSensorPrediction(null);

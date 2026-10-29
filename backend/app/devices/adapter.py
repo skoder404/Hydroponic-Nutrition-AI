@@ -481,7 +481,7 @@ class CampusServerAdapter(DeviceAdapter):
         import httpx
 
         now = datetime.now(timezone.utc)
-        endpoints = ["/api/data", "/status"]
+        endpoints = ["/api/data", "/status", "/sensors", "/data", "/readings", "/api", "/"]
         last_error: Exception | None = None
 
         with httpx.Client(timeout=self.timeout_s) as client:
@@ -493,7 +493,10 @@ class CampusServerAdapter(DeviceAdapter):
                         payload = res.json()
                         # Extract nested latest payload if server.py wrapper format
                         raw = payload.get("latest", payload) if isinstance(payload, dict) else {}
-                        if isinstance(raw, dict) and any(k in raw for k in ("ph", "ec", "temp_avg", "humidity_avg", "readings")):
+                        if isinstance(raw, dict) and any(
+                            k.lower() in ("ph", "ec", "temp_avg", "humidity_avg", "readings", "temperature", "humidity", "water_temp")
+                            for k in raw
+                        ):
                             self._last_success_time = now
                             return raw, now
                 except Exception as exc:
@@ -699,15 +702,26 @@ class CampusServerAdapter(DeviceAdapter):
         """
         import httpx
 
-        try:
-            with httpx.Client(timeout=self.timeout_s, verify=False) as client:
-                res = client.get(self.camera_url)
-                if res.status_code != 200:
-                    raise DeviceUnavailableError(f"Campus camera error: HTTP {res.status_code}")
-                content_type = res.headers.get("Content-Type", "image/jpeg")
-                return res.content, content_type
-        except Exception as exc:
-            raise DeviceUnavailableError(f"Campus camera feed unreachable: {exc}") from exc
+        endpoints = [
+            self.camera_url,
+            f"{self.camera_url.rstrip('/')}/snapshot.jpg",
+            f"{self.camera_url.rstrip('/')}/cgi-bin/snapshot.cgi",
+            f"{self.camera_url.rstrip('/')}/capture",
+            f"{self.camera_url.rstrip('/')}/feed",
+        ]
+        last_exc: Exception | None = None
+        for url in endpoints:
+            try:
+                with httpx.Client(timeout=self.timeout_s, verify=False) as client:
+                    res = client.get(url)
+                    if res.status_code == 200 and len(res.content) > 100:
+                        content_type = res.headers.get("Content-Type", "image/jpeg")
+                        return res.content, content_type
+            except Exception as exc:
+                last_exc = exc
+                continue
+
+        raise DeviceUnavailableError(f"Campus camera feed unreachable: {last_exc}") from last_exc
 
 
 # Alias CampusAdapter for backward compatibility with existing imports
