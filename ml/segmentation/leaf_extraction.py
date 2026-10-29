@@ -228,7 +228,11 @@ def generate_candidate_proposals(
     min_area_px: int = 150,
     max_proposals: int = 25,
 ) -> List[Tuple[int, int]]:
-    """Propose candidate leaf prompt coordinates using Excess Green vegetation peaks.
+    """Propose candidate leaf prompt coordinates across the plant canopy.
+
+    Employs Excess Green (ExG) along with HSV foliar/chlorosis detection and
+    distance transform peak extraction so that multi-leaf rosettes and deficient
+    outer leaves are individually sampled rather than grouped into a single centroid.
 
     Parameters
     ----------
@@ -250,16 +254,17 @@ def generate_candidate_proposals(
     g = image[:, :, 1].astype(np.float32)
     b = image[:, :, 2].astype(np.float32)
     exg = 2.0 * g - r - b
-
-    # Normalize ExG to [0, 255] uint8
     exg_clipped = np.clip(exg, 0, 255).astype(np.uint8)
 
-    # Otsu thresholding on positive ExG
-    _, veg_mask = cv2.threshold(exg_clipped, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # Detect foliage, including chlorotic/nitrogen-deficient leaves (yellow/pale green)
+    hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+    veg_hsv = cv2.inRange(hsv, np.array([12, 30, 35]), np.array([95, 255, 255]))
+    exg_mask = (exg_clipped > 15).astype(np.uint8) * 255
+    combined_veg = cv2.bitwise_or(exg_mask, veg_hsv)
 
     # Morphological opening to detach minor touching leaves and eliminate noise
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-    veg_clean = cv2.morphologyEx(veg_mask, cv2.MORPH_OPEN, kernel)
+    veg_clean = cv2.morphologyEx(combined_veg, cv2.MORPH_OPEN, kernel)
 
     # Connected components
     num_labels, labels, stats, centroids = cv2.connectedComponentsWithStats(veg_clean, connectivity=8)
@@ -267,24 +272,55 @@ def generate_candidate_proposals(
     proposals: List[Tuple[Tuple[int, int], int]] = []
     for label_idx in range(1, num_labels):
         area = int(stats[label_idx, cv2.CC_STAT_AREA])
-        if area >= min_area_px:
+        if area < min_area_px:
+            continue
+
+        comp_mask = (labels == label_idx).astype(np.uint8) * 255
+
+        # For large connected foliage canopies, sample multiple leaf blade centers via distance transform
+        if area > 0.04 * h * w:
+            dist = cv2.distanceTransform(comp_mask, cv2.DIST_L2, 5)
+            k_sz = max(25, int(min(h, w) * 0.05))
+            if k_sz % 2 == 0:
+                k_sz += 1
+            k_peak = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (k_sz, k_sz))
+            local_max = cv2.dilate(dist, k_peak)
+            peaks = (dist == local_max) & (dist > 18.0)
+            peak_coords = np.argwhere(peaks)
+
+            # Sort peaks by distance value descending
+            peak_tuples = [((int(px), int(py)), int(dist[py, px])) for py, px in peak_coords]
+            peak_tuples.sort(key=lambda item: item[1], reverse=True)
+
+            if peak_tuples:
+                proposals.extend(peak_tuples[:max_proposals])
+            else:
+                cx, cy = int(centroids[label_idx, 0]), int(centroids[label_idx, 1])
+                proposals.append(((cx, cy), area))
+        else:
             cx, cy = int(centroids[label_idx, 0]), int(centroids[label_idx, 1])
-            # Ensure coordinates are within image bounds
             cx = max(0, min(w - 1, cx))
             cy = max(0, min(h - 1, cy))
             proposals.append(((cx, cy), area))
 
-    # Sort proposals by component area descending (largest leaves first)
+    # Sort proposals by prominence/area descending
     proposals.sort(key=lambda item: item[1], reverse=True)
 
-    # Return top coords
-    coords = [pt for pt, _ in proposals[:max_proposals]]
+    # Deduplicate points that are too close to each other (min 30px distance)
+    selected_coords: List[Tuple[int, int]] = []
+    min_dist_sq = 30 * 30
+    for pt, _ in proposals:
+        if any((pt[0] - s[0]) ** 2 + (pt[1] - s[1]) ** 2 < min_dist_sq for s in selected_coords):
+            continue
+        selected_coords.append(pt)
+        if len(selected_coords) >= max_proposals:
+            break
 
     # If no vegetation components were found, provide default frame center
-    if not coords:
-        coords = [(w // 2, h // 2)]
+    if not selected_coords:
+        selected_coords = [(w // 2, h // 2)]
 
-    return coords
+    return selected_coords
 
 
 def create_masked_crop(
@@ -507,22 +543,35 @@ def extract_leaves(
                 break
 
         if is_duplicate:
-            # Merge candidate piece into primary leaf instance to avoid fragmenting a single leaf
-            for accepted in accepted_leaves:
-                if accepted.leaf_id == duplicate_primary_id:
-                    merged_mask = accepted.mask | cand_mask
-                    merged_bbox = compute_bounding_box(merged_mask)
-                    merged_metrics = compute_mask_metrics(merged_mask)
-                    m_crop_mask, m_rgb, m_rgba = create_masked_crop(
-                        img_rgb, merged_mask, merged_bbox, background_fill=cfg.background_fill
+            if cfg.merge_duplicates:
+                # Merge candidate piece into primary leaf instance to avoid fragmenting a single leaf
+                for accepted in accepted_leaves:
+                    if accepted.leaf_id == duplicate_primary_id:
+                        merged_mask = accepted.mask | cand_mask
+                        merged_bbox = compute_bounding_box(merged_mask)
+                        merged_metrics = compute_mask_metrics(merged_mask)
+                        m_crop_mask, m_rgb, m_rgba = create_masked_crop(
+                            img_rgb, merged_mask, merged_bbox, background_fill=cfg.background_fill
+                        )
+                        accepted.mask = merged_mask
+                        accepted.bounding_box = merged_bbox
+                        accepted.leaf_mask_crop = m_crop_mask
+                        accepted.masked_crop = m_rgb
+                        accepted.masked_crop_rgba = m_rgba
+                        accepted.metrics = merged_metrics
+                        break
+            else:
+                rejected_list.append(
+                    RejectedLeaf(
+                        candidate_id=cand_id,
+                        bounding_box=bbox,
+                        mask=cand_mask,
+                        reason=f"Overlapping duplicate mask (IoU {duplicate_iou:.3f} >= {cfg.iou_overlap_threshold:.3f}) with {duplicate_primary_id}",
+                        verdict=MaskVerdict.REJECT,
+                        metrics=val_res.metrics,
+                        confidence=cand_score,
                     )
-                    accepted.mask = merged_mask
-                    accepted.bounding_box = merged_bbox
-                    accepted.leaf_mask_crop = m_crop_mask
-                    accepted.masked_crop = m_rgb
-                    accepted.masked_crop_rgba = m_rgba
-                    accepted.metrics = merged_metrics
-                    break
+                )
             continue
 
         # Accept candidate leaf

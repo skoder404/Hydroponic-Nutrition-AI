@@ -140,8 +140,19 @@ export default function AnalyzePage() {
   const canExecute = isImageValid && isSensorValid && !isAnalyzing && !(sourceProvenance === "campus_live" && deviceError);
 
   // Execution Handler
-  const handleExecuteAnalysis = async () => {
-    if (!canExecute) return;
+  const handleExecuteAnalysis = async (overrideSensors?: Record<string, number>) => {
+    const effectiveSensors = overrideSensors || sensorValues;
+    const hasSensors = Object.keys(effectiveSensors).length > 0;
+    const effectiveSensorValid = Boolean(analysisMode === "image" || hasSensors);
+    const effectiveImageValid = Boolean(
+      analysisMode === "sensor" ||
+      (selectedFile && inputMode !== null) ||
+      (sourceProvenance === "campus_live" && !deviceError)
+    );
+
+    if (!effectiveImageValid || !effectiveSensorValid || isAnalyzing || (sourceProvenance === "campus_live" && deviceError)) {
+      return;
+    }
 
     setIsAnalyzing(true);
     setAnalysisComplete(false);
@@ -176,7 +187,7 @@ export default function AnalyzePage() {
       }
 
       if (analysisMode === "sensor" || analysisMode === "both") {
-        formData.append("sensor_readings", JSON.stringify(sensorValues));
+        formData.append("sensor_readings", JSON.stringify(effectiveSensors));
       }
 
       let apiResult: import("../../lib/api/types").AnalyzeResponse | null = null;
@@ -556,6 +567,7 @@ export default function AnalyzePage() {
                   onSubmit={(readings: Record<string, number>) => {
                     setSensorValues(readings);
                     setSensorValid(true);
+                    handleExecuteAnalysis(readings);
                   }}
                 />
               </Card>

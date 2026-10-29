@@ -38,8 +38,43 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
 
   // Acceptance Criterion 1: Source chip reflects source from the API
   const isGemini = recommendation.source === "gemini";
-  const actions: RecommendationAction[] = recommendation.actions || [];
-  const evidence: string[] = recommendation.evidence_citations || [];
+  const content = (recommendation as any).content || {};
+  const summaryText =
+    recommendation.summary ||
+    content.summary ||
+    (typeof content === "string" ? content : "Nutrient telemetry and foliar conditions evaluated.");
+
+  const rawActions: any[] =
+    (recommendation.actions && recommendation.actions.length > 0
+      ? recommendation.actions
+      : content.actions) || [];
+
+  const actions = rawActions.map((act: any, idx: number) => {
+    if (typeof act === "string") {
+      return {
+        parameter: `Intervention #${idx + 1}`,
+        action_type: "Adjustment",
+        adjustment_amount: 0,
+        unit: "",
+        urgency: "immediate" as const,
+        rationale: act,
+        target_range: null,
+      };
+    }
+    return act;
+  });
+
+  const checks: string[] = (content.checks || []).map((c: any) => (typeof c === "string" ? c : String(c)));
+  const evidence: string[] =
+    recommendation.evidence_citations ||
+    ((recommendation as any).evidence?.visual_symptoms as string[]) ||
+    [];
+
+  const rawDate = recommendation.generated_at || (recommendation as any).created_at;
+  const parsedDate = rawDate ? new Date(rawDate) : new Date();
+  const timeFormatted = !isNaN(parsedDate.getTime())
+    ? parsedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    : new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
   return (
     <Card
@@ -61,13 +96,10 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
         <div className="flex items-center gap-2">
           {/* Source chip reflects API source */}
           <Badge variant={isGemini ? "gemini" : "rules"}>
-            Source: {isGemini ? "Gemini 2.5 Flash" : "Agronomic Rules"}
+            Source: {isGemini ? "Gemini AI" : "Agronomic Rules"}
           </Badge>
           <span className="font-mono text-xs text-[var(--stone)]">
-            {new Date(recommendation.generated_at).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
+            {timeFormatted}
           </span>
         </div>
       </div>
@@ -78,15 +110,35 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
           Executive Summary
         </h4>
         <p className="text-sm text-[var(--bark)] leading-relaxed">
-          {recommendation.summary}
+          {summaryText}
         </p>
       </div>
+
+      {/* Actionable Diagnostic Checks (if provided by Gemini AI) */}
+      {checks.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--stone)]">
+            Targeted Field Inspection Checks ({checks.length})
+          </h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            {checks.map((chk, idx) => (
+              <div
+                key={idx}
+                className="p-3 rounded-[var(--radius-md)] bg-[var(--surface)] border border-[var(--border)] text-xs text-[var(--bark)] flex items-start gap-2 shadow-xs"
+              >
+                <span className="font-mono font-bold text-[var(--forest)] shrink-0">#{idx + 1}</span>
+                <span className="leading-snug">{chk}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Suggested Checks / Corrective Actions */}
       {actions.length > 0 && (
         <div className="space-y-3">
           <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--stone)]">
-            Suggested Verification &amp; Interventions ({actions.length})
+            Suggested Interventions &amp; Remediation ({actions.length})
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -97,7 +149,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-bold text-[var(--bark)] capitalize">
-                    {act.parameter.replace(/_/g, " ")}
+                    {act.parameter?.replace(/_/g, " ") || `Action #${idx + 1}`}
                   </span>
                   <span
                     className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded font-bold ${
@@ -108,7 +160,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
                         : "bg-[#EDF6F8] text-[var(--water)]"
                     }`}
                   >
-                    {act.urgency}
+                    {act.urgency || "standard"}
                   </span>
                 </div>
 

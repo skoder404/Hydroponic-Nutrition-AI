@@ -337,8 +337,12 @@ class ImageService:
         # Determine dominant pathology across leaves
         # Hydroponic foliar diseases are localized (Rule 16 / §19). If any leaf exhibits a deficiency
         # or pathology, that pathology takes priority over an asymptomatic or edge leaf.
+        def _is_healthy_str(c: str) -> bool:
+            cl = c.lower()
+            return "healthy" in cl or "healthier" in cl
+
         non_healthy_leaves = [
-            lp for lp in leaves_predictions if "healthy" not in lp.predicted_class.lower()
+            lp for lp in leaves_predictions if not _is_healthy_str(lp.predicted_class)
         ]
         if non_healthy_leaves:
             pathology_counts = Counter(lp.predicted_class for lp in non_healthy_leaves)

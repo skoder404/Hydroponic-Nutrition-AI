@@ -62,7 +62,13 @@ def get_image_service_dep() -> ImageService:
 
 
 def get_recommendation_service_dep() -> RecommendationService:
-    return get_recommendation_service()
+    settings = get_settings()
+    active_prov = (
+        "gemini"
+        if (settings.gemini_api_key and settings.gemini_api_key.get_secret_value().strip())
+        else settings.recommendation_provider
+    )
+    return get_recommendation_service(provider=active_prov)
 
 
 def get_device_adapter_dep() -> DeviceAdapter:
@@ -289,13 +295,42 @@ async def analyze(
     # --------------------------------------------------------------------------
     recommendation = None
     try:
-        if sensor_prediction is not None:
+        def _is_healthy(cls_name: str | None) -> bool:
+            if not cls_name:
+                return True
+            c = cls_name.lower()
+            return "healthy" in c or "healthier" in c or "normal" in c
+
+        image_has_issue = image_prediction is not None and not _is_healthy(image_prediction.predicted_class)
+        sensor_has_issue = sensor_prediction is not None and not _is_healthy(sensor_prediction.predicted_class)
+
+        if image_has_issue and image_prediction is not None:
+            recommendation = recommendation_service.recommend(
+                crop=clean_crop,
+                predicted_class=image_prediction.predicted_class,
+                modality="image",
+                confidence=image_prediction.confidence,
+                uncertain=image_prediction.uncertain,
+                sensor_readings=sensor_readings,
+            )
+        elif sensor_has_issue and sensor_prediction is not None:
             recommendation = recommendation_service.recommend_from_prediction(
-                sensor_prediction
+                sensor_prediction,
+                sensor_readings=sensor_readings,
             )
         elif image_prediction is not None:
+            recommendation = recommendation_service.recommend(
+                crop=clean_crop,
+                predicted_class=image_prediction.predicted_class,
+                modality="image",
+                confidence=image_prediction.confidence,
+                uncertain=image_prediction.uncertain,
+                sensor_readings=sensor_readings,
+            )
+        elif sensor_prediction is not None:
             recommendation = recommendation_service.recommend_from_prediction(
-                image_prediction
+                sensor_prediction,
+                sensor_readings=sensor_readings,
             )
     except Exception as exc:
         logger.warning("Failed to generate recommendation: %s", exc)

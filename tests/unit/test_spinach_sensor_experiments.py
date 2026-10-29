@@ -124,9 +124,9 @@ def test_limitations_block_states_mixed_real_synthetic_features() -> None:
     assert len(limitations) > 0
     assert any("mixed real" in lim.lower() for lim in limitations)
 
-    # Check that individual model validation reports also include this disclosure
+    # Check that individual sensor model validation reports also include this disclosure
     for model_type in MODEL_FAMILIES:
-        m_reports = list(REPORTS_DIR.glob(f"*{model_type}*_validation.md"))
+        m_reports = list(REPORTS_DIR.glob(f"*sensor*{model_type}*_validation.md"))
         if m_reports:
             content = m_reports[0].read_text(encoding="utf-8")
             assert (

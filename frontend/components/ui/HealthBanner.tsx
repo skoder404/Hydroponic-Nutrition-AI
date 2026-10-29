@@ -19,13 +19,22 @@ export function HealthBanner({
 
   const checkHealth = useCallback(async () => {
     try {
-      // In browser Next.js, check relative endpoint or direct host
-      const res = await fetch(healthEndpoint, {
+      // Try relative endpoint first, then direct backend port 8000
+      let res = await fetch(healthEndpoint, {
         method: "GET",
         headers: { Accept: "application/json" },
         cache: "no-store",
-      });
-      if (res.ok) {
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        res = await fetch("http://127.0.0.1:8000/api/v1/health", {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          cache: "no-store",
+        }).catch(() => null);
+      }
+
+      if (res && res.ok) {
         const data = await res.json();
         if (data.status === "ok") {
           setIsDown(false);

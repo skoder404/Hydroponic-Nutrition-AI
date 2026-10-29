@@ -247,7 +247,7 @@ export const SensorForm: React.FC<SensorFormProps> = ({
   const [warnings, setWarnings] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  // Reset form values when crop changes
+  // Reset / sync form values when crop or initialValues changes
   useEffect(() => {
     const newValues: Record<string, string> = {};
     for (const f of fields) {
@@ -258,7 +258,20 @@ export const SensorForm: React.FC<SensorFormProps> = ({
     setErrors({});
     setWarnings({});
     setTouched({});
-  }, [crop]);
+  }, [crop, initialValues]);
+
+  const handleFillDefaults = () => {
+    const defs: Record<string, string> = {};
+    for (const f of fields) {
+      const val =
+        initialValues?.[f.name] ??
+        Number(((f.normalBand[0] + f.normalBand[1]) / 2).toFixed(1));
+      defs[f.name] = String(val);
+    }
+    setValues(defs);
+    setErrors({});
+    setWarnings({});
+  };
 
   // Synchronize live field modifications to parent container in real-time
   useEffect(() => {
@@ -388,9 +401,17 @@ export const SensorForm: React.FC<SensorFormProps> = ({
 
     // Check that at least one reading is provided
     if (Object.keys(payload).length === 0) {
+      if (initialValues && Object.keys(initialValues).length > 0) {
+        for (const [k, v] of Object.entries(initialValues)) {
+          if (v !== undefined && v !== null) payload[k] = Number(v);
+        }
+      }
+    }
+
+    if (Object.keys(payload).length === 0) {
       setErrors((prev) => ({
         ...prev,
-        [fields[0].name]: `At least one valid sensor reading (${fields[0].unit}) must be provided.`,
+        [fields[0].name]: `At least one valid sensor reading (${fields[0].unit}) must be provided. You can click 'Load Target Band Baseline' below.`,
       }));
       return;
     }
@@ -537,14 +558,25 @@ export const SensorForm: React.FC<SensorFormProps> = ({
 
         {/* Action Buttons: Reset & Submit */}
         <div className="flex items-center justify-between pt-4 border-t border-[var(--border)]">
-          <button
-            type="button"
-            onClick={handleReset}
-            disabled={isLoading}
-            className="px-4 py-2 rounded-[var(--radius-md)] text-xs font-medium text-[var(--stone)] hover:text-[var(--bark)] hover:bg-[var(--sand)] transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--moss)]"
-          >
-            Reset Fields
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleFillDefaults}
+              disabled={isLoading}
+              className="px-3 py-1.5 rounded-[var(--radius-md)] text-xs font-semibold text-[var(--forest)] hover:bg-[var(--sand)] transition-colors focus:outline-none"
+            >
+              Load Target Band Baseline
+            </button>
+            <span className="text-[var(--stone)]/30">|</span>
+            <button
+              type="button"
+              onClick={handleReset}
+              disabled={isLoading}
+              className="px-3 py-1.5 rounded-[var(--radius-md)] text-xs font-medium text-[var(--stone)] hover:text-[var(--bark)] hover:bg-[var(--sand)] transition-colors focus:outline-none"
+            >
+              Reset Fields
+            </button>
+          </div>
 
           <Button
             type="submit"

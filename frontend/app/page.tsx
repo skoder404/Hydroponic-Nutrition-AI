@@ -50,14 +50,25 @@ export default function HomePage() {
     }, 600);
 
     // Probe backend health
-    fetch("/api/v1/health", { cache: "no-store" })
-      .then((res) => {
-        if (!res.ok) setBackendError(true);
-      })
-      .catch(() => {
-        // Handled non-blockingly; layout banner also displays
+    const verifyBackend = async () => {
+      try {
+        let res = await fetch("/api/v1/health", { cache: "no-store" }).catch(() => null);
+        if (!res || !res.ok) {
+          res = await fetch("http://127.0.0.1:8000/api/v1/health", { cache: "no-store" }).catch(() => null);
+        }
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data.status === "ok") {
+            setBackendError(false);
+            return;
+          }
+        }
         setBackendError(true);
-      });
+      } catch {
+        setBackendError(true);
+      }
+    };
+    verifyBackend();
 
     return () => clearTimeout(timer);
   }, []);
