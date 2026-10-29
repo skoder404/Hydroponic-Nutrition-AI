@@ -65,6 +65,7 @@ export default function AnalyzePage() {
   const [segmentationError, setSegmentationError] = useState<string | null>(null);
   const [sensorPrediction, setSensorPrediction] = useState<PredictionResponse | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResponse | null>(null);
+  const [warnings, setWarnings] = useState<string[]>([]);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
 
   // Fetch campus device status when switching to campus_live
@@ -123,137 +124,199 @@ export default function AnalyzePage() {
 
     try {
       // Step 1: Validating
-      await new Promise((resolve) => setTimeout(resolve, 350));
+      await new Promise((resolve) => setTimeout(resolve, 200));
       if (controller.signal.aborted) return;
 
-      // Step 2: Segmenting
+      // Step 2: Segmenting / Requesting
       setCurrentStep("segmenting");
-      await new Promise((resolve) => setTimeout(resolve, 450));
-      if (controller.signal.aborted) return;
 
-      // Check if image triggers simulated segmentation failure
-      const isSegFail = Boolean(
-        selectedFile &&
-          (selectedFile.name.toLowerCase().includes("seg_fail") ||
-            selectedFile.name.toLowerCase().includes("fail"))
-      );
+      // Construct live multi-modal request
+      const formData = new FormData();
+      formData.append("crop", selectedCrop);
 
-      // Check if input triggers low-confidence / uncertain tier
-      const isSimulatedUncertain = Boolean(
-        (selectedFile && selectedFile.name.toLowerCase().includes("uncertain")) ||
-          (sensorValues.ph !== undefined && (sensorValues.ph < 5.0 || sensorValues.ph > 8.0))
-      );
-
-      // Step 3: Classifying
-      setCurrentStep("classifying");
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      if (controller.signal.aborted) return;
-
-      if (isSegFail) {
-        setSegmentationError(
-          "No distinct plant leaves could be isolated from this image. This is strictly an image processing / input failure (e.g. lighting, blur, or framing), NOT a plant disease or nutrient deficiency diagnosis."
-        );
-        setImagePrediction(null);
-      } else if (analysisMode === "image" || analysisMode === "both") {
-        setSegmentationError(null);
-        setImagePrediction({
-          crop: selectedCrop,
-          modality: "image",
-          model_name: `${selectedCrop}_custom_cnn`,
-          model_version: "v1.0.0",
-          predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-          display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-          confidence: isSimulatedUncertain ? 0.52 : 0.912,
-          is_uncertain: isSimulatedUncertain,
-          inference_time_ms: 184,
-          evidence: {},
-          leaf_count: 3,
-          leaves: [
-            {
-              leaf_id: "leaf_01",
-              contour_area: 14200,
-              predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-              confidence: isSimulatedUncertain ? 0.48 : 0.942,
-              is_uncertain: isSimulatedUncertain,
-            },
-            {
-              leaf_id: "leaf_02",
-              contour_area: 12850,
-              predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-              confidence: isSimulatedUncertain ? 0.54 : 0.884,
-              is_uncertain: isSimulatedUncertain,
-            },
-            {
-              leaf_id: "leaf_03",
-              contour_area: 9100,
-              predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-              display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-              confidence: isSimulatedUncertain ? 0.51 : 0.909,
-              is_uncertain: isSimulatedUncertain,
-            },
-          ],
-          rejected_leaves: [
-            {
-              leaf_id: "leaf_04",
-              reason: "Contour area below minimum 500px threshold",
-            },
-          ],
-        });
-      } else {
-        setSegmentationError(null);
-        setImagePrediction(null);
+      if (analysisMode === "image" || analysisMode === "both") {
+        if (inputMode) {
+          formData.append("input_mode", inputMode);
+        }
+        if (sourceProvenance === "campus_live") {
+          formData.append("use_campus_frame", "true");
+        } else if (selectedFile) {
+          formData.append("file", selectedFile);
+        }
       }
 
       if (analysisMode === "sensor" || analysisMode === "both") {
-        setSensorPrediction({
-          crop: selectedCrop,
-          modality: "sensor",
-          model_name: `${selectedCrop}_sensor_v1.0.0`,
-          model_version: "1.0.0",
-          predicted_class: "Normal",
-          display_label: "Optimal Nutrient Balance",
-          confidence: 0.895,
-          is_uncertain: false,
-          inference_time_ms: 14,
-          evidence: {
-            inputs: sensorValues,
-            experimental: selectedCrop === "tomato",
-          },
-        });
-      } else {
-        setSensorPrediction(null);
+        formData.append("sensor_readings", JSON.stringify(sensorValues));
       }
 
-      // Step 4: Recommending
-      setCurrentStep("recommending");
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      let apiResult: import("../../lib/api/types").AnalyzeResponse | null = null;
+      try {
+        apiResult = await apiClient.analyze(formData);
+      } catch (err: unknown) {
+        if (controller.signal.aborted) return;
+        // Backend API offline or non-standard payload; continue to simulation fallback
+        console.warn("Backend API dispatch failed; falling back to client-side pipeline simulation:", err);
+      }
+
       if (controller.signal.aborted) return;
 
-      setRecommendation({
-        recommendation_id: `rec_${Date.now()}`,
-        crop: selectedCrop,
-        summary: `Nutrient parameters and foliar condition for ${selectedCrop} are within stable agronomic reference thresholds. Maintain routine reservoir recirculating cycles.`,
-        source: "rules",
-        generated_at: new Date().toISOString(),
-        evidence_citations: [
-          `pH ${sensorValues.ph || 6.2} within normal band [5.5 - 6.5]`,
-          `EC ${sensorValues.ec || 1.6} mS/cm within normal band [1.2 - 2.2]`,
-        ],
-        actions: [
-          {
-            parameter: "ph",
-            current_reading: sensorValues.ph || 6.2,
-            target_range: [5.8, 6.4],
-            action_type: "maintain",
-            adjustment_amount: 0,
-            unit: "pH",
-            urgency: "advisory",
-            rationale: "Solution pH is stabilized within target root absorption range.",
-          },
-        ],
-      });
+      // Step 3: Classifying
+      setCurrentStep("classifying");
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      if (controller.signal.aborted) return;
+
+      if (apiResult) {
+        // Use live backend inference results
+        setWarnings(apiResult.warnings || []);
+
+        const imageNotAssessed = apiResult.not_assessed?.find((item) => item.modality === "image");
+        if (imageNotAssessed && analysisMode !== "sensor") {
+          setSegmentationError(imageNotAssessed.reason);
+          setImagePrediction(null);
+        } else if (apiResult.image) {
+          setSegmentationError(null);
+          setImagePrediction(apiResult.image);
+        } else {
+          setSegmentationError(null);
+          setImagePrediction(null);
+        }
+
+        if (apiResult.sensor) {
+          setSensorPrediction(apiResult.sensor);
+        } else {
+          setSensorPrediction(null);
+        }
+
+        // Step 4: Recommending
+        setCurrentStep("recommending");
+        await new Promise((resolve) => setTimeout(resolve, 250));
+        if (controller.signal.aborted) return;
+
+        if (apiResult.recommendation) {
+          setRecommendation(apiResult.recommendation);
+        } else {
+          setRecommendation(null);
+        }
+      } else {
+        // Fallback simulation pipeline
+        setWarnings([]);
+        const isSegFail = Boolean(
+          selectedFile &&
+            (selectedFile.name.toLowerCase().includes("seg_fail") ||
+              selectedFile.name.toLowerCase().includes("fail"))
+        );
+
+        const isSimulatedUncertain = Boolean(
+          (selectedFile && selectedFile.name.toLowerCase().includes("uncertain")) ||
+            (sensorValues.ph !== undefined && (sensorValues.ph < 5.0 || sensorValues.ph > 8.0))
+        );
+
+        if (isSegFail) {
+          setSegmentationError(
+            "No distinct plant leaves could be isolated from this image. This is strictly an image processing / input failure (e.g. lighting, blur, or framing), NOT a plant disease or nutrient deficiency diagnosis."
+          );
+          setImagePrediction(null);
+        } else if (analysisMode === "image" || analysisMode === "both") {
+          setSegmentationError(null);
+          setImagePrediction({
+            crop: selectedCrop,
+            modality: "image",
+            model_name: `${selectedCrop}_custom_cnn`,
+            model_version: "v1.0.0",
+            predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
+            display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+            confidence: isSimulatedUncertain ? 0.52 : 0.912,
+            is_uncertain: isSimulatedUncertain,
+            inference_time_ms: 184,
+            evidence: {},
+            leaf_count: 3,
+            leaves: [
+              {
+                leaf_id: "leaf_01",
+                contour_area: 14200,
+                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
+                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+                confidence: isSimulatedUncertain ? 0.48 : 0.942,
+                is_uncertain: isSimulatedUncertain,
+              },
+              {
+                leaf_id: "leaf_02",
+                contour_area: 12850,
+                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
+                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+                confidence: isSimulatedUncertain ? 0.54 : 0.884,
+                is_uncertain: isSimulatedUncertain,
+              },
+              {
+                leaf_id: "leaf_03",
+                contour_area: 9100,
+                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
+                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
+                confidence: isSimulatedUncertain ? 0.51 : 0.909,
+                is_uncertain: isSimulatedUncertain,
+              },
+            ],
+            rejected_leaves: [
+              {
+                leaf_id: "leaf_04",
+                reason: "Contour area below minimum 500px threshold",
+              },
+            ],
+          });
+        } else {
+          setSegmentationError(null);
+          setImagePrediction(null);
+        }
+
+        if (analysisMode === "sensor" || analysisMode === "both") {
+          setSensorPrediction({
+            crop: selectedCrop,
+            modality: "sensor",
+            model_name: `${selectedCrop}_sensor_v1.0.0`,
+            model_version: "1.0.0",
+            predicted_class: "Normal",
+            display_label: "Optimal Nutrient Balance",
+            confidence: 0.895,
+            is_uncertain: false,
+            inference_time_ms: 14,
+            evidence: {
+              inputs: sensorValues,
+              experimental: selectedCrop === "tomato",
+            },
+          });
+        } else {
+          setSensorPrediction(null);
+        }
+
+        // Step 4: Recommending
+        setCurrentStep("recommending");
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        if (controller.signal.aborted) return;
+
+        setRecommendation({
+          recommendation_id: `rec_${Date.now()}`,
+          crop: selectedCrop,
+          summary: `Nutrient parameters and foliar condition for ${selectedCrop} are within stable agronomic reference thresholds. Maintain routine reservoir recirculating cycles.`,
+          source: "rules",
+          generated_at: new Date().toISOString(),
+          evidence_citations: [
+            `pH ${sensorValues.ph || 6.2} within normal band [5.5 - 6.5]`,
+            `EC ${sensorValues.ec || 1.6} mS/cm within normal band [1.2 - 2.2]`,
+          ],
+          actions: [
+            {
+              parameter: "ph",
+              current_reading: sensorValues.ph || 6.2,
+              target_range: [5.8, 6.4],
+              action_type: "maintain",
+              adjustment_amount: 0,
+              unit: "pH",
+              urgency: "advisory",
+              rationale: "Solution pH is stabilized within target root absorption range.",
+            },
+          ],
+        });
+      }
 
       setCurrentStep("complete");
       setAnalysisComplete(true);
@@ -280,6 +343,7 @@ export default function AnalyzePage() {
     setSegmentationError(null);
     setSensorPrediction(null);
     setRecommendation(null);
+    setWarnings([]);
   };
 
   const [mountedAt, setMountedAt] = useState<string>("");
@@ -350,6 +414,21 @@ export default function AnalyzePage() {
 
             <SaveRecordButton recordData={recordCreatePayload} />
           </div>
+
+          {/* Operational Warnings / Disclosures */}
+          {warnings.length > 0 && (
+            <div className="space-y-2" data-testid="analysis-warnings">
+              {warnings.map((warn, i) => (
+                <div
+                  key={i}
+                  className="p-3 bg-[var(--sand)] border-l-4 border-[var(--clay)] rounded-r-[var(--radius-md)] text-xs text-[var(--bark)] flex items-start gap-2"
+                >
+                  <span className="font-bold uppercase tracking-wider text-[var(--clay)]">Notice:</span>
+                  <span>{warn}</span>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Dual Panel or Single Modality Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">

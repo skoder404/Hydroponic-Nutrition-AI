@@ -27,11 +27,13 @@ from ml.sensor_models.schemas import get_sensor_schema
 
 logger = logging.getLogger(__name__)
 
-# Minimal valid 1x1 transparent PNG image bytes for mock camera feed
+# Valid 100x100 RGB PNG image bytes for mock camera feed
 MOCK_PNG_FRAME = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06"
-    b"\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01H\xaf"
-    b"\xa4q\x00\x00\x00\x00IEND\xaeB`\x82"
+    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00d\x00\x00\x00d\x08\x02\x00\x00\x00\xff\x80\x02\x03"
+    b"\x00\x00\x00\xe9IDATx\x9c\xed\xd0A\r\xc0 \x00\xc0@@\nv1\x8d\x85\xf5E\x96\xdc)h:\xf7\xd9\x83o\xd6\xeb\x80?"
+    b"1+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0"
+    b"+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0+0"
+    b"\xb8|\xb5\x01\x97\x08\xed\x87\xc6\x00\x00\x00\x00IEND\xaeB`\x82"
 )
 
 

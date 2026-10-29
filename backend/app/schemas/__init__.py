@@ -1,7 +1,9 @@
 from backend.app.schemas.error import ErrorDetail, ErrorResponse
 from backend.app.schemas.health import HealthResponse
 from backend.app.schemas.prediction import (
+    AnalyzeResponse,
     LeafPrediction,
+    NotAssessedItem,
     PredictionResponse,
     PredictionSummary,
     PredictSensorRequest,
@@ -20,12 +22,14 @@ from backend.app.schemas.sensors import (
 )
 
 __all__ = [
+    "AnalyzeResponse",
     "CropSensorRequest",
     "ErrorDetail",
     "ErrorResponse",
     "HealthResponse",
     "LeafPrediction",
     "LettuceSensorRequest",
+    "NotAssessedItem",
     "PredictSensorRequest",
     "PredictionResponse",
     "PredictionSummary",

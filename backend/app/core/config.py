@@ -102,6 +102,12 @@ class Settings(BaseSettings):
     sam2_config: str = Field(
         default="sam2_hiera_s.yaml", description="Path to SAM 2.1 model config"
     )
+    inference_timeout_s: float = Field(
+        default=30.0, description="Maximum execution time in seconds for model inference"
+    )
+    max_concurrent_inference: int = Field(
+        default=4, description="Maximum concurrent heavy ML inference workers"
+    )
 
     # Rate Limiting (T3-006)
     rate_limit_enabled: bool = Field(

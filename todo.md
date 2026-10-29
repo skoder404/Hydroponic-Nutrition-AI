@@ -1633,9 +1633,9 @@
 **Dependencies:** T6-004, T6-006, T6-009
 **Acceptance Criteria:**
 
-- [ ] Image failure does not block the sensor result
-- [ ] `not_assessed` explains what was skipped
-- [ ] Response has no merged score
+- [x] Image failure does not block the sensor result
+- [x] `not_assessed` explains what was skipped
+- [x] Response has no merged score
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
@@ -1672,9 +1672,9 @@
 **Dependencies:** T6-013, T6-007, T3-002
 **Acceptance Criteria:**
 
-- [ ] Stale frame is rejected with `DEVICE_UNAVAILABLE`
-- [ ] Result provenance shows source `live` and capture time
-- [ ] Warning about training-data mismatch is included in the response
+- [x] Stale frame is rejected with `DEVICE_UNAVAILABLE`
+- [x] Result provenance shows source `live` and capture time
+- [x] Warning about training-data mismatch is included in the response
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
@@ -1685,9 +1685,9 @@
 **Dependencies:** T6-007, T6-005
 **Acceptance Criteria:**
 
-- [ ] Event loop stays responsive during image inference
-- [ ] Timeout returns the envelope
-- [ ] Concurrency limit is configurable
+- [x] Event loop stays responsive during image inference
+- [x] Timeout returns the envelope
+- [x] Concurrency limit is configurable
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend
@@ -1698,9 +1698,9 @@
 **Dependencies:** T6-011, T6-010, T6-013, T6-014, T6-002
 **Acceptance Criteria:**
 
-- [ ] Snapshot is committed
-- [ ] TECH_RULES route list matches the implementation
-- [ ] Breaking changes fail the contract test later
+- [x] Snapshot is committed
+- [x] TECH_RULES route list matches the implementation
+- [x] Breaking changes fail the contract test later
 
 **Estimated Effort:** 30 min
 **Assigned To:** Backend

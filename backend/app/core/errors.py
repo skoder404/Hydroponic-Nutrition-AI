@@ -246,6 +246,40 @@ class NotFoundError(AppException):
         )
 
 
+class InferenceTimeoutError(AppException):
+    """Raised when inference execution exceeds timeout deadline (HTTP 504 Gateway Timeout)."""
+
+    def __init__(
+        self,
+        message: str = "Inference execution timed out.",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="INFERENCE_TIMEOUT",
+            message=message,
+            status_code=504,
+            details=details,
+            retryable=True,
+        )
+
+
+class ServiceUnavailableError(AppException):
+    """Raised when service capacity is temporarily exceeded (HTTP 503 Service Unavailable)."""
+
+    def __init__(
+        self,
+        message: str = "Inference service is temporarily busy. Please retry shortly.",
+        details: dict[str, Any] | None = None,
+    ) -> None:
+        super().__init__(
+            code="SERVICE_UNAVAILABLE",
+            message=message,
+            status_code=503,
+            details=details,
+            retryable=True,
+        )
+
+
 
 # ------------------------------------------------------------------------------
 # FastAPI Exception Handlers

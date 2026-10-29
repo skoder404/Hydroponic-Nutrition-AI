@@ -173,3 +173,22 @@ export interface RecordListResponse {
   offset: number;
 }
 
+// =============================================================================
+// Multi-modal Analysis (POST /analyze)
+// =============================================================================
+
+export interface NotAssessedItem {
+  modality: "sensor" | "image";
+  reason: string;
+}
+
+export interface AnalyzeResponse {
+  crop: string;
+  sensor?: PredictionResponse | null;
+  image?: PredictionResponse | null;
+  not_assessed: NotAssessedItem[];
+  recommendation?: RecommendationResponse | null;
+  warnings?: string[];
+}
+
+

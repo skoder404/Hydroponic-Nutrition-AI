@@ -1,5 +1,6 @@
 import { ApiError, NetworkError, TimeoutError } from "./errors";
 import {
+  AnalyzeResponse,
   DeviceStatusResponse,
   ErrorEnvelope,
   HealthResponse,
@@ -162,6 +163,102 @@ export class ApiClient {
       method: "POST",
       body: JSON.stringify(request),
     });
+  }
+
+  /**
+   * Foliar plant image prediction via multipart upload or live campus camera frame.
+   */
+  async predictImage(formData: FormData): Promise<PredictionResponse> {
+    const url = `${this.baseUrl}/predict/image`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.defaultTimeoutMs);
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+        signal: controller.signal,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      clearTimeout(timeoutId);
+      if (response.ok) {
+        return (await response.json()) as PredictionResponse;
+      }
+      let envelope: ErrorEnvelope;
+      try {
+        envelope = (await response.json()) as ErrorEnvelope;
+      } catch {
+        envelope = {
+          error: {
+            code: `HTTP_${response.status}`,
+            message: response.statusText,
+            details: {},
+            retryable: response.status >= 500,
+          },
+        };
+      }
+      throw new ApiError(response.status, envelope);
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      if (err instanceof ApiError) throw err;
+      if (
+        (err instanceof DOMException && err.name === "AbortError") ||
+        (err instanceof Error && err.name === "AbortError")
+      ) {
+        throw new TimeoutError(this.defaultTimeoutMs);
+      }
+      throw new NetworkError(err);
+    }
+  }
+
+  /**
+   * Multi-modal analysis across sensor telemetry and/or foliar imagery with partial failure tolerance.
+   */
+  async analyze(formData: FormData): Promise<AnalyzeResponse> {
+    const url = `${this.baseUrl}/analyze`;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.defaultTimeoutMs);
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData,
+        signal: controller.signal,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      clearTimeout(timeoutId);
+      if (response.ok) {
+        return (await response.json()) as AnalyzeResponse;
+      }
+      let envelope: ErrorEnvelope;
+      try {
+        envelope = (await response.json()) as ErrorEnvelope;
+      } catch {
+        envelope = {
+          error: {
+            code: `HTTP_${response.status}`,
+            message: response.statusText,
+            details: {},
+            retryable: response.status >= 500,
+          },
+        };
+      }
+      throw new ApiError(response.status, envelope);
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      if (err instanceof ApiError) throw err;
+      if (
+        (err instanceof DOMException && err.name === "AbortError") ||
+        (err instanceof Error && err.name === "AbortError")
+      ) {
+        throw new TimeoutError(this.defaultTimeoutMs);
+      }
+      throw new NetworkError(err);
+    }
   }
 
   /**

@@ -1,0 +1,3605 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Hydroponic Nutrition AI API",
+    "description": "Hydroponic diagnostic and nutrition recommendation system API.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Health",
+        "description": "Return application health, active device, and subsystem status.",
+        "operationId": "get_health_api_v1_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/models": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Models",
+        "description": "Expose promoted and active machine learning models with validation macro-F1 and status.\n\nMissing or corrupt artifacts yield MODEL_UNAVAILABLE for the affected crop only;\nno silent substitution. Incompatible feature list is reported as SCHEMA_MISMATCH.",
+        "operationId": "list_models_api_v1_models_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional crop filter",
+              "title": "Crop"
+            },
+            "description": "Optional crop filter"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional modality filter",
+              "title": "Modality"
+            },
+            "description": "Optional modality filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelSummary"
+                  },
+                  "title": "Response List Models Api V1 Models Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/history": {
+      "post": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Create historical analysis record",
+        "description": "Persist a new agronomic observation record with optional predictions and recommendations.",
+        "operationId": "create_history_record_api_v1_history_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "List historical analysis records",
+        "description": "Retrieve paginated historical records with optional filtering.",
+        "operationId": "get_history_records_api_v1_history_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Max records to return (capped at 100)",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Max records to return (capped at 100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Offset for pagination",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Offset for pagination"
+          },
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by crop cultivar",
+              "title": "Crop"
+            },
+            "description": "Filter by crop cultivar"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by modality/mode",
+              "title": "Modality"
+            },
+            "description": "Filter by modality/mode"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Alias filter for modality/mode",
+              "title": "Mode"
+            },
+            "description": "Alias filter for modality/mode"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by source provenance",
+              "title": "Source"
+            },
+            "description": "Filter by source provenance"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date string (YYYY-MM-DD)",
+              "title": "Date"
+            },
+            "description": "Filter by date string (YYYY-MM-DD)"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter start date ISO",
+              "title": "Start Date"
+            },
+            "description": "Filter start date ISO"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter end date ISO",
+              "title": "End Date"
+            },
+            "description": "Filter end date ISO"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordRead"
+                  },
+                  "title": "Response Get History Records Api V1 History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/history/export": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Export historical analysis records to CSV",
+        "description": "Export filtered history records as a secure CSV file with timezone-aware timestamps.",
+        "operationId": "export_history_records_api_v1_history_export_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by crop cultivar",
+              "title": "Crop"
+            },
+            "description": "Filter by crop cultivar"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by modality/mode",
+              "title": "Modality"
+            },
+            "description": "Filter by modality/mode"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Alias filter for modality/mode",
+              "title": "Mode"
+            },
+            "description": "Alias filter for modality/mode"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by source provenance",
+              "title": "Source"
+            },
+            "description": "Filter by source provenance"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date string (YYYY-MM-DD)",
+              "title": "Date"
+            },
+            "description": "Filter by date string (YYYY-MM-DD)"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter start date ISO",
+              "title": "Start Date"
+            },
+            "description": "Filter start date ISO"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter end date ISO",
+              "title": "End Date"
+            },
+            "description": "Filter end date ISO"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/history/{record_id}": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Get historical record by ID",
+        "description": "Retrieve a single historical analysis record by UUID.",
+        "operationId": "get_history_record_by_id_api_v1_history__record_id__get",
+        "parameters": [
+          {
+            "name": "record_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Record Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/device/status": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get hardware device and telemetry status",
+        "description": "Retrieve operational status, freshness, and per-reading validation for sensors and camera.",
+        "operationId": "get_device_status_api_v1_device_status_get",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/device/sensors/latest": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get latest mapped sensor telemetry for a target crop",
+        "description": "Fetch the latest live or simulated sensor readings mapped strictly to the target crop's feature schema.\n\nRaises 503 DEVICE_UNAVAILABLE if device is disconnected or telemetry is stale.",
+        "operationId": "get_latest_sensors_api_v1_device_sensors_latest_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')",
+              "default": "lettuce",
+              "title": "Crop"
+            },
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')"
+          },
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LatestSensorsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/device/camera/frame": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get latest greenhouse canopy camera frame",
+        "description": "Stream or return the latest camera snapshot image frame.",
+        "operationId": "get_latest_camera_frame_api_v1_device_camera_frame_get",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw image frame bytes with matching Content-Type header.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "image/jpeg": {},
+              "image/png": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/device/manual": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Submit manual operator sensor observations",
+        "description": "Register operator sensor measurements when running in manual adapter mode.",
+        "operationId": "submit_manual_reading_api_v1_device_manual_post",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualReadingSubmission"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict/sensor": {
+      "post": {
+        "tags": [
+          "prediction"
+        ],
+        "summary": "Predict crop nutrient deficiencies or operational status from sensor readings",
+        "description": "Accepts crop type and sensor telemetry with units. Validates physical plausibility and engineering units, executes promoted model inference, and returns calibrated prediction with display label, model metadata, and agronomic limitations.",
+        "operationId": "predict_sensor_api_v1_predict_sensor_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictSensorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/predict/image": {
+      "post": {
+        "tags": [
+          "prediction"
+        ],
+        "summary": "Predict foliar conditions and nutrient deficiencies from plant images (T6-007, T6-014, T6-015)",
+        "description": "Accepts crop type, required input_mode ('leaf' or 'plant'), optional model_family override, and an image file (multipart field 'file' or 'image') or use_campus_frame=True. Executes non-blocking per-leaf instance segmentation and classification off the event loop.",
+        "operationId": "predict_image_api_v1_predict_image_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_predict_image_api_v1_predict_image_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/analyze": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Multi-modal crop diagnosis across sensor and image evidence (T6-011, T6-014)",
+        "description": "Executes whichever modalities were supplied (sensor telemetry, foliar imagery, or live campus frame). Supports partial success: failure in one modality does not block the other. Discloses omitted or failed modalities in not_assessed[]; never outputs a merged confidence score.",
+        "operationId": "analyze_api_v1_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_api_v1_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Health",
+        "description": "Return application health, active device, and subsystem status.",
+        "operationId": "get_health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/models": {
+      "get": {
+        "tags": [
+          "Models"
+        ],
+        "summary": "List Models",
+        "description": "Expose promoted and active machine learning models with validation macro-F1 and status.\n\nMissing or corrupt artifacts yield MODEL_UNAVAILABLE for the affected crop only;\nno silent substitution. Incompatible feature list is reported as SCHEMA_MISMATCH.",
+        "operationId": "list_models_models_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional crop filter",
+              "title": "Crop"
+            },
+            "description": "Optional crop filter"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional modality filter",
+              "title": "Modality"
+            },
+            "description": "Optional modality filter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ModelSummary"
+                  },
+                  "title": "Response List Models Models Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/history": {
+      "post": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Create historical analysis record",
+        "description": "Persist a new agronomic observation record with optional predictions and recommendations.",
+        "operationId": "create_history_record_history_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecordCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "List historical analysis records",
+        "description": "Retrieve paginated historical records with optional filtering.",
+        "operationId": "get_history_records_history_get",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Max records to return (capped at 100)",
+              "default": 20,
+              "title": "Limit"
+            },
+            "description": "Max records to return (capped at 100)"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Offset for pagination",
+              "default": 0,
+              "title": "Offset"
+            },
+            "description": "Offset for pagination"
+          },
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by crop cultivar",
+              "title": "Crop"
+            },
+            "description": "Filter by crop cultivar"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by modality/mode",
+              "title": "Modality"
+            },
+            "description": "Filter by modality/mode"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Alias filter for modality/mode",
+              "title": "Mode"
+            },
+            "description": "Alias filter for modality/mode"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by source provenance",
+              "title": "Source"
+            },
+            "description": "Filter by source provenance"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date string (YYYY-MM-DD)",
+              "title": "Date"
+            },
+            "description": "Filter by date string (YYYY-MM-DD)"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter start date ISO",
+              "title": "Start Date"
+            },
+            "description": "Filter start date ISO"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter end date ISO",
+              "title": "End Date"
+            },
+            "description": "Filter end date ISO"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecordRead"
+                  },
+                  "title": "Response Get History Records History Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/history/export": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Export historical analysis records to CSV",
+        "description": "Export filtered history records as a secure CSV file with timezone-aware timestamps.",
+        "operationId": "export_history_records_history_export_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by crop cultivar",
+              "title": "Crop"
+            },
+            "description": "Filter by crop cultivar"
+          },
+          {
+            "name": "modality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by modality/mode",
+              "title": "Modality"
+            },
+            "description": "Filter by modality/mode"
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Alias filter for modality/mode",
+              "title": "Mode"
+            },
+            "description": "Alias filter for modality/mode"
+          },
+          {
+            "name": "source",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by source provenance",
+              "title": "Source"
+            },
+            "description": "Filter by source provenance"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter by date string (YYYY-MM-DD)",
+              "title": "Date"
+            },
+            "description": "Filter by date string (YYYY-MM-DD)"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter start date ISO",
+              "title": "Start Date"
+            },
+            "description": "Filter start date ISO"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Filter end date ISO",
+              "title": "End Date"
+            },
+            "description": "Filter end date ISO"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/history/{record_id}": {
+      "get": {
+        "tags": [
+          "History"
+        ],
+        "summary": "Get historical record by ID",
+        "description": "Retrieve a single historical analysis record by UUID.",
+        "operationId": "get_history_record_by_id_history__record_id__get",
+        "parameters": [
+          {
+            "name": "record_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Record Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordRead"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/status": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get hardware device and telemetry status",
+        "description": "Retrieve operational status, freshness, and per-reading validation for sensors and camera.",
+        "operationId": "get_device_status_device_status_get",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/sensors/latest": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get latest mapped sensor telemetry for a target crop",
+        "description": "Fetch the latest live or simulated sensor readings mapped strictly to the target crop's feature schema.\n\nRaises 503 DEVICE_UNAVAILABLE if device is disconnected or telemetry is stale.",
+        "operationId": "get_latest_sensors_device_sensors_latest_get",
+        "parameters": [
+          {
+            "name": "crop",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')",
+              "default": "lettuce",
+              "title": "Crop"
+            },
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')"
+          },
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LatestSensorsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/camera/frame": {
+      "get": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Get latest greenhouse canopy camera frame",
+        "description": "Stream or return the latest camera snapshot image frame.",
+        "operationId": "get_latest_camera_frame_device_camera_frame_get",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw image frame bytes with matching Content-Type header.",
+            "content": {
+              "application/json": {
+                "schema": {}
+              },
+              "image/jpeg": {},
+              "image/png": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/device/manual": {
+      "post": {
+        "tags": [
+          "Device"
+        ],
+        "summary": "Submit manual operator sensor observations",
+        "description": "Register operator sensor measurements when running in manual adapter mode.",
+        "operationId": "submit_manual_reading_device_manual_post",
+        "parameters": [
+          {
+            "name": "adapter_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Adapter Type"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManualReadingSubmission"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/predict/sensor": {
+      "post": {
+        "tags": [
+          "prediction"
+        ],
+        "summary": "Predict crop nutrient deficiencies or operational status from sensor readings",
+        "description": "Accepts crop type and sensor telemetry with units. Validates physical plausibility and engineering units, executes promoted model inference, and returns calibrated prediction with display label, model metadata, and agronomic limitations.",
+        "operationId": "predict_sensor_predict_sensor_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictSensorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/predict/image": {
+      "post": {
+        "tags": [
+          "prediction"
+        ],
+        "summary": "Predict foliar conditions and nutrient deficiencies from plant images (T6-007, T6-014, T6-015)",
+        "description": "Accepts crop type, required input_mode ('leaf' or 'plant'), optional model_family override, and an image file (multipart field 'file' or 'image') or use_campus_frame=True. Executes non-blocking per-leaf instance segmentation and classification off the event loop.",
+        "operationId": "predict_image_predict_image_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_predict_image_predict_image_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analyze": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Multi-modal crop diagnosis across sensor and image evidence (T6-011, T6-014)",
+        "description": "Executes whichever modalities were supplied (sensor telemetry, foliar imagery, or live campus frame). Supports partial success: failure in one modality does not block the other. Discloses omitted or failed modalities in not_assessed[]; never outputs a merged confidence score.",
+        "operationId": "analyze_analyze_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_analyze_analyze_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalyzeResponse": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "sensor": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PredictionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Prediction result from water chemistry sensor telemetry"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PredictionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Prediction result from foliar plant imagery"
+          },
+          "not_assessed": {
+            "items": {
+              "$ref": "#/components/schemas/NotAssessedItem"
+            },
+            "type": "array",
+            "title": "Not Assessed",
+            "description": "List of omitted or failed modalities with reasons"
+          },
+          "recommendation": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation",
+            "description": "Agronomic action recommendations based on validated available evidence"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "description": "Operational, lighting, or hardware warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop"
+        ],
+        "title": "AnalyzeResponse",
+        "description": "Comprehensive response for multi-modal POST /analyze (T6-011).\n\nInvariants (Overview \u00a719):\n- Image and sensor predictions are returned separately.\n- No merged or averaged confidence score; no combined severity score.\n- No subjective or arbitrary 'contradiction' alerts.\n- If one modality fails, the available modality still returns cleanly.\n- not_assessed[] discloses skipped or failed modalities with explicit reasons."
+      },
+      "Body_analyze_analyze_post": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')"
+          },
+          "input_mode": {
+            "type": "string",
+            "title": "Input Mode",
+            "description": "Image mode: 'leaf' or 'plant'",
+            "default": "plant"
+          },
+          "model_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Family",
+            "description": "Optional model family override"
+          },
+          "use_campus_frame": {
+            "type": "boolean",
+            "title": "Use Campus Frame",
+            "description": "Fetch latest camera frame from campus server",
+            "default": false
+          },
+          "sensor_readings": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sensor Readings",
+            "description": "JSON-encoded sensor telemetry dictionary"
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Units",
+            "description": "Optional JSON-encoded sensor units dictionary"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop"
+        ],
+        "title": "Body_analyze_analyze_post"
+      },
+      "Body_analyze_api_v1_analyze_post": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')"
+          },
+          "input_mode": {
+            "type": "string",
+            "title": "Input Mode",
+            "description": "Image mode: 'leaf' or 'plant'",
+            "default": "plant"
+          },
+          "model_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Family",
+            "description": "Optional model family override"
+          },
+          "use_campus_frame": {
+            "type": "boolean",
+            "title": "Use Campus Frame",
+            "description": "Fetch latest camera frame from campus server",
+            "default": false
+          },
+          "sensor_readings": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sensor Readings",
+            "description": "JSON-encoded sensor telemetry dictionary"
+          },
+          "units": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Units",
+            "description": "Optional JSON-encoded sensor units dictionary"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop"
+        ],
+        "title": "Body_analyze_api_v1_analyze_post"
+      },
+      "Body_predict_image_api_v1_predict_image_post": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')"
+          },
+          "input_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Mode",
+            "description": "Processing mode: 'leaf' for single leaf, 'plant' for whole plant"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File",
+            "description": "Uploaded plant image (multipart field name 'file' or 'image')"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image",
+            "description": "Uploaded plant image (multipart field name 'image' or 'file')"
+          },
+          "model_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Family",
+            "description": "Optional model family architecture override"
+          },
+          "use_campus_frame": {
+            "type": "boolean",
+            "title": "Use Campus Frame",
+            "description": "Fetch latest camera frame from campus server instead of upload",
+            "default": false
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "live",
+              "manual",
+              "imported"
+            ],
+            "title": "Provenance",
+            "description": "Source provenance of the image upload",
+            "default": "manual"
+          },
+          "mask_threshold": {
+            "type": "number",
+            "title": "Mask Threshold",
+            "description": "SAM2 mask binarization threshold",
+            "default": 0.5
+          },
+          "max_leaves": {
+            "type": "integer",
+            "title": "Max Leaves",
+            "description": "Maximum leaves to assess per plant in plant mode",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop"
+        ],
+        "title": "Body_predict_image_api_v1_predict_image_post"
+      },
+      "Body_predict_image_predict_image_post": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')"
+          },
+          "input_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Mode",
+            "description": "Processing mode: 'leaf' for single leaf, 'plant' for whole plant"
+          },
+          "file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File",
+            "description": "Uploaded plant image (multipart field name 'file' or 'image')"
+          },
+          "image": {
+            "anyOf": [
+              {
+                "type": "string",
+                "contentMediaType": "application/octet-stream"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image",
+            "description": "Uploaded plant image (multipart field name 'image' or 'file')"
+          },
+          "model_family": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Family",
+            "description": "Optional model family architecture override"
+          },
+          "use_campus_frame": {
+            "type": "boolean",
+            "title": "Use Campus Frame",
+            "description": "Fetch latest camera frame from campus server instead of upload",
+            "default": false
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "live",
+              "manual",
+              "imported"
+            ],
+            "title": "Provenance",
+            "description": "Source provenance of the image upload",
+            "default": "manual"
+          },
+          "mask_threshold": {
+            "type": "number",
+            "title": "Mask Threshold",
+            "description": "SAM2 mask binarization threshold",
+            "default": 0.5
+          },
+          "max_leaves": {
+            "type": "integer",
+            "title": "Max Leaves",
+            "description": "Maximum leaves to assess per plant in plant mode",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop"
+        ],
+        "title": "Body_predict_image_predict_image_post"
+      },
+      "CameraDeviceStatus": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "missing",
+              "disconnected",
+              "invalid",
+              "stale",
+              "ok"
+            ],
+            "title": "Status",
+            "description": "Camera feed status: missing / disconnected / invalid / stale / ok"
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp",
+            "description": "Timestamp of the latest captured image frame"
+          },
+          "age_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Seconds",
+            "description": "Elapsed age in seconds since frame capture"
+          },
+          "resolution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolution",
+            "description": "Frame resolution (e.g. '1920x1080')",
+            "examples": [
+              "1920x1080"
+            ]
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Diagnostic narrative or error message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "CameraDeviceStatus",
+        "description": "Status of the greenhouse canopy camera feed."
+      },
+      "DeviceStatusResponse": {
+        "properties": {
+          "adapter": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "campus",
+              "manual"
+            ],
+            "title": "Adapter",
+            "description": "Active device adapter backend identifier"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "manual",
+              "live"
+            ],
+            "title": "Source",
+            "description": "Data provenance label (Mock data is strictly labelled 'mock', never 'live')"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "missing",
+              "disconnected",
+              "invalid",
+              "stale",
+              "ok"
+            ],
+            "title": "Status",
+            "description": "Aggregate operational health across sensors and camera"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "Timestamp of the status assessment"
+          },
+          "max_age_s": {
+            "type": "integer",
+            "title": "Max Age S",
+            "description": "Configured maximum freshness age threshold in seconds (CAMPUS_MAX_AGE_S)"
+          },
+          "readings": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SensorReadingStatus"
+            },
+            "type": "object",
+            "title": "Readings",
+            "description": "Per-feature sensor reading statuses"
+          },
+          "camera": {
+            "$ref": "#/components/schemas/CameraDeviceStatus",
+            "description": "Latest camera feed status"
+          },
+          "is_mock": {
+            "type": "boolean",
+            "title": "Is Mock",
+            "description": "True if telemetry or imagery originates from mock fixtures"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "adapter",
+          "source",
+          "status",
+          "max_age_s",
+          "camera",
+          "is_mock"
+        ],
+        "title": "DeviceStatusResponse",
+        "description": "Aggregate hardware status response for GET /api/v1/device/status."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Overall service status",
+            "default": "ok"
+          },
+          "device": {
+            "type": "string",
+            "title": "Device",
+            "description": "Detected compute device from DeviceManager ('cuda:0' or 'cpu')"
+          },
+          "db": {
+            "type": "string",
+            "title": "Db",
+            "description": "Database connectivity status",
+            "default": "unknown"
+          },
+          "registry": {
+            "type": "string",
+            "title": "Registry",
+            "description": "Model registry status",
+            "default": "unknown"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "device"
+        ],
+        "title": "HealthResponse",
+        "description": "Health check response schema."
+      },
+      "LatestSensorsResponse": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Crop cultivar to which features were mapped",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "manual",
+              "live"
+            ],
+            "title": "Source",
+            "description": "Telemetry source provenance"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "Observation capture timestamp in UTC"
+          },
+          "readings": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Readings",
+            "description": "Validated feature dictionary strictly conforming to crop model schema",
+            "examples": [
+              {
+                "air_temp": 22.0,
+                "ec": 1.4,
+                "humidity": 65.0,
+                "ph": 6.2,
+                "water_temp": 20.5
+              }
+            ]
+          },
+          "is_mock": {
+            "type": "boolean",
+            "title": "Is Mock",
+            "description": "True if telemetry is simulated/mock fixture"
+          },
+          "experimental": {
+            "type": "boolean",
+            "title": "Experimental",
+            "description": "Flag indicating if telemetry is experimental (e.g. tomato_live without N/P/K)",
+            "default": false
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "description": "Operational warnings (e.g. ambient temperature extremes, hardware drift)"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "crop",
+          "source",
+          "timestamp",
+          "readings",
+          "is_mock"
+        ],
+        "title": "LatestSensorsResponse",
+        "description": "Latest mapped sensor telemetry payload from GET /api/v1/device/sensors/latest."
+      },
+      "LeafPrediction": {
+        "properties": {
+          "leaf_id": {
+            "type": "string",
+            "title": "Leaf Id",
+            "description": "Unique identifier for the leaf instance within the image (e.g. leaf_001)",
+            "examples": [
+              "leaf_001"
+            ]
+          },
+          "bbox": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Bbox",
+            "description": "Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel format",
+            "examples": [
+              [
+                42,
+                58,
+                280,
+                310
+              ]
+            ]
+          },
+          "mask_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mask Ref",
+            "description": "Optional local artifact or storage URI reference to the binary mask",
+            "examples": [
+              "artifacts/masks/leaf_001.png"
+            ]
+          },
+          "predicted_class": {
+            "type": "string",
+            "title": "Predicted Class",
+            "description": "Target biological deficiency class or healthy status",
+            "examples": [
+              "NitrogenDeficiency"
+            ]
+          },
+          "display_label": {
+            "type": "string",
+            "title": "Display Label",
+            "description": "Human-friendly label for UI presentation",
+            "examples": [
+              "Nitrogen Deficiency"
+            ]
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence",
+            "description": "Model confidence score in [0.0, 1.0]",
+            "examples": [
+              0.892
+            ]
+          },
+          "confidence_semantics": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence Semantics",
+            "description": "Mandatory semantic interpretation of the confidence score whenever confidence is present",
+            "examples": [
+              "multinomial_probability"
+            ]
+          },
+          "uncertain": {
+            "type": "boolean",
+            "title": "Uncertain",
+            "description": "True if model confidence is below the empirical crop threshold or out-of-distribution",
+            "examples": [
+              false
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "leaf_id",
+          "bbox",
+          "predicted_class",
+          "display_label",
+          "uncertain"
+        ],
+        "title": "LeafPrediction",
+        "description": "Prediction for an isolated single leaf instance in an image."
+      },
+      "ManualReadingSubmission": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')",
+            "default": "lettuce",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "readings": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Readings",
+            "description": "Map of sensor names to physical float values",
+            "examples": [
+              {
+                "air_temp": 22.0,
+                "ec": 1.8,
+                "humidity": 65.0,
+                "ph": 6.2,
+                "water_temp": 20.5
+              }
+            ]
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp",
+            "description": "Optional observation timestamp (defaults to current UTC if omitted)"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "readings"
+        ],
+        "title": "ManualReadingSubmission",
+        "description": "Payload for submitting operator manual sensor measurements."
+      },
+      "ModelSummary": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Crop family: lettuce, spinach, tomato, tomato_live."
+          },
+          "task": {
+            "type": "string",
+            "title": "Task",
+            "description": "ML task: classification, segmentation, feature_extraction."
+          },
+          "modality": {
+            "type": "string",
+            "title": "Modality",
+            "description": "Modality: sensor, image, feature."
+          },
+          "family": {
+            "type": "string",
+            "title": "Family",
+            "description": "Model family/architecture (e.g. DecisionTreeClassifier, RandomForestClassifier)."
+          },
+          "version": {
+            "type": "string",
+            "title": "Version",
+            "description": "Model artifact semantic version (e.g. 1.0.0)."
+          },
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Model lifecycle status: promoted, candidate, MODEL_UNAVAILABLE, SCHEMA_MISMATCH."
+          },
+          "validation_macro_f1": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Validation Macro F1",
+            "description": "Macro-averaged F1 score achieved on validation partition."
+          },
+          "experimental": {
+            "type": "boolean",
+            "title": "Experimental",
+            "description": "Flag indicating whether model is experimental or production-approved.",
+            "default": false
+          },
+          "error_detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Detail",
+            "description": "Failure rationale if status is MODEL_UNAVAILABLE or SCHEMA_MISMATCH."
+          },
+          "classes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Classes",
+            "description": "Ordered target class taxonomy labels."
+          },
+          "ordered_features": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ordered Features",
+            "description": "Ordered list of feature column names expected by model."
+          },
+          "display_mapping": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Display Mapping",
+            "description": "Mapping from raw class label to user-facing display label."
+          },
+          "split_protocol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Split Protocol",
+            "description": "Protocol used for train/val/test partitioning."
+          },
+          "metrics": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metrics",
+            "description": "Complete validation metrics dictionary."
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop",
+          "task",
+          "modality",
+          "family",
+          "version",
+          "status"
+        ],
+        "title": "ModelSummary",
+        "description": "Summary of a promoted or registered machine learning model."
+      },
+      "NotAssessedItem": {
+        "properties": {
+          "modality": {
+            "type": "string",
+            "enum": [
+              "sensor",
+              "image"
+            ],
+            "title": "Modality",
+            "description": "The modality that was omitted, skipped, or failed",
+            "examples": [
+              "image"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Clear human-readable explanation of why this modality was not evaluated",
+            "examples": [
+              "No foliar photograph provided; leaf health is not assessed."
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "modality",
+          "reason"
+        ],
+        "title": "NotAssessedItem",
+        "description": "Explains why a modality was omitted or failed (T6-011, Overview \u00a719)."
+      },
+      "PredictSensorRequest": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato', 'tomato_live')",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "readings": {
+            "type": "object",
+            "title": "Readings",
+            "description": "Sensor readings dictionary (feature name -> float or {value: float, unit: str})",
+            "examples": [
+              {
+                "air_temp": 22.0,
+                "ec": 1.6,
+                "humidity": 65.0,
+                "ph": 6.2,
+                "water_temp": 20.0
+              }
+            ]
+          },
+          "units": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Units",
+            "description": "Optional dictionary mapping sensor features to physical engineering units",
+            "examples": [
+              {
+                "air_temp": "degC",
+                "ec": "mS/cm",
+                "humidity": "%",
+                "ph": "pH",
+                "water_temp": "degC"
+              }
+            ]
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "live",
+              "manual",
+              "imported"
+            ],
+            "title": "Provenance",
+            "description": "Origin of telemetry (manual input, live device, or imported fixture)",
+            "default": "manual",
+            "examples": [
+              "manual"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "crop",
+          "readings"
+        ],
+        "title": "PredictSensorRequest",
+        "description": "Request payload for POST /predict/sensor."
+      },
+      "PredictionResponse": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Crop cultivar ('lettuce', 'spinach', 'tomato')",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "modality": {
+            "type": "string",
+            "enum": [
+              "sensor",
+              "image",
+              "image_features"
+            ],
+            "title": "Modality",
+            "description": "Inference modality",
+            "examples": [
+              "sensor"
+            ]
+          },
+          "predicted_class": {
+            "type": "string",
+            "title": "Predicted Class",
+            "description": "Model output class",
+            "examples": [
+              "NitrogenDeficiency"
+            ]
+          },
+          "display_label": {
+            "type": "string",
+            "title": "Display Label",
+            "description": "Formatted label for UI display",
+            "examples": [
+              "Nitrogen Deficiency"
+            ]
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence",
+            "description": "Model output score or confidence",
+            "examples": [
+              0.875
+            ]
+          },
+          "confidence_semantics": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence Semantics",
+            "description": "Mandatory semantic description of confidence score when confidence is present",
+            "examples": [
+              "multinomial_probability"
+            ]
+          },
+          "uncertain": {
+            "type": "boolean",
+            "title": "Uncertain",
+            "description": "True if confidence is below calibrated threshold",
+            "examples": [
+              false
+            ]
+          },
+          "experimental": {
+            "type": "boolean",
+            "title": "Experimental",
+            "description": "True if model is unpromoted or running in experimental trial",
+            "default": false,
+            "examples": [
+              false
+            ]
+          },
+          "model_id": {
+            "type": "string",
+            "title": "Model Id",
+            "description": "Unique identifier of the executing model",
+            "examples": [
+              "lettuce_sensor_rf"
+            ]
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version",
+            "description": "Semantic version of the model artifact",
+            "examples": [
+              "v1.0.0"
+            ]
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "UTC timestamp when prediction was generated",
+            "examples": [
+              "2026-10-27T18:00:00Z"
+            ]
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "live",
+              "manual",
+              "imported"
+            ],
+            "title": "Provenance",
+            "description": "Source provenance of the underlying inputs",
+            "examples": [
+              "live"
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "description": "Operational warnings (e.g. out-of-range sensor drift, uncalibrated lighting)",
+            "examples": [
+              []
+            ]
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations",
+            "description": "Known scientific and hardware limitations applicable to this prediction",
+            "examples": [
+              "Model trained exclusively on greenhouse hydro-channels; field crops unvalidated."
+            ]
+          },
+          "input_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "single_leaf",
+                  "plant"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Mode",
+            "description": "Image capture mode",
+            "examples": [
+              "plant"
+            ]
+          },
+          "leaves": {
+            "items": {
+              "$ref": "#/components/schemas/LeafPrediction"
+            },
+            "type": "array",
+            "title": "Leaves",
+            "description": "Per-leaf instance predictions"
+          },
+          "rejected_leaves": {
+            "items": {
+              "$ref": "#/components/schemas/RejectedLeaf"
+            },
+            "type": "array",
+            "title": "Rejected Leaves",
+            "description": "Candidate masks rejected during quality validation"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PredictionSummary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Summary counts across leaves (never averaged confidence)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop",
+          "modality",
+          "predicted_class",
+          "display_label",
+          "uncertain",
+          "model_id",
+          "model_version",
+          "timestamp",
+          "provenance"
+        ],
+        "title": "PredictionResponse",
+        "description": "Comprehensive prediction response payload for sensor and image modalities.\n\nDirectly implements TECH_RULES API Standards (v1):\n`crop, modality, predicted_class, display_label, confidence, confidence_semantics,\nuncertain, experimental, model_id, model_version, timestamp, provenance, warnings[], limitations[]`"
+      },
+      "PredictionSummary": {
+        "properties": {
+          "leaf_count": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Leaf Count",
+            "description": "Total count of successfully segmented and assessed leaves",
+            "examples": [
+              4
+            ]
+          },
+          "class_counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Class Counts",
+            "description": "Histogram of counts per predicted biological class",
+            "examples": [
+              {
+                "Healthy": 1,
+                "NitrogenDeficiency": 3
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "leaf_count",
+          "class_counts"
+        ],
+        "title": "PredictionSummary",
+        "description": "Discrete counts summary across extracted leaf instances.\n\nNOTE: In accordance with TECH_RULES Rule 16 and PRD, per-leaf predictions\nare NEVER averaged into a single confidence score."
+      },
+      "RecommendationRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "Unique UUID for the recommendation entry",
+            "examples": [
+              "550e8400-e29b-41d4-a716-446655440000"
+            ]
+          },
+          "record_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Record Id",
+            "description": "Foreign key UUID linking to the parent analysis_records entry",
+            "examples": [
+              "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "gemini",
+              "rules"
+            ],
+            "title": "Source",
+            "description": "Provider that authored the recommendation ('gemini' LLM or deterministic 'rules')",
+            "examples": [
+              "rules"
+            ]
+          },
+          "rules_version": {
+            "type": "string",
+            "title": "Rules Version",
+            "description": "Semantic version of the agronomic decision matrix/ruleset applied",
+            "examples": [
+              "v1.2.0"
+            ]
+          },
+          "content": {
+            "type": "object",
+            "title": "Content",
+            "description": "Structured recommendation text and corrective dosing actions (e.g. pH down, Ca(NO3)2 adjustment)",
+            "examples": [
+              {
+                "actions": [
+                  "Adjust reservoir pH to 5.8",
+                  "Add 50mL Part A nutrient stock"
+                ],
+                "summary": "Nitrogen deficiency detected; increase calcium nitrate dosage by 15%."
+              }
+            ]
+          },
+          "evidence": {
+            "type": "object",
+            "title": "Evidence",
+            "description": "Scientific evidence and sensor observations justifying the recommendation",
+            "examples": [
+              {
+                "observed_ec_ms_cm": 1.1,
+                "target_ec_ms_cm": 1.6,
+                "visual_symptoms": [
+                  "Lower canopy chlorosis"
+                ]
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Timestamp when the recommendation was formulated",
+            "examples": [
+              "2026-10-27T18:00:00Z"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "record_id",
+          "source",
+          "rules_version",
+          "content",
+          "evidence"
+        ],
+        "title": "RecommendationRead",
+        "description": "Agronomic recommendation record generated from predictions and sensor telemetry."
+      },
+      "RecordCreate": {
+        "properties": {
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Target crop cultivar ('lettuce', 'spinach', 'tomato')",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "sensor",
+              "image",
+              "both"
+            ],
+            "title": "Mode",
+            "description": "Analysis operational mode",
+            "examples": [
+              "sensor"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "live",
+              "imported"
+            ],
+            "title": "Source",
+            "description": "Data ingestion origin",
+            "examples": [
+              "live"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At",
+            "description": "Observation timestamp in UTC",
+            "examples": [
+              "2026-10-27T17:30:00Z"
+            ]
+          },
+          "observed_tz": {
+            "type": "string",
+            "title": "Observed Tz",
+            "description": "Original timezone string where telemetry or imagery was captured (e.g. 'UTC', 'Asia/Kolkata')",
+            "examples": [
+              "Asia/Kolkata"
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Optional operator notes or greenhouse bay identifiers",
+            "examples": [
+              "Bay 3 channel A testing row"
+            ]
+          },
+          "inputs": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inputs",
+            "description": "Raw or normalized input payload reference",
+            "examples": [
+              {
+                "ec_ms_cm": 1.4,
+                "ph": 6.2,
+                "water_temp_c": 21.5
+              }
+            ]
+          },
+          "predictions": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PredictionResponse"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predictions",
+            "description": "Optional list of prediction responses to associate atomically"
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecommendationRead"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Optional agronomic recommendation to associate atomically"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "crop",
+          "mode",
+          "source",
+          "observed_at",
+          "observed_tz"
+        ],
+        "title": "RecordCreate",
+        "description": "Schema for registering a new agronomic observation record.\n\nStrict configuration (extra='forbid') rejects unexpected fields."
+      },
+      "RecordRead": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id",
+            "description": "Primary UUID identifier for the analysis record",
+            "examples": [
+              "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+            ]
+          },
+          "crop": {
+            "type": "string",
+            "title": "Crop",
+            "description": "Crop cultivar",
+            "examples": [
+              "lettuce"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "sensor",
+              "image",
+              "both"
+            ],
+            "title": "Mode",
+            "description": "Analysis mode",
+            "examples": [
+              "both"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At",
+            "description": "Server timestamp when record was persisted",
+            "examples": [
+              "2026-10-27T18:00:00Z"
+            ]
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At",
+            "description": "Timestamp when observation was captured",
+            "examples": [
+              "2026-10-27T17:30:00Z"
+            ]
+          },
+          "observed_tz": {
+            "type": "string",
+            "title": "Observed Tz",
+            "description": "Original timezone string of the sensor capture",
+            "examples": [
+              "Asia/Kolkata"
+            ]
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "live",
+              "imported"
+            ],
+            "title": "Source",
+            "description": "Data provenance source",
+            "examples": [
+              "live"
+            ]
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes",
+            "description": "Operator notes",
+            "examples": [
+              "Routine inspection"
+            ]
+          },
+          "inputs": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inputs",
+            "description": "Input sensor readings or image references"
+          },
+          "predictions": {
+            "items": {
+              "$ref": "#/components/schemas/PredictionResponse"
+            },
+            "type": "array",
+            "title": "Predictions",
+            "description": "Associated prediction responses for this record"
+          },
+          "recommendation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecommendationRead"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Associated agronomic recommendation if available"
+          },
+          "historical": {
+            "type": "boolean",
+            "title": "Historical",
+            "description": "Flag indicating that this record is historical (persisted observation)",
+            "default": true,
+            "examples": [
+              true
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "crop",
+          "mode",
+          "observed_at",
+          "observed_tz",
+          "source"
+        ],
+        "title": "RecordRead",
+        "description": "Full analysis record returned by GET /history and GET /history/{id}."
+      },
+      "RejectedLeaf": {
+        "properties": {
+          "leaf_id": {
+            "type": "string",
+            "title": "Leaf Id",
+            "description": "Candidate leaf identifier",
+            "examples": [
+              "leaf_002"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason",
+            "description": "Reason why the mask was rejected (e.g. empty, tiny dust speck, border contact)",
+            "examples": [
+              "Mask is too small (0.0004 < min_area_ratio 0.0100); likely dust or noise"
+            ]
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "reject",
+              "retry"
+            ],
+            "title": "Verdict",
+            "description": "Validator verdict category",
+            "default": "reject",
+            "examples": [
+              "reject"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "leaf_id",
+          "reason"
+        ],
+        "title": "RejectedLeaf",
+        "description": "Metadata for a candidate leaf mask rejected by per-leaf validation quality gates."
+      },
+      "SensorReadingStatus": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Sensor variable name (e.g. 'ph', 'ec')"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value",
+            "description": "Current measured numeric value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit",
+            "description": "Engineering physical unit (e.g. 'pH', 'mS/cm', 'degC')",
+            "default": ""
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "missing",
+              "disconnected",
+              "invalid",
+              "stale",
+              "ok"
+            ],
+            "title": "Status",
+            "description": "Freshness and validity status: missing / disconnected / invalid / stale / ok"
+          },
+          "timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timestamp",
+            "description": "Observation timestamp reported by the hardware logger"
+          },
+          "age_seconds": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Age Seconds",
+            "description": "Elapsed age in seconds since observation timestamp"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message",
+            "description": "Descriptive status narrative or reason for invalidity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "status"
+        ],
+        "title": "SensorReadingStatus",
+        "description": "Status and value of an individual sensor reading."
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -275,3 +275,57 @@ class PredictionResponse(BaseModel):
                 "`confidence_semantics` cannot be specified when `confidence` is null."
             )
         return self
+
+
+class NotAssessedItem(BaseModel):
+    """Explains why a modality was omitted or failed (T6-011, Overview §19)."""
+
+    modality: Literal["sensor", "image"] = Field(
+        ...,
+        description="The modality that was omitted, skipped, or failed",
+        examples=["image"],
+    )
+    reason: str = Field(
+        ...,
+        description="Clear human-readable explanation of why this modality was not evaluated",
+        examples=["No foliar photograph provided; leaf health is not assessed."],
+    )
+
+
+class AnalyzeResponse(BaseModel):
+    """Comprehensive response for multi-modal POST /analyze (T6-011).
+
+    Invariants (Overview §19):
+    - Image and sensor predictions are returned separately.
+    - No merged or averaged confidence score; no combined severity score.
+    - No subjective or arbitrary 'contradiction' alerts.
+    - If one modality fails, the available modality still returns cleanly.
+    - not_assessed[] discloses skipped or failed modalities with explicit reasons.
+    """
+
+    crop: str = Field(
+        ...,
+        description="Target crop cultivar ('lettuce', 'spinach', 'tomato')",
+        examples=["lettuce"],
+    )
+    sensor: PredictionResponse | None = Field(
+        default=None,
+        description="Prediction result from water chemistry sensor telemetry",
+    )
+    image: PredictionResponse | None = Field(
+        default=None,
+        description="Prediction result from foliar plant imagery",
+    )
+    not_assessed: list[NotAssessedItem] = Field(
+        default_factory=list,
+        description="List of omitted or failed modalities with reasons",
+    )
+    recommendation: Any | None = Field(
+        default=None,
+        description="Agronomic action recommendations based on validated available evidence",
+    )
+    warnings: list[str] = Field(
+        default_factory=list,
+        description="Operational, lighting, or hardware warnings",
+    )
+

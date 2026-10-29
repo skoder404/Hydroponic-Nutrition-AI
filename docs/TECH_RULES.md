@@ -167,9 +167,9 @@ Adapt to the existing repo; do **not** create parallel duplicates (Overview §4.
 - Feature schemas live in **one** place per crop (`ml/features/<crop>.py` and `ml/sensor_models/schemas.py`) and are imported by training *and* inference (single source of truth for names + order).
 - Frontend: presentational components are pure; data fetching in route-level hooks.
 
-### API Standards (PROPOSED v1)
+### API Standards (ESTABLISHED v1)
 - Base: `/api/v1`. JSON in/out except multipart image upload.
-- Endpoints (proposed): `GET /health`, `GET /models`, `POST /predict/sensor`, `POST /predict/image`, `POST /analyze` (both modalities + recommendation), `GET /history`, `GET /history/{id}`, `POST /history`, `GET /device/status`, `GET /device/sensors/latest`, `GET /device/camera/frame`.
+- Endpoints: `GET /health`, `GET /models`, `POST /predict/sensor`, `POST /predict/image`, `POST /analyze` (both modalities + recommendation), `GET /history`, `GET /history/{record_id}`, `POST /history`, `GET /history/export`, `GET /device/status`, `GET /device/sensors/latest`, `GET /device/camera/frame`, `POST /device/manual`.
 - Reject unknown fields (`extra="forbid"`). Pagination: `limit` (default 20, max 100) + `offset`/cursor.
 - Prediction response includes: `crop, modality, predicted_class, display_label, confidence, confidence_semantics, uncertain, experimental, model_id, model_version, timestamp, provenance, warnings[], limitations[]`. Image predictions also include `input_mode`, `leaves[]` (per leaf: `leaf_id, bbox, mask_ref, predicted_class, display_label, confidence, uncertain`), `rejected_leaves[]`, and `summary` (leaf count and per-class counts; never an averaged confidence).
 - Versioning: breaking changes → `/api/v2`. OpenAPI is the contract; contract tests in `tests/contracts/`.

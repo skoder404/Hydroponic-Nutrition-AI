@@ -1,14 +1,22 @@
-"""Unit tests for POST /predict/image endpoint (T6-007).
+"""Unit tests for POST /predict/image endpoint (T6-007, T6-014, T6-015).
 
 Acceptance Criteria:
-- [x] Missing `input_mode` is rejected with 422
-- [x] Plant mode returns per-leaf results and a summary
-- [x] Unavailable family is reported clearly
+- T6-007 AC1: Missing input_mode is rejected with 422
+- T6-007 AC2: Plant mode returns per-leaf results and a summary
+- T6-007 AC3: Unavailable family is reported clearly
+- T6-014 AC1: Stale frame is rejected with DEVICE_UNAVAILABLE
+- T6-014 AC2: Result provenance shows source 'live' and capture time
+- T6-014 AC3: Warning about training-data mismatch is included in the response
+- T6-015 AC1: Event loop stays responsive during image inference
+- T6-015 AC2: Timeout returns the standard envelope
+- T6-015 AC3: Concurrency limit is configurable
 """
 
 from __future__ import annotations
 
 import io
+from pathlib import Path
+from unittest.mock import MagicMock, patch
 
 import cv2
 import numpy as np
@@ -17,8 +25,12 @@ from fastapi.testclient import TestClient
 from PIL import Image
 
 from backend.app.api.v1.predict import get_image_service_dep
+from backend.app.core.config import get_settings
+from backend.app.core.errors import DeviceUnavailableError
 from backend.app.core.rate_limit import get_rate_limiter
+from backend.app.devices.adapter import MockAdapter, get_device_adapter, reset_device_adapter
 from backend.app.main import create_app
+from backend.app.schemas.prediction import LeafPrediction, PredictionResponse, PredictionSummary
 from backend.app.services.image_service import ImageService, reset_image_service
 from backend.app.services.model_service import reset_model_registry_service
 from tests.unit.test_image_service import create_mock_segmenter_with_results
@@ -27,7 +39,6 @@ from tests.unit.test_image_service import create_mock_segmenter_with_results
 def _create_synthetic_plant_image_bytes(format_name: str = "JPEG") -> bytes:
     """Generate in-memory byte stream of a synthetic plant image with 2 vegetation patches."""
     img = np.zeros((200, 200, 3), dtype=np.uint8)
-    # Green circular spots
     cv2.circle(img, (60, 60), 30, (25, 200, 25), -1)
     cv2.circle(img, (140, 140), 30, (25, 200, 25), -1)
 
@@ -42,10 +53,12 @@ def clean_environment():
     """Reset singletons and rate limiter before and after each test."""
     reset_model_registry_service()
     reset_image_service()
+    reset_device_adapter()
     get_rate_limiter().reset()
     yield
     reset_model_registry_service()
     reset_image_service()
+    reset_device_adapter()
     get_rate_limiter().reset()
 
 
@@ -202,7 +215,6 @@ def test_unavailable_family_reported_clearly(client: TestClient):
     assert "error" in body
     err = body["error"]
     assert err["code"] == "MODEL_UNAVAILABLE"
-    # AC 3: Naming what is available
     assert "EfficientNetB0" in err["message"] or "EfficientNetB0" in str(
         err.get("details", {})
     )
@@ -229,3 +241,62 @@ def test_unsupported_media_type_rejected(client: TestClient):
     response = client.post("/api/v1/predict/image", data=data, files=files)
     assert response.status_code == 415
     assert response.json()["error"]["code"] == "UNSUPPORTED_MEDIA"
+
+
+# -----------------------------------------------------------------------------
+# Campus camera frame routing (T6-014) and Timeouts (T6-015)
+# -----------------------------------------------------------------------------
+
+
+def test_campus_frame_routing_provenance_and_warning(client: TestClient):
+    """T6-014 AC2 & AC3: Live provenance and training-data mismatch warning."""
+    response = client.post(
+        "/api/v1/predict/image",
+        data={"crop": "lettuce", "input_mode": "plant", "use_campus_frame": "true"},
+    )
+    assert response.status_code == 200, response.text
+    data = response.json()
+    assert data["provenance"] == "live"
+    assert any(
+        "training images" in w.lower() or "camera images may differ" in w.lower()
+        for w in data["warnings"]
+    )
+
+
+def test_stale_campus_camera_frame_rejected(client: TestClient):
+    """T6-014 AC1: Stale frame is rejected with DEVICE_UNAVAILABLE."""
+    adapter = get_device_adapter()
+    if isinstance(adapter, MockAdapter):
+        adapter.set_simulate_stale(True)
+
+    response = client.post(
+        "/api/v1/predict/image",
+        data={"crop": "lettuce", "input_mode": "plant", "use_campus_frame": "true"},
+    )
+    assert response.status_code == 503
+    data = response.json()
+    assert "error" in data
+    assert data["error"]["code"] == "DEVICE_UNAVAILABLE"
+
+
+def test_inference_timeout_returns_envelope(client: TestClient):
+    """T6-015 AC2: Timeout returns the standard envelope (HTTP 504)."""
+    import time
+
+    def slow_predict(*args, **kwargs):
+        time.sleep(0.5)
+
+    settings = get_settings()
+    with patch.object(settings, "inference_timeout_s", 0.05):
+        with patch("backend.app.services.image_service.ImageService.predict", side_effect=slow_predict):
+            img_bytes = _create_synthetic_plant_image_bytes(format_name="PNG")
+            response = client.post(
+                "/api/v1/predict/image",
+                data={"crop": "lettuce", "input_mode": "plant"},
+                files={"file": ("leaf.png", img_bytes, "image/png")},
+            )
+            assert response.status_code == 504
+            data = response.json()
+            assert "error" in data
+            assert data["error"]["code"] == "INFERENCE_TIMEOUT"
+            assert data["error"]["retryable"] is True
