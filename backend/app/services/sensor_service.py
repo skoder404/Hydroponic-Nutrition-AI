@@ -246,23 +246,11 @@ class SensorService:
         crop: str,
         readings: dict[str, float],
     ) -> list[str]:
-        """Detect operational values falling outside agronomic optimal bands."""
-        warnings: list[str] = []
-        try:
-            schema = get_sensor_schema(crop)
-        except ValueError:
-            return warnings
-
-        for feat, val in readings.items():
-            band = schema.normal_bands.get(feat)
-            if band is not None:
-                lo, hi = band
-                if val < lo or val > hi:
-                    unit = schema.units.get(feat, "")
-                    warnings.append(
-                        f"Sensor reading '{feat}' ({val} {unit}) is outside optimal agronomic range [{lo}, {hi}] {unit}."
-                    )
-        return warnings
+        """Agronomic parameter bounds are rendered directly in the sensor telemetry report below.
+        
+        Per user directive, omit top-level redundant sensor notices.
+        """
+        return []
 
 
 # Singleton access

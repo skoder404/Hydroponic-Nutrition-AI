@@ -302,8 +302,11 @@ export default function AnalyzePage() {
       if (controller.signal.aborted) return;
 
       if (apiResult) {
-        // Use live backend inference results
-        setWarnings(apiResult.warnings || []);
+        // Filter out redundant sensor optimal range notices (shown in detail within Sensor Matrix below)
+        const filteredWarnings = (apiResult.warnings || []).filter(
+          (warn) => !warn.toLowerCase().includes("outside optimal agronomic range") && !warn.toLowerCase().includes("optimal range")
+        );
+        setWarnings(filteredWarnings);
 
         const imageNotAssessed = apiResult.not_assessed?.find((item) => item.modality === "image");
         if (imageNotAssessed && analysisMode !== "sensor") {
@@ -687,7 +690,7 @@ export default function AnalyzePage() {
                     </div>
                     <button
                       type="button"
-                      onClick={fetchCampusTelemetry}
+                      onClick={() => fetchCampusTelemetry()}
                       className="text-emerald-800 font-medium underline hover:text-emerald-950 text-xs cursor-pointer"
                     >
                       Refresh Telemetry
@@ -778,7 +781,7 @@ export default function AnalyzePage() {
               <Button
                 variant="primary"
                 size="lg"
-                onClick={handleExecuteAnalysis}
+                onClick={() => handleExecuteAnalysis()}
                 disabled={!canExecute}
                 data-testid="execute-analysis-button"
                 className="w-full mt-4"

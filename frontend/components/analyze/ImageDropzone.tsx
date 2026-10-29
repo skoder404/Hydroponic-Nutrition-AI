@@ -24,14 +24,21 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
+  // Live Camera Capture State
+  const [isCameraActive, setIsCameraActive] = useState<boolean>(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null);
+  const [capturedPreview, setCapturedPreview] = useState<string | null>(null);
+  const [cameraError, setCameraError] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Sync preview URL with selectedFile
   useEffect(() => {
     if (selectedFile) {
       const url = URL.createObjectURL(selectedFile);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreviewUrl(url);
       return () => URL.revokeObjectURL(url);
     } else {
@@ -39,9 +46,132 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
     }
   }, [selectedFile]);
 
+  // Clean up camera stream tracks when unmounting or stopping camera
+  const stopCameraStream = useCallback(() => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach((track) => track.stop());
+      setCameraStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+  }, [cameraStream]);
+
+  useEffect(() => {
+    return () => {
+      stopCameraStream();
+      if (capturedPreview) {
+        URL.revokeObjectURL(capturedPreview);
+      }
+    };
+  }, [stopCameraStream, capturedPreview]);
+
+  // Start live device camera stream
+  const startCamera = async () => {
+    setCameraError(null);
+    setCapturedBlob(null);
+    if (capturedPreview) {
+      URL.revokeObjectURL(capturedPreview);
+      setCapturedPreview(null);
+    }
+    setIsCameraActive(true);
+
+    try {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error("Camera API is not supported in this browser environment.");
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: "environment" },
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+        },
+        audio: false,
+      });
+
+      setCameraStream(stream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play().catch(() => {});
+      }
+    } catch (err: unknown) {
+      console.warn("Unable to open device camera:", err);
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Unable to access camera. Please check camera permissions or upload an image file.";
+      setCameraError(msg);
+    }
+  };
+
+  // Close camera mode and reset
+  const closeCamera = () => {
+    stopCameraStream();
+    setIsCameraActive(false);
+    setCapturedBlob(null);
+    if (capturedPreview) {
+      URL.revokeObjectURL(capturedPreview);
+      setCapturedPreview(null);
+    }
+    setCameraError(null);
+  };
+
+  // Freeze snapshot from active video stream
+  const handleCapturePhoto = () => {
+    if (!videoRef.current) return;
+    const video = videoRef.current;
+    const width = video.videoWidth || 1280;
+    const height = video.videoHeight || 720;
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.drawImage(video, 0, 0, width, height);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) return;
+        setCapturedBlob(blob);
+        const url = URL.createObjectURL(blob);
+        setCapturedPreview(url);
+        // Pause video while reviewing captured photo
+        video.pause();
+      },
+      "image/jpeg",
+      0.95
+    );
+  };
+
+  // Retake photo: discard snapshot and resume live video stream
+  const handleRetake = () => {
+    setCapturedBlob(null);
+    if (capturedPreview) {
+      URL.revokeObjectURL(capturedPreview);
+      setCapturedPreview(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  // OK: Accept photo, convert to File, pass to onFileSelected, and close camera
+  const handleConfirmPhoto = () => {
+    if (!capturedBlob) return;
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const capturedFile = new File([capturedBlob], `leaf_camera_${timestamp}.jpg`, {
+      type: "image/jpeg",
+      lastModified: Date.now(),
+    });
+
+    onFileSelected(capturedFile);
+    closeCamera();
+  };
+
   // Client-side validation function returning specific error message
   const validateFile = useCallback((file: File): string | null => {
-    // 1. Check MIME type and file extension
     const extension = "." + file.name.split(".").pop()?.toLowerCase();
     const isMimeValid = ALLOWED_MIME_TYPES.includes(file.type.toLowerCase());
     const isExtValid = ALLOWED_EXTENSIONS.includes(extension);
@@ -51,7 +181,6 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
       return `Invalid file format: "${reportedType}". Only JPEG, PNG, and WebP images are supported.`;
     }
 
-    // 2. Check maximum file size
     if (file.size > MAX_FILE_SIZE_BYTES) {
       const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
       return `File size (${sizeMb} MB) exceeds maximum allowed limit of 15 MB.`;
@@ -102,7 +231,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
 
   // Keyboard accessibility: Enter or Space triggers file input dialog
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
+    if (disabled || isCameraActive) return;
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       fileInputRef.current?.click();
@@ -138,7 +267,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
         id="image-dropzone-file-input"
       />
 
-      {/* Hidden mobile camera capture input with capture="environment" */}
+      {/* Hidden mobile camera capture fallback input */}
       <input
         ref={cameraInputRef}
         type="file"
@@ -152,8 +281,126 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
         id="image-dropzone-camera-input"
       />
 
-      {/* Dropzone Container */}
-      {!selectedFile ? (
+      {/* 1. Live Interactive Camera Viewport */}
+      {isCameraActive ? (
+        <div className="relative border-2 border-[var(--forest)] rounded-[var(--radius-lg)] bg-[#111111] overflow-hidden shadow-[var(--shadow-warm-md)]">
+          {/* Camera Header */}
+          <div className="flex items-center justify-between px-4 py-2.5 bg-[#000000]/80 backdrop-blur-xs border-b border-white/10 text-white z-10">
+            <div className="flex items-center gap-2 text-xs font-semibold">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+              <span>{capturedPreview ? "Photo Captured (Review)" : "Live Foliar Camera"}</span>
+            </div>
+            <button
+              type="button"
+              onClick={closeCamera}
+              className="text-white/70 hover:text-white text-xs px-2 py-1 rounded bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              ✕ Cancel
+            </button>
+          </div>
+
+          {/* Viewport Area */}
+          <div className="relative aspect-[4/3] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
+            {/* Live Stream Video */}
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className={`w-full h-full object-contain transition-opacity duration-200 ${
+                capturedPreview ? "hidden" : "block"
+              }`}
+            />
+
+            {/* Captured Preview Image */}
+            {capturedPreview && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={capturedPreview}
+                alt="Captured leaf preview"
+                className="w-full h-full object-contain"
+              />
+            )}
+
+            {/* Framing Guide Reticle (only during live streaming) */}
+            {!capturedPreview && !cameraError && (
+              <div className="pointer-events-none absolute inset-6 sm:inset-10 border-2 border-dashed border-white/40 rounded-[var(--radius-lg)] flex items-center justify-center">
+                <span className="text-[11px] font-medium text-white/75 bg-black/60 px-3 py-1 rounded-full backdrop-blur-xs">
+                  Center plant leaf in frame
+                </span>
+              </div>
+            )}
+
+            {/* Camera Access Error Message */}
+            {cameraError && (
+              <div className="p-6 text-center text-white space-y-3 max-w-sm">
+                <p className="text-sm font-semibold text-red-400">Camera Access Issue</p>
+                <p className="text-xs text-white/80 leading-relaxed">{cameraError}</p>
+                <div className="flex justify-center gap-2 pt-2">
+                  <Button type="button" variant="secondary" size="sm" onClick={startCamera}>
+                    Retry Camera
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    size="sm"
+                    onClick={() => {
+                      closeCamera();
+                      fileInputRef.current?.click();
+                    }}
+                  >
+                    Choose File Instead
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Camera Bottom Action Controls */}
+          {!cameraError && (
+            <div className="p-4 bg-[#000000]/90 border-t border-white/10 flex items-center justify-center gap-3">
+              {!capturedPreview ? (
+                /* Shutter Button */
+                <Button
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  onClick={handleCapturePhoto}
+                  className="gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 shadow-lg"
+                >
+                  <span className="text-base">📸</span>
+                  <span>Capture Photo</span>
+                </Button>
+              ) : (
+                /* Retake vs OK Controls */
+                <div className="flex items-center gap-3 w-full max-w-xs justify-center">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="md"
+                    onClick={handleRetake}
+                    className="flex-1 gap-1.5 font-bold"
+                  >
+                    <span>🔄</span>
+                    <span>Retake</span>
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="primary"
+                    size="md"
+                    onClick={handleConfirmPhoto}
+                    className="flex-1 gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-md"
+                  >
+                    <span>✓</span>
+                    <span>OK</span>
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      ) : !selectedFile ? (
+        /* 2. Standard Dropzone Container */
         <div
           role="button"
           tabIndex={disabled ? -1 : 0}
@@ -187,7 +434,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
               </p>
             </div>
 
-            {/* Mobile / Keyboard actions row */}
+            {/* Actions row: Choose File vs Take Photo */}
             <div
               className="flex flex-wrap items-center justify-center gap-2 pt-2"
               onClick={(e) => e.stopPropagation()}
@@ -203,20 +450,20 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
               </Button>
               <Button
                 type="button"
-                variant="ghost"
+                variant="primary"
                 size="sm"
                 disabled={disabled}
-                onClick={() => cameraInputRef.current?.click()}
-                className="gap-1.5"
+                onClick={startCamera}
+                className="gap-1.5 bg-[var(--forest)] text-white hover:bg-[var(--moss)]"
               >
-                <span>📱</span>
+                <span>📷</span>
                 <span>Take Photo</span>
               </Button>
             </div>
           </div>
         </div>
       ) : (
-        /* Image Preview Box */
+        /* 3. Image Preview Box when File is Selected */
         <div className="relative border border-[var(--border)] rounded-[var(--radius-lg)] bg-[var(--surface)] p-4 shadow-[var(--shadow-warm-sm)]">
           <div className="flex flex-col sm:flex-row items-center gap-4">
             {previewUrl && (
@@ -288,3 +535,4 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
     </div>
   );
 };
+
