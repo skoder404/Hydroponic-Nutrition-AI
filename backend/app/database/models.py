@@ -147,17 +147,17 @@ class Prediction(Base):
         index=True,
     )
     modality: Mapped[str] = mapped_column(String(30), nullable=False)
-    predicted_class: Mapped[str] = mapped_column(String(100), nullable=False)
-    display_label: Mapped[str] = mapped_column(String(100), nullable=False)
+    predicted_class: Mapped[str] = mapped_column(String(255), nullable=False)
+    display_label: Mapped[str] = mapped_column(String(255), nullable=False)
     confidence: Mapped[float | None] = mapped_column(Float, nullable=True)
     confidence_semantics: Mapped[str] = mapped_column(
-        String(50),
+        Text,
         nullable=False,
         default="score",
     )
     uncertain: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
     experimental: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    model_id: Mapped[str] = mapped_column(String(100), nullable=False)
+    model_id: Mapped[str] = mapped_column(String(255), nullable=False)
     model_version: Mapped[str] = mapped_column(String(50), nullable=False)
     preprocessing_version: Mapped[str] = mapped_column(String(50), nullable=False)
     warnings: Mapped[list[Any]] = mapped_column(

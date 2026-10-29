@@ -292,7 +292,7 @@ export class ApiClient {
     if (params.end_date) query.set("end_date", params.end_date);
 
     const qs = query.toString();
-    return `${this.baseUrl}/history/export${qs ? `?${qs}` : ""}`;
+    return `/api/v1/history/export${qs ? `?${qs}` : ""}`;
   }
 
   /**

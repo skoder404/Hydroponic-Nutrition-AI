@@ -106,6 +106,7 @@ export default function HistoryPage() {
               download="history_export.csv"
               className="inline-flex"
               aria-label="Export filtered inspection history to CSV file"
+              suppressHydrationWarning
             >
               <Button variant="secondary" size="sm" type="button">
                 <svg
