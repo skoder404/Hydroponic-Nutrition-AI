@@ -335,7 +335,29 @@ class ImageService:
         )
 
         # Determine dominant pathology across leaves
-        dominant_class = Counter(lp.predicted_class for lp in leaves_predictions).most_common(1)[0][0]
+        # Hydroponic foliar diseases are localized (Rule 16 / §19). If any leaf exhibits a deficiency
+        # or pathology, that pathology takes priority over an asymptomatic or edge leaf.
+        non_healthy_leaves = [
+            lp for lp in leaves_predictions if "healthy" not in lp.predicted_class.lower()
+        ]
+        if non_healthy_leaves:
+            pathology_counts = Counter(lp.predicted_class for lp in non_healthy_leaves)
+            max_cnt = max(pathology_counts.values())
+            candidate_classes = [cls for cls, cnt in pathology_counts.items() if cnt == max_cnt]
+            if len(candidate_classes) == 1:
+                dominant_class = candidate_classes[0]
+            else:
+                dominant_class = max(
+                    candidate_classes,
+                    key=lambda cls: max(
+                        (lp.confidence or 0.0)
+                        for lp in non_healthy_leaves
+                        if lp.predicted_class == cls
+                    ),
+                )
+        else:
+            dominant_class = Counter(lp.predicted_class for lp in leaves_predictions).most_common(1)[0][0]
+
         dominant_display = metadata.display_mapping.get(
             dominant_class, get_display_label(clean_crop, dominant_class, "image")
         )

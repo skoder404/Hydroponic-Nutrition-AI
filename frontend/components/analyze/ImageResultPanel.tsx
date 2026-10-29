@@ -414,7 +414,11 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
                     ? "bg-purple-700 text-[#FFFFFF] border-purple-400"
                     : "bg-rose-700 text-[#FFFFFF] border-rose-400";
 
-                  const confPercent = (leaf.confidence * 100).toFixed(1);
+                  const confPercent =
+                    leaf.confidence !== null && leaf.confidence !== undefined
+                      ? (leaf.confidence * 100).toFixed(1)
+                      : null;
+                  const isNearTop = boxTop < 7;
 
                   return (
                     <div
@@ -430,7 +434,9 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
                     >
                       {/* IN-PICTURE IDENTIFIED CLASS & CONFIDENCE BADGE */}
                       <div
-                        className={`absolute -top-7 sm:-top-8 left-0 flex items-center gap-1.5 px-2.5 py-1 rounded-md sm:rounded-lg text-[11px] sm:text-xs font-bold border shadow-xl backdrop-blur-md z-30 whitespace-nowrap transition-transform duration-150 ${tagBg} ${
+                        className={`absolute ${
+                          isNearTop ? "top-1.5 left-1.5" : "-top-7 sm:-top-8 left-0"
+                        } flex items-center gap-1.5 px-2.5 py-1 rounded-md sm:rounded-lg text-[11px] sm:text-xs font-bold border shadow-xl backdrop-blur-md z-30 whitespace-nowrap transition-transform duration-150 ${tagBg} ${
                           isSelected ? "scale-105 ring-2 ring-white" : ""
                         }`}
                       >
@@ -443,7 +449,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
                           {leaf.display_label || leaf.predicted_class}
                         </span>
 
-                        {showConfidence && (
+                        {showConfidence && confPercent !== null && (
                           <span className="font-mono bg-black/40 px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-semibold text-white/95">
                             {confPercent}%
                           </span>

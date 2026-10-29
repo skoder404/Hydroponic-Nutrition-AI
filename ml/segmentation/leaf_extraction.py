@@ -203,6 +203,26 @@ def compute_bounding_box(mask: np.ndarray) -> Tuple[int, int, int, int]:
     return (x1, y1, x2, y2)
 
 
+def regularize_leaf_mask(mask: np.ndarray, close_kernel_size: int = 15) -> np.ndarray:
+    """Bridge necrotic lesions, leaf spots, and internal holes in plant leaves.
+
+    Plant pathology (e.g. bacterial spot, anthracnose, pest damage) causes dark
+    lesions and perforations inside the leaf blade. A naive binary mask will have
+    internal holes and disconnected boundaries that falsely trip connected-component
+    fragmentation gates. Morphological closing connects the leaf body and retains
+    the largest dominant connected component.
+    """
+    if not np.any(mask):
+        return mask
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (close_kernel_size, close_kernel_size))
+    closed = cv2.morphologyEx(mask.astype(np.uint8), cv2.MORPH_CLOSE, kernel)
+    num_labels, labels, stats, _ = cv2.connectedComponentsWithStats(closed, connectivity=8)
+    if num_labels > 1:
+        largest_idx = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+        return (labels == largest_idx)
+    return closed.astype(bool)
+
+
 def generate_candidate_proposals(
     image: np.ndarray,
     min_area_px: int = 150,
@@ -363,7 +383,7 @@ def extract_leaves(
     if cfg.single_leaf_mode:
         # Segment directly using full-frame center prompt
         seg_res = seg.segment(img_rgb, point_coords=[[w // 2, h // 2]], point_labels=[1])
-        mask = seg_res.mask
+        mask = regularize_leaf_mask(seg_res.mask)
         val_res = validate_mask(mask, config=cfg.validation_config)
 
         bbox = compute_bounding_box(mask)
@@ -418,13 +438,13 @@ def extract_leaves(
             max_proposals=cfg.max_candidate_proposals,
         )
 
-    candidate_results: List[Tuple[SegmentationResult, MaskValidationResult, Tuple[int, int, int, int]]] = []
+    candidate_results: List[Tuple[SegmentationResult, MaskValidationResult, Tuple[int, int, int, int], np.ndarray]] = []
     rejected_list: List[RejectedLeaf] = []
 
     for c_idx, pt in enumerate(prompt_coords):
         cand_id = f"candidate_{c_idx}"
         seg_res = seg.segment(img_rgb, point_coords=[list(pt)], point_labels=[1])
-        mask = seg_res.mask
+        mask = regularize_leaf_mask(seg_res.mask)
         bbox = compute_bounding_box(mask)
         val_res = validate_mask(mask, config=cfg.validation_config)
 
@@ -442,7 +462,7 @@ def extract_leaves(
                 )
             )
         else:
-            candidate_results.append((seg_res, val_res, bbox))
+            candidate_results.append((seg_res, val_res, bbox, mask))
 
     # 3. Duplicate Suppression / Merging & Leaf Capping
     # Sort valid candidates by score descending
@@ -450,9 +470,8 @@ def extract_leaves(
 
     accepted_leaves: List[ExtractedLeaf] = []
 
-    for rank, (seg_res, val_res, bbox) in enumerate(candidate_results):
+    for rank, (seg_res, val_res, bbox, cand_mask) in enumerate(candidate_results):
         cand_id = f"candidate_{rank}"
-        cand_mask = seg_res.mask
         cand_score = seg_res.score
 
         # Check for max_leaves cap

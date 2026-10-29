@@ -154,8 +154,17 @@ export default function AnalyzePage() {
         apiResult = await apiClient.analyze(formData);
       } catch (err: unknown) {
         if (controller.signal.aborted) return;
-        // Backend API offline or non-standard payload; continue to simulation fallback
-        console.warn("Backend API dispatch failed; falling back to client-side pipeline simulation:", err);
+        console.error("Backend API dispatch failed:", err);
+        const errMsg =
+          err instanceof Error
+            ? err.message
+            : "Diagnostic pipeline failed to connect to backend server. Please verify backend is running on port 8000.";
+        setSegmentationError(errMsg);
+        setImagePrediction(null);
+        setSensorPrediction(null);
+        setRecommendation(null);
+        setIsAnalyzing(false);
+        return;
       }
 
       if (controller.signal.aborted) return;
@@ -197,125 +206,6 @@ export default function AnalyzePage() {
         } else {
           setRecommendation(null);
         }
-      } else {
-        // Fallback simulation pipeline
-        setWarnings([]);
-        const isSegFail = Boolean(
-          selectedFile &&
-            (selectedFile.name.toLowerCase().includes("seg_fail") ||
-              selectedFile.name.toLowerCase().includes("fail"))
-        );
-
-        const isSimulatedUncertain = Boolean(
-          (selectedFile && selectedFile.name.toLowerCase().includes("uncertain")) ||
-            (sensorValues.ph !== undefined && (sensorValues.ph < 5.0 || sensorValues.ph > 8.0))
-        );
-
-        if (isSegFail) {
-          setSegmentationError(
-            "No distinct plant leaves could be isolated from this image. This is strictly an image processing / input failure (e.g. lighting, blur, or framing), NOT a plant disease or nutrient deficiency diagnosis."
-          );
-          setImagePrediction(null);
-        } else if (analysisMode === "image" || analysisMode === "both") {
-          setSegmentationError(null);
-          setImagePrediction({
-            crop: selectedCrop,
-            modality: "image",
-            model_name: `${selectedCrop}_custom_cnn`,
-            model_version: "v1.0.0",
-            predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-            display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-            confidence: isSimulatedUncertain ? 0.52 : 0.912,
-            is_uncertain: isSimulatedUncertain,
-            inference_time_ms: 184,
-            evidence: {},
-            leaf_count: 3,
-            leaves: [
-              {
-                leaf_id: "leaf_01",
-                contour_area: 14200,
-                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-                confidence: isSimulatedUncertain ? 0.48 : 0.942,
-                is_uncertain: isSimulatedUncertain,
-              },
-              {
-                leaf_id: "leaf_02",
-                contour_area: 12850,
-                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-                confidence: isSimulatedUncertain ? 0.54 : 0.884,
-                is_uncertain: isSimulatedUncertain,
-              },
-              {
-                leaf_id: "leaf_03",
-                contour_area: 9100,
-                predicted_class: `${selectedCrop.charAt(0).toUpperCase() + selectedCrop.slice(1)}_Healthy`,
-                display_label: isSimulatedUncertain ? "Uncertain Foliage Condition" : "Healthy Foliage",
-                confidence: isSimulatedUncertain ? 0.51 : 0.909,
-                is_uncertain: isSimulatedUncertain,
-              },
-            ],
-            rejected_leaves: [
-              {
-                leaf_id: "leaf_04",
-                reason: "Contour area below minimum 500px threshold",
-              },
-            ],
-          });
-        } else {
-          setSegmentationError(null);
-          setImagePrediction(null);
-        }
-
-        if (analysisMode === "sensor" || analysisMode === "both") {
-          setSensorPrediction({
-            crop: selectedCrop,
-            modality: "sensor",
-            model_name: `${selectedCrop}_sensor_v1.0.0`,
-            model_version: "1.0.0",
-            predicted_class: "Normal",
-            display_label: "Optimal Nutrient Balance",
-            confidence: 0.895,
-            is_uncertain: false,
-            inference_time_ms: 14,
-            evidence: {
-              inputs: sensorValues,
-              experimental: selectedCrop === "tomato",
-            },
-          });
-        } else {
-          setSensorPrediction(null);
-        }
-
-        // Step 4: Recommending
-        setCurrentStep("recommending");
-        await new Promise((resolve) => setTimeout(resolve, 300));
-        if (controller.signal.aborted) return;
-
-        setRecommendation({
-          recommendation_id: `rec_${Date.now()}`,
-          crop: selectedCrop,
-          summary: `Nutrient parameters and foliar condition for ${selectedCrop} are within stable agronomic reference thresholds. Maintain routine reservoir recirculating cycles.`,
-          source: "rules",
-          generated_at: new Date().toISOString(),
-          evidence_citations: [
-            `pH ${sensorValues.ph || 6.2} within normal band [5.5 - 6.5]`,
-            `EC ${sensorValues.ec || 1.6} mS/cm within normal band [1.2 - 2.2]`,
-          ],
-          actions: [
-            {
-              parameter: "ph",
-              current_reading: sensorValues.ph || 6.2,
-              target_range: [5.8, 6.4],
-              action_type: "maintain",
-              adjustment_amount: 0,
-              unit: "pH",
-              urgency: "advisory",
-              rationale: "Solution pH is stabilized within target root absorption range.",
-            },
-          ],
-        });
       }
 
       setCurrentStep("complete");

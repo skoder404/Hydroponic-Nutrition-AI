@@ -30,7 +30,7 @@ export class ApiClient {
         : "http://localhost:8000/api/v1");
     // Strip trailing slash if present
     this.baseUrl = this.baseUrl.replace(/\/+$/, "");
-    this.defaultTimeoutMs = config.defaultTimeoutMs ?? 15000;
+    this.defaultTimeoutMs = config.defaultTimeoutMs ?? 60000;
   }
 
   /**
