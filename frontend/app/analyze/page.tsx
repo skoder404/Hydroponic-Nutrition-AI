@@ -74,9 +74,10 @@ export default function AnalyzePage() {
   );
   const [sensorValid, setSensorValid] = useState<boolean>(true);
 
-  // Campus Device Telemetry State
+  // Campus Device Telemetry & Live Camera State
   const [deviceStatus, setDeviceStatus] = useState<DeviceStatusResponse | null>(null);
   const [deviceError, setDeviceError] = useState<boolean>(false);
+  const [cameraRefreshKey, setCameraRefreshKey] = useState<number>(0);
 
   // Execution & Progress State
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
@@ -91,40 +92,44 @@ export default function AnalyzePage() {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
 
+  const fetchCampusTelemetry = useCallback(() => {
+    apiClient
+      .getDeviceStatus()
+      .then((status) => {
+        setDeviceStatus(status);
+        const isConnected =
+          status.status === "ok" ||
+          status.connected === true ||
+          Boolean(status.readings && Object.keys(status.readings).length > 0);
+        setDeviceError(!isConnected);
+
+        // If live telemetry is available, automatically populate form!
+        if (isConnected && status.readings) {
+          const liveVals: Record<string, number> = {};
+          for (const [k, v] of Object.entries(status.readings)) {
+            if (v && typeof v.value === "number") {
+              liveVals[k] = v.value;
+            }
+          }
+          if (Object.keys(liveVals).length > 0) {
+            setSensorValues((prev) => ({ ...prev, ...liveVals }));
+            setSensorValid(true);
+          }
+        }
+      })
+      .catch(() => {
+        setDeviceError(true);
+      });
+  }, []);
+
   // Fetch campus device status when switching to campus_live
   useEffect(() => {
     if (sourceProvenance === "campus_live") {
-      apiClient
-        .getDeviceStatus()
-        .then((status) => {
-          setDeviceStatus(status);
-          const isConnected =
-            status.status === "ok" ||
-            status.connected === true ||
-            Boolean(status.readings && Object.keys(status.readings).length > 0);
-          setDeviceError(!isConnected);
-
-          // If live telemetry is available, automatically populate form!
-          if (isConnected && status.readings) {
-            const liveVals: Record<string, number> = {};
-            for (const [k, v] of Object.entries(status.readings)) {
-              if (v && typeof v.value === "number") {
-                liveVals[k] = v.value;
-              }
-            }
-            if (Object.keys(liveVals).length > 0) {
-              setSensorValues((prev) => ({ ...prev, ...liveVals }));
-              setSensorValid(true);
-            }
-          }
-        })
-        .catch(() => {
-          setDeviceError(true);
-        });
+      fetchCampusTelemetry();
     } else {
       setDeviceError(false);
     }
-  }, [sourceProvenance]);
+  }, [sourceProvenance, fetchCampusTelemetry]);
 
   // Manage Image Object URL
   useEffect(() => {
@@ -563,15 +568,50 @@ export default function AnalyzePage() {
                   <Badge variant="upload">Dual-stage YOLO + CNN</Badge>
                 </div>
 
-                <InputModeToggle
-                  value={inputMode}
-                  onChange={setInputMode}
-                />
+                {sourceProvenance === "campus_live" ? (
+                  <div className="space-y-3">
+                    <div className="relative rounded-[var(--radius-md)] overflow-hidden border border-[var(--border)] bg-[#111111] aspect-[16/9] flex items-center justify-center">
+                      <img
+                        key={cameraRefreshKey}
+                        src={`/api/v1/device/camera/frame?t=${cameraRefreshKey}`}
+                        alt="Campus Greenhouse Live Camera Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = "none";
+                        }}
+                      />
+                      <div className="absolute top-3 left-3 flex items-center gap-2 bg-[#000000]/75 backdrop-blur-xs px-2.5 py-1 rounded text-white text-xs font-semibold">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                        LIVE CANOPY FEED
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setCameraRefreshKey((k) => k + 1)}
+                        className="absolute bottom-3 right-3 bg-[var(--surface)]/90 hover:bg-[var(--surface)] text-[var(--bark)] text-xs font-semibold px-3 py-1.5 rounded shadow-sm border border-[var(--border)] transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Refresh Snapshot
+                      </button>
+                    </div>
+                    <p className="text-xs text-[var(--stone)] leading-relaxed">
+                      Streaming from polyhouse CPPLUS IP camera. When you click <strong>Execute Analysis</strong> below, this active frame is captured in real-time and evaluated by the multi-leaf segmentation model.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <InputModeToggle
+                      value={inputMode}
+                      onChange={setInputMode}
+                    />
 
-                <ImageDropzone
-                  selectedFile={selectedFile}
-                  onFileSelected={setSelectedFile}
-                />
+                    <ImageDropzone
+                      selectedFile={selectedFile}
+                      onFileSelected={setSelectedFile}
+                    />
+                  </>
+                )}
               </Card>
             )}
 
@@ -586,6 +626,23 @@ export default function AnalyzePage() {
                     <Badge variant="experimental">Experimental</Badge>
                   )}
                 </div>
+
+                {sourceProvenance === "campus_live" && !deviceError && (
+                  <div className="p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-[var(--radius-md)] text-xs text-emerald-900 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="font-semibold">Populated from Live Campus IoT Gateway</span>
+                      <span className="text-emerald-700 font-mono text-[11px]">(Fresh)</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={fetchCampusTelemetry}
+                      className="text-emerald-800 font-medium underline hover:text-emerald-950 text-xs cursor-pointer"
+                    >
+                      Refresh Telemetry
+                    </button>
+                  </div>
+                )}
 
                 <SensorForm
                   crop={selectedCrop}
@@ -634,8 +691,20 @@ export default function AnalyzePage() {
                 {(analysisMode === "image" || analysisMode === "both") && (
                   <div className="flex justify-between py-1 border-b border-[var(--border)]/50">
                     <span className="text-[var(--stone)] font-medium">Foliar Photo:</span>
-                    <span className={`font-mono font-semibold ${selectedFile ? "text-[var(--forest)]" : "text-[var(--clay)]"}`}>
-                      {selectedFile ? selectedFile.name : "Missing (Required)"}
+                    <span
+                      className={`font-mono font-semibold ${
+                        sourceProvenance === "campus_live" && !deviceError
+                          ? "text-[var(--forest)]"
+                          : selectedFile
+                          ? "text-[var(--forest)]"
+                          : "text-[var(--clay)]"
+                      }`}
+                    >
+                      {sourceProvenance === "campus_live" && !deviceError
+                        ? "Live Polyhouse Camera Stream"
+                        : selectedFile
+                        ? selectedFile.name
+                        : "Missing (Required)"}
                     </span>
                   </div>
                 )}

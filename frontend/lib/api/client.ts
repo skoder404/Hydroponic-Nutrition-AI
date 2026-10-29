@@ -318,6 +318,13 @@ export class ApiClient {
   async getDeviceStatus(): Promise<DeviceStatusResponse> {
     return this.request<DeviceStatusResponse>("/device/status");
   }
+
+  /**
+   * Return direct URL for streaming/fetching the latest live camera frame.
+   */
+  getCameraFrameUrl(): string {
+    return `${this.baseUrl}/device/camera/frame`;
+  }
 }
 
 /**
