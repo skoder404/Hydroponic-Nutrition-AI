@@ -207,6 +207,7 @@ class ImageService:
         extract_cfg = LeafExtractionConfig(
             single_leaf_mode=is_single_leaf,
             max_leaves=max_leaves,
+            merge_duplicates=True,
             validation_config=extract_leaves.__globals__["MaskValidationConfig"](
                 min_area_ratio=0.005 if is_single_leaf else 0.003,
                 max_area_ratio=0.95 if is_single_leaf else 0.85,
@@ -313,10 +314,21 @@ class ImageService:
             # Calibrated uncertainty check
             is_uncertain = bool(confidence < moderate_thresh)
 
+            # Compute normalized bounding box in [0.0, 1.0] for exact responsive canvas alignment
+            x1, y1, x2, y2 = leaf.bounding_box
+            norm_bbox = [
+                round(float(x1) / float(w), 4),
+                round(float(y1) / float(h), 4),
+                round(float(x2) / float(w), 4),
+                round(float(y2) / float(h), 4),
+            ]
+            seg_area = int(np.count_nonzero(leaf.mask)) if hasattr(leaf, "mask") and leaf.mask is not None else None
+
             leaves_predictions.append(
                 LeafPrediction(
                     leaf_id=leaf_id,
-                    bbox=list(leaf.bounding_box),
+                    bbox=norm_bbox,
+                    contour_area=seg_area,
                     mask_ref=None,
                     predicted_class=pred_class,
                     display_label=display_label,

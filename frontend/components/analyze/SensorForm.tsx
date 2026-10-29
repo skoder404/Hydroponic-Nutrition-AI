@@ -247,10 +247,13 @@ export const SensorForm: React.FC<SensorFormProps> = ({
   const [warnings, setWarnings] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  // Reset / sync form values only when crop switches
+  // Sync form values when crop switches or when external initialValues (e.g. campus telemetry) load
+  const lastInitialRef = useRef<string>("");
   const lastCropRef = useRef<SupportedCrop>(crop);
   useEffect(() => {
-    if (lastCropRef.current !== crop) {
+    const serializedInit = JSON.stringify(initialValues || {}) + ":" + crop;
+    if (serializedInit !== lastInitialRef.current) {
+      lastInitialRef.current = serializedInit;
       lastCropRef.current = crop;
       const newValues: Record<string, string> = {};
       for (const f of fields) {
@@ -260,7 +263,6 @@ export const SensorForm: React.FC<SensorFormProps> = ({
       setValues(newValues);
       setErrors({});
       setWarnings({});
-      setTouched({});
     }
   }, [crop, fields, initialValues]);
 

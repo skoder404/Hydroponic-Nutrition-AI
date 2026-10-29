@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
@@ -63,6 +63,19 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
   const [selectedLeafIndex, setSelectedLeafIndex] = useState<number | null>(null);
   const [naturalSize, setNaturalSize] = useState<{ width: number; height: number } | null>(null);
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      if (imgRef.current.naturalWidth && imgRef.current.naturalHeight) {
+        setNaturalSize({
+          width: imgRef.current.naturalWidth,
+          height: imgRef.current.naturalHeight,
+        });
+        setAspectRatio(imgRef.current.naturalWidth / imgRef.current.naturalHeight);
+      }
+    }
+  }, [imageUrl]);
 
   // Extract leaves and rejected leaves safely
   const leaves: LeafPrediction[] = prediction?.leaves || [];
@@ -325,6 +338,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
               {/* Plant Image Element */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
+                ref={imgRef}
                 src={imageUrl}
                 alt="Hydroponic plant foliage evaluated for nutrient deficiency"
                 className="w-full h-full object-contain block select-none"
@@ -656,7 +670,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
           <div className="space-y-2">
             {rejectedLeaves.map((rejected, idx) => (
               <div
-                key={rejected.leaf_id || idx}
+                key={rejected.leaf_id ? `${rejected.leaf_id}-${idx}` : `rejected-${idx}`}
                 className="flex items-start justify-between gap-3 p-2.5 rounded bg-[var(--surface)] border border-[var(--border)] text-xs"
               >
                 <div className="flex items-center gap-2">

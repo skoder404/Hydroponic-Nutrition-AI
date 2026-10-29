@@ -320,6 +320,27 @@ export class ApiClient {
   }
 
   /**
+   * Fetch latest mapped sensor readings strictly conforming to crop schema.
+   */
+  async getLatestSensors(crop: string = "lettuce"): Promise<{
+    crop: string;
+    source: string;
+    readings: Record<string, number>;
+    is_mock: boolean;
+    experimental: boolean;
+    warnings: string[];
+  }> {
+    return this.request<{
+      crop: string;
+      source: string;
+      readings: Record<string, number>;
+      is_mock: boolean;
+      experimental: boolean;
+      warnings: string[];
+    }>(`/device/sensors/latest?crop=${encodeURIComponent(crop)}`);
+  }
+
+  /**
    * Return direct URL for streaming/fetching the latest live camera frame.
    */
   getCameraFrameUrl(): string {

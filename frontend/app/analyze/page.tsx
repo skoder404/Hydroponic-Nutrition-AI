@@ -92,7 +92,8 @@ export default function AnalyzePage() {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [analysisComplete, setAnalysisComplete] = useState<boolean>(false);
 
-  const fetchCampusTelemetry = useCallback(() => {
+  const fetchCampusTelemetry = useCallback((cropToFetch?: SupportedCrop) => {
+    const targetCrop = cropToFetch || selectedCrop;
     apiClient
       .getDeviceStatus()
       .then((status) => {
@@ -103,50 +104,78 @@ export default function AnalyzePage() {
           Boolean(status.readings && Object.keys(status.readings).length > 0);
         setDeviceError(!isConnected);
 
-        // If live telemetry is available, automatically populate form!
-        if (isConnected && status.readings) {
-          const liveVals: Record<string, number> = {};
-          for (const [k, v] of Object.entries(status.readings)) {
-            if (v && typeof v.value === "number") {
-              liveVals[k] = v.value;
-            }
-          }
-          if (Object.keys(liveVals).length > 0) {
-            setSensorValues((prev) => ({ ...prev, ...liveVals }));
-            setSensorValid(true);
-          }
+        if (isConnected) {
+          // Fetch accurately mapped sensor schema for the target crop
+          apiClient
+            .getLatestSensors(targetCrop)
+            .then((sensorData) => {
+              if (sensorData && sensorData.readings && Object.keys(sensorData.readings).length > 0) {
+                const liveMap: Record<string, number> = {};
+                for (const [k, v] of Object.entries(sensorData.readings)) {
+                  if (typeof v === "number") liveMap[k] = v;
+                }
+                setSensorValues(liveMap);
+                setSensorValid(true);
+              }
+            })
+            .catch(() => {
+              // Fallback to unpacking device status readings if latest sensors route fails
+              if (status.readings) {
+                const liveVals: Record<string, number> = {};
+                for (const [k, v] of Object.entries(status.readings)) {
+                  if (v && typeof v.value === "number") {
+                    liveVals[k] = v.value;
+                  }
+                }
+                if (Object.keys(liveVals).length > 0) {
+                  setSensorValues((prev) => ({ ...prev, ...liveVals }));
+                  setSensorValid(true);
+                }
+              }
+            });
         }
       })
       .catch(() => {
         setDeviceError(true);
       });
-  }, []);
+  }, [selectedCrop]);
 
-  // Fetch campus device status when switching to campus_live
+  // Fetch campus device status and live camera preview when switching to campus_live
   useEffect(() => {
     if (sourceProvenance === "campus_live") {
-      fetchCampusTelemetry();
+      fetchCampusTelemetry(selectedCrop);
+      setImagePreviewUrl(`/api/v1/device/camera/frame?t=${Date.now()}`);
     } else {
       setDeviceError(false);
+      if (selectedFile) {
+        const url = URL.createObjectURL(selectedFile);
+        setImagePreviewUrl(url);
+      } else {
+        setImagePreviewUrl(null);
+      }
     }
-  }, [sourceProvenance, fetchCampusTelemetry]);
+  }, [sourceProvenance, selectedCrop, fetchCampusTelemetry]);
 
-  // Manage Image Object URL
+  // Manage Image Object URL in manual mode
   useEffect(() => {
-    if (selectedFile) {
-      const url = URL.createObjectURL(selectedFile);
-      setImagePreviewUrl(url);
-      return () => URL.revokeObjectURL(url);
-    } else {
-      setImagePreviewUrl(null);
+    if (sourceProvenance === "manual") {
+      if (selectedFile) {
+        const url = URL.createObjectURL(selectedFile);
+        setImagePreviewUrl(url);
+        return () => URL.revokeObjectURL(url);
+      } else {
+        setImagePreviewUrl(null);
+      }
     }
-  }, [selectedFile]);
+  }, [selectedFile, sourceProvenance]);
 
-  // Synchronize default sensor values when selectedCrop changes
+  // Synchronize default sensor values when selectedCrop changes in manual mode
   useEffect(() => {
-    setSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
-    setSensorValid(true);
-  }, [selectedCrop]);
+    if (sourceProvenance === "manual") {
+      setSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
+      setSensorValid(true);
+    }
+  }, [selectedCrop, sourceProvenance]);
 
   const handleSensorChange = useCallback((readings: Record<string, number>, isValid: boolean) => {
     setSensorValues((prev) => {
@@ -178,9 +207,15 @@ export default function AnalyzePage() {
   const handleExecuteAnalysis = async (overrideSensors?: Record<string, number>) => {
     const effectiveSensors = overrideSensors || sensorValues;
     const hasSensors = Object.keys(effectiveSensors).length > 0;
-    const effectiveSensorValid = Boolean(analysisMode === "image" || hasSensors);
+    const isDirectSensorSubmit = Boolean(overrideSensors);
+    const activeExecMode =
+      isDirectSensorSubmit && !selectedFile && sourceProvenance !== "campus_live"
+        ? "sensor"
+        : analysisMode;
+
+    const effectiveSensorValid = Boolean(activeExecMode === "image" || hasSensors);
     const effectiveImageValid = Boolean(
-      analysisMode === "sensor" ||
+      activeExecMode === "sensor" ||
       (selectedFile && inputMode !== null) ||
       (sourceProvenance === "campus_live" && !deviceError)
     );
@@ -209,7 +244,7 @@ export default function AnalyzePage() {
       const formData = new FormData();
       formData.append("crop", selectedCrop);
 
-      if (analysisMode === "image" || analysisMode === "both") {
+      if (activeExecMode === "image" || activeExecMode === "both") {
         if (inputMode) {
           const apiMode = inputMode === "single_leaf" ? "leaf" : "plant";
           formData.append("input_mode", apiMode);
@@ -221,9 +256,17 @@ export default function AnalyzePage() {
         }
       }
 
-      if (analysisMode === "sensor" || analysisMode === "both") {
+      if (activeExecMode === "sensor" || activeExecMode === "both") {
         formData.append("sensor_readings", JSON.stringify(effectiveSensors));
       }
+
+      // Progress animation during deep inference pipeline
+      const stepTimer1 = setTimeout(() => {
+        if (!controller.signal.aborted) setCurrentStep("classifying");
+      }, 5000);
+      const stepTimer2 = setTimeout(() => {
+        if (!controller.signal.aborted) setCurrentStep("recommending");
+      }, 12000);
 
       let apiResult: import("../../lib/api/types").AnalyzeResponse | null = null;
       try {
@@ -241,9 +284,17 @@ export default function AnalyzePage() {
         setRecommendation(null);
         setIsAnalyzing(false);
         return;
+      } finally {
+        clearTimeout(stepTimer1);
+        clearTimeout(stepTimer2);
       }
 
       if (controller.signal.aborted) return;
+
+      // Ensure live preview reflects newly evaluated frame
+      if (sourceProvenance === "campus_live") {
+        setImagePreviewUrl(`/api/v1/device/camera/frame?t=${Date.now()}`);
+      }
 
       // Step 3: Classifying
       setCurrentStep("classifying");
@@ -646,7 +697,11 @@ export default function AnalyzePage() {
 
                 <SensorForm
                   crop={selectedCrop}
-                  initialValues={DEFAULT_CROP_SENSOR_VALUES[selectedCrop]}
+                  initialValues={
+                    sourceProvenance === "campus_live" && Object.keys(sensorValues).length > 0
+                      ? sensorValues
+                      : DEFAULT_CROP_SENSOR_VALUES[selectedCrop]
+                  }
                   onChange={handleSensorChange}
                   onSubmit={(readings: Record<string, number>) => {
                     setSensorValues(readings);

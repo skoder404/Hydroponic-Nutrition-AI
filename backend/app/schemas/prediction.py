@@ -22,10 +22,15 @@ class LeafPrediction(BaseModel):
         description="Unique identifier for the leaf instance within the image (e.g. leaf_001)",
         examples=["leaf_001"],
     )
-    bbox: list[int] = Field(
+    bbox: list[int | float] = Field(
         ...,
-        description="Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel format",
+        description="Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel or normalized format",
         examples=[[42, 58, 280, 310]],
+    )
+    contour_area: int | None = Field(
+        None,
+        description="Segment area in pixels",
+        examples=[14200],
     )
     mask_ref: str | None = Field(
         None,

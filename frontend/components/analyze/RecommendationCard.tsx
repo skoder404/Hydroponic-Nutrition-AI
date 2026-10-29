@@ -40,9 +40,10 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   const isGemini = recommendation.source === "gemini";
   const content = (recommendation as any).content || {};
   const summaryText =
-    recommendation.summary ||
-    content.summary ||
-    (typeof content === "string" ? content : "Nutrient telemetry and foliar conditions evaluated.");
+    (typeof recommendation.summary === "string" && recommendation.summary.trim()) ||
+    (typeof content.summary === "string" && content.summary.trim()) ||
+    (typeof content === "string" && content.trim() ? content : "") ||
+    "Nutrient telemetry and foliar conditions evaluated. No acute imbalance detected.";
 
   const rawActions: any[] =
     (recommendation.actions && recommendation.actions.length > 0
@@ -71,10 +72,16 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     [];
 
   const rawDate = recommendation.generated_at || (recommendation as any).created_at;
-  const parsedDate = rawDate ? new Date(rawDate) : new Date();
-  const timeFormatted = !isNaN(parsedDate.getTime())
-    ? parsedDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-    : new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  let timeFormatted = "";
+  if (rawDate) {
+    const parsed = new Date(rawDate);
+    if (!isNaN(parsed.getTime())) {
+      timeFormatted = parsed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+  }
+  if (!timeFormatted) {
+    timeFormatted = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  }
 
   return (
     <Card
