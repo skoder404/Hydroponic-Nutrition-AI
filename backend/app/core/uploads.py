@@ -20,6 +20,7 @@ from pathlib import Path
 
 from fastapi import UploadFile
 from PIL import Image, ImageOps, UnidentifiedImageError
+from starlette.datastructures import UploadFile as StarletteUploadFile
 
 from backend.app.core.config import get_settings
 from backend.app.core.errors import (
@@ -329,7 +330,7 @@ def validate_and_save_image(
 
 
 async def validate_upload_file(
-    upload_file: UploadFile,
+    upload_file: UploadFile | StarletteUploadFile,
     max_upload_mb: int | None = None,
     uploads_dir: Path | str | None = None,
 ) -> ValidatedUpload:
