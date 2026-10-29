@@ -162,6 +162,18 @@ export interface DeviceStatusResponse {
 // Historical Records (GET / POST /api/v1/history)
 // =============================================================================
 
+export interface PersistedRecommendation {
+  id?: string;
+  record_id?: string;
+  source?: "gemini" | "rules" | string;
+  rules_version?: string;
+  summary?: string;
+  content?: Record<string, unknown>;
+  evidence?: Record<string, unknown>;
+  actions?: RecommendationAction[];
+  generated_at?: string;
+}
+
 export interface RecordCreate {
   crop: "lettuce" | "spinach" | "tomato" | string;
   mode: "sensor" | "image" | "both";
@@ -171,14 +183,17 @@ export interface RecordCreate {
   notes?: string | null;
   inputs?: Record<string, unknown> | null;
   predictions?: PredictionResponse[] | PredictionResponse | null;
-  recommendation?: Record<string, unknown> | RecommendationResponse | null;
-  recommendations?: Record<string, unknown> | RecommendationResponse | null;
+  recommendation?: RecommendationResponse | PersistedRecommendation | null;
+  recommendations?: RecommendationResponse | PersistedRecommendation | null;
 }
 
-export interface RecordRead extends RecordCreate {
+export interface RecordRead extends Omit<RecordCreate, "predictions" | "recommendation" | "recommendations"> {
   id: string;
   created_at: string;
   historical?: boolean;
+  predictions?: PredictionResponse[];
+  recommendation?: RecommendationResponse | PersistedRecommendation | null;
+  recommendations?: RecommendationResponse | PersistedRecommendation | null;
 }
 
 export interface HistoryQueryParams {

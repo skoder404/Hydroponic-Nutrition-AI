@@ -345,6 +345,7 @@ export default function AnalyzePage() {
       }
 
       setCurrentStep("complete");
+      setAnalysisTimestamp(new Date().toISOString());
       setAnalysisComplete(true);
     } catch {
       // Aborted or failure
@@ -370,12 +371,21 @@ export default function AnalyzePage() {
     setSensorPrediction(null);
     setRecommendation(null);
     setWarnings([]);
+    setAnalysisTimestamp("");
   };
 
   const [mountedAt, setMountedAt] = useState<string>("");
+  const [analysisTimestamp, setAnalysisTimestamp] = useState<string>("");
+  const [userTimeZone, setUserTimeZone] = useState<string>("UTC");
 
   useEffect(() => {
     setMountedAt(new Date().toISOString());
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz) setUserTimeZone(tz);
+    } catch {
+      setUserTimeZone("UTC");
+    }
   }, []);
 
   // Collect all valid predictions from current analysis
@@ -388,11 +398,8 @@ export default function AnalyzePage() {
     crop: selectedCrop,
     mode: analysisMode,
     source: sourceProvenance === "campus_live" ? "live" : "manual",
-    observed_at: mountedAt || new Date().toISOString(),
-    observed_tz:
-      typeof window !== "undefined"
-        ? Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
-        : "UTC",
+    observed_at: analysisTimestamp || mountedAt || "2026-10-29T00:00:00.000Z",
+    observed_tz: userTimeZone,
     inputs: {
       ...sensorValues,
       ...(selectedFile ? { file_name: selectedFile.name } : {}),

@@ -364,7 +364,7 @@ function RecordDetailContent() {
             </Badge>
           </div>
           <p className="text-sm text-[var(--bark)] leading-relaxed">
-            {record.recommendations.summary}
+            {record.recommendations.summary || ""}
           </p>
         </Card>
       )}
