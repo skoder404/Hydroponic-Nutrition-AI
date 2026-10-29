@@ -214,6 +214,7 @@ export const CROP_SENSOR_SCHEMAS: Record<SupportedCrop, SensorFieldDef[]> = {
 export interface SensorFormProps {
   crop: SupportedCrop;
   onSubmit: (readings: Record<string, number>, provenance: ProvenanceSource) => void;
+  onChange?: (readings: Record<string, number>, isValid: boolean) => void;
   isLoading?: boolean;
   initialValues?: Record<string, number | null | undefined>;
   onReset?: () => void;
@@ -223,6 +224,7 @@ export interface SensorFormProps {
 export const SensorForm: React.FC<SensorFormProps> = ({
   crop,
   onSubmit,
+  onChange,
   isLoading = false,
   initialValues,
   onReset,
@@ -257,6 +259,25 @@ export const SensorForm: React.FC<SensorFormProps> = ({
     setWarnings({});
     setTouched({});
   }, [crop]);
+
+  // Synchronize live field modifications to parent container in real-time
+  useEffect(() => {
+    if (!onChange) return;
+    const numericReadings: Record<string, number> = {};
+    let allValid = true;
+    for (const f of fields) {
+      const raw = values[f.name];
+      if (raw !== undefined && raw.trim() !== "") {
+        const num = Number(raw.trim());
+        if (!isNaN(num)) {
+          numericReadings[f.name] = num;
+        } else {
+          allValid = false;
+        }
+      }
+    }
+    onChange(numericReadings, allValid);
+  }, [values, onChange, fields]);
 
   // Validate an individual field against hard bounds and normal bands
   const validateField = (fieldName: string, rawVal: string): { error?: string; warning?: string } => {

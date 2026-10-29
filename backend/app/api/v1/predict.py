@@ -185,7 +185,9 @@ async def predict_image(
         )
 
     clean_mode = str(input_mode).strip().lower()
-    if clean_mode not in ("leaf", "plant"):
+    if clean_mode in ("single_leaf", "single-leaf", "leaf"):
+        clean_mode = "leaf"
+    elif clean_mode not in ("leaf", "plant"):
         raise InvalidInputError(
             message=f"Invalid input_mode '{input_mode}'. Must be 'leaf' or 'plant'.",
             details={

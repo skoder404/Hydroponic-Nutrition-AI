@@ -30,25 +30,48 @@ import {
 export type AnalysisMode = "both" | "image" | "sensor";
 export type SourceProvenance = "manual" | "campus_live";
 
+const DEFAULT_CROP_SENSOR_VALUES: Record<SupportedCrop, Record<string, number>> = {
+  lettuce: {
+    ph: 6.0,
+    ec: 1.6,
+    water_temp: 21.0,
+    humidity: 65.0,
+    air_temp: 22.5,
+  },
+  spinach: {
+    air_temperature_C: 20.0,
+    relative_humidity_percent: 60.0,
+    water_temperature_C: 19.5,
+    ph: 6.2,
+    ec_mS_cm: 2.0,
+  },
+  tomato: {
+    air_temperature_C: 24.0,
+    relative_humidity_percent: 65.0,
+    water_temperature_C: 22.0,
+    ph: 6.2,
+    ec_mS_cm: 2.8,
+    nitrogen_mg_L: 180.0,
+    phosphorus_mg_L: 50.0,
+    potassium_mg_L: 280.0,
+  },
+};
+
 export default function AnalyzePage() {
   // Configuration State
   const [selectedCrop, setSelectedCrop] = useState<SupportedCrop>("lettuce");
   const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("both");
   const [sourceProvenance, setSourceProvenance] = useState<SourceProvenance>("manual");
 
-  // Image Inputs
+  // Image Inputs: Default to single leaf for typical user leaf captures
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
-  const [inputMode, setInputMode] = useState<InputMode | null>("plant");
+  const [inputMode, setInputMode] = useState<InputMode | null>("single_leaf");
 
-  // Sensor Inputs
-  const [sensorValues, setSensorValues] = useState<Record<string, number | undefined>>({
-    ph: 6.2,
-    ec: 1.6,
-    water_temp: 21.0,
-    humidity: 65.0,
-    air_temp: 23.5,
-  });
+  // Sensor Inputs synchronized to crop schema
+  const [sensorValues, setSensorValues] = useState<Record<string, number | undefined>>(
+    DEFAULT_CROP_SENSOR_VALUES.lettuce
+  );
   const [sensorValid, setSensorValid] = useState<boolean>(true);
 
   // Campus Device Telemetry State
@@ -96,6 +119,12 @@ export default function AnalyzePage() {
     }
   }, [selectedFile]);
 
+  // Synchronize default sensor values when selectedCrop changes
+  useEffect(() => {
+    setSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
+    setSensorValid(true);
+  }, [selectedCrop]);
+
   // Validation Check: Acceptance Criterion 1: Analyze is disabled until required inputs validate
   const isImageValid = Boolean(
     analysisMode === "sensor" ||
@@ -136,7 +165,8 @@ export default function AnalyzePage() {
 
       if (analysisMode === "image" || analysisMode === "both") {
         if (inputMode) {
-          formData.append("input_mode", inputMode);
+          const apiMode = inputMode === "single_leaf" ? "leaf" : "plant";
+          formData.append("input_mode", apiMode);
         }
         if (sourceProvenance === "campus_live") {
           formData.append("use_campus_frame", "true");
@@ -518,6 +548,11 @@ export default function AnalyzePage() {
 
                 <SensorForm
                   crop={selectedCrop}
+                  initialValues={sensorValues}
+                  onChange={(readings: Record<string, number>, isValid: boolean) => {
+                    setSensorValues(readings);
+                    setSensorValid(isValid);
+                  }}
                   onSubmit={(readings: Record<string, number>) => {
                     setSensorValues(readings);
                     setSensorValid(true);

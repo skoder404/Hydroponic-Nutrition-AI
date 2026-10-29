@@ -116,9 +116,11 @@ async def analyze(
         )
 
     clean_mode = input_mode.strip().lower() if input_mode else "plant"
-    if clean_mode not in ("leaf", "plant"):
+    if clean_mode in ("single_leaf", "single-leaf", "leaf"):
+        clean_mode = "leaf"
+    elif clean_mode not in ("leaf", "plant"):
         raise InvalidInputError(
-            message=f"Invalid input_mode '{input_mode}'. Must be either 'leaf' or 'plant'.",
+            message=f"Invalid input_mode '{input_mode}'. Must be either 'leaf' (or 'single_leaf') or 'plant'.",
             details={"field": "input_mode", "provided": input_mode},
         )
 

@@ -489,53 +489,40 @@ def extract_leaves(
             )
             continue
 
-        # Check IoU overlap against already accepted leaves
+        # Check IoU and containment overlap against already accepted leaves
         is_duplicate = False
         duplicate_primary_id = ""
         duplicate_iou = 0.0
 
         for accepted in accepted_leaves:
             iou = compute_mask_iou(cand_mask, accepted.mask)
-            if iou >= cfg.iou_overlap_threshold:
+            intersection = int(np.count_nonzero(cand_mask & accepted.mask))
+            min_area = min(int(np.count_nonzero(cand_mask)), int(np.count_nonzero(accepted.mask)))
+            containment = intersection / float(min_area) if min_area > 0 else 0.0
+
+            if iou >= cfg.iou_overlap_threshold or containment >= 0.40:
                 is_duplicate = True
                 duplicate_primary_id = accepted.leaf_id
-                duplicate_iou = iou
+                duplicate_iou = max(iou, containment)
                 break
 
         if is_duplicate:
-            if cfg.merge_duplicates:
-                # Merge into the primary leaf
-                for accepted in accepted_leaves:
-                    if accepted.leaf_id == duplicate_primary_id:
-                        merged_mask = accepted.mask | cand_mask
-                        merged_bbox = compute_bounding_box(merged_mask)
-                        merged_metrics = compute_mask_metrics(merged_mask)
-                        m_crop_mask, m_rgb, m_rgba = create_masked_crop(
-                            img_rgb, merged_mask, merged_bbox, background_fill=cfg.background_fill
-                        )
-                        accepted.mask = merged_mask
-                        accepted.bounding_box = merged_bbox
-                        accepted.leaf_mask_crop = m_crop_mask
-                        accepted.masked_crop = m_rgb
-                        accepted.masked_crop_rgba = m_rgba
-                        accepted.metrics = merged_metrics
-                        break
-            else:
-                # Reject duplicate
-                rejected_list.append(
-                    RejectedLeaf(
-                        candidate_id=cand_id,
-                        bounding_box=bbox,
-                        mask=cand_mask,
-                        reason=(
-                            f"Duplicate mask: IoU {duplicate_iou:.3f} >= threshold "
-                            f"{cfg.iou_overlap_threshold} with higher-scoring {duplicate_primary_id}."
-                        ),
-                        verdict=MaskVerdict.REJECT,
-                        metrics=val_res.metrics,
-                        confidence=cand_score,
+            # Merge candidate piece into primary leaf instance to avoid fragmenting a single leaf
+            for accepted in accepted_leaves:
+                if accepted.leaf_id == duplicate_primary_id:
+                    merged_mask = accepted.mask | cand_mask
+                    merged_bbox = compute_bounding_box(merged_mask)
+                    merged_metrics = compute_mask_metrics(merged_mask)
+                    m_crop_mask, m_rgb, m_rgba = create_masked_crop(
+                        img_rgb, merged_mask, merged_bbox, background_fill=cfg.background_fill
                     )
-                )
+                    accepted.mask = merged_mask
+                    accepted.bounding_box = merged_bbox
+                    accepted.leaf_mask_crop = m_crop_mask
+                    accepted.masked_crop = m_rgb
+                    accepted.masked_crop_rgba = m_rgba
+                    accepted.metrics = merged_metrics
+                    break
             continue
 
         # Accept candidate leaf
