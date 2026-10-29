@@ -2098,9 +2098,9 @@
 **Dependencies:** T2-019, T5-013, T4-025, T5-033
 **Acceptance Criteria:**
 
-- [ ] Each Overview §27.3 bullet maps to at least one test
-- [ ] Tests skip with a clear message if data is absent locally
-- [ ] Tests run in CI against tiny fixtures
+- [x] Each Overview §27.3 bullet maps to at least one test
+- [x] Tests skip with a clear message if data is absent locally
+- [x] Tests run in CI against tiny fixtures
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
