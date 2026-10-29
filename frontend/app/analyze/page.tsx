@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Badge } from "../../components/ui/Badge";
 import { Button } from "../../components/ui/Button";
 import { Card } from "../../components/ui/Card";
@@ -124,6 +124,18 @@ export default function AnalyzePage() {
     setSensorValues(DEFAULT_CROP_SENSOR_VALUES[selectedCrop]);
     setSensorValid(true);
   }, [selectedCrop]);
+
+  const handleSensorChange = useCallback((readings: Record<string, number>, isValid: boolean) => {
+    setSensorValues((prev) => {
+      const pKeys = Object.keys(prev);
+      const rKeys = Object.keys(readings);
+      if (pKeys.length === rKeys.length && pKeys.every((k) => prev[k] === readings[k])) {
+        return prev;
+      }
+      return readings;
+    });
+    setSensorValid(isValid);
+  }, []);
 
   // Validation Check: Acceptance Criterion 1: Analyze is disabled until required inputs validate
   const isImageValid = Boolean(
@@ -559,11 +571,8 @@ export default function AnalyzePage() {
 
                 <SensorForm
                   crop={selectedCrop}
-                  initialValues={sensorValues}
-                  onChange={(readings: Record<string, number>, isValid: boolean) => {
-                    setSensorValues(readings);
-                    setSensorValid(isValid);
-                  }}
+                  initialValues={DEFAULT_CROP_SENSOR_VALUES[selectedCrop]}
+                  onChange={handleSensorChange}
                   onSubmit={(readings: Record<string, number>) => {
                     setSensorValues(readings);
                     setSensorValid(true);

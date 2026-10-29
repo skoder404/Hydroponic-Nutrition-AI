@@ -25,9 +25,11 @@ export class ApiClient {
   constructor(config: ApiClientConfig = {}) {
     this.baseUrl =
       config.baseUrl ||
-      (typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_URL
+      (typeof window !== "undefined"
+        ? "/api/v1"
+        : typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_URL
         ? process.env.NEXT_PUBLIC_API_URL
-        : "http://localhost:8000/api/v1");
+        : "http://127.0.0.1:8000/api/v1");
     // Strip trailing slash if present
     this.baseUrl = this.baseUrl.replace(/\/+$/, "");
     this.defaultTimeoutMs = config.defaultTimeoutMs ?? 60000;

@@ -277,9 +277,13 @@ export const SensorForm: React.FC<SensorFormProps> = ({
     setWarnings({});
   };
 
-  // Synchronize live field modifications to parent container in real-time
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+  const lastEmittedRef = useRef<string>("");
+
+  // Synchronize live field modifications to parent container only when actual values change
   useEffect(() => {
-    if (!onChange) return;
+    if (!onChangeRef.current) return;
     const numericReadings: Record<string, number> = {};
     let allValid = true;
     for (const f of fields) {
@@ -293,8 +297,12 @@ export const SensorForm: React.FC<SensorFormProps> = ({
         }
       }
     }
-    onChange(numericReadings, allValid);
-  }, [values, onChange, fields]);
+    const serialized = JSON.stringify(numericReadings) + ":" + String(allValid);
+    if (serialized !== lastEmittedRef.current) {
+      lastEmittedRef.current = serialized;
+      onChangeRef.current(numericReadings, allValid);
+    }
+  }, [values, fields]);
 
   // Validate an individual field against hard bounds and normal bands
   const validateField = (fieldName: string, rawVal: string): { error?: string; warning?: string } => {
