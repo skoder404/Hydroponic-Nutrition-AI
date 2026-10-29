@@ -2059,9 +2059,9 @@
 **Dependencies:** T6-015, T6-012, T6-010
 **Acceptance Criteria:**
 
-- [ ] Each failure returns the documented code
-- [ ] DB outage never reports success
-- [ ] Gemini case is skipped with a clear marker until Phase 10
+- [x] Each failure returns the documented code
+- [x] DB outage never reports success
+- [x] Gemini case is skipped with a clear marker until Phase 10
 
 **Estimated Effort:** 60 min
 **Assigned To:** QA

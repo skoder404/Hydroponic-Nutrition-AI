@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Annotated, Any
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
 
@@ -81,17 +81,31 @@ def get_device_adapter_dep() -> DeviceAdapter:
 )
 async def analyze(
     request: Request,
-    crop: Annotated[str, Form(description="Target crop cultivar ('lettuce', 'spinach', 'tomato')")],
-    input_mode: Annotated[str, Form(description="Image mode: 'leaf' or 'plant'")] = "plant",
-    model_family: Annotated[str | None, Form(description="Optional model family override")] = None,
-    use_campus_frame: Annotated[bool, Form(description="Fetch latest camera frame from campus server")] = False,
-    sensor_readings: Annotated[str | None, Form(description="JSON-encoded sensor telemetry dictionary")] = None,
-    units: Annotated[str | None, Form(description="Optional JSON-encoded sensor units dictionary")] = None,
+    crop: Annotated[
+        str, Form(description="Target crop cultivar ('lettuce', 'spinach', 'tomato')")
+    ],
+    sensor_service: Annotated[SensorService, Depends(get_sensor_service_dep)],
+    image_service: Annotated[ImageService, Depends(get_image_service_dep)],
+    recommendation_service: Annotated[
+        RecommendationService, Depends(get_recommendation_service_dep)
+    ],
+    adapter: Annotated[DeviceAdapter, Depends(get_device_adapter_dep)],
+    input_mode: Annotated[
+        str, Form(description="Image mode: 'leaf' or 'plant'")
+    ] = "plant",
+    model_family: Annotated[
+        str | None, Form(description="Optional model family override")
+    ] = None,
+    use_campus_frame: Annotated[
+        bool, Form(description="Fetch latest camera frame from campus server")
+    ] = False,
+    sensor_readings: Annotated[
+        str | None, Form(description="JSON-encoded sensor telemetry dictionary")
+    ] = None,
+    units: Annotated[
+        str | None, Form(description="Optional JSON-encoded sensor units dictionary")
+    ] = None,
     file: UploadFile | None = File(None),
-    sensor_service: Annotated[SensorService, Depends(get_sensor_service_dep)] = None,
-    image_service: Annotated[ImageService, Depends(get_image_service_dep)] = None,
-    recommendation_service: Annotated[RecommendationService, Depends(get_recommendation_service_dep)] = None,
-    adapter: Annotated[DeviceAdapter, Depends(get_device_adapter_dep)] = None,
 ) -> AnalyzeResponse:
     """Execute multi-modal analysis with partial failure tolerance."""
     clean_crop = crop.strip().lower()
@@ -211,6 +225,7 @@ async def analyze(
                 exec_mode = "plant"
                 prov = "live"
             else:
+                assert file is not None
                 validated_upload = await validate_upload_file(file)
                 exec_mode = clean_mode
                 prov = "manual"
@@ -226,9 +241,7 @@ async def analyze(
             )
 
             if use_campus_frame:
-                camera_warning = (
-                    "Camera images may differ from training images in lighting, angle, and background."
-                )
+                camera_warning = "Camera images may differ from training images in lighting, angle, and background."
                 if camera_warning not in image_prediction.warnings:
                     image_prediction.warnings.append(camera_warning)
 
@@ -284,7 +297,9 @@ async def analyze(
             )
     except Exception as exc:
         logger.warning("Failed to generate recommendation: %s", exc)
-        combined_warnings.append(f"Recommendation generation encountered an issue: {exc}")
+        combined_warnings.append(
+            f"Recommendation generation encountered an issue: {exc}"
+        )
 
     # Remove duplicate warnings
     unique_warnings = list(dict.fromkeys(combined_warnings))
@@ -297,4 +312,3 @@ async def analyze(
         recommendation=recommendation,
         warnings=unique_warnings,
     )
-
