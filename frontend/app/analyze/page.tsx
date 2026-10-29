@@ -430,32 +430,36 @@ export default function AnalyzePage() {
             </div>
           )}
 
-          {/* Dual Panel or Single Modality Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            {/* Image Panel or NotAssessedNote */}
+          {/* Analysis Results View: Responsive, Balanced & Full Clarity */}
+          <div className="space-y-8">
+            {/* 1. Foliar Image Diagnostic Studio (Full Width for Large Clarity) */}
             {analysisMode !== "sensor" && (imagePrediction || segmentationError) ? (
-              <ImageResultPanel
-                prediction={imagePrediction}
-                imageUrl={imagePreviewUrl}
-                source={sourceProvenance === "campus_live" ? "campus_camera" : "upload"}
-                segmentationFailed={Boolean(segmentationError)}
-                segmentationFailureReason={segmentationError}
-                onRetry={() => {
-                  setSegmentationError(null);
-                  handleExecuteAnalysis();
-                }}
-              />
+              <div className="w-full">
+                <ImageResultPanel
+                  prediction={imagePrediction}
+                  imageUrl={imagePreviewUrl}
+                  source={sourceProvenance === "campus_live" ? "campus_camera" : "upload"}
+                  segmentationFailed={Boolean(segmentationError)}
+                  segmentationFailureReason={segmentationError}
+                  onRetry={() => {
+                    setSegmentationError(null);
+                    handleExecuteAnalysis();
+                  }}
+                />
+              </div>
             ) : analysisMode === "sensor" ? (
               <NotAssessedNote missingModality="image" crop={selectedCrop} />
             ) : null}
 
-            {/* Sensor Panel or NotAssessedNote */}
+            {/* 2. Reservoir Telemetry & Water Sensor Matrix */}
             {analysisMode !== "image" && sensorPrediction ? (
-              <SensorResultPanel
-                crop={selectedCrop}
-                prediction={sensorPrediction}
-                readings={sensorValues}
-              />
+              <div className="w-full">
+                <SensorResultPanel
+                  crop={selectedCrop}
+                  prediction={sensorPrediction}
+                  readings={sensorValues}
+                />
+              </div>
             ) : analysisMode === "image" ? (
               <NotAssessedNote missingModality="sensor" crop={selectedCrop} />
             ) : null}

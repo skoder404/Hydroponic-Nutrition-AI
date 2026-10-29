@@ -73,11 +73,14 @@ export interface SensorPredictRequest {
 
 export interface LeafPrediction {
   leaf_id: string;
-  contour_area: number;
+  contour_area?: number;
+  bbox?: number[];
   predicted_class: string;
   display_label: string;
   confidence: number;
-  is_uncertain: boolean;
+  confidence_semantics?: string;
+  is_uncertain?: boolean;
+  uncertain?: boolean;
   mask_metrics?: Record<string, unknown>;
 }
 
