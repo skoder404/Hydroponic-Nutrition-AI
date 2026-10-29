@@ -277,7 +277,77 @@ export class ApiClient {
     if (params.end_date) query.set("end_date", params.end_date);
 
     const qs = query.toString();
-    return this.request<RecordListResponse>(`/history${qs ? `?${qs}` : ""}`);
+    const endpoint = `/history${qs ? `?${qs}` : ""}`;
+    const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const url = `${this.baseUrl}${normalizedEndpoint}`;
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.defaultTimeoutMs);
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        signal: controller.signal,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        let envelope: ErrorEnvelope;
+        try {
+          const json = await response.json();
+          envelope =
+            json && typeof json === "object" && "error" in json
+              ? (json as ErrorEnvelope)
+              : {
+                  error: {
+                    code: `HTTP_${response.status}`,
+                    message: json?.detail || response.statusText || "Request failed",
+                    details: json || {},
+                    retryable: response.status >= 500,
+                  },
+                };
+        } catch {
+          envelope = {
+            error: {
+              code: `HTTP_${response.status}`,
+              message: response.statusText || `HTTP ${response.status} Error`,
+              details: {},
+              retryable: response.status >= 500,
+            },
+          };
+        }
+        throw new ApiError(response.status, envelope);
+      }
+
+      const totalHeader =
+        response.headers.get("x-total-count") || response.headers.get("X-Total-Count");
+      const rawData = await response.json();
+
+      if (Array.isArray(rawData)) {
+        const total = totalHeader ? parseInt(totalHeader, 10) : rawData.length;
+        return {
+          records: rawData as RecordRead[],
+          total: Number.isNaN(total) ? rawData.length : total,
+          limit: params.limit ?? 20,
+          offset: params.offset ?? 0,
+        };
+      }
+
+      return rawData as RecordListResponse;
+    } catch (err: unknown) {
+      clearTimeout(timeoutId);
+      if (err instanceof ApiError) throw err;
+      if (
+        (err instanceof DOMException && err.name === "AbortError") ||
+        (err instanceof Error && err.name === "AbortError")
+      ) {
+        throw new TimeoutError(this.defaultTimeoutMs);
+      }
+      throw new NetworkError(err);
+    }
   }
 
   /**

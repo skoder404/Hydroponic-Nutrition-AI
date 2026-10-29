@@ -27,9 +27,19 @@ export default function HistoryPage() {
     setError(null);
 
     try {
-      const response: RecordListResponse = await apiClient.getHistory(currentFilters);
-      setRecords(response.records || []);
-      setTotalCount(response.total ?? (response.records ? response.records.length : 0));
+      const response = await apiClient.getHistory(currentFilters);
+      const rawAny = response as unknown;
+      const recordList: RecordRead[] = Array.isArray(rawAny)
+        ? (rawAny as RecordRead[])
+        : Array.isArray((response as RecordListResponse)?.records)
+        ? (response as RecordListResponse).records
+        : [];
+      const count = Array.isArray(rawAny)
+        ? rawAny.length
+        : ((response as RecordListResponse)?.total ?? recordList.length);
+
+      setRecords(recordList);
+      setTotalCount(count);
       setError(null);
     } catch (err: unknown) {
       // Upon error, clear records so stale rows are never displayed as current (DESIGN S4)
