@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Badge, Button, Card, Input } from "@/components/ui";
 
 export type SupportedCrop = "lettuce" | "spinach" | "tomato";
@@ -247,18 +247,22 @@ export const SensorForm: React.FC<SensorFormProps> = ({
   const [warnings, setWarnings] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
-  // Reset / sync form values when crop or initialValues changes
+  // Reset / sync form values only when crop switches
+  const lastCropRef = useRef<SupportedCrop>(crop);
   useEffect(() => {
-    const newValues: Record<string, string> = {};
-    for (const f of fields) {
-      const val = initialValues?.[f.name];
-      newValues[f.name] = val !== undefined && val !== null ? String(val) : "";
+    if (lastCropRef.current !== crop) {
+      lastCropRef.current = crop;
+      const newValues: Record<string, string> = {};
+      for (const f of fields) {
+        const val = initialValues?.[f.name];
+        newValues[f.name] = val !== undefined && val !== null ? String(val) : "";
+      }
+      setValues(newValues);
+      setErrors({});
+      setWarnings({});
+      setTouched({});
     }
-    setValues(newValues);
-    setErrors({});
-    setWarnings({});
-    setTouched({});
-  }, [crop, initialValues]);
+  }, [crop, fields, initialValues]);
 
   const handleFillDefaults = () => {
     const defs: Record<string, string> = {};
