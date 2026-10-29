@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 from typing import Any, Literal
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from backend.app.schemas.prediction import PredictionResponse
 from backend.app.schemas.recommendation import RecommendationRead
@@ -63,10 +63,43 @@ class RecordCreate(BaseModel):
         None,
         description="Optional list of prediction responses to associate atomically",
     )
-    recommendation: RecommendationRead | None = Field(
+    recommendation: RecommendationRead | dict[str, Any] | None = Field(
         None,
         description="Optional agronomic recommendation to associate atomically",
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_fields(cls, data: Any) -> Any:
+        """Coerce single prediction objects to list and normalize recommendation payload."""
+        if isinstance(data, dict):
+            # 1. Normalize predictions: wrap single object into list
+            preds = data.get("predictions")
+            if preds is not None and not isinstance(preds, list):
+                data["predictions"] = [preds]
+
+            # 2. Normalize recommendation key: accept both recommendations and recommendation
+            if "recommendations" in data and "recommendation" not in data:
+                data["recommendation"] = data.pop("recommendations")
+            elif "recommendations" in data and "recommendation" in data:
+                data.pop("recommendations")
+
+            # 3. If recommendation is in RecommendationResponse format (with summary/actions), map to dict
+            rec = data.get("recommendation")
+            if isinstance(rec, dict) and "actions" in rec and "content" not in rec:
+                data["recommendation"] = {
+                    "source": rec.get("source", "rules"),
+                    "rules_version": rec.get("rules_version", "v1.0.0"),
+                    "content": {
+                        "summary": rec.get("summary", ""),
+                        "actions": rec.get("actions", []),
+                    },
+                    "evidence": {
+                        "evidence_citations": rec.get("evidence_citations", []),
+                    },
+                    "record_id": rec.get("record_id", "00000000-0000-0000-0000-000000000000"),
+                }
+        return data
 
 
 class RecordRead(BaseModel):

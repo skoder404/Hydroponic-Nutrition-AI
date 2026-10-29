@@ -163,15 +163,16 @@ export interface DeviceStatusResponse {
 // =============================================================================
 
 export interface RecordCreate {
-  crop: "lettuce" | "spinach" | "tomato";
+  crop: "lettuce" | "spinach" | "tomato" | string;
   mode: "sensor" | "image" | "both";
   source: "manual" | "live" | "imported";
   observed_at: string;
   observed_tz: string;
   notes?: string | null;
   inputs?: Record<string, unknown> | null;
-  predictions?: PredictionResponse | null;
-  recommendations?: RecommendationResponse | null;
+  predictions?: PredictionResponse[] | PredictionResponse | null;
+  recommendation?: Record<string, unknown> | RecommendationResponse | null;
+  recommendations?: Record<string, unknown> | RecommendationResponse | null;
 }
 
 export interface RecordRead extends RecordCreate {

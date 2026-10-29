@@ -378,19 +378,40 @@ export default function AnalyzePage() {
     setMountedAt(new Date().toISOString());
   }, []);
 
+  // Collect all valid predictions from current analysis
+  const activePredictions: PredictionResponse[] = [];
+  if (imagePrediction) activePredictions.push(imagePrediction);
+  if (sensorPrediction) activePredictions.push(sensorPrediction);
+
   // Build record create payload for SaveRecordButton
   const recordCreatePayload: RecordCreate = {
     crop: selectedCrop,
     mode: analysisMode,
     source: sourceProvenance === "campus_live" ? "live" : "manual",
-    observed_at: mountedAt || "2026-10-28T00:00:00.000Z",
-    observed_tz: typeof window !== "undefined" ? (Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC") : "UTC",
+    observed_at: mountedAt || new Date().toISOString(),
+    observed_tz:
+      typeof window !== "undefined"
+        ? Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC"
+        : "UTC",
     inputs: {
       ...sensorValues,
       ...(selectedFile ? { file_name: selectedFile.name } : {}),
     },
-    predictions: imagePrediction || sensorPrediction || undefined,
-    recommendations: recommendation || undefined,
+    predictions: activePredictions.length > 0 ? activePredictions : undefined,
+    recommendation: recommendation
+      ? {
+          source: recommendation.source || "rules",
+          rules_version: "v1.0.0",
+          content: {
+            summary: recommendation.summary,
+            actions: recommendation.actions,
+          },
+          evidence: {
+            citations: recommendation.evidence_citations,
+          },
+          record_id: "00000000-0000-0000-0000-000000000000",
+        }
+      : undefined,
   };
 
   return (

@@ -139,12 +139,20 @@ def create_history_record(
 
     rec_dicts: list[dict[str, Any]] = []
     if payload.recommendation:
-        rec_dicts.append({
-            "source": payload.recommendation.source,
-            "rules_version": payload.recommendation.rules_version,
-            "content": payload.recommendation.content,
-            "evidence": payload.recommendation.evidence,
-        })
+        if isinstance(payload.recommendation, dict):
+            rec_dicts.append({
+                "source": payload.recommendation.get("source", "rules"),
+                "rules_version": payload.recommendation.get("rules_version", "v1.0.0"),
+                "content": payload.recommendation.get("content", {}),
+                "evidence": payload.recommendation.get("evidence", {}),
+            })
+        else:
+            rec_dicts.append({
+                "source": payload.recommendation.source,
+                "rules_version": payload.recommendation.rules_version,
+                "content": payload.recommendation.content,
+                "evidence": payload.recommendation.evidence,
+            })
 
     try:
         save_result = create_record(
