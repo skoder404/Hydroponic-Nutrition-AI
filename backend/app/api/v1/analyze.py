@@ -299,8 +299,14 @@ async def analyze(
         def _is_healthy(cls_name: str | None) -> bool:
             if not cls_name:
                 return True
-            c = cls_name.lower()
-            return "healthy" in c or "healthier" in c or "normal" in c
+            c = cls_name.lower().strip()
+            if "unhealthy" in c:
+                return False
+            return (
+                c in ("healthier", "spinach_healthy", "tomato_healthy", "healthy", "normal")
+                or c.endswith("_healthy")
+                or "healthy foliage" in c
+            )
 
         image_has_issue = image_prediction is not None and not _is_healthy(image_prediction.predicted_class)
         sensor_has_issue = sensor_prediction is not None and not _is_healthy(sensor_prediction.predicted_class)

@@ -172,6 +172,26 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
     );
   }
 
+  const checkIsHealthy = (predictedClass?: string | null, displayLabel?: string | null): boolean => {
+    const p = (predictedClass || "").toLowerCase().trim();
+    const d = (displayLabel || "").toLowerCase().trim();
+    if (p.includes("unhealthy") || d.includes("unhealthy")) {
+      return false;
+    }
+    return (
+      p === "healthy" ||
+      d === "healthy" ||
+      p === "healthier" ||
+      d === "healthier" ||
+      p === "normal" ||
+      d === "normal" ||
+      p === "spinach_healthy" ||
+      p === "tomato_healthy" ||
+      p.endsWith("_healthy") ||
+      d.includes("healthy foliage")
+    );
+  };
+
   // Calculate per-class breakdown (no averaged score, strictly counts per class)
   const classCounts: Record<string, number> = {};
   let deficientCount = 0;
@@ -180,9 +200,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
   for (const leaf of leaves) {
     const label = leaf.display_label || leaf.predicted_class || "Unclassified";
     classCounts[label] = (classCounts[label] || 0) + 1;
-    const isLeafHealthy =
-      (leaf.predicted_class || "").toLowerCase().includes("healthy") ||
-      (leaf.display_label || "").toLowerCase().includes("healthy");
+    const isLeafHealthy = checkIsHealthy(leaf.predicted_class, leaf.display_label);
     if (isLeafHealthy) {
       healthyCount += 1;
     } else {
@@ -370,9 +388,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
                   const leafNum = idx + 1;
                   const isSelected = selectedLeafIndex === idx;
 
-                  const isHealthy =
-                    (leaf.predicted_class || "").toLowerCase().includes("healthy") ||
-                    (leaf.display_label || "").toLowerCase().includes("healthy");
+                  const isHealthy = checkIsHealthy(leaf.predicted_class, leaf.display_label);
                   const isUncertain = leaf.is_uncertain || leaf.uncertain || false;
                   const isDeficient = !isHealthy && !isUncertain;
 

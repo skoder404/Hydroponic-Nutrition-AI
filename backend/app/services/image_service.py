@@ -350,8 +350,14 @@ class ImageService:
         # Hydroponic foliar diseases are localized (Rule 16 / §19). If any leaf exhibits a deficiency
         # or pathology, that pathology takes priority over an asymptomatic or edge leaf.
         def _is_healthy_str(c: str) -> bool:
-            cl = c.lower()
-            return "healthy" in cl or "healthier" in cl
+            cl = c.lower().strip()
+            if "unhealthy" in cl:
+                return False
+            return (
+                cl in ("healthier", "spinach_healthy", "tomato_healthy", "healthy", "normal")
+                or cl.endswith("_healthy")
+                or "healthy foliage" in cl
+            )
 
         non_healthy_leaves = [
             lp for lp in leaves_predictions if not _is_healthy_str(lp.predicted_class)
