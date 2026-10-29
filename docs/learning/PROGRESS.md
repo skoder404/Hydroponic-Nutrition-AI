@@ -28,15 +28,15 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 | 13 | T4-015 | Hyperparameter search with grouped CV and its pitfalls | `docs/learning/hyperparameter-search-with-grouped-cv-and.md` | [x] | [x] | [x] | 2026-10-27 | [x] | [x] | [x] | 2026-10-27 |
 | 14 | T4-020 | Train/serve skew and feature availability (live-compatible models) | `docs/learning/trainserve-skew-and-feature-availability-livecompatible.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 | 15 | T4-021 | Why rule-derived labels inflate scores | `docs/learning/why-rulederived-labels-inflate-scores.md` | [x] | [x] | [x] | 2026-10-27 | [x] | [x] | [x] | 2026-10-27 |
-| 16 | T5-001 | Colour spaces (BGR/RGB/HSV) and vegetation indices (ExG, ExR) | `docs/learning/colour-spaces-bgrrgbhsv-and-vegetation-indices.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 17 | T5-003 | Texture features: GLCM contrast and entropy | `docs/learning/texture-features-glcm-contrast-and-entropy.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 18 | T5-007 | Shape descriptors: compactness, solidity, aspect ratio | `docs/learning/shape-descriptors-compactness-solidity-aspect-ratio.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 19 | T5-010 | Instance segmentation for per-leaf prediction (SAM automatic masks) | `docs/learning/instance-segmentation-for-perleaf-prediction-sam.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 20 | T5-012 | Weak labels and instance-level (per-leaf) prediction | `docs/learning/weak-labels-and-instancelevel-perleaf-prediction.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 21 | T5-017 | Convolution, pooling, and backpropagation | `docs/learning/convolution-pooling-and-backpropagation.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 22 | T5-018 | Data augmentation (training only) and input normalisation | `docs/learning/data-augmentation-training-only-and-input.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 23 | T5-020 | Optimisers, learning rate, and early stopping on validation macro-F1 | `docs/learning/optimisers-learning-rate-and-early-stopping.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
-| 24 | T5-022 | Transfer learning and fine-tuning (EfficientNetB0) | `docs/learning/transfer-learning-and-finetuning-efficientnetb0.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
+| 16 | T5-001 | Colour spaces (BGR/RGB/HSV) and vegetation indices (ExG, ExR) | `docs/learning/colour-spaces-bgrrgbhsv-and-vegetation-indices.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 17 | T5-003 | Texture features: GLCM contrast and entropy | `docs/learning/texture-features-glcm-contrast-and-entropy.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 18 | T5-007 | Shape descriptors: compactness, solidity, aspect ratio | `docs/learning/shape-descriptors-compactness-solidity-aspect-ratio.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 19 | T5-010 | Instance segmentation for per-leaf prediction (SAM automatic masks) | `docs/learning/instance-segmentation-for-perleaf-prediction-sam.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 20 | T5-012 | Weak labels and instance-level (per-leaf) prediction | `docs/learning/weak-labels-and-instancelevel-perleaf-prediction.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 21 | T5-017 | Convolution, pooling, and backpropagation | `docs/learning/convolution-pooling-and-backpropagation.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 22 | T5-018 | Data augmentation (training only) and input normalisation | `docs/learning/data-augmentation-training-only-and-input.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 23 | T5-020 | Optimisers, learning rate, and early stopping on validation macro-F1 | `docs/learning/optimisers-learning-rate-and-early-stopping.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
+| 24 | T5-022 | Transfer learning and fine-tuning (EfficientNetB0) | `docs/learning/transfer-learning-and-finetuning-efficientnetb0.md` | [x] | [x] | [x] | 2026-10-29 | [x] | [x] | [x] | 2026-10-29 |
 | 25 | T5-031 | Softmax confidence, calibration, and uncertainty thresholds | `docs/learning/softmax-confidence-calibration-and-uncertainty-thresholds.md` | [x] | [x] | [x] | 2026-10-28 | [x] | [x] | [x] | 2026-10-28 |
 | 26 | T10-003 | Probability calibration (temperature scaling, reliability diagrams) | `docs/learning/probability-calibration-temperature-scaling-reliability-diagrams.md` | [ ] | [ ] | [ ] | - | [ ] | [ ] | [ ] | - |
 
@@ -45,8 +45,9 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 ## Summary Statistics
 - **Total Unique Concepts:** 26
 - **Phase 4 Concepts Completed:** 10 / 10 (100%)
-- **Yashwant Completed:** 10 / 26
-- **Sushil Completed:** 10 / 26
+- **Phase 5 Concepts Completed:** 10 / 10 (100%)
+- **Yashwant Completed:** 20 / 26
+- **Sushil Completed:** 20 / 26
 
 ---
 
@@ -65,3 +66,19 @@ Tracks mastery, concept notes, teach-backs, and self-checks across all machine l
 - **ML Engineer (Driver):** [x] Yashwant (Signed: 2026-10-27)
 - **Backend / QA (Navigator):** [x] Sushil (Signed: 2026-10-27)
 
+---
+
+## Phase 5 Gate Sign-Off (T5-034)
+
+- **Teach-Back Session Date:** 2026-10-29
+- **Full Session Audit Log:** [`docs/learning/phase5_teachback_log.md`](phase5_teachback_log.md)
+- **Status:** PASS (All 10 Phase 5 concepts completed with written concept notes, verbal teach-back walkthroughs, hand derivations, and self-checks).
+
+### Checklist:
+- [x] Every Phase 5 concept has a note and a teach-back entry for both members
+- [x] Self-check results are recorded honestly (gaps become follow-up items)
+- [x] Both members tick the phase gate
+
+### Signatures:
+- **Driver (ML Engineer):** [x] Yashwant (Signed: 2026-10-29)
+- **Backend / QA (Navigator):** [x] Sushil (Signed: 2026-10-29)

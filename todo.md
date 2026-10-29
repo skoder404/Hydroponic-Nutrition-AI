@@ -1485,9 +1485,9 @@
 **Dependencies:** T5-033
 **Acceptance Criteria:**
 
-- [ ] Every Phase 5 concept has a note and a teach-back for both members
-- [ ] Gaps become tracked follow-ups
-- [ ] Both members tick the phase gate
+- [x] Every Phase 5 concept has a note and a teach-back for both members
+- [x] Gaps become tracked follow-ups
+- [x] Both members tick the phase gate
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
