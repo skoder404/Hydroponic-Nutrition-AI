@@ -190,6 +190,25 @@ def create_history_record(
         ) from exc
 
 
+def _parse_filter_date(date_str: str | None, *, is_end: bool = False) -> datetime | None:
+    """Parse date/datetime filter string, ensuring end-of-day extension for date-only queries."""
+    if not date_str or not date_str.strip():
+        return None
+    cleaned = date_str.strip()
+    try:
+        dt = datetime.fromisoformat(cleaned.replace("Z", "+00:00"))
+        if len(cleaned) <= 10:
+            if is_end:
+                dt = dt.replace(hour=23, minute=59, second=59, microsecond=999999)
+            else:
+                dt = dt.replace(hour=0, minute=0, second=0, microsecond=0)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt
+    except (ValueError, TypeError):
+        return None
+
+
 @router.get(
     "/history",
     response_model=list[RecordRead],
@@ -217,24 +236,18 @@ def get_history_records(
     end_dt: datetime | None = None
 
     if date:
-        try:
-            parsed_date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-            start_dt = parsed_date
-            end_dt = parsed_date.replace(hour=23, minute=59, second=59, microsecond=999999)
-        except ValueError:
-            pass
+        start_dt = _parse_filter_date(date, is_end=False)
+        end_dt = _parse_filter_date(date, is_end=True)
 
     if start_date:
-        try:
-            start_dt = datetime.fromisoformat(start_date.replace("Z", "+00:00"))
-        except ValueError:
-            pass
+        parsed_start = _parse_filter_date(start_date, is_end=False)
+        if parsed_start:
+            start_dt = parsed_start
 
     if end_date:
-        try:
-            end_dt = datetime.fromisoformat(end_date.replace("Z", "+00:00"))
-        except ValueError:
-            pass
+        parsed_end = _parse_filter_date(end_date, is_end=True)
+        if parsed_end:
+            end_dt = parsed_end
 
     try:
         records, total_count = list_records(
@@ -289,24 +302,18 @@ def export_history_records(
     end_dt: datetime | None = None
 
     if date:
-        try:
-            parsed_date = datetime.strptime(date, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-            start_dt = parsed_date
-            end_dt = parsed_date.replace(hour=23, minute=59, second=59, microsecond=999999)
-        except ValueError:
-            pass
+        start_dt = _parse_filter_date(date, is_end=False)
+        end_dt = _parse_filter_date(date, is_end=True)
 
     if start_date:
-        try:
-            start_dt = datetime.fromisoformat(start_date.replace("Z", "+00:00"))
-        except ValueError:
-            pass
+        parsed_start = _parse_filter_date(start_date, is_end=False)
+        if parsed_start:
+            start_dt = parsed_start
 
     if end_date:
-        try:
-            end_dt = datetime.fromisoformat(end_date.replace("Z", "+00:00"))
-        except ValueError:
-            pass
+        parsed_end = _parse_filter_date(end_date, is_end=True)
+        if parsed_end:
+            end_dt = parsed_end
 
     try:
         records, _ = list_records(
