@@ -34,6 +34,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
 
   // Sync preview URL with selectedFile
   useEffect(() => {
@@ -48,23 +49,63 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
 
   // Clean up camera stream tracks when unmounting or stopping camera
   const stopCameraStream = useCallback(() => {
-    if (cameraStream) {
-      cameraStream.getTracks().forEach((track) => track.stop());
-      setCameraStream(null);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+      streamRef.current = null;
     }
+    setCameraStream(null);
     if (videoRef.current) {
       videoRef.current.srcObject = null;
     }
-  }, [cameraStream]);
+  }, []);
 
+  // Cleanup exclusively on component unmount
   useEffect(() => {
     return () => {
-      stopCameraStream();
-      if (capturedPreview) {
-        URL.revokeObjectURL(capturedPreview);
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [stopCameraStream, capturedPreview]);
+  }, []);
+
+  // Ensure video element receives camera stream and starts playing as soon as both are available
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !cameraStream) return;
+
+    if (video.srcObject !== cameraStream) {
+      video.srcObject = cameraStream;
+    }
+    video.muted = true;
+
+    const playVideo = () => {
+      video.play().catch((err) => {
+        console.warn("Video play error:", err);
+      });
+    };
+
+    video.addEventListener("loadedmetadata", playVideo);
+    playVideo();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", playVideo);
+    };
+  }, [cameraStream, isCameraActive]);
+
+  // Callback ref for immediate assignment when <video> mounts
+  const attachVideoRef = useCallback(
+    (node: HTMLVideoElement | null) => {
+      videoRef.current = node;
+      if (node && streamRef.current) {
+        if (node.srcObject !== streamRef.current) {
+          node.srcObject = streamRef.current;
+        }
+        node.muted = true;
+        node.play().catch(() => {});
+      }
+    },
+    []
+  );
 
   // Start live device camera stream
   const startCamera = async () => {
@@ -81,18 +122,30 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
         throw new Error("Camera API is not supported in this browser environment.");
       }
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: { ideal: "environment" },
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
-        },
-        audio: false,
-      });
+      let stream: MediaStream;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1280 },
+            height: { ideal: 720 },
+          },
+          audio: false,
+        });
+      } catch {
+        // Fallback for laptop / desktop webcams that don't support environment facingMode
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: true,
+          audio: false,
+        });
+      }
 
+      streamRef.current = stream;
       setCameraStream(stream);
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.muted = true;
         videoRef.current.play().catch(() => {});
       }
     } catch (err: unknown) {
@@ -153,6 +206,10 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
       setCapturedPreview(null);
     }
     if (videoRef.current) {
+      if (streamRef.current && videoRef.current.srcObject !== streamRef.current) {
+        videoRef.current.srcObject = streamRef.current;
+        videoRef.current.muted = true;
+      }
       videoRef.current.play().catch(() => {});
     }
   };
@@ -303,7 +360,7 @@ export const ImageDropzone: React.FC<ImageDropzoneProps> = ({
           <div className="relative aspect-[4/3] sm:aspect-[16/9] w-full bg-black flex items-center justify-center overflow-hidden">
             {/* Live Stream Video */}
             <video
-              ref={videoRef}
+              ref={attachVideoRef}
               autoPlay
               playsInline
               muted
