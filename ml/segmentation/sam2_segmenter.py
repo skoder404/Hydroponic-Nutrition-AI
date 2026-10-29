@@ -81,9 +81,10 @@ class SAM2Segmenter:
         force_cpu: bool | None = None,
         fallback_on_oom: bool = True,
     ) -> None:
-        self.checkpoint_path = Path(
-            checkpoint_path or os.getenv("SAM2_CHECKPOINT", DEFAULT_CHECKPOINT)
+        resolved_cp = (
+            checkpoint_path or os.getenv("SAM2_CHECKPOINT") or DEFAULT_CHECKPOINT
         )
+        self.checkpoint_path = Path(str(resolved_cp))
         self.config_path = str(config_path or os.getenv("SAM2_CONFIG", DEFAULT_CONFIG))
         self.device_manager = (
             DeviceManager(force_cpu=force_cpu)
@@ -232,6 +233,8 @@ class SAM2Segmenter:
         h, w, _ = img_rgb.shape
 
         # Use fast single-leaf center point prompt if no prompt coordinates supplied
+        input_points: np.ndarray | None
+        input_labels: np.ndarray | None
         if point_coords is None and box is None:
             input_points = np.array([[w // 2, h // 2]])
             input_labels = np.array([1])

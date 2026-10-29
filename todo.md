@@ -1581,9 +1581,9 @@
 **Dependencies:** T6-006, T3-006
 **Acceptance Criteria:**
 
-- [ ] Missing `input_mode` is rejected with 422
-- [ ] Plant mode returns per-leaf results and a summary
-- [ ] Unavailable family is reported clearly
+- [x] Missing `input_mode` is rejected with 422
+- [x] Plant mode returns per-leaf results and a summary
+- [x] Unavailable family is reported clearly
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

@@ -22,9 +22,9 @@ from PIL import Image, ImageFile
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 
-ImageFile.LOAD_TRUNCATED_IMAGES = True
-
 from ml.labels import IMAGE_CLASSES
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
@@ -184,13 +184,21 @@ class CropLeafDataset(Dataset):
             idx: cls_name for idx, cls_name in enumerate(self.classes)
         }
 
-        self.image_size = (
+        self.image_size: tuple[int, int] = (
             (image_size, image_size)
             if isinstance(image_size, int)
-            else tuple(image_size)
+            else (int(image_size[0]), int(image_size[1]))
         )
-        self.mean = tuple(mean)
-        self.std = tuple(std)
+        self.mean: tuple[float, float, float] = (
+            float(mean[0]),
+            float(mean[1]),
+            float(mean[2]),
+        )
+        self.std: tuple[float, float, float] = (
+            float(std[0]),
+            float(std[1]),
+            float(std[2]),
+        )
 
         # Build transforms if not provided
         self.transform = transform or build_transforms(
@@ -344,7 +352,11 @@ class CropLeafDataset(Dataset):
             try:
                 img = Image.open(img_path).convert("RGB")
             except Exception as e:
-                LOGGER.warning("Could not open/load image %s (%s); substituting fallback placeholder", img_path, e)
+                LOGGER.warning(
+                    "Could not open/load image %s (%s); substituting fallback placeholder",
+                    img_path,
+                    e,
+                )
                 img = Image.new("RGB", self.image_size, color=(128, 128, 128))
         else:
             img = Image.new("RGB", self.image_size, color=(128, 128, 128))
