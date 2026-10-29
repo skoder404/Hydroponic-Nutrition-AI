@@ -215,11 +215,20 @@ class ImageService:
         )
 
         try:
-            extraction_result: LeafExtractionResult = extract_leaves(
-                img_rgb,
-                segmenter=self.segmenter,
-                config=extract_cfg,
-            )
+            if provenance == "live":
+                # Stationary overhead polyhouse CPPLUS camera facing NFT channels
+                # Use calibrated bench plant net-cup grid to accurately isolate all seedling instances
+                from ml.segmentation.campus_grid import extract_campus_grid_leaves
+                extraction_result: LeafExtractionResult = extract_campus_grid_leaves(
+                    img_rgb,
+                    max_leaves=max_leaves if (max_leaves and max_leaves > 10) else None,
+                )
+            else:
+                extraction_result: LeafExtractionResult = extract_leaves(
+                    img_rgb,
+                    segmenter=self.segmenter,
+                    config=extract_cfg,
+                )
         except Exception as exc:
             logger.error("Segmentation routine raised exception for %s: %s", clean_crop, exc)
             raise SegmentationFailedError(
@@ -289,19 +298,21 @@ class ImageService:
 
         leaves_predictions: list[LeafPrediction] = []
 
+        # Batch prepare all leaf crops for high-speed forward inference
+        crop_tensors = [
+            val_transform(Image.fromarray(leaf.masked_crop))
+            for leaf in extraction_result.leaves
+        ]
+        batch_tensor = torch.stack(crop_tensors).to(target_device)
+
+        with torch.no_grad():
+            batch_logits = model(batch_tensor)
+            scaled_logits = batch_logits / fitted_temp if fitted_temp > 0 else batch_logits
+            all_probs = torch.softmax(scaled_logits, dim=-1).cpu().numpy()
+
         for idx, leaf in enumerate(extraction_result.leaves):
             leaf_id = f"leaf_{idx + 1:03d}"
-
-            # Prepare RGB crop for model input
-            # Using leaf.masked_crop (RGB foreground on black background)
-            pil_crop = Image.fromarray(leaf.masked_crop)
-            tensor_input = val_transform(pil_crop).unsqueeze(0).to(target_device)
-
-            with torch.no_grad():
-                logits = model(tensor_input)
-                # Temperature scaling calibration
-                scaled_logits = logits / fitted_temp if fitted_temp > 0 else logits
-                probs = torch.softmax(scaled_logits, dim=-1).squeeze(0).cpu().numpy()
+            probs = all_probs[idx]
 
             pred_idx = int(np.argmax(probs))
             pred_class = metadata.classes[pred_idx]

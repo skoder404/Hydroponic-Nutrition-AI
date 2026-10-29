@@ -458,6 +458,8 @@ class CampusServerAdapter(DeviceAdapter):
         self.camera_user = camera_user
         self.camera_password = camera_password
         self._last_success_time: datetime | None = None
+        self._cached_frame: tuple[bytes, str] | None = None
+        self._cached_raw_payload: tuple[dict[str, Any], datetime] | None = None
 
     @property
     def adapter_name(self) -> Literal["mock", "campus", "manual"]:
@@ -485,32 +487,42 @@ class CampusServerAdapter(DeviceAdapter):
         import httpx
 
         now = datetime.now(timezone.utc)
-        endpoints = ["/api/data", "/status", "/sensors", "/data", "/readings", "/api", "/"]
+        endpoints = ["/api/data", "/status", "/sensors"]
         last_error: Exception | None = None
 
-        with httpx.Client(timeout=self.timeout_s) as client:
-            for ep in endpoints:
-                target_url = f"{self.server_url.rstrip('/')}{ep}"
-                try:
-                    res = client.get(target_url)
-                    if res.status_code == 200:
-                        payload = res.json()
-                        # Extract nested data or latest payload if server wrapper format
-                        raw = payload.get("data", payload.get("latest", payload)) if isinstance(payload, dict) else {}
-                        if isinstance(raw, dict) and any(
-                            k.lower() in ("ph", "ec", "temp_avg", "humidity_avg", "readings", "temperature", "humidity", "water_temp")
-                            for k in raw
-                        ):
-                            self._last_success_time = now
-                            return raw, now
-                except Exception as exc:
-                    last_error = exc
-                    continue
+        # Fail fast (2s connect timeout) when off campus network
+        timeout = httpx.Timeout(connect=2.0, read=float(self.timeout_s), write=float(self.timeout_s), pool=float(self.timeout_s))
+
+        try:
+            with httpx.Client(timeout=timeout) as client:
+                for ep in endpoints:
+                    target_url = f"{self.server_url.rstrip('/')}{ep}"
+                    try:
+                        res = client.get(target_url)
+                        if res.status_code == 200:
+                            payload = res.json()
+                            raw = payload.get("data", payload.get("latest", payload)) if isinstance(payload, dict) else {}
+                            if isinstance(raw, dict) and any(
+                                k.lower() in ("ph", "ec", "temp_avg", "humidity_avg", "readings", "temperature", "humidity", "water_temp")
+                                for k in raw
+                            ):
+                                self._last_success_time = now
+                                self._cached_raw_payload = (raw, now)
+                                return raw, now
+                    except (httpx.ConnectTimeout, httpx.ConnectError) as exc:
+                        # Host unreachable (e.g. not on campus WiFi) - break immediately without hanging
+                        last_error = exc
+                        break
+                    except Exception as exc:
+                        last_error = exc
+                        continue
+        except Exception as exc:
+            last_error = exc
 
         last_success_info = (
             f" (last successful contact was at {self._last_success_time.isoformat()})"
             if self._last_success_time
-            else " (no successful contact recorded)"
+            else " (not connected to campus network)"
         )
         raise DeviceUnavailableError(
             f"Campus hardware server at {self.server_url} is unreachable{last_success_info}. Error: {last_error}"
@@ -713,33 +725,39 @@ class CampusServerAdapter(DeviceAdapter):
         elif cam_base.startswith("https://"):
             candidates.append("http://" + cam_base[8:])
 
-        endpoints: list[str] = []
-        for base in candidates:
-            endpoints.extend([
-                f"{base}/cgi-bin/snapshot.cgi",
-                f"{base}/snapshot.jpg",
-                f"{base}/capture",
-                f"{base}/feed",
-                base,
-            ])
+        # CPPLUS snapshot endpoints (snapshot.cgi is the primary RTSP/HTTP snapshot path)
+        endpoints: list[str] = [
+            f"{cam_base}/cgi-bin/snapshot.cgi",
+            f"{cam_base}/snapshot.jpg",
+        ]
 
         auth = None
         if self.camera_user and self.camera_password:
             auth = httpx.DigestAuth(self.camera_user, self.camera_password)
 
         last_exc: Exception | None = None
+        timeout = httpx.Timeout(connect=2.0, read=float(self.timeout_s), write=float(self.timeout_s), pool=float(self.timeout_s))
+
         for url in endpoints:
             try:
-                with httpx.Client(timeout=self.timeout_s, verify=False) as client:
+                with httpx.Client(timeout=timeout, verify=False) as client:
                     res = client.get(url, auth=auth)
                     if res.status_code == 200 and len(res.content) > 100:
                         content_type = res.headers.get("Content-Type", "image/jpeg")
+                        self._cached_frame = (res.content, content_type)
                         return res.content, content_type
+            except (httpx.ConnectTimeout, httpx.ConnectError) as exc:
+                # Camera host unreachable (not on campus WiFi) - fail fast without hanging
+                last_exc = exc
+                break
             except Exception as exc:
                 last_exc = exc
                 continue
 
-        raise DeviceUnavailableError(f"Campus camera feed unreachable: {last_exc}") from last_exc
+        # If cache exists from earlier in session, we could use or raise clean error
+        raise DeviceUnavailableError(
+            f"Campus camera feed unreachable (connect to campus network to stream live): {last_exc}"
+        ) from last_exc
 
 
 # Alias CampusAdapter for backward compatibility with existing imports

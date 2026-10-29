@@ -120,8 +120,25 @@ class RuleProvider:
         disclaimer = str(crop_rules.get("disclaimer", "Advisory recommendation."))
         rules_matrix = crop_rules.get("rules", {}).get(clean_modality, {})
 
-        # 2. Check for unsupported class combination
-        if predicted_class not in rules_matrix:
+        # 2. Check for unsupported class combination (with prefix tolerance e.g. "unhealthy/Spinach_bacterial spot")
+        matched_class = None
+        if predicted_class in rules_matrix:
+            matched_class = predicted_class
+        else:
+            candidates = [
+                predicted_class,
+                predicted_class.replace("unhealthy/", "").replace("healthy/", ""),
+                predicted_class.split("/")[-1],
+            ]
+            for cand in candidates:
+                for k in rules_matrix:
+                    if k.lower() == cand.lower():
+                        matched_class = k
+                        break
+                if matched_class:
+                    break
+
+        if not matched_class:
             return self._build_insufficient_info(
                 crop=clean_crop,
                 predicted_class=predicted_class,
@@ -134,8 +151,8 @@ class RuleProvider:
                 record_id=record_id,
             )
 
-        rule = rules_matrix[predicted_class]
-        rule_citation = f"rules/{clean_crop}.v1.yaml#{clean_modality}/{predicted_class}"
+        rule = rules_matrix[matched_class]
+        rule_citation = f"rules/{clean_crop}.v1.yaml#{clean_modality}/{matched_class}"
 
         # 3. Handle low-confidence / uncertain predictions
         # Low confidence returns re-measure and inspect advice rather than strong actions

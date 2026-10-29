@@ -279,8 +279,16 @@ def generate_candidate_proposals(
     max_veg_area = max(valid_areas) if valid_areas else 0
     is_single_dominant_leaf = (
         len(valid_areas) == 1
-        or (len(valid_areas) > 1 and total_veg_area > 0 and (max_veg_area / total_veg_area) >= 0.80)
+        or (len(valid_areas) > 1 and total_veg_area > 0 and (max_veg_area / total_veg_area) >= 0.65)
     )
+
+    if is_single_dominant_leaf and len(valid_areas) > 0:
+        for label_idx in range(1, num_labels):
+            if int(stats[label_idx, cv2.CC_STAT_AREA]) == max_veg_area:
+                cx, cy = int(centroids[label_idx, 0]), int(centroids[label_idx, 1])
+                cx = max(0, min(w - 1, cx))
+                cy = max(0, min(h - 1, cy))
+                return [(cx, cy)]
 
     proposals: List[Tuple[Tuple[int, int], int]] = []
     for label_idx in range(1, num_labels):
@@ -289,14 +297,6 @@ def generate_candidate_proposals(
             continue
 
         comp_mask = (labels == label_idx).astype(np.uint8) * 255
-
-        # If a single dominant leaf is detected, place one robust prompt at its centroid without fragmenting
-        if is_single_dominant_leaf and area == max_veg_area:
-            cx, cy = int(centroids[label_idx, 0]), int(centroids[label_idx, 1])
-            cx = max(0, min(w - 1, cx))
-            cy = max(0, min(h - 1, cy))
-            proposals.append(((cx, cy), area))
-            continue
 
         # For large connected foliage canopies, sample multiple leaf blade centers via distance transform
         if area > 0.04 * h * w:

@@ -123,7 +123,7 @@ class GeminiRecommendationProvider:
             resp = requests.post(
                 url,
                 json={"contents": [{"parts": [{"text": prompt}]}]},
-                timeout=12,
+                timeout=3.5,
             )
 
             if resp.status_code == 200:
@@ -223,9 +223,9 @@ class RecommendationService:
             if self.settings.gemini_api_key
             else ""
         )
-        model_name = self.settings.gemini_model or "gemini-3.5-flash-lite"
-        if "gemini-1.5" in model_name or "gemini-2.5" in model_name:
-            model_name = "gemini-3.5-flash-lite"
+        model_name = self.settings.gemini_model or "gemini-2.5-flash"
+        if not model_name or "gemini-1.5" in model_name or "gemini-3.5" in model_name:
+            model_name = "gemini-2.5-flash"
 
         self._gemini_provider = GeminiRecommendationProvider(
             api_key=gemini_key,
@@ -236,6 +236,8 @@ class RecommendationService:
 
         # 3. Determine and set active provider
         target_provider = provider or self.settings.recommendation_provider
+        if target_provider == "rules" and gemini_key:
+            target_provider = "gemini"
         self._active_provider: RecommendationProvider = self._rule_provider
         self._active_provider_name: str = "rules"
         self.set_provider(target_provider)

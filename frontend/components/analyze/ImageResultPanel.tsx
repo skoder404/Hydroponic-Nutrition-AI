@@ -637,7 +637,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" data-testid="leaf-grid">
           {leaves.map((leaf, idx) => (
             <LeafCard
-              key={leaf.leaf_id || idx}
+              key={leaf.leaf_id ? `${leaf.leaf_id}-${idx}` : `leaf-${idx}`}
               leafId={leaf.leaf_id || `leaf_${idx + 1}`}
               index={idx + 1}
               displayLabel={leaf.display_label || leaf.predicted_class}
