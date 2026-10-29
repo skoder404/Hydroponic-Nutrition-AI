@@ -448,11 +448,15 @@ class CampusServerAdapter(DeviceAdapter):
         camera_url: str = "http://127.0.0.1:8080/feed",
         max_age_s: int = 120,
         timeout_s: int = 5,
+        camera_user: str = "admin",
+        camera_password: str = "",
     ) -> None:
         super().__init__(max_age_s)
         self.server_url = server_url
         self.camera_url = camera_url
         self.timeout_s = timeout_s
+        self.camera_user = camera_user
+        self.camera_password = camera_password
         self._last_success_time: datetime | None = None
 
     @property
@@ -491,8 +495,8 @@ class CampusServerAdapter(DeviceAdapter):
                     res = client.get(target_url)
                     if res.status_code == 200:
                         payload = res.json()
-                        # Extract nested latest payload if server.py wrapper format
-                        raw = payload.get("latest", payload) if isinstance(payload, dict) else {}
+                        # Extract nested data or latest payload if server wrapper format
+                        raw = payload.get("data", payload.get("latest", payload)) if isinstance(payload, dict) else {}
                         if isinstance(raw, dict) and any(
                             k.lower() in ("ph", "ec", "temp_avg", "humidity_avg", "readings", "temperature", "humidity", "water_temp")
                             for k in raw
@@ -702,18 +706,32 @@ class CampusServerAdapter(DeviceAdapter):
         """
         import httpx
 
-        endpoints = [
-            self.camera_url,
-            f"{self.camera_url.rstrip('/')}/snapshot.jpg",
-            f"{self.camera_url.rstrip('/')}/cgi-bin/snapshot.cgi",
-            f"{self.camera_url.rstrip('/')}/capture",
-            f"{self.camera_url.rstrip('/')}/feed",
-        ]
+        cam_base = self.camera_url.rstrip("/")
+        candidates = [cam_base]
+        if cam_base.startswith("http://"):
+            candidates.append("https://" + cam_base[7:])
+        elif cam_base.startswith("https://"):
+            candidates.append("http://" + cam_base[8:])
+
+        endpoints: list[str] = []
+        for base in candidates:
+            endpoints.extend([
+                f"{base}/cgi-bin/snapshot.cgi",
+                f"{base}/snapshot.jpg",
+                f"{base}/capture",
+                f"{base}/feed",
+                base,
+            ])
+
+        auth = None
+        if self.camera_user and self.camera_password:
+            auth = httpx.DigestAuth(self.camera_user, self.camera_password)
+
         last_exc: Exception | None = None
         for url in endpoints:
             try:
                 with httpx.Client(timeout=self.timeout_s, verify=False) as client:
-                    res = client.get(url)
+                    res = client.get(url, auth=auth)
                     if res.status_code == 200 and len(res.content) > 100:
                         content_type = res.headers.get("Content-Type", "image/jpeg")
                         return res.content, content_type
@@ -745,11 +763,18 @@ def get_device_adapter(adapter_type: str | None = None) -> DeviceAdapter:
     elif kind == "manual":
         adapter = ManualAdapter(max_age_s=settings.campus_max_age_s)
     elif kind == "campus":
+        cam_pwd = (
+            settings.campus_secondary_password.get_secret_value()
+            if hasattr(settings.campus_secondary_password, "get_secret_value")
+            else str(settings.campus_secondary_password or "")
+        )
         adapter = CampusAdapter(
             server_url=settings.campus_server_url,
             camera_url=settings.campus_camera_url,
             max_age_s=settings.campus_max_age_s,
             timeout_s=settings.campus_request_timeout_s,
+            camera_user=settings.campus_secondary_user,
+            camera_password=cam_pwd,
         )
     else:
         logger.warning(f"Unknown device adapter '{kind}', falling back to MockAdapter.")

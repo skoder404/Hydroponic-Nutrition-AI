@@ -84,6 +84,12 @@ class Settings(BaseSettings):
     campus_request_timeout_s: int = Field(
         default=5, description="Timeout for campus server requests"
     )
+    campus_secondary_user: str = Field(
+        default="admin", description="Campus secondary / camera username"
+    )
+    campus_secondary_password: SecretStr = Field(
+        default=SecretStr(""), description="Campus secondary / camera password"
+    )
 
     # Uploads and Inference
     max_upload_mb: int = Field(
