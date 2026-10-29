@@ -2085,9 +2085,9 @@
 **Dependencies:** T6-016
 **Acceptance Criteria:**
 
-- [ ] Intentional field removal fails the test
-- [ ] Snapshot update is an explicit commit
-- [ ] Runs in CI
+- [x] Intentional field removal fails the test
+- [x] Snapshot update is an explicit commit
+- [x] Runs in CI
 
 **Estimated Effort:** 45 min
 **Assigned To:** QA
