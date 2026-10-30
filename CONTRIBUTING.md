@@ -102,7 +102,7 @@ Any defects identified during review must be resolved via follow-up commits by t
 
 Our Definition of Done strictly enforces **Overview §27.4**:
 
-> **Acceptance conditions (Overview §27.4):**  
+> **Acceptance conditions (Overview §27.4):**
 > *"Do not mark a feature complete until the implementation, tests, and/or artifacts demonstrate the behaviour. A UI mockup or written plan is not proof that the backend integration, model, or hardware path works."*
 
 To consider a task or feature **DONE**:
@@ -115,7 +115,21 @@ To consider a task or feature **DONE**:
 
 ---
 
-## 6. Issue Templates
+## 6. Test Coverage Gate & Quality Standards
+
+To prevent regression and guarantee system stability across releases:
+
+- **Coverage Target Gate:** A minimum planned line coverage gate of **70%** (`--cov-fail-under=70`) is enforced across `backend/` and `ml/`.
+- **Measured Coverage Baseline:** Real line execution is measured via `pytest --cov=backend --cov=ml`, achieving **83%** overall statement coverage across 5,838 statements.
+- **Execution Command:**
+  ```bash
+  pytest --cov=backend --cov=ml --cov-report=term-missing tests/unit/ tests/integration/
+  ```
+- **Unmeasured Areas & Known Gaps:** Any components omitted from automated CI runs (e.g., physical serial UART sensors, real GPU SAM 2.1 kernels, live external LLM API billing) are explicitly documented with justifications in [`docs/testing.md`](docs/testing.md).
+
+---
+
+## 7. Issue Templates
 
 Standard issue templates are maintained in `.github/ISSUE_TEMPLATE/`:
 - **Bug Report (`bug_report.md`):** For reproducible defects, regressions, or unexpected behaviors.

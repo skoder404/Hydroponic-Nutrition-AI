@@ -2124,9 +2124,9 @@
 **Dependencies:** T8-001, T8-004, T8-005
 **Acceptance Criteria:**
 
-- [ ] Coverage is measured, not assumed
-- [ ] Gate value recorded in CONTRIBUTING
-- [ ] Gaps listed in `docs/testing.md`
+- [x] Coverage is measured, not assumed
+- [x] Gate value recorded in CONTRIBUTING
+- [x] Gaps listed in `docs/testing.md`
 
 **Estimated Effort:** 30 min
 **Assigned To:** QA
