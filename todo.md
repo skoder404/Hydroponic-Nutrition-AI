@@ -2155,9 +2155,9 @@
 **Dependencies:** T9-001, T1-011
 **Acceptance Criteria:**
 
-- [ ] `docker compose up` serves the app end to end on a fresh clone
-- [ ] Healthchecks gate dependent services
-- [ ] Volumes persist models and uploads
+- [x] `docker compose up` serves the app end to end on a fresh clone
+- [x] Healthchecks gate dependent services
+- [x] Volumes persist models and uploads
 
 **Estimated Effort:** 45 min
 **Assigned To:** DevOps
