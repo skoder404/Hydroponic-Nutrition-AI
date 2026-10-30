@@ -44,23 +44,29 @@ def record_to_schema(record: AnalysisRecord) -> RecordRead:
     predictions_out: list[PredictionResponse] = []
     if record.predictions:
         for p in record.predictions:
-            predictions_out.append(
-                PredictionResponse(
-                    crop=record.crop,
-                    modality=p.modality,  # type: ignore[arg-type]
-                    predicted_class=p.predicted_class,
-                    display_label=p.display_label,
-                    confidence=p.confidence,
-                    confidence_semantics=p.confidence_semantics,
-                    uncertain=p.uncertain,
-                    experimental=p.experimental,
-                    model_id=p.model_id,
-                    model_version=p.model_version,
-                    timestamp=p.created_at or record.created_at,
-                    provenance=record.source,  # type: ignore[arg-type]
-                    warnings=p.warnings or [],
+            try:
+                conf_semantics = (
+                    (p.confidence_semantics or "score") if p.confidence is not None else None
                 )
-            )
+                predictions_out.append(
+                    PredictionResponse(
+                        crop=record.crop,
+                        modality=p.modality,  # type: ignore[arg-type]
+                        predicted_class=p.predicted_class,
+                        display_label=p.display_label,
+                        confidence=p.confidence,
+                        confidence_semantics=conf_semantics,
+                        uncertain=p.uncertain,
+                        experimental=p.experimental,
+                        model_id=p.model_id,
+                        model_version=p.model_version,
+                        timestamp=p.created_at or record.created_at,
+                        provenance=record.source,  # type: ignore[arg-type]
+                        warnings=p.warnings or [],
+                    )
+                )
+            except Exception as e:
+                logger.warning(f"Failed to serialize prediction {getattr(p, 'id', None)}: {e}")
 
     # Map recommendation
     rec_out: RecommendationRead | None = None
