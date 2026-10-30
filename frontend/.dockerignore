@@ -1,0 +1,9 @@
+# Frontend-specific .dockerignore
+node_modules/
+.next/
+.git/
+.env*.local
+playwright-report/
+test-results/
+*.log
+.DS_Store

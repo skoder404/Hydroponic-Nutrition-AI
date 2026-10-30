@@ -2142,9 +2142,9 @@
 **Dependencies:** T8-011, T1-010, T1-005
 **Acceptance Criteria:**
 
-- [ ] Images build from clean checkout
-- [ ] No secrets or datasets in image layers
-- [ ] Container runs as non-root
+- [x] Images build from clean checkout
+- [x] No secrets or datasets in image layers
+- [x] Container runs as non-root
 
 **Estimated Effort:** 60 min
 **Assigned To:** DevOps
@@ -2161,7 +2161,7 @@
 
 **Estimated Effort:** 45 min
 **Assigned To:** DevOps
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 #### T9-003: Add database backup and restore scripts
 **Description:** `scripts/backup_db.sh` and `restore_db.sh` using `pg_dump`/`psql`, with retention notes and a restore test.
@@ -2187,7 +2187,7 @@
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 #### T9-005: Add the reverse-proxy sample for TLS
 **Description:** Provide `deploy/Caddyfile` (or nginx conf) fronting both services, tested locally with a self-signed certificate, matching `docs/deployment/https.md`.
@@ -2213,7 +2213,7 @@
 
 **Estimated Effort:** 45 min
 **Assigned To:** DevOps
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 ---
 
@@ -2297,7 +2297,7 @@
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
-**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
+**Driver / Navigator:** Both. Pair session; each member presents half and quizzes the other.
 
 #### T10-007: Final concept quiz and retrospective
 **Description:** Each member writes 10 questions for the other covering all concepts, answers them closed-book, and records scores and follow-ups in `docs/learning/PROGRESS.md`; hold a short retrospective on balance of driving and understanding.

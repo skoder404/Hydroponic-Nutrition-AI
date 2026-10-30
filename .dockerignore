@@ -1,0 +1,57 @@
+# ==============================================================================
+# Hydroponic Nutrition AI — Root .dockerignore
+# Enforces clean builds and prevents datasets, secrets, or cache leaks into image layers
+# ==============================================================================
+
+# Version control & IDE metadata
+.git/
+.github/
+.gitignore
+.gitattributes
+.vscode/
+.idea/
+
+# Local Python environments & caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local Node / Frontend build artifacts
+frontend/node_modules/
+frontend/.next/
+frontend/playwright-report/
+frontend/test-results/
+node_modules/
+.next/
+
+# Large datasets & raw media (Mounted as volumes; NEVER baked into images per T9-001)
+image_data/
+sensor_data/
+processed_data/
+uploads/
+models/
+
+# Secrets, credentials & local environment files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+*.secret
+credentials.json
+token.json
+
+# Local documentation drafts & logs
+cloud_server/*.log
+*.log
