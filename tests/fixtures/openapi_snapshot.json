@@ -12,7 +12,7 @@
           "Health"
         ],
         "summary": "Get Health",
-        "description": "Return application health, active device, and subsystem status.",
+        "description": "Return application health, active device, subsystem statuses, and fallback counters.",
         "operationId": "get_health_api_v1_health_get",
         "responses": {
           "200": {
@@ -21,6 +21,94 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/health/details": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Health Details",
+        "description": "Extended health diagnostics with model counts and device configuration.",
+        "operationId": "get_health_details_api_v1_health_details_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/metrics": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Metrics",
+        "description": "Expose telemetry and resilience fallback counters in Prometheus or JSON format.",
+        "operationId": "get_metrics_api_v1_metrics_get",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Output format: 'prometheus' or 'json'",
+              "title": "Format"
+            },
+            "description": "Output format: 'prometheus' or 'json'"
+          },
+          {
+            "name": "accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -887,7 +975,7 @@
           "Health"
         ],
         "summary": "Get Health",
-        "description": "Return application health, active device, and subsystem status.",
+        "description": "Return application health, active device, subsystem statuses, and fallback counters.",
         "operationId": "get_health_health_get",
         "responses": {
           "200": {
@@ -896,6 +984,94 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/details": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Health Details",
+        "description": "Extended health diagnostics with model counts and device configuration.",
+        "operationId": "get_health_details_health_details_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthDetailsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "summary": "Get Metrics",
+        "description": "Expose telemetry and resilience fallback counters in Prometheus or JSON format.",
+        "operationId": "get_metrics_metrics_get",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Output format: 'prometheus' or 'json'",
+              "title": "Format"
+            },
+            "description": "Output format: 'prometheus' or 'json'"
+          },
+          {
+            "name": "accept",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
             }
@@ -2310,6 +2486,71 @@
         "title": "DeviceStatusResponse",
         "description": "Aggregate hardware status response for GET /api/v1/device/status."
       },
+      "FallbackCounters": {
+        "properties": {
+          "gemini_to_rules": {
+            "type": "integer",
+            "title": "Gemini To Rules",
+            "description": "Count of Gemini failures falling back to rule-based recommendations",
+            "default": 0
+          },
+          "gpu_to_cpu": {
+            "type": "integer",
+            "title": "Gpu To Cpu",
+            "description": "Count of GPU OOM or runtime failures falling back to CPU",
+            "default": 0
+          },
+          "segmentation_failure": {
+            "type": "integer",
+            "title": "Segmentation Failure",
+            "description": "Count of leaf segmentation failure events",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "FallbackCounters",
+        "description": "Operational resilience fallback counters."
+      },
+      "GpuHealth": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available",
+            "description": "Whether CUDA GPU acceleration is available",
+            "default": false
+          },
+          "device_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device Name",
+            "description": "GPU hardware name if detected"
+          },
+          "memory": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Memory",
+            "description": "GPU memory statistics (allocated_mb, reserved_mb, total_mb, free_mb)"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "GpuHealth",
+        "description": "GPU hardware and memory availability diagnostics."
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2323,12 +2564,12 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "HealthResponse": {
+      "HealthDetailsResponse": {
         "properties": {
           "status": {
             "type": "string",
             "title": "Status",
-            "description": "Overall service status",
+            "description": "Overall service status ('ok', 'degraded')",
             "default": "ok"
           },
           "device": {
@@ -2339,14 +2580,82 @@
           "db": {
             "type": "string",
             "title": "Db",
-            "description": "Database connectivity status",
+            "description": "Database connectivity status ('connected', 'unavailable')",
             "default": "unknown"
           },
           "registry": {
             "type": "string",
             "title": "Registry",
-            "description": "Model registry status",
+            "description": "Model registry status ('ok', 'degraded', 'unknown')",
             "default": "unknown"
+          },
+          "gpu": {
+            "$ref": "#/components/schemas/GpuHealth",
+            "description": "GPU hardware and memory status"
+          },
+          "fallback_counters": {
+            "$ref": "#/components/schemas/FallbackCounters",
+            "description": "Counters tracking fallback occurrences across subsystems"
+          },
+          "active_models_count": {
+            "type": "integer",
+            "title": "Active Models Count",
+            "description": "Total active models loaded in registry",
+            "default": 0
+          },
+          "target_device": {
+            "type": "string",
+            "title": "Target Device",
+            "description": "Configured target compute device",
+            "default": "cpu"
+          },
+          "force_cpu": {
+            "type": "boolean",
+            "title": "Force Cpu",
+            "description": "Whether FORCE_CPU override is enabled",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "device"
+        ],
+        "title": "HealthDetailsResponse",
+        "description": "Extended health diagnostics including models and runtime telemetry."
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status",
+            "description": "Overall service status ('ok', 'degraded')",
+            "default": "ok"
+          },
+          "device": {
+            "type": "string",
+            "title": "Device",
+            "description": "Detected compute device from DeviceManager ('cuda:0' or 'cpu')"
+          },
+          "db": {
+            "type": "string",
+            "title": "Db",
+            "description": "Database connectivity status ('connected', 'unavailable')",
+            "default": "unknown"
+          },
+          "registry": {
+            "type": "string",
+            "title": "Registry",
+            "description": "Model registry status ('ok', 'degraded', 'unknown')",
+            "default": "unknown"
+          },
+          "gpu": {
+            "$ref": "#/components/schemas/GpuHealth",
+            "description": "GPU hardware and memory status"
+          },
+          "fallback_counters": {
+            "$ref": "#/components/schemas/FallbackCounters",
+            "description": "Counters tracking fallback occurrences across subsystems"
           }
         },
         "additionalProperties": false,
@@ -2355,7 +2664,7 @@
           "device"
         ],
         "title": "HealthResponse",
-        "description": "Health check response schema."
+        "description": "Health check response schema with subsystem statuses and telemetry."
       },
       "LatestSensorsResponse": {
         "properties": {
@@ -2444,11 +2753,18 @@
           },
           "bbox": {
             "items": {
-              "type": "integer"
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
             },
             "type": "array",
             "title": "Bbox",
-            "description": "Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel format",
+            "description": "Bounding box coordinates in [xmin, ymin, xmax, ymax] pixel or normalized format",
             "examples": [
               [
                 42,
@@ -2456,6 +2772,21 @@
                 280,
                 310
               ]
+            ]
+          },
+          "contour_area": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contour Area",
+            "description": "Segment area in pixels",
+            "examples": [
+              14200
             ]
           },
           "mask_ref": {
@@ -2713,6 +3044,7 @@
           "metrics": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -2777,6 +3109,7 @@
             ]
           },
           "readings": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Readings",
             "description": "Sensor readings dictionary (feature name -> float or {value: float, unit: str})",
@@ -3124,6 +3457,7 @@
             ]
           },
           "content": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Content",
             "description": "Structured recommendation text and corrective dosing actions (e.g. pH down, Ca(NO3)2 adjustment)",
@@ -3138,6 +3472,7 @@
             ]
           },
           "evidence": {
+            "additionalProperties": true,
             "type": "object",
             "title": "Evidence",
             "description": "Scientific evidence and sensor observations justifying the recommendation",
@@ -3243,6 +3578,7 @@
           "inputs": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {
@@ -3280,9 +3616,14 @@
                 "$ref": "#/components/schemas/RecommendationRead"
               },
               {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
                 "type": "null"
               }
             ],
+            "title": "Recommendation",
             "description": "Optional agronomic recommendation to associate atomically"
           }
         },
@@ -3387,6 +3728,7 @@
           "inputs": {
             "anyOf": [
               {
+                "additionalProperties": true,
                 "type": "object"
               },
               {

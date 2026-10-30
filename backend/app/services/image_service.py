@@ -244,6 +244,14 @@ class ImageService:
             logger.error(
                 "Segmentation routine raised exception for %s: %s", clean_crop, exc
             )
+            try:
+                from backend.app.core.telemetry import get_fallback_tracker
+
+                get_fallback_tracker().increment_segmentation_failure(
+                    reason=f"{type(exc).__name__}: {exc}"
+                )
+            except Exception:
+                pass
             raise SegmentationFailedError(
                 message=f"Leaf segmentation failed on {clean_crop} image: {exc}",
                 details={"crop": clean_crop, "input_mode": input_mode},
@@ -270,6 +278,14 @@ class ImageService:
                 clean_crop,
                 len(rejected_leaves_list),
             )
+            try:
+                from backend.app.core.telemetry import get_fallback_tracker
+
+                get_fallback_tracker().increment_segmentation_failure(
+                    reason=f"Zero valid leaves: {rejection_summary}"
+                )
+            except Exception:
+                pass
             raise SegmentationFailedError(
                 message=(
                     "Segmentation failed to extract any valid leaf from the photograph. "

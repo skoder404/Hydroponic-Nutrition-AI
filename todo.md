@@ -2181,9 +2181,9 @@
 **Dependencies:** T6-015, T6-002
 **Acceptance Criteria:**
 
-- [ ] Counters increment in a simulated failure test
-- [ ] Health reflects a stopped DB
-- [ ] No sensitive data in output
+- [x] Counters increment in a simulated failure test
+- [x] Health reflects a stopped DB
+- [x] No sensitive data in output
 
 **Estimated Effort:** 45 min
 **Assigned To:** Backend

@@ -1,4 +1,5 @@
 """Unit tests for FastAPI app factory, /health, request-ID middleware, and JSON logging (T1-009)."""
+
 from __future__ import annotations
 
 import io
@@ -22,9 +23,11 @@ def test_health_endpoint_contract():
     assert response.status_code == 200
 
     data = response.json()
-    assert data["status"] == "ok"
-    assert data["db"] == "unknown"
-    assert data["registry"] in ("ok", "unknown")
+    assert data["status"] in ("ok", "degraded")
+    assert data["db"] in ("connected", "unavailable", "unknown")
+    assert data["registry"] in ("ok", "degraded", "unknown")
+    assert "gpu" in data
+    assert "fallback_counters" in data
 
     expected_device = get_device_manager().get_device_actually_used()
     assert data["device"] == expected_device
@@ -87,7 +90,9 @@ def test_secret_redaction_in_logs():
     raw_key = "AIzaSyDtestingGeminiApiKey12345678900"
     raw_bearer = "bearer_token_abc_xyz_9999"
 
-    logger.info(f"Database connection string: postgresql://postgres:{raw_secret}@localhost:5432/db")
+    logger.info(
+        f"Database connection string: postgresql://postgres:{raw_secret}@localhost:5432/db"
+    )
     logger.info(f"Loaded gemini with api_key={raw_key}")
     logger.info(f"Authorization: Bearer {raw_bearer}")
 

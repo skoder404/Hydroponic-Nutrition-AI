@@ -255,6 +255,14 @@ class SAM2Segmenter:
                 # Fallback to CPU and retry
                 self.load_model(target_device="cpu")
                 self._fallback_triggered = True
+                try:
+                    from backend.app.core.telemetry import get_fallback_tracker
+
+                    get_fallback_tracker().increment_gpu_to_cpu(
+                        reason="SAM2 simulated OOM fallback to CPU"
+                    )
+                except Exception:
+                    pass
                 return self.segment(
                     image=img_rgb,
                     point_coords=input_points,
@@ -282,6 +290,14 @@ class SAM2Segmenter:
                 # Fallback to CPU as documented in ADR 0003
                 self.load_model(target_device="cpu")
                 self._fallback_triggered = True
+                try:
+                    from backend.app.core.telemetry import get_fallback_tracker
+
+                    get_fallback_tracker().increment_gpu_to_cpu(
+                        reason="SAM2 inference CUDA OOM fallback to CPU"
+                    )
+                except Exception:
+                    pass
                 return self.segment(
                     image=img_rgb,
                     point_coords=input_points,

@@ -211,6 +211,14 @@ class DeviceManager:
                 if on_fallback:
                     on_fallback("cpu")
                 self.record_device_use("cpu")
+                try:
+                    from backend.app.core.telemetry import get_fallback_tracker
+
+                    get_fallback_tracker().increment_gpu_to_cpu(
+                        reason="CUDA OOM in retry_on_oom"
+                    )
+                except Exception:
+                    pass
             raise
 
     def execute_with_retry(
@@ -284,6 +292,14 @@ class DeviceManager:
                     current_device = "cpu"
                     current_batch = max(1, current_batch)
                     fallback_to_cpu = True
+                    try:
+                        from backend.app.core.telemetry import get_fallback_tracker
+
+                        get_fallback_tracker().increment_gpu_to_cpu(
+                            reason="CUDA OOM in execute_with_retry"
+                        )
+                    except Exception:
+                        pass
                     logger.info("Retrying on CPU fallback...")
                     continue
 

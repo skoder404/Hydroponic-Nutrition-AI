@@ -157,7 +157,7 @@ def test_health_endpoint_reports_device_actually_used():
     resp = client.get("/api/v1/health")
     assert resp.status_code == 200
     data = resp.json()
-    assert data["status"] == "ok"
+    assert data["status"] in ("ok", "degraded")
     assert data["device"] == "cpu"
 
     # Case 2: After verified GPU computation

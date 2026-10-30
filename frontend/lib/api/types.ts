@@ -21,11 +21,25 @@ export interface ErrorEnvelope {
 // Health & Telemetry
 // =============================================================================
 
+export interface GpuHealth {
+  available: boolean;
+  device_name?: string | null;
+  memory?: Record<string, any> | null;
+}
+
+export interface FallbackCounters {
+  gemini_to_rules: number;
+  gpu_to_cpu: number;
+  segmentation_failure: number;
+}
+
 export interface HealthResponse {
   status: string;
   device: string;
   db: string;
   registry: string;
+  gpu?: GpuHealth;
+  fallback_counters?: FallbackCounters;
 }
 
 // =============================================================================
@@ -230,5 +244,3 @@ export interface AnalyzeResponse {
   recommendation?: RecommendationResponse | null;
   warnings?: string[];
 }
-
-

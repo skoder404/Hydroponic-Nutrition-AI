@@ -177,10 +177,26 @@ class GeminiRecommendationProvider:
                     resp.status_code,
                     resp.text[:200],
                 )
+                try:
+                    from backend.app.core.telemetry import get_fallback_tracker
+
+                    get_fallback_tracker().increment_gemini_to_rules(
+                        reason=f"Gemini API status {resp.status_code}"
+                    )
+                except Exception:
+                    pass
         except Exception as exc:
             logger.warning(
                 "Gemini invocation failed: %s. Falling back to RuleProvider.", exc
             )
+            try:
+                from backend.app.core.telemetry import get_fallback_tracker
+
+                get_fallback_tracker().increment_gemini_to_rules(
+                    reason=f"{type(exc).__name__}: {exc}"
+                )
+            except Exception:
+                pass
 
         return self._fallback_provider.recommend(
             crop=clean_crop,
