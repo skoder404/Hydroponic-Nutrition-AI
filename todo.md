@@ -2046,13 +2046,13 @@
 **Dependencies:** T6-007, T6-005
 **Acceptance Criteria:**
 
-- [ ] Each path has a success and a failure test
-- [ ] Stub models are clearly marked as test fixtures
-- [ ] No real datasets required in CI
+- [x] Each path has a success and a failure test
+- [x] Stub models are clearly marked as test fixtures
+- [x] No real datasets required in CI
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 #### T8-006: Integration tests: fallbacks and failure modes
 **Description:** Corrupt/missing artifact, DB outage on save ('not saved'), device unavailable/stale to manual path, GPU unavailable (FORCE_CPU) and simulated OOM, and (when implemented) Gemini unavailable to rules fallback.
@@ -2130,7 +2130,7 @@
 
 **Estimated Effort:** 30 min
 **Assigned To:** QA
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 ---
 
@@ -2244,7 +2244,7 @@
 
 **Estimated Effort:** 60 min
 **Assigned To:** Backend
-**Driver / Navigator:** Sushil drives / Yashwant reviews the commit.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 #### T10-003: Probability calibration experiment (validation-fit)
 **Description:** Fit temperature scaling or Platt/isotonic calibration on validation data for one image model and one sensor model, compare reliability diagrams, and decide whether to adopt. Only change the UI wording from 'model score' if calibration is shown to help.
@@ -2297,7 +2297,7 @@
 
 **Estimated Effort:** 90 min
 **Assigned To:** QA
-**Driver / Navigator:** Both. Pair session; each member presents half and quizzes the other.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 #### T10-007: Final concept quiz and retrospective
 **Description:** Each member writes 10 questions for the other covering all concepts, answers them closed-book, and records scores and follow-ups in `docs/learning/PROGRESS.md`; hold a short retrospective on balance of driving and understanding.
@@ -2310,7 +2310,7 @@
 
 **Estimated Effort:** 60 min
 **Assigned To:** QA
-**Driver / Navigator:** Both. Pair session; each member presents half and quizzes the other.
+**Driver / Navigator:** Yashwant drives / Sushil reviews the commit.
 
 ---
 

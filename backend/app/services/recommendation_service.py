@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from typing import Any, Literal, Protocol, runtime_checkable
 from uuid import UUID, uuid4
 
-import requests
+import requests  # type: ignore[import-untyped]
 
 from backend.app.core.config import Settings, get_settings
 from backend.app.schemas.prediction import PredictionResponse
@@ -127,12 +127,21 @@ class GeminiRecommendationProvider:
             )
 
             if resp.status_code == 200:
-                raw_text = resp.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
-                cleaned_json = raw_text.removeprefix("```json").removeprefix("```").removesuffix("```").strip()
+                raw_text = resp.json()["candidates"][0]["content"]["parts"][0][
+                    "text"
+                ].strip()
+                cleaned_json = (
+                    raw_text.removeprefix("```json")
+                    .removeprefix("```")
+                    .removesuffix("```")
+                    .strip()
+                )
                 parsed_content = json.loads(cleaned_json)
 
                 content = {
-                    "summary": parsed_content.get("summary", f"AI Assessment for {predicted_class}"),
+                    "summary": parsed_content.get(
+                        "summary", f"AI Assessment for {predicted_class}"
+                    ),
                     "checks": parsed_content.get("checks", []),
                     "actions": parsed_content.get("actions", []),
                     "status": "advisory, gemini-ai",
@@ -169,7 +178,9 @@ class GeminiRecommendationProvider:
                     resp.text[:200],
                 )
         except Exception as exc:
-            logger.warning("Gemini invocation failed: %s. Falling back to RuleProvider.", exc)
+            logger.warning(
+                "Gemini invocation failed: %s. Falling back to RuleProvider.", exc
+            )
 
         return self._fallback_provider.recommend(
             crop=clean_crop,

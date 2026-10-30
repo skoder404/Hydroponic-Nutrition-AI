@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Literal
 from uuid import UUID, uuid4
 
-import yaml  # type: ignore
+import yaml  # type: ignore[import-untyped]
 
 from backend.app.schemas.prediction import PredictionResponse
 from backend.app.schemas.recommendation import RecommendationRead

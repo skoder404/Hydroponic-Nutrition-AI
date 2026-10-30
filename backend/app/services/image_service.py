@@ -16,13 +16,12 @@ import logging
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Literal, Optional, Sequence
+from typing import Literal
 
 import numpy as np
 from PIL import Image, ImageOps
 import torch
 
-from backend.app.core.config import get_settings
 from backend.app.core.device_manager import DeviceManager
 from backend.app.core.errors import (
     InvalidInputError,
@@ -41,10 +40,9 @@ from backend.app.services.model_service import (
 )
 from ml.image_models.data import build_transforms
 from ml.image_models.efficientnet import build_efficientnet_b0
-from ml.labels import IMAGE_CLASSES, get_display_label
+from ml.labels import get_display_label
 from ml.registry import ModelMetadata
 from ml.segmentation.leaf_extraction import (
-    ExtractedLeaf,
     LeafExtractionConfig,
     LeafExtractionResult,
     extract_leaves,
@@ -81,7 +79,9 @@ class ImageService:
                 )
             if np.issubdtype(image_input.dtype, np.floating):
                 return np.clip(
-                    image_input * 255.0 if np.nanmax(image_input) <= 1.0 + 1e-6 else image_input,
+                    image_input * 255.0
+                    if np.nanmax(image_input) <= 1.0 + 1e-6
+                    else image_input,
                     0,
                     255,
                 ).astype(np.uint8)
@@ -100,7 +100,9 @@ class ImageService:
                     transposed = ImageOps.exif_transpose(pil_img)
                     return np.array(transposed.convert("RGB"), dtype=np.uint8)
             except Exception as exc:
-                raise InvalidInputError(f"Failed to decode image from '{img_path}': {exc}") from exc
+                raise InvalidInputError(
+                    f"Failed to decode image from '{img_path}': {exc}"
+                ) from exc
 
         if isinstance(image_input, (bytes, bytearray)):
             try:
@@ -108,9 +110,13 @@ class ImageService:
                     transposed = ImageOps.exif_transpose(pil_img)
                     return np.array(transposed.convert("RGB"), dtype=np.uint8)
             except Exception as exc:
-                raise InvalidInputError(f"Failed to decode image from uploaded bytes: {exc}") from exc
+                raise InvalidInputError(
+                    f"Failed to decode image from uploaded bytes: {exc}"
+                ) from exc
 
-        raise InvalidInputError(f"Unsupported image input type: {type(image_input).__name__}")
+        raise InvalidInputError(
+            f"Unsupported image input type: {type(image_input).__name__}"
+        )
 
     def _get_pytorch_model(
         self,
@@ -131,10 +137,14 @@ class ImageService:
         # Artifact path resolved through trusted root
         artifact_path = self.registry_service.root_dir / artifact_path_rel
         if not artifact_path.is_file():
-            raise ModelUnavailableError(f"Model artifact not found at '{artifact_path}'.")
+            raise ModelUnavailableError(
+                f"Model artifact not found at '{artifact_path}'."
+            )
 
         try:
-            ckpt = torch.load(artifact_path, map_location=target_device, weights_only=False)
+            ckpt = torch.load(
+                artifact_path, map_location=target_device, weights_only=False
+            )
             state_dict = ckpt.get("model_state_dict", ckpt.get("state_dict", ckpt))
             model.load_state_dict(state_dict)
             model.to(target_device)
@@ -203,7 +213,7 @@ class ImageService:
             ) from exc
 
         # 3. Perform Leaf Extraction & Mask Quality Gating
-        is_single_leaf = (input_mode == "leaf")
+        is_single_leaf = input_mode == "leaf"
         extract_cfg = LeafExtractionConfig(
             single_leaf_mode=is_single_leaf,
             max_leaves=max_leaves,
@@ -219,18 +229,21 @@ class ImageService:
                 # Stationary overhead polyhouse CPPLUS camera facing NFT channels
                 # Use calibrated bench plant net-cup grid to accurately isolate all seedling instances
                 from ml.segmentation.campus_grid import extract_campus_grid_leaves
+
                 extraction_result: LeafExtractionResult = extract_campus_grid_leaves(
                     img_rgb,
                     max_leaves=max_leaves if (max_leaves and max_leaves > 10) else None,
                 )
             else:
-                extraction_result: LeafExtractionResult = extract_leaves(
+                extraction_result = extract_leaves(
                     img_rgb,
                     segmenter=self.segmenter,
                     config=extract_cfg,
                 )
         except Exception as exc:
-            logger.error("Segmentation routine raised exception for %s: %s", clean_crop, exc)
+            logger.error(
+                "Segmentation routine raised exception for %s: %s", clean_crop, exc
+            )
             raise SegmentationFailedError(
                 message=f"Leaf segmentation failed on {clean_crop} image: {exc}",
                 details={"crop": clean_crop, "input_mode": input_mode},
@@ -249,7 +262,9 @@ class ImageService:
 
         # Invariant: If no valid leaf exists return SEGMENTATION_FAILED (retryable), never a prediction.
         if len(extraction_result.leaves) == 0:
-            rejection_summary = "; ".join([f"{r.leaf_id}: {r.reason}" for r in rejected_leaves_list])
+            rejection_summary = "; ".join(
+                [f"{r.leaf_id}: {r.reason}" for r in rejected_leaves_list]
+            )
             logger.warning(
                 "Zero valid leaves extracted for %s (rejected: %d). Raising SEGMENTATION_FAILED.",
                 clean_crop,
@@ -281,9 +296,11 @@ class ImageService:
         conf_settings = metadata.confidence_settings or {}
         uncertainty_thresh = conf_settings.get("uncertainty_thresholds", {})
         moderate_thresh = float(
-            uncertainty_thresh.get("moderate", conf_settings.get("threshold_moderate", 0.50))
+            uncertainty_thresh.get(
+                "moderate", conf_settings.get("threshold_moderate", 0.50)
+            )
         )
-        high_thresh = float(
+        _high_thresh = float(
             uncertainty_thresh.get("high", conf_settings.get("threshold_high", 0.75))
         )
         fitted_temp = float(
@@ -307,7 +324,9 @@ class ImageService:
 
         with torch.no_grad():
             batch_logits = model(batch_tensor)
-            scaled_logits = batch_logits / fitted_temp if fitted_temp > 0 else batch_logits
+            scaled_logits = (
+                batch_logits / fitted_temp if fitted_temp > 0 else batch_logits
+            )
             all_probs = torch.softmax(scaled_logits, dim=-1).cpu().numpy()
 
         for idx, leaf in enumerate(extraction_result.leaves):
@@ -333,7 +352,11 @@ class ImageService:
                 round(float(x2) / float(w), 4),
                 round(float(y2) / float(h), 4),
             ]
-            seg_area = int(np.count_nonzero(leaf.mask)) if hasattr(leaf, "mask") and leaf.mask is not None else None
+            seg_area = (
+                int(np.count_nonzero(leaf.mask))
+                if hasattr(leaf, "mask") and leaf.mask is not None
+                else None
+            )
 
             leaves_predictions.append(
                 LeafPrediction(
@@ -365,7 +388,14 @@ class ImageService:
             if "unhealthy" in cl:
                 return False
             return (
-                cl in ("healthier", "spinach_healthy", "tomato_healthy", "healthy", "normal")
+                cl
+                in (
+                    "healthier",
+                    "spinach_healthy",
+                    "tomato_healthy",
+                    "healthy",
+                    "normal",
+                )
                 or cl.endswith("_healthy")
                 or "healthy foliage" in cl
             )
@@ -376,7 +406,9 @@ class ImageService:
         if non_healthy_leaves:
             pathology_counts = Counter(lp.predicted_class for lp in non_healthy_leaves)
             max_cnt = max(pathology_counts.values())
-            candidate_classes = [cls for cls, cnt in pathology_counts.items() if cnt == max_cnt]
+            candidate_classes = [
+                cls for cls, cnt in pathology_counts.items() if cnt == max_cnt
+            ]
             if len(candidate_classes) == 1:
                 dominant_class = candidate_classes[0]
             else:
@@ -389,7 +421,9 @@ class ImageService:
                     ),
                 )
         else:
-            dominant_class = Counter(lp.predicted_class for lp in leaves_predictions).most_common(1)[0][0]
+            dominant_class = Counter(
+                lp.predicted_class for lp in leaves_predictions
+            ).most_common(1)[0][0]
 
         dominant_display = metadata.display_mapping.get(
             dominant_class, get_display_label(clean_crop, dominant_class, "image")
@@ -484,4 +518,3 @@ def reset_image_service() -> None:
     """Reset global ImageService singleton (for testing)."""
     global _IMAGE_SERVICE
     _IMAGE_SERVICE = None
-

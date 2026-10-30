@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import json
 import logging
-from typing import Annotated
+from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
 
@@ -66,7 +66,10 @@ def get_recommendation_service_dep() -> RecommendationService:
     settings = get_settings()
     active_prov = (
         "gemini"
-        if (settings.gemini_api_key and settings.gemini_api_key.get_secret_value().strip())
+        if (
+            settings.gemini_api_key
+            and settings.gemini_api_key.get_secret_value().strip()
+        )
         else settings.recommendation_provider
     )
     return get_recommendation_service(provider=active_prov)
@@ -133,6 +136,7 @@ async def analyze(
 
     sensor_prediction: PredictionResponse | None = None
     image_prediction: PredictionResponse | None = None
+    parsed_sensor_readings: dict[str, Any] | None = None
     not_assessed: list[NotAssessedItem] = []
     combined_warnings: list[str] = []
 
@@ -145,6 +149,7 @@ async def analyze(
                 raw_readings = json.loads(sensor_readings)
                 if not isinstance(raw_readings, dict):
                     raise ValueError("sensor_readings must be a JSON object")
+                parsed_sensor_readings = raw_readings
             except Exception as err:
                 raise InvalidInputError(
                     f"Malformed sensor_readings JSON: {err}",
@@ -296,6 +301,7 @@ async def analyze(
     # --------------------------------------------------------------------------
     recommendation = None
     try:
+
         def _is_healthy(cls_name: str | None) -> bool:
             if not cls_name:
                 return True
@@ -303,13 +309,24 @@ async def analyze(
             if "unhealthy" in c:
                 return False
             return (
-                c in ("healthier", "spinach_healthy", "tomato_healthy", "healthy", "normal")
+                c
+                in (
+                    "healthier",
+                    "spinach_healthy",
+                    "tomato_healthy",
+                    "healthy",
+                    "normal",
+                )
                 or c.endswith("_healthy")
                 or "healthy foliage" in c
             )
 
-        image_has_issue = image_prediction is not None and not _is_healthy(image_prediction.predicted_class)
-        sensor_has_issue = sensor_prediction is not None and not _is_healthy(sensor_prediction.predicted_class)
+        image_has_issue = image_prediction is not None and not _is_healthy(
+            image_prediction.predicted_class
+        )
+        sensor_has_issue = sensor_prediction is not None and not _is_healthy(
+            sensor_prediction.predicted_class
+        )
 
         if image_has_issue and image_prediction is not None:
             recommendation = recommendation_service.recommend(
@@ -318,12 +335,12 @@ async def analyze(
                 modality="image",
                 confidence=image_prediction.confidence,
                 uncertain=image_prediction.uncertain,
-                sensor_readings=sensor_readings,
+                sensor_readings=parsed_sensor_readings,
             )
         elif sensor_has_issue and sensor_prediction is not None:
             recommendation = recommendation_service.recommend_from_prediction(
                 sensor_prediction,
-                sensor_readings=sensor_readings,
+                sensor_readings=parsed_sensor_readings,
             )
         elif image_prediction is not None:
             recommendation = recommendation_service.recommend(
@@ -332,12 +349,12 @@ async def analyze(
                 modality="image",
                 confidence=image_prediction.confidence,
                 uncertain=image_prediction.uncertain,
-                sensor_readings=sensor_readings,
+                sensor_readings=parsed_sensor_readings,
             )
         elif sensor_prediction is not None:
             recommendation = recommendation_service.recommend_from_prediction(
                 sensor_prediction,
-                sensor_readings=sensor_readings,
+                sensor_readings=parsed_sensor_readings,
             )
     except Exception as exc:
         logger.warning("Failed to generate recommendation: %s", exc)
