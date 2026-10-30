@@ -2207,9 +2207,9 @@
 **Dependencies:** T9-005, T9-003, T9-004, T8-010
 **Acceptance Criteria:**
 
-- [ ] A teammate can run the demo from the runbook alone
-- [ ] README claims match verified features
-- [ ] Tag created only after the checklist passes
+- [x] A teammate can run the demo from the runbook alone
+- [x] README claims match verified features
+- [x] Tag created only after the checklist passes
 
 **Estimated Effort:** 45 min
 **Assigned To:** DevOps

@@ -2,7 +2,7 @@
 
 A crop-condition **decision-support** web application for **lettuce, spinach, and tomato** grown hydroponically. It combines plant-image analysis, sensor-based condition classification, and cautious, explainable recommendations — and it is honest about what it does *not* know.
 
-> **Project status:** 🚧 Planning complete · implementation in progress. Nothing in this README claims a feature works until the matching task in [`todo.md`](./todo.md) is checked off **and** backed by tests/artifacts.
+> **Project status:** ✅ **v0.1.0 Released** · Full production stack verified across frontend, backend, PostgreSQL, model registry, and reverse proxy. See the [Demo Runbook](docs/runbook.md) for live walkthrough instructions.
 >
 > **Team:** Yashwant Vadhan M · Sushil Kumar M A — a two-person project where **both members are expected to learn every ML concept equally** (see [How we work](#-how-we-work-equal-learning)).
 
@@ -67,6 +67,9 @@ Details: [`TECH_RULES.md`](./TECH_RULES.md).
 | `docs/learning/` | Concept notes, teach-backs, quizzes (created during the project) |
 | `docs/datasets/` | Dataset provenance sheets |
 | `docs/decisions/` | Architecture decision records |
+| [`docs/runbook.md`](./docs/runbook.md) | **Demo runbook & operations guide** (start/stop, live walkthrough, fallbacks) |
+| [`docs/deployment/docker.md`](./docs/deployment/docker.md) | Container architecture and multi-stage Dockerfiles |
+| [`docs/deployment/backup_restore.md`](./docs/deployment/backup_restore.md) | Database backup, restore, and automated retention |
 | [`docs/deployment/https.md`](./docs/deployment/https.md) | HTTPS/TLS reverse-proxy configuration (Caddy/NGINX) and HSTS |
 
 ---
@@ -88,7 +91,7 @@ Details: [`TECH_RULES.md`](./TECH_RULES.md).
 
 ## 🚀 Getting started
 
-> **Template.** Exact commands, versions, and paths are finalised in Phase 1 of [`todo.md`](./todo.md) (tasks T1-xxx). Treat the block below as the intended shape, not verified instructions.
+> **Production Ready (v0.1.0).** See [`docs/runbook.md`](./docs/runbook.md) for full demo and operations instructions.
 
 ```bash
 # 1. Clone
