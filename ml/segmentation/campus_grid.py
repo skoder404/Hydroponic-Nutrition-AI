@@ -1,4 +1,4 @@
-            """Calibrated campus hydroponic NFT bench net-cup grid extraction.
+"""Calibrated campus hydroponic NFT bench net-cup grid extraction.
 
 Provides fixed high-accuracy spatial region-of-interest (ROI) bounding boxes
 for the stationary wide-angle polyhouse CPPLUS IP camera.
