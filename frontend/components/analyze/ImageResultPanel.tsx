@@ -61,6 +61,7 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
   const [showConfidence, setShowConfidence] = useState<boolean>(true);
   const [showMask, setShowMask] = useState<boolean>(true);
   const [selectedLeafIndex, setSelectedLeafIndex] = useState<number | null>(null);
+  const [hoveredLeafIndex, setHoveredLeafIndex] = useState<number | null>(null);
   const [naturalSize, setNaturalSize] = useState<{ width: number; height: number } | null>(null);
   const [aspectRatio, setAspectRatio] = useState<number | null>(null);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -81,6 +82,12 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
   const leaves: LeafPrediction[] = prediction?.leaves || [];
   const rejectedLeaves: RejectedLeaf[] = (prediction?.rejected_leaves || []) as RejectedLeaf[];
   const hasNoLeaves = leaves.length === 0;
+
+  // Live campus analysis detection (e.g. 48-plant stationary polyhouse bench camera)
+  const isLiveAnalysis =
+    source === "campus_camera" ||
+    (prediction as { provenance?: string })?.provenance === "live" ||
+    leaves.length > 8;
 
   // Determine if this is a segmentation / input failure state
   const isFailure =
@@ -324,7 +331,9 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
               Whole Plant Canopy &amp; Localized Deficiencies
             </h3>
             <p className="text-xs text-[var(--stone)] mt-0.5">
-              Identified leaves and deficient patches are framed with bounding boxes, calibrated confidence, and pathology labels directly on the photo.
+              {isLiveAnalysis
+                ? "Stationary NFT channel bench: Hover your cursor over any plant bounding box to view its individual pathology diagnosis and confidence."
+                : "Identified leaves and deficient patches are framed with bounding boxes, calibrated confidence, and pathology labels directly on the photo."}
             </p>
           </div>
 
@@ -450,41 +459,52 @@ export const ImageResultPanel: React.FC<ImageResultPanelProps> = ({
                       : null;
                   const isNearTop = boxTop < 7;
 
+                  const isHovered = hoveredLeafIndex === idx;
+                  const shouldShowLabel = !isLiveAnalysis || isHovered || isSelected;
+
                   return (
                     <div
                       key={leaf.leaf_id || idx}
                       onClick={() => setSelectedLeafIndex(isSelected ? null : idx)}
+                      onMouseEnter={() => setHoveredLeafIndex(idx)}
+                      onMouseLeave={() =>
+                        setHoveredLeafIndex((cur) => (cur === idx ? null : cur))
+                      }
                       style={{
                         top: `${boxTop}%`,
                         left: `${boxLeft}%`,
                         width: `${boxWidth}%`,
                         height: `${boxHeight}%`,
                       }}
-                      className={`absolute border-2 sm:border-3 rounded-lg sm:rounded-xl cursor-pointer transition-all duration-200 z-10 ${borderClasses}`}
+                      className={`absolute border-2 sm:border-3 rounded-lg sm:rounded-xl cursor-pointer transition-all duration-150 ${
+                        isHovered || isSelected ? "z-30 scale-[1.02]" : "z-10"
+                      } ${borderClasses}`}
                     >
                       {/* IN-PICTURE IDENTIFIED CLASS & CONFIDENCE BADGE */}
-                      <div
-                        className={`absolute ${
-                          isNearTop ? "top-1.5 left-1.5" : "-top-7 sm:-top-8 left-0"
-                        } flex items-center gap-1.5 px-2.5 py-1 rounded-md sm:rounded-lg text-[11px] sm:text-xs font-bold border shadow-xl backdrop-blur-md z-30 whitespace-nowrap transition-transform duration-150 ${tagBg} ${
-                          isSelected ? "scale-105 ring-2 ring-white" : ""
-                        }`}
-                      >
-                        <span className="font-mono bg-black/30 px-1 rounded text-[10px] sm:text-xs">
-                          #{leafNum}
-                        </span>
-
-                        <span>
-                          {isHealthy ? "✓ " : isDeficient ? "⚠ " : "? "}
-                          {leaf.display_label || leaf.predicted_class}
-                        </span>
-
-                        {showConfidence && confPercent !== null && (
-                          <span className="font-mono bg-black/40 px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-semibold text-white/95">
-                            {confPercent}%
+                      {shouldShowLabel && (
+                        <div
+                          className={`absolute ${
+                            isNearTop ? "top-1.5 left-1.5" : "-top-7 sm:-top-8 left-0"
+                          } flex items-center gap-1.5 px-2.5 py-1 rounded-md sm:rounded-lg text-[11px] sm:text-xs font-bold border shadow-xl backdrop-blur-md z-40 whitespace-nowrap transition-transform duration-150 pointer-events-none ${tagBg} ${
+                            isSelected || isHovered ? "scale-105 ring-2 ring-white" : ""
+                          }`}
+                        >
+                          <span className="font-mono bg-black/30 px-1 rounded text-[10px] sm:text-xs">
+                            #{leafNum}
                           </span>
-                        )}
-                      </div>
+
+                          <span>
+                            {isHealthy ? "✓ " : isDeficient ? "⚠ " : "? "}
+                            {leaf.display_label || leaf.predicted_class}
+                          </span>
+
+                          {showConfidence && confPercent !== null && (
+                            <span className="font-mono bg-black/40 px-1.5 py-0.5 rounded text-[10px] sm:text-[11px] font-semibold text-white/95">
+                              {confPercent}%
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                       {/* Corner Target Markers */}
                       <div className="absolute top-1 left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white/80 pointer-events-none" />
