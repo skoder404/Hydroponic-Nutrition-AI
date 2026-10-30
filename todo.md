@@ -2168,9 +2168,9 @@
 **Dependencies:** T9-002
 **Acceptance Criteria:**
 
-- [ ] Restore recreates history rows
-- [ ] Scripts read credentials from env
-- [ ] Procedure documented
+- [x] Restore recreates history rows
+- [x] Scripts read credentials from env
+- [x] Procedure documented
 
 **Estimated Effort:** 30 min
 **Assigned To:** DevOps
