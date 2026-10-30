@@ -1,0 +1,92 @@
+# Hydroponic Nutrition AI - Caddy Reverse Proxy Configuration (T9-005)
+# Matches docs/deployment/https.md for production and local TLS deployment.
+#
+# Usage:
+#   Local (self-signed TLS): caddy run --config deploy/Caddyfile
+#   Docker Compose:          docker compose -f docker-compose.yml -f deploy/docker-compose.tls.yml up
+#
+# Environment variables:
+#   DOMAIN: Hostname or domain (default: localhost)
+#   TLS_MODE: 'internal' for local self-signed certs, or empty for automatic ACME Let's Encrypt (default: internal)
+#   BACKEND_UPSTREAM: Host:port of FastAPI backend (default: backend:8000 or 127.0.0.1:8000)
+#   FRONTEND_UPSTREAM: Host:port of Next.js frontend (default: frontend:3000 or 127.0.0.1:3000)
+
+{$DOMAIN:localhost} {
+    # TLS Certificate:
+    # 'internal' generates and trusts a local self-signed certificate for offline/local development.
+    # In production, replace or leave empty for automatic Let's Encrypt / ZeroSSL certificate management.
+    tls {$TLS_MODE:internal}
+
+    # Security Headers & HTTP Strict Transport Security (HSTS)
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Referrer-Policy "strict-origin-when-cross-origin"
+    }
+
+    # Upload size allowance matching MAX_UPLOAD_MB=15 (allows up to 20MB multipart envelope)
+    request_body {
+        max_size 20MB
+    }
+
+    # API endpoints routed to FastAPI backend
+    handle /api/* {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000} {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+            header_up X-Forwarded-Host {host}
+        }
+    }
+
+    # Health and operational metrics routed to FastAPI backend
+    handle /health* {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000} {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+        }
+    }
+
+    handle /metrics* {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000} {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+        }
+    }
+
+    # API Documentation & OpenAPI schema routed to FastAPI backend
+    handle /docs* {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000}
+    }
+
+    handle /redoc* {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000}
+    }
+
+    handle /openapi.json {
+        reverse_proxy {$BACKEND_UPSTREAM:backend:8000}
+    }
+
+    # Web UI traffic routed to Next.js frontend
+    handle {
+        reverse_proxy {$FRONTEND_UPSTREAM:frontend:3000} {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto https
+            header_up X-Forwarded-Host {host}
+        }
+    }
+
+    # Structured JSON logging to standard output
+    log {
+        output stdout
+        format json
+    }
+}

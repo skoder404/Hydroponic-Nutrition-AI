@@ -1,0 +1,29 @@
+# Docker Compose override file for TLS reverse proxy (T9-005)
+# Usage:
+#   docker compose -f docker-compose.yml -f deploy/docker-compose.tls.yml up -d
+services:
+  proxy:
+    image: caddy:2-alpine
+    container_name: hydroponics_proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+      TLS_MODE: ${TLS_MODE:-internal}
+      BACKEND_UPSTREAM: backend:8000
+      FRONTEND_UPSTREAM: frontend:3000
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+
+volumes:
+  caddy_data:
+  caddy_config:

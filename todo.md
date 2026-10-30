@@ -2194,9 +2194,9 @@
 **Dependencies:** T9-002, T3-008
 **Acceptance Criteria:**
 
-- [ ] Frontend and API reachable over HTTPS locally
-- [ ] HTTP redirects to HTTPS
-- [ ] Works with the CORS allow-list
+- [x] Frontend and API reachable over HTTPS locally
+- [x] HTTP redirects to HTTPS
+- [x] Works with the CORS allow-list
 
 **Estimated Effort:** 45 min
 **Assigned To:** DevOps
