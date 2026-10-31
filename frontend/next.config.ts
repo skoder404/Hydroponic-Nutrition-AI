@@ -1,5 +1,9 @@
 import type { NextConfig } from "next";
 
+const backendBaseUrl =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  (process.env.PORT ? `http://127.0.0.1:${process.env.PORT}` : "http://127.0.0.1:8003");
+
 const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
@@ -9,7 +13,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/api/v1/:path*",
-        destination: "http://127.0.0.1:8000/api/v1/:path*",
+        destination: `${backendBaseUrl}/api/v1/:path*`,
       },
     ];
   },

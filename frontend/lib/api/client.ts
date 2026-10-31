@@ -27,9 +27,9 @@ export class ApiClient {
       config.baseUrl ||
       (typeof window !== "undefined"
         ? "/api/v1"
-        : typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_URL
-        ? process.env.NEXT_PUBLIC_API_URL
-        : "http://127.0.0.1:8000/api/v1");
+        : typeof process !== "undefined" && (process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL)
+        ? (process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1`)
+        : "http://127.0.0.1:8003/api/v1");
     // Strip trailing slash if present
     this.baseUrl = this.baseUrl.replace(/\/+$/, "");
     this.defaultTimeoutMs = config.defaultTimeoutMs ?? 60000;
@@ -422,4 +422,3 @@ export class ApiClient {
  * Singleton API client instance for standard application usage.
  */
 export const apiClient = new ApiClient();
-

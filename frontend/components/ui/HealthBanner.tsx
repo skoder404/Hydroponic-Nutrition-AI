@@ -19,7 +19,7 @@ export function HealthBanner({
 
   const checkHealth = useCallback(async () => {
     try {
-      // Try relative endpoint first, then direct backend port 8000
+      // Try relative endpoint first, then direct backend port
       let res = await fetch(healthEndpoint, {
         method: "GET",
         headers: { Accept: "application/json" },
@@ -27,7 +27,8 @@ export function HealthBanner({
       }).catch(() => null);
 
       if (!res || !res.ok) {
-        res = await fetch("http://127.0.0.1:8000/api/v1/health", {
+        const fallbackBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8003";
+        res = await fetch(`${fallbackBase}/api/v1/health`, {
           method: "GET",
           headers: { Accept: "application/json" },
           cache: "no-store",

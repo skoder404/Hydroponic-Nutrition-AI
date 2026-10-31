@@ -282,7 +282,7 @@ export default function AnalyzePage() {
         const errMsg =
           err instanceof Error
             ? err.message
-            : "Diagnostic pipeline failed to connect to backend server. Please verify backend is running on port 8000.";
+            : "Diagnostic pipeline failed to connect to backend server. Please verify backend is running on configured port.";
         console.warn("Backend API dispatch failed:", errMsg);
         setSegmentationError(errMsg);
         setImagePrediction(null);

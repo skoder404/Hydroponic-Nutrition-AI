@@ -54,7 +54,8 @@ export default function HomePage() {
       try {
         let res = await fetch("/api/v1/health", { cache: "no-store" }).catch(() => null);
         if (!res || !res.ok) {
-          res = await fetch("http://127.0.0.1:8000/api/v1/health", { cache: "no-store" }).catch(() => null);
+          const fallbackBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8003";
+          res = await fetch(`${fallbackBase}/api/v1/health`, { cache: "no-store" }).catch(() => null);
         }
         if (res && res.ok) {
           const data = await res.json();
@@ -126,7 +127,7 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 
+        {/*
           Layout rule from DESIGN.md S1:
           ≥1024: 3 columns; 640–1023: 2+1; <640: 1 column
         */}
