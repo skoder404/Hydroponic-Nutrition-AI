@@ -10,7 +10,8 @@ FROM python:3.11-slim-bookworm AS builder
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=300
 
 WORKDIR /build
 
@@ -38,8 +39,9 @@ COPY requirements/ml-cpu.txt /build/requirements/ml-cpu.txt
 #        pip install --no-cache-dir -r /build/requirements/ml.txt
 # 2. In docker-compose or docker run, pass `--gpus all` and set `FORCE_CPU=false`.
 # ==============================================================================
-RUN pip install --no-cache-dir -r /build/requirements/backend.txt \
-    && pip install --no-cache-dir -r /build/requirements/ml-cpu.txt
+RUN pip install --no-cache-dir --default-timeout=300 --retries=5 \
+    -r /build/requirements/backend.txt \
+    -r /build/requirements/ml-cpu.txt
 
 # ==============================================================================
 # Stage 2: Runtime Image (Non-Root User)

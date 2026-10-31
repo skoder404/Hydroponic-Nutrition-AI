@@ -18,18 +18,20 @@ docker compose up -d --build
 ```
 
 ### Verify Service Health
+> **Note on Ports:** By default backend runs on port 8000. If port 8000 is occupied by another local project, configure `PORT=8003`, `BACKEND_PORT=8003`, and `NEXT_PUBLIC_API_BASE_URL=http://localhost:8003` in `.env`.
+
 ```bash
-# Verify backend API health
-curl -s http://localhost:8000/api/v1/health | jq .
+# Verify backend API health (replace 8000 with 8003 if custom port configured)
+curl -s http://localhost:8003/api/v1/health | jq .
 
 # Verify frontend web interface
 curl -sI http://localhost:3000 | head -n 5
 ```
 
 - **Web Application:** [http://localhost:3000](http://localhost:3000)
-- **FastAPI Documentation (Swagger):** [http://localhost:8000/docs](http://localhost:8000/docs)
-- **OpenAPI Schema:** [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
-- **Operational Metrics:** [http://localhost:8000/metrics](http://localhost:8000/metrics)
+- **FastAPI Documentation (Swagger):** `http://localhost:<PORT>/docs` (e.g. [http://localhost:8003/docs](http://localhost:8003/docs))
+- **OpenAPI Schema:** `http://localhost:<PORT>/openapi.json`
+- **Operational Metrics:** `http://localhost:<PORT>/metrics`
 
 ### Stop the Stack
 ```bash
@@ -58,8 +60,8 @@ source .venv/bin/activate       # On Linux/macOS
 # 2. Run database migrations
 alembic upgrade head
 
-# 3. Start FastAPI server
-uvicorn backend.app.main:app --host 127.0.0.1 --port 8000 --reload
+# 3. Start FastAPI server (use port 8003 if 8000 is occupied)
+uvicorn backend.app.main:app --host 127.0.0.1 --port 8003 --reload
 ```
 
 ### Frontend Setup

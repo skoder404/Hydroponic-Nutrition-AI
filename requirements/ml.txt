@@ -31,10 +31,10 @@ scikit-image==0.25.2
 scikit-learn==1.6.1
 scipy==1.15.2
 six==1.17.0
-sympy==1.13.3
+sympy==1.13.1
 threadpoolctl==3.5.0
 tifffile==2025.2.18
 torch==2.5.1+cu124
 torchvision==0.20.1+cu124
-typing-extensions==4.12.2
+typing-extensions==4.15.0
 tzdata==2025.1
